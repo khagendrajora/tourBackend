@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build":"tsc",
-    "start": "ts-node-dev src/index.ts"
+  "stage":"tsc && git status && git add ."
   },
   "keywords": [],
   "author": "",
