@@ -24,6 +24,8 @@ app.use("/api", productRoute);
 app.use("/api", propertyRoute);
 app.use("/api", reservationRoute);
 
+console.log("test");
+
 app.use("/public/uploads", express.static("public/uploads"));
 const port = 3000;
 

@@ -26,6 +26,7 @@ exports.app.use("/api", businessRoute_1.default);
 exports.app.use("/api", productRoute_1.default);
 exports.app.use("/api", propertyRoute_1.default);
 exports.app.use("/api", reservationRoute_1.default);
+console.log("test");
 exports.app.use("/public/uploads", express_1.default.static("public/uploads"));
 const port = 3000;
 exports.app.listen(port, () => {
