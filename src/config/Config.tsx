@@ -1,1 +1,1 @@
-export const IMG_URL = "http://localhost:3000";
+export const IMG_URL = "https://tourbackend-rdtk.onrender.com";
