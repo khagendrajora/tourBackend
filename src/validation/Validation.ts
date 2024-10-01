@@ -83,6 +83,37 @@ export const addPropertyData = [
     .withMessage("Invalid Date"),
 ];
 
+export const reservationData = [
+  check("passenger_name", "Provide Passenger Name").trim().notEmpty(),
+  check("age", "Provide Age")
+    .trim()
+    .notEmpty()
+    .isInt()
+    .withMessage("Age must be number"),
+  check("email", "Provide Email")
+    .trim()
+    .notEmpty()
+    .isEmail()
+    .withMessage("Invalid Email"),
+  check("phone", "Phone is required").trim().notEmpty(),
+  check("sourceAdd", "Provide Source Address")
+    .trim()
+    .notEmpty()
+    .isString()
+    .withMessage("Address must be string"),
+  check("destAdd", "Provide Destination Address")
+    .trim()
+    .notEmpty()
+    .isString()
+    .withMessage("Address must be string"),
+  check("bookingDate", "Provide Booking Dates")
+    .trim()
+    .notEmpty()
+    .isDate()
+    .withMessage("Invalid Date"),
+  check("address", "Address is required").trim().notEmpty(),
+];
+
 export const validation = (req: any, res: any, next: any) => {
   const errors = validationResult(req);
   if (errors.isEmpty()) {
