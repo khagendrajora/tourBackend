@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validation = exports.addPropertyData = exports.addSubCategoryData = exports.addCategoryData = exports.addBusinessProfileData = exports.addBusinessData = exports.adminSignup = void 0;
+exports.validation = exports.reservationData = exports.addPropertyData = exports.addSubCategoryData = exports.addCategoryData = exports.addBusinessProfileData = exports.addBusinessData = exports.adminSignup = void 0;
 const express_validator_1 = require("express-validator");
 exports.adminSignup = [
     (0, express_validator_1.check)("adminName").trim().notEmpty().withMessage("Admin Name is required"),
@@ -75,6 +75,36 @@ exports.addPropertyData = [
         .notEmpty()
         .isDate()
         .withMessage("Invalid Date"),
+];
+exports.reservationData = [
+    (0, express_validator_1.check)("passenger_name", "Provide Passenger Name").trim().notEmpty(),
+    (0, express_validator_1.check)("age", "Provide Age")
+        .trim()
+        .notEmpty()
+        .isInt()
+        .withMessage("Age must be number"),
+    (0, express_validator_1.check)("email", "Provide Email")
+        .trim()
+        .notEmpty()
+        .isEmail()
+        .withMessage("Invalid Email"),
+    (0, express_validator_1.check)("phone", "Phone is required").trim().notEmpty(),
+    (0, express_validator_1.check)("sourceAdd", "Provide Source Address")
+        .trim()
+        .notEmpty()
+        .isString()
+        .withMessage("Address must be string"),
+    (0, express_validator_1.check)("destAdd", "Provide Destination Address")
+        .trim()
+        .notEmpty()
+        .isString()
+        .withMessage("Address must be string"),
+    (0, express_validator_1.check)("bookingDate", "Provide Booking Dates")
+        .trim()
+        .notEmpty()
+        .isDate()
+        .withMessage("Invalid Date"),
+    (0, express_validator_1.check)("address", "Address is required").trim().notEmpty(),
 ];
 const validation = (req, res, next) => {
     const errors = (0, express_validator_1.validationResult)(req);
