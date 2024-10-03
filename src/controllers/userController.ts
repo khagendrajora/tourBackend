@@ -70,6 +70,8 @@ export const adminlogin = async (req: Request, res: Response) => {
       message: "Login succssfully",
       authToken: authToken,
       adminEmail: Email,
+      adminName: data.adminName,
+      role: data.Role,
     });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });

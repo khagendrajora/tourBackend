@@ -81,6 +81,8 @@ const adminlogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             message: "Login succssfully",
             authToken: authToken,
             adminEmail: Email,
+            adminName: data.adminName,
+            role: data.Role,
         });
     }
     catch (error) {
