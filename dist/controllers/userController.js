@@ -73,9 +73,7 @@ const adminlogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const userID = data.id;
         const authToken = jsonwebtoken_1.default.sign(userID, process.env.JWTSECRET);
         res.cookie("authToken", authToken, {
-            httpOnly: true,
-            sameSite: "strict",
-            maxAge: 3600000,
+            expires: new Date(Date.now() + 99999),
         });
         return res.status(200).json({
             message: "Login succssfully",

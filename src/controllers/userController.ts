@@ -61,9 +61,7 @@ export const adminlogin = async (req: Request, res: Response) => {
     const userID = data.id;
     const authToken = jwt.sign(userID, process.env.JWTSECRET as string);
     res.cookie("authToken", authToken, {
-      httpOnly: true,
-      sameSite: "strict",
-      maxAge: 3600000,
+      expires: new Date(Date.now() + 99999),
     });
 
     return res.status(200).json({
