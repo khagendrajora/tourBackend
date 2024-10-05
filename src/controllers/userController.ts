@@ -78,34 +78,34 @@ export const adminlogin = async (req: Request, res: Response) => {
 
 export const businessApprove = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const authToken = req.cookies.authToken;
-  if (!authToken) {
-    return res.status(404).json({ error: "Token not found or login first" });
-  }
+  // const authToken = req.cookies.authToken;
+  // if (!authToken) {
+  //   return res.status(404).json({ error: "Token not found or login first" });
+  // }
   try {
-    const decodedToken = jwt.verify(
-      authToken,
-      process.env.JWTSECRET as string
-    ) as { id: string };
-    const userId = decodedToken.id;
-    const user = await AdminUser.findOne({ userId });
-    if (!user) {
-      return res.status(404).json({ err: "failed to Get user ID" });
+    // const decodedToken = jwt.verify(
+    //   authToken,
+    //   process.env.JWTSECRET as string
+    // ) as { id: string };
+    // const userId = decodedToken.id;
+    // const user = await AdminUser.findOne({ userId });
+    // if (!user) {
+    //   return res.status(404).json({ err: "failed to Get user ID" });
+    // }
+    // if (user?.Role == true) {
+    const business = await Business.findById(id);
+    if (!business) {
+      return res.status(404).json({ error: "Business not found" });
     }
-    if (user?.Role == true) {
-      const business = await Business.findById(id);
-      if (!business) {
-        return res.status(404).json({ error: "Business not found" });
-      }
-      business.isActive = !business.isActive;
-      const updatedBusiness = await business.save();
+    business.isActive = !business.isActive;
+    const updatedBusiness = await business.save();
 
-      return res.status(200).json({
-        data: updatedBusiness,
-      });
-    } else {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
+    return res.status(200).json({
+      data: updatedBusiness,
+    });
+    // } else {
+    //   return res.status(401).json({ error: "Unauthorized" });
+    // }
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }

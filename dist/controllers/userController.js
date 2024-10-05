@@ -90,31 +90,33 @@ const adminlogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.adminlogin = adminlogin;
 const businessApprove = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const authToken = req.cookies.authToken;
-    if (!authToken) {
-        return res.status(404).json({ error: "Token not found or login first" });
-    }
+    // const authToken = req.cookies.authToken;
+    // if (!authToken) {
+    //   return res.status(404).json({ error: "Token not found or login first" });
+    // }
     try {
-        const decodedToken = jsonwebtoken_1.default.verify(authToken, process.env.JWTSECRET);
-        const userId = decodedToken.id;
-        const user = yield adminUser_1.default.findOne({ userId });
-        if (!user) {
-            return res.status(404).json({ err: "failed to Get user ID" });
+        // const decodedToken = jwt.verify(
+        //   authToken,
+        //   process.env.JWTSECRET as string
+        // ) as { id: string };
+        // const userId = decodedToken.id;
+        // const user = await AdminUser.findOne({ userId });
+        // if (!user) {
+        //   return res.status(404).json({ err: "failed to Get user ID" });
+        // }
+        // if (user?.Role == true) {
+        const business = yield business_1.default.findById(id);
+        if (!business) {
+            return res.status(404).json({ error: "Business not found" });
         }
-        if ((user === null || user === void 0 ? void 0 : user.Role) == true) {
-            const business = yield business_1.default.findById(id);
-            if (!business) {
-                return res.status(404).json({ error: "Business not found" });
-            }
-            business.isActive = !business.isActive;
-            const updatedBusiness = yield business.save();
-            return res.status(200).json({
-                data: updatedBusiness,
-            });
-        }
-        else {
-            return res.status(401).json({ error: "Unauthorized" });
-        }
+        business.isActive = !business.isActive;
+        const updatedBusiness = yield business.save();
+        return res.status(200).json({
+            data: updatedBusiness,
+        });
+        // } else {
+        //   return res.status(401).json({ error: "Unauthorized" });
+        // }
     }
     catch (error) {
         return res.status(500).json({ error: error.message });
