@@ -259,12 +259,12 @@ const getBusinessProfileDetails = (req, res) => __awaiter(void 0, void 0, void 0
 exports.getBusinessProfileDetails = getBusinessProfileDetails;
 const updateBusinessProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const authToken = req.cookies.authToken;
-    if (!authToken) {
-        return res
-            .status(400)
-            .json({ error: "Token not found, first login with business ID " });
-    }
+    // const authToken = req.cookies.authToken;
+    // if (!authToken) {
+    //   return res
+    //     .status(400)
+    //     .json({ error: "Token not found, first login with business ID " });
+    // }
     const id = req.params.id;
     try {
         const imageGallery = req.body.existingImageGallery || [];
