@@ -265,7 +265,7 @@ const updateBusinessProfile = (req, res) => __awaiter(void 0, void 0, void 0, fu
     //     .status(400)
     //     .json({ error: "Token not found, first login with business ID " });
     // }
-    const id = req.params.id;
+    const id = req.params.profileId;
     try {
         const imageGallery = req.body.existingImageGallery || [];
         let profileIcon = undefined;

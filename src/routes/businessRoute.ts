@@ -39,7 +39,7 @@ router.post(
 router.post("/businesslogin", businessLogin);
 router.post("/businesssignout", businessSignOut);
 router.put(
-  "/updatebusinessprofile/:id",
+  "/updatebusinessprofile/:profileId",
   upload.fields([
     { name: "profileIcon", maxCount: 1 },
     { name: "imageGallery", maxCount: 100 },

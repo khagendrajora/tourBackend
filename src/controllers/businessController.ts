@@ -272,7 +272,7 @@ export const updateBusinessProfile = async (req: Request, res: Response) => {
   //     .status(400)
   //     .json({ error: "Token not found, first login with business ID " });
   // }
-  const id = req.params.id;
+  const id = req.params.profileId;
   try {
     const imageGallery: string[] = req.body.existingImageGallery || [];
     let profileIcon: string | undefined = undefined;

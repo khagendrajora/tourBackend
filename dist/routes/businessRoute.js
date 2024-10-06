@@ -18,7 +18,7 @@ router.post("/addbusinessprofile", fileUpload_1.default.fields([
 ]), Validation_1.addBusinessProfileData, Validation_1.validation, businessController_1.addbusinessProfile);
 router.post("/businesslogin", businessController_1.businessLogin);
 router.post("/businesssignout", businessController_1.businessSignOut);
-router.put("/updatebusinessprofile/:id", fileUpload_1.default.fields([
+router.put("/updatebusinessprofile/:profileId", fileUpload_1.default.fields([
     { name: "profileIcon", maxCount: 1 },
     { name: "imageGallery", maxCount: 100 },
 ]), businessController_1.updateBusinessProfile);
