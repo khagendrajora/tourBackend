@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPass = exports.forgetPass = exports.adminSignOut = exports.businessApprove = exports.adminlogin = exports.addAdminUser = void 0;
+exports.resetPass = exports.forgetPass = exports.adminSignOut = exports.businessApprove = exports.getAdmin = exports.adminlogin = exports.addAdminUser = void 0;
 const adminUser_1 = __importDefault(require("../models/adminUser"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const business_1 = __importDefault(require("../models/business"));
@@ -88,6 +88,22 @@ const adminlogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.adminlogin = adminlogin;
+const getAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield adminUser_1.default.find().then((data) => {
+            if (!data) {
+                return res.status(400).json({ error: "Failed to get Users" });
+            }
+            else {
+                return res.send(data);
+            }
+        });
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.getAdmin = getAdmin;
 const businessApprove = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     // const authToken = req.cookies.authToken;

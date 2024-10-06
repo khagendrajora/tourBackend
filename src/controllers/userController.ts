@@ -75,6 +75,19 @@ export const adminlogin = async (req: Request, res: Response) => {
     return res.status(500).json({ error: error.message });
   }
 };
+export const getAdmin = async (req: Request, res: Response) => {
+  try {
+    await AdminUser.find().then((data) => {
+      if (!data) {
+        return res.status(400).json({ error: "Failed to get Users" });
+      } else {
+        return res.send(data);
+      }
+    });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
 
 export const businessApprove = async (req: Request, res: Response) => {
   const id = req.params.id;
