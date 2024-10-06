@@ -346,6 +346,21 @@ export const updateBusinessProfile = async (req: Request, res: Response) => {
   }
 };
 
+export const deleteBusiness = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    await Business.findByIdAndDelete(id).then((data) => {
+      if (!data) {
+        return res.status(404).json({ error: "Failed to delete" });
+      } else {
+        return res.status(200).json({ message: "Successfully Deleted" });
+      }
+    });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 export const businessSignOut = async (req: Request, res: Response) => {
   const authToken = req.cookies.authToken;
   try {

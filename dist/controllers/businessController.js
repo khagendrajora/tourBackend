@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPwd = exports.forgetPwd = exports.businessSignOut = exports.updateBusinessProfile = exports.getBusinessProfileDetails = exports.getBusinessProfile = exports.addbusinessProfile = exports.getBusiness = exports.businessProfile = exports.businessLogin = exports.addBusiness = void 0;
+exports.resetPwd = exports.forgetPwd = exports.businessSignOut = exports.deleteBusiness = exports.updateBusinessProfile = exports.getBusinessProfileDetails = exports.getBusinessProfile = exports.addbusinessProfile = exports.getBusiness = exports.businessProfile = exports.businessLogin = exports.addBusiness = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const business_1 = __importDefault(require("../models/business"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -330,6 +330,23 @@ const updateBusinessProfile = (req, res) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.updateBusinessProfile = updateBusinessProfile;
+const deleteBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        yield business_1.default.findByIdAndDelete(id).then((data) => {
+            if (!data) {
+                return res.status(404).json({ error: "Failed to delete" });
+            }
+            else {
+                return res.status(200).json({ message: "Successfully Deleted" });
+            }
+        });
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.deleteBusiness = deleteBusiness;
 const businessSignOut = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const authToken = req.cookies.authToken;
     try {

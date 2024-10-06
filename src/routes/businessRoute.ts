@@ -5,6 +5,7 @@ import {
   businessLogin,
   businessProfile,
   businessSignOut,
+  deleteBusiness,
   forgetPwd,
   getBusiness,
   getBusinessProfile,
@@ -51,5 +52,6 @@ router.get("/getbusinessprofile/:businessId", getBusinessProfile);
 
 router.post("/forgetbusinesspwd", forgetPwd);
 router.put("/resetbusinesspwd/:token", resetPwd);
+router.delete("/deletebusiness/:id", deleteBusiness);
 
 export default router;

@@ -25,4 +25,5 @@ router.put("/updatebusinessprofile/:profileId", fileUpload_1.default.fields([
 router.get("/getbusinessprofile/:businessId", businessController_1.getBusinessProfile);
 router.post("/forgetbusinesspwd", businessController_1.forgetPwd);
 router.put("/resetbusinesspwd/:token", businessController_1.resetPwd);
+router.delete("/deletebusiness/:id", businessController_1.deleteBusiness);
 exports.default = router;
