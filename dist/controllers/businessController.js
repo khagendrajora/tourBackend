@@ -333,14 +333,21 @@ exports.updateBusinessProfile = updateBusinessProfile;
 const deleteBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        yield business_1.default.findByIdAndDelete(id).then((data) => {
+        yield business_1.default.findByIdAndDelete(id).then((data) => __awaiter(void 0, void 0, void 0, function* () {
             if (!data) {
                 return res.status(404).json({ error: "Failed to delete" });
             }
             else {
-                return res.status(200).json({ message: "Successfully Deleted" });
+                yield businessProfine_1.default.findByIdAndDelete({ id }).then((data) => {
+                    if (!data) {
+                        return res.status(404).json({ error: "Failed to delete" });
+                    }
+                    else {
+                        return res.status(200).json({ message: "Successfully Deleted" });
+                    }
+                });
             }
-        });
+        }));
     }
     catch (error) {
         return res.status(500).json({ error: error.message });

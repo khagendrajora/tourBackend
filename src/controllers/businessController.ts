@@ -349,11 +349,17 @@ export const updateBusinessProfile = async (req: Request, res: Response) => {
 export const deleteBusiness = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
-    await Business.findByIdAndDelete(id).then((data) => {
+    await Business.findByIdAndDelete(id).then(async (data) => {
       if (!data) {
         return res.status(404).json({ error: "Failed to delete" });
       } else {
-        return res.status(200).json({ message: "Successfully Deleted" });
+        await BusinessProfile.findByIdAndDelete({ id }).then((data) => {
+          if (!data) {
+            return res.status(404).json({ error: "Failed to delete" });
+          } else {
+            return res.status(200).json({ message: "Successfully Deleted" });
+          }
+        });
       }
     });
   } catch (error: any) {
