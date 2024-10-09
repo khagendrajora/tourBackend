@@ -28,7 +28,11 @@ router.get("addaboutus", addAboutUs);
 
 router.put("updateaboutus/:id", updateAboutUS);
 
-router.post("addblogs", addBlogs);
+router.post(
+  "addblogs",
+  upload.fields([{ name: "blogs_image", maxCount: 10 }]),
+  addBlogs
+);
 
 router.get("getblogs", getBlogs);
 

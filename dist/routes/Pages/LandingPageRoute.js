@@ -12,7 +12,7 @@ router.get("gethero", LandingPage_1.getHero);
 router.post("addaboutus", LandingPage_1.addAboutUs);
 router.get("addaboutus", LandingPage_1.addAboutUs);
 router.put("updateaboutus/:id", LandingPage_1.updateAboutUS);
-router.post("addblogs", LandingPage_1.addBlogs);
+router.post("addblogs", fileUpload_1.default.fields([{ name: "blogs_image", maxCount: 10 }]), LandingPage_1.addBlogs);
 router.get("getblogs", LandingPage_1.getBlogs);
 router.put("updateblogs/:id", LandingPage_1.updateBlogs);
 router.post("addDest", fileUpload_1.default.fields([{ name: "dest_image", maxCount: 10 }]), LandingPage_1.addDest);
