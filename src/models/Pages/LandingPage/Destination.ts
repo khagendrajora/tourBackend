@@ -1,14 +1,16 @@
 import mongoose from "mongoose";
 
 export interface IDest extends Document {
-  dest_image: string;
+  dest_image: string[];
   title: string;
 }
 
 const popularDestSchema = new mongoose.Schema({
-  dest_image: {
-    type: String,
-  },
+  dest_image: [
+    {
+      type: String,
+    },
+  ],
   title: {
     type: String,
   },

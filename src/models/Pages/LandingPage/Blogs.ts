@@ -1,15 +1,17 @@
 import mongoose from "mongoose";
 
 export interface IBlogs extends Document {
-  blogs_image: string;
+  blogs_image: string[];
   title: string;
   desc: string;
 }
 
 const blogsSchema = new mongoose.Schema({
-  blogs_image: {
-    type: String,
-  },
+  blogs_image: [
+    {
+      type: String,
+    },
+  ],
   title: {
     type: String,
   },
