@@ -7,6 +7,7 @@ import categoryRoute from "./routes/categoryRoute";
 import businessRoute from "./routes/businessRoute";
 import productRoute from "./routes/productRoute";
 import propertyRoute from "./routes/propertyRoute";
+import LandingPageRoute from "./routes/Pages/LandingPageRoute";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import reservationRoute from "./routes/reservationRoute";
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
 
+app.use("/api", LandingPageRoute);
 app.use("/api", userRoute);
 app.use("/api", categoryRoute);
 app.use("/api", businessRoute);
