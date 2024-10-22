@@ -4,6 +4,7 @@ import {
   addBlogs,
   addDest,
   addHero,
+  getAboutUs,
   getBlogs,
   getDest,
   getHero,
@@ -24,7 +25,7 @@ router.get("/gethero", getHero);
 
 router.post("/addaboutus", addAboutUs);
 
-router.get("/addaboutus", addAboutUs);
+router.get("/getaboutus", getAboutUs);
 
 router.put("/updateaboutus/:id", updateAboutUS);
 
@@ -44,11 +45,7 @@ router.post(
   addDest
 );
 
-router.get(
-  "/getDest",
-
-  getDest
-);
+router.get("/getDest", getDest);
 
 router.put("/updateDest/:id", updateDest);
 
