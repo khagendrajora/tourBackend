@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateDest = exports.getDest = exports.addDest = exports.updateBlogs = exports.getBlogs = exports.addBlogs = exports.updateAboutUS = exports.getAboutUs = exports.addAboutUs = exports.updateHero = exports.getHero = exports.addHero = void 0;
+exports.deleteDest = exports.updateDest = exports.getDest = exports.addDest = exports.deleteBlogs = exports.updateBlogs = exports.getBlogs = exports.addBlogs = exports.deleteAboutUs = exports.updateAboutUS = exports.getAboutUs = exports.addAboutUs = exports.updateHero = exports.getHero = exports.addHero = void 0;
 const Hero_1 = __importDefault(require("../../models/Pages/LandingPage/Hero"));
 const AboutUs_1 = __importDefault(require("../../models/Pages/LandingPage/AboutUs"));
 const Blogs_1 = __importDefault(require("../../models/Pages/LandingPage/Blogs"));
@@ -97,8 +97,48 @@ const getAboutUs = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.getAboutUs = getAboutUs;
-const updateAboutUS = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });
+const updateAboutUS = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    let { starting_price, source_dest, dest, vehicle, travel_name } = req.body;
+    try {
+        const aboutUS = yield AboutUs_1.default.findByIdAndUpdate(id, {
+            starting_price,
+            source_dest,
+            dest,
+            vehicle,
+            travel_name,
+        }, { new: true });
+        if (!aboutUS) {
+            return res.status(400).json({
+                error: "Failed to Update",
+            });
+        }
+        else {
+            return res.status(200).json({ message: "Successfully Updated" });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: "internal error" });
+    }
+});
 exports.updateAboutUS = updateAboutUS;
+const deleteAboutUs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        AboutUs_1.default.findByIdAndDelete(id).then((data) => {
+            if (!data) {
+                return res.status(404).json({ error: "Failed to delete" });
+            }
+            else {
+                return res.status(200).json({ message: "Successfully Deleted" });
+            }
+        });
+    }
+    catch (error) {
+        return res.status(500).json({ error: "internal error" });
+    }
+});
+exports.deleteAboutUs = deleteAboutUs;
 const addBlogs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, desc } = req.body;
     try {
@@ -142,8 +182,54 @@ const getBlogs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getBlogs = getBlogs;
-const updateBlogs = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });
+const updateBlogs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const { title, desc } = req.body;
+    try {
+        let blogs_image = req.body.existingblogs_image || [];
+        if (req.files) {
+            const files = req.files;
+            if (files["blogs_image"]) {
+                const uploadedFiles = files["blogs_image"].map((file) => file.path);
+                blogs_image.push(...uploadedFiles);
+            }
+        }
+        const blogs = yield Blogs_1.default.findByIdAndUpdate(id, {
+            title,
+            desc,
+            blogs_image,
+        }, { new: true });
+        if (!blogs) {
+            return res.status(400).json({
+                error: "Failed to Update",
+            });
+        }
+        else {
+            return res.status(200).json({ message: "Successfully Updated" });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: "internal error" });
+    }
+});
 exports.updateBlogs = updateBlogs;
+const deleteBlogs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        Blogs_1.default.findByIdAndDelete(id).then((data) => {
+            if (!data) {
+                return res.status(404).json({ error: "Failed to delete" });
+            }
+            else {
+                return res.status(200).json({ message: "Successfully Deleted" });
+            }
+        });
+    }
+    catch (error) {
+        return res.status(500).json({ error: "internal error" });
+    }
+});
+exports.deleteBlogs = deleteBlogs;
 const addDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title } = req.body;
     try {
@@ -186,5 +272,50 @@ const getDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getDest = getDest;
-const updateDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });
+const updateDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const { title } = req.body;
+    try {
+        let dest_image = req.body.existingdest_image || [];
+        if (req.files) {
+            const files = req.files;
+            if (files["dest_image"]) {
+                const uploadedFiles = files["dest_image"].map((file) => file.path);
+                dest_image.push(...uploadedFiles);
+            }
+        }
+        const dest = yield Blogs_1.default.findByIdAndUpdate(id, {
+            title,
+            dest_image,
+        }, { new: true });
+        if (!dest) {
+            return res.status(400).json({
+                error: "Failed to Update",
+            });
+        }
+        else {
+            return res.status(200).json({ message: "Successfully Updated" });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: "internal error" });
+    }
+});
 exports.updateDest = updateDest;
+const deleteDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        Destination_1.default.findByIdAndDelete(id).then((data) => {
+            if (!data) {
+                return res.status(404).json({ error: "Failed to delete" });
+            }
+            else {
+                return res.status(200).json({ message: "Successfully Deleted" });
+            }
+        });
+    }
+    catch (error) {
+        return res.status(500).json({ error: "internal error" });
+    }
+});
+exports.deleteDest = deleteDest;

@@ -76,7 +76,47 @@ export const getAboutUs = async (req: Request, res: Response) => {
   }
 };
 
-export const updateAboutUS = async (req: Request, res: Response) => {};
+export const updateAboutUS = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  let { starting_price, source_dest, dest, vehicle, travel_name } = req.body;
+  try {
+    const aboutUS = await AboutUs.findByIdAndUpdate(
+      id,
+      {
+        starting_price,
+        source_dest,
+        dest,
+        vehicle,
+        travel_name,
+      },
+      { new: true }
+    );
+    if (!aboutUS) {
+      return res.status(400).json({
+        error: "Failed to Update",
+      });
+    } else {
+      return res.status(200).json({ message: "Successfully Updated" });
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};
+
+export const deleteAboutUs = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    AboutUs.findByIdAndDelete(id).then((data) => {
+      if (!data) {
+        return res.status(404).json({ error: "Failed to delete" });
+      } else {
+        return res.status(200).json({ message: "Successfully Deleted" });
+      }
+    });
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};
 
 export const addBlogs = async (req: Request, res: Response) => {
   const { title, desc } = req.body;
@@ -117,7 +157,55 @@ export const getBlogs = async (req: Request, res: Response) => {
   }
 };
 
-export const updateBlogs = async (req: Request, res: Response) => {};
+export const updateBlogs = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const { title, desc } = req.body;
+
+  try {
+    let blogs_image: string[] = req.body.existingblogs_image || [];
+    if (req.files) {
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      if (files["blogs_image"]) {
+        const uploadedFiles = files["blogs_image"].map((file) => file.path);
+        blogs_image.push(...uploadedFiles);
+      }
+    }
+    const blogs = await Blogs.findByIdAndUpdate(
+      id,
+      {
+        title,
+        desc,
+        blogs_image,
+      },
+      { new: true }
+    );
+
+    if (!blogs) {
+      return res.status(400).json({
+        error: "Failed to Update",
+      });
+    } else {
+      return res.status(200).json({ message: "Successfully Updated" });
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};
+
+export const deleteBlogs = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    Blogs.findByIdAndDelete(id).then((data) => {
+      if (!data) {
+        return res.status(404).json({ error: "Failed to delete" });
+      } else {
+        return res.status(200).json({ message: "Successfully Deleted" });
+      }
+    });
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};
 
 export const addDest = async (req: Request, res: Response) => {
   const { title } = req.body;
@@ -157,4 +245,51 @@ export const getDest = async (req: Request, res: Response) => {
   }
 };
 
-export const updateDest = async (req: Request, res: Response) => {};
+export const updateDest = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const { title } = req.body;
+
+  try {
+    let dest_image: string[] = req.body.existingdest_image || [];
+    if (req.files) {
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      if (files["dest_image"]) {
+        const uploadedFiles = files["dest_image"].map((file) => file.path);
+        dest_image.push(...uploadedFiles);
+      }
+    }
+    const dest = await Blogs.findByIdAndUpdate(
+      id,
+      {
+        title,
+        dest_image,
+      },
+      { new: true }
+    );
+
+    if (!dest) {
+      return res.status(400).json({
+        error: "Failed to Update",
+      });
+    } else {
+      return res.status(200).json({ message: "Successfully Updated" });
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};
+
+export const deleteDest = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    Destination.findByIdAndDelete(id).then((data) => {
+      if (!data) {
+        return res.status(404).json({ error: "Failed to delete" });
+      } else {
+        return res.status(200).json({ message: "Successfully Deleted" });
+      }
+    });
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};
