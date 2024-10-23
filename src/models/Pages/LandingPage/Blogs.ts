@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 export interface IBlogs extends Document {
+  _id?: string;
   blogs_image: string[];
   title: string;
   desc: string;

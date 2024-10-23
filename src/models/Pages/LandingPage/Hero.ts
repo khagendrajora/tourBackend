@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 export interface IHero extends Document {
+  _id?: string;
   hero_image?: string[];
 }
 

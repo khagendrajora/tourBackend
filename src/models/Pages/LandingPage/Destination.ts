@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 export interface IDest extends Document {
+  _id?: string;
   dest_image: string[];
   title: string;
 }

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 export interface IAboutUs extends Document {
+  _id?: string;
   starting_price: string;
   source_dest: string;
   dest: string;
