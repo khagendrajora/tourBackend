@@ -29,7 +29,7 @@ exports.app.use("/api", productRoute_1.default);
 exports.app.use("/api", propertyRoute_1.default);
 exports.app.use("/api", reservationRoute_1.default);
 console.log("test");
-exports.app.use("/public/uploads", express_1.default.static("public/uploads"));
+exports.app.use("/uploads", express_1.default.static("uploads"));
 const port = 3000;
 exports.app.listen(port, () => {
     console.log(`Server Started on ${port}`);
