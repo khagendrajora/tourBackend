@@ -21,6 +21,7 @@ exports.app = (0, express_1.default)();
 exports.app.use(express_1.default.json());
 exports.app.use((0, cookie_parser_1.default)());
 exports.app.use((0, cors_1.default)());
+exports.app.use("/public/uploads", express_1.default.static("public/uploads"));
 exports.app.use("/api", LandingPageRoute_1.default);
 exports.app.use("/api", userRoute_1.default);
 exports.app.use("/api", categoryRoute_1.default);
@@ -29,7 +30,6 @@ exports.app.use("/api", productRoute_1.default);
 exports.app.use("/api", propertyRoute_1.default);
 exports.app.use("/api", reservationRoute_1.default);
 console.log("test");
-exports.app.use("/public/uploads", express_1.default.static("public/uploads"));
 const port = process.env.PORT || 3000;
 exports.app.listen(port, () => {
     console.log(`Server Started on ${port}`);

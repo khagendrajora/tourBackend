@@ -17,7 +17,7 @@ app.use(express.json());
 
 app.use(cookieParser());
 app.use(cors());
-
+app.use("/public/uploads", express.static("public/uploads"));
 app.use("/api", LandingPageRoute);
 app.use("/api", userRoute);
 app.use("/api", categoryRoute);
@@ -28,7 +28,6 @@ app.use("/api", reservationRoute);
 
 console.log("test");
 
-app.use("/public/uploads", express.static("public/uploads"));
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
