@@ -28,7 +28,7 @@ app.use("/api", reservationRoute);
 
 console.log("test");
 
-app.use("/public/uploads", express.static("public/uploads"));
+app.use("/uploads", express.static("uploads"));
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
