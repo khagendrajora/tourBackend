@@ -25,6 +25,7 @@ router.post(
   addHero
 );
 router.get("/gethero", getHero);
+router.delete("/deleteaboutus/:id", deleteAboutUs);
 
 router.post("/addaboutus", addAboutUs);
 

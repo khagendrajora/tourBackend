@@ -42,6 +42,21 @@ export const getHero = async (req: Request, res: Response) => {
 
 export const updateHero = async (req: Request, res: Response) => {};
 
+export const deleteHero = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    Hero.findByIdAndDelete(id).then((data) => {
+      if (!data) {
+        return res.status(404).json({ error: "Failed to delete" });
+      } else {
+        return res.status(200).json({ message: "Successfully Deleted" });
+      }
+    });
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};
+
 export const addAboutUs = async (req: Request, res: Response) => {
   const { starting_price, source_dest, dest, vehicle, travel_name } = req.body;
   try {

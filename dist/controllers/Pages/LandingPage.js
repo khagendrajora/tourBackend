@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteDest = exports.updateDest = exports.getDest = exports.addDest = exports.deleteBlogs = exports.updateBlogs = exports.getBlogs = exports.addBlogs = exports.deleteAboutUs = exports.updateAboutUS = exports.getAboutUs = exports.addAboutUs = exports.updateHero = exports.getHero = exports.addHero = void 0;
+exports.deleteDest = exports.updateDest = exports.getDest = exports.addDest = exports.deleteBlogs = exports.updateBlogs = exports.getBlogs = exports.addBlogs = exports.deleteAboutUs = exports.updateAboutUS = exports.getAboutUs = exports.addAboutUs = exports.deleteHero = exports.updateHero = exports.getHero = exports.addHero = void 0;
 const Hero_1 = __importDefault(require("../../models/Pages/LandingPage/Hero"));
 const AboutUs_1 = __importDefault(require("../../models/Pages/LandingPage/AboutUs"));
 const Blogs_1 = __importDefault(require("../../models/Pages/LandingPage/Blogs"));
@@ -59,6 +59,23 @@ const getHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getHero = getHero;
 const updateHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });
 exports.updateHero = updateHero;
+const deleteHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        Hero_1.default.findByIdAndDelete(id).then((data) => {
+            if (!data) {
+                return res.status(404).json({ error: "Failed to delete" });
+            }
+            else {
+                return res.status(200).json({ message: "Successfully Deleted" });
+            }
+        });
+    }
+    catch (error) {
+        return res.status(500).json({ error: "internal error" });
+    }
+});
+exports.deleteHero = deleteHero;
 const addAboutUs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { starting_price, source_dest, dest, vehicle, travel_name } = req.body;
     try {
