@@ -7,6 +7,7 @@ import {
   deleteAboutUs,
   deleteBlogs,
   deleteDest,
+  deleteHero,
   getAboutUs,
   getBlogs,
   getDest,
@@ -25,7 +26,7 @@ router.post(
   addHero
 );
 router.get("/gethero", getHero);
-router.delete("/deleteaboutus/:id", deleteAboutUs);
+router.delete("/deletehero/:id", deleteHero);
 
 router.post("/addaboutus", addAboutUs);
 

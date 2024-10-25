@@ -9,7 +9,7 @@ const fileUpload_1 = __importDefault(require("../../middleware/fileUpload"));
 const router = express_1.default.Router();
 router.post("/addhero", fileUpload_1.default.fields([{ name: "hero_image", maxCount: 10 }]), LandingPage_1.addHero);
 router.get("/gethero", LandingPage_1.getHero);
-router.delete("/deleteaboutus/:id", LandingPage_1.deleteAboutUs);
+router.delete("/deletehero/:id", LandingPage_1.deleteHero);
 router.post("/addaboutus", LandingPage_1.addAboutUs);
 router.get("/getaboutus", LandingPage_1.getAboutUs);
 router.put("/updateaboutus/:id", LandingPage_1.updateAboutUS);
