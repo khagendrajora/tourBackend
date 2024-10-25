@@ -40,7 +40,37 @@ export const getHero = async (req: Request, res: Response) => {
   }
 };
 
-export const updateHero = async (req: Request, res: Response) => {};
+export const updateHero = async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  try {
+    let hero_image: string[] = req.body.existinghero_image || [];
+    if (req.files) {
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      if (files["hero_image"]) {
+        const uploadedFiles = files["hero_image"].map((file) => file.path);
+        hero_image.push(...uploadedFiles);
+      }
+    }
+    const hero = await Hero.findByIdAndUpdate(
+      id,
+      {
+        hero_image,
+      },
+      { new: true }
+    );
+
+    if (!hero) {
+      return res.status(400).json({
+        error: "Failed to Update",
+      });
+    } else {
+      return res.status(200).json({ message: "Successfully Updated" });
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};
 
 export const deleteHero = async (req: Request, res: Response) => {
   const id = req.params.id;

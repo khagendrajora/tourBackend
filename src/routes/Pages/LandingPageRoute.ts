@@ -15,6 +15,7 @@ import {
   updateAboutUS,
   updateBlogs,
   updateDest,
+  updateHero,
 } from "../../controllers/Pages/LandingPage";
 import upload from "../../middleware/fileUpload";
 
@@ -26,6 +27,13 @@ router.post(
   addHero
 );
 router.get("/gethero", getHero);
+
+router.put(
+  "/updatehero/:id",
+  upload.fields([{ name: "hero_image", maxCount: 10 }]),
+  updateHero
+);
+
 router.delete("/deletehero/:id", deleteHero);
 
 router.post("/addaboutus", addAboutUs);

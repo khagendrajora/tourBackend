@@ -57,7 +57,33 @@ const getHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getHero = getHero;
-const updateHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });
+const updateHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        let hero_image = req.body.existinghero_image || [];
+        if (req.files) {
+            const files = req.files;
+            if (files["hero_image"]) {
+                const uploadedFiles = files["hero_image"].map((file) => file.path);
+                hero_image.push(...uploadedFiles);
+            }
+        }
+        const hero = yield Hero_1.default.findByIdAndUpdate(id, {
+            hero_image,
+        }, { new: true });
+        if (!hero) {
+            return res.status(400).json({
+                error: "Failed to Update",
+            });
+        }
+        else {
+            return res.status(200).json({ message: "Successfully Updated" });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: "internal error" });
+    }
+});
 exports.updateHero = updateHero;
 const deleteHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
