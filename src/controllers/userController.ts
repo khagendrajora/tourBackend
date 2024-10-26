@@ -65,11 +65,11 @@ export const adminlogin = async (req: Request, res: Response) => {
     });
 
     return res.status(200).json({
-      message: "Login succssfully",
+      // message: "Login succssfully",
       authToken: authToken,
-      adminEmail: Email,
-      adminName: data.adminName,
-      role: data.Role,
+      // adminEmail: Email,
+      // adminName: data.adminName,
+      // role: data.Role,
     });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
