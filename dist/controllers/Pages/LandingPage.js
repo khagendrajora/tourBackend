@@ -327,7 +327,7 @@ const updateDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 dest_image.push(...uploadedFiles);
             }
         }
-        const dest = yield Blogs_1.default.findByIdAndUpdate(id, {
+        const dest = yield Destination_1.default.findByIdAndUpdate(id, {
             title,
             dest_image,
         }, { new: true });

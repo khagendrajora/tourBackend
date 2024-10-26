@@ -303,7 +303,7 @@ export const updateDest = async (req: Request, res: Response) => {
         dest_image.push(...uploadedFiles);
       }
     }
-    const dest = await Blogs.findByIdAndUpdate(
+    const dest = await Destination.findByIdAndUpdate(
       id,
       {
         title,
