@@ -140,24 +140,19 @@ const businessApprove = (req, res) => __awaiter(void 0, void 0, void 0, function
 });
 exports.businessApprove = businessApprove;
 const adminSignOut = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const authToken = req.cookies.authToken;
-    try {
-        if (!authToken) {
-            return res.status(400).json({ error: "token not found " });
-        }
-        else {
-            res.clearCookie("authToken", {
-                httpOnly: true,
-                sameSite: "strict",
-            });
-            return res.status(200).json({ message: "Sign Out Successfully" });
-        }
-    }
-    catch (error) {
-        return res.status(500).json({ error: error.message });
-    }
+    // const authToken = req.cookies.authToken;
+    // try {
+    //   if (!authToken) {
+    // return res.status(400).json({ error: "token not found " });
+    // } else {
+    res.clearCookie("authToken");
+    return res.status(200).json({ message: "Sign Out Successfully" });
 });
 exports.adminSignOut = adminSignOut;
+//   } catch (error: any) {
+//     return res.status(500).json({ error: error.message });
+//   }
+// };
 const forgetPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let Email = req.body.Email;
     try {

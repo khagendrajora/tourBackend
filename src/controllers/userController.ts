@@ -125,22 +125,19 @@ export const businessApprove = async (req: Request, res: Response) => {
 };
 
 export const adminSignOut = async (req: Request, res: Response) => {
-  const authToken = req.cookies.authToken;
+  // const authToken = req.cookies.authToken;
 
-  try {
-    if (!authToken) {
-      return res.status(400).json({ error: "token not found " });
-    } else {
-      res.clearCookie("authToken", {
-        httpOnly: true,
-        sameSite: "strict",
-      });
-      return res.status(200).json({ message: "Sign Out Successfully" });
-    }
-  } catch (error: any) {
-    return res.status(500).json({ error: error.message });
-  }
+  // try {
+  //   if (!authToken) {
+  // return res.status(400).json({ error: "token not found " });
+  // } else {
+  res.clearCookie("authToken");
+  return res.status(200).json({ message: "Sign Out Successfully" });
 };
+//   } catch (error: any) {
+//     return res.status(500).json({ error: error.message });
+//   }
+// };
 
 export const forgetPass = async (req: Request, res: Response) => {
   let Email = req.body.Email;
