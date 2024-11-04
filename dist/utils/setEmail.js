@@ -7,16 +7,18 @@ exports.sendEmail = void 0;
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const sendEmail = (options) => {
     let nodemailers = nodemailer_1.default.createTransport({
-        host: "sandbox.smtp.mailtrap.io",
-        port: 587,
-        secure: false,
+        host: "gmail",
+        port: 465,
+        secure: true,
         auth: {
-            user: "ae7e97c689918e",
-            pass: "a6b23360b72cf8",
+            // user: "ae7e97c689918e",
+            // pass: "a6b23360b72cf8",
+            user: "khagijora2074@gmail.com",
+            pass: "vwuvzacadvyyyogx",
         },
     });
     const mailOptions = {
-        from: "beta_toursewa@gmail.com",
+        from: options.from,
         to: options.to,
         subject: options.subject,
         text: options.text,
