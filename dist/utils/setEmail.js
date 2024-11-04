@@ -14,7 +14,7 @@ const sendEmail = (options) => {
             // user: "ae7e97c689918e",
             // pass: "a6b23360b72cf8",
             user: "khagijora2074@gmail.com",
-            pass: "vwuvzacadvyyyogx",
+            pass: "gkdjojpbrdixzyjk",
         },
     });
     const mailOptions = {
