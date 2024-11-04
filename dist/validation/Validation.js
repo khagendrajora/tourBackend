@@ -15,14 +15,14 @@ exports.adminSignup = [
 exports.addBusinessData = [
     (0, express_validator_1.check)("businessName", "Give Your Business Name").trim().notEmpty(),
     (0, express_validator_1.check)("taxRegistration", "Invalid Tax Registration").trim().notEmpty(),
-    (0, express_validator_1.check)("address", "Provide Address").trim().notEmpty(),
+    (0, express_validator_1.check)("businessAddress", "Provide Address").trim().notEmpty(),
     (0, express_validator_1.check)("primaryEmail", "Email is required")
         .trim()
         .notEmpty()
         .isEmail()
         .withMessage("Invalid Email"),
     (0, express_validator_1.check)("primaryPhone", "Phone Number is required").trim().notEmpty(),
-    (0, express_validator_1.check)("password", "password is required")
+    (0, express_validator_1.check)("businessPwd", "password is required")
         .trim()
         .notEmpty()
         .isLength({ min: 8 })
