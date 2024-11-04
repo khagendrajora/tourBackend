@@ -5,11 +5,12 @@ export interface IBusiness extends Document {
   businessName: string;
   businessCategory: string;
   taxRegistration: string;
-  address: string;
+  businessAddress: string;
   primaryEmail: string;
   primaryPhone: string;
   isActive: boolean;
-  password: string;
+  businessPwd: string;
+  isVerified: boolean;
 }
 
 const businessSchema = new mongoose.Schema({
@@ -26,7 +27,7 @@ const businessSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  address: {
+  businessAddress: {
     type: String,
     required: true,
   },
@@ -44,9 +45,13 @@ const businessSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  password: {
+  businessPwd: {
     type: String,
     required: true,
+  },
+  isVerified: {
+    type: Boolean,
+    default: false,
   },
 });
 

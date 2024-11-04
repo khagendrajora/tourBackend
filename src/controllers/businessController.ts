@@ -12,15 +12,15 @@ export const addBusiness = async (req: Request, res: Response) => {
     businessName,
     businessCategory,
     taxRegistration,
-    address,
+    businessAddress,
     primaryEmail,
     primaryPhone,
-    password,
+    businessPwd,
   } = req.body;
 
   try {
-    if (password == "") {
-      return res.status(400).json({ error: "password is reqired" });
+    if (businessPwd == "") {
+      return res.status(400).json({ error: "Password is reqired" });
     }
     const tax = await Business.findOne({ taxRegistration });
     if (tax) {
@@ -42,32 +42,81 @@ export const addBusiness = async (req: Request, res: Response) => {
     }
 
     const salt = await bcryptjs.genSalt(5);
-    let hashedPassword = await bcryptjs.hash(password, salt);
+    let hashedPassword = await bcryptjs.hash(businessPwd, salt);
     let business = new Business({
       businessName,
       businessCategory,
       taxRegistration,
-      address,
+      businessAddress,
       primaryEmail,
       primaryPhone,
-      password: hashedPassword,
+      businessPwd: hashedPassword,
     });
     business = await business.save();
 
     if (!business) {
       hashedPassword = "";
       return res.status(400).json({ error: "Failed to save the business" });
-    } else {
-      hashedPassword = "";
-      return res.status(200).json({ message: "Business Added succesfully" });
     }
+    let token = new Token({
+      token: uuid(),
+      userId: business._id,
+    });
+    token = await token.save();
+    if (!token) {
+      return res.status(400).json({ error: "Token not generated" });
+    }
+    const url = `${process.env.FRONTEND_URL}/verifybusinessemail/${token.token}`;
+    const api = `${process.env.Backend_URL}`;
+
+    sendEmail({
+      from: "beta.toursewa@gmail.com",
+      to: business.primaryEmail,
+      subject: "Account Verification Link",
+      text: `Verify your Business Email to Login\n\n
+${api}/verifybusinessemail/${token.token}`,
+      html: `<h1>Click to Verify Email</h1> 
+      <a href='${url}>Click here To verify`,
+    });
+
+    hashedPassword = "";
+    return res
+      .status(200)
+      .json({ message: "Verifying link has been sent to Email " });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const verifyEmail = async (req: Request, res: Response) => {
+  const token = req.params.token;
+  try {
+    const data = await Token.findOne({ token });
+    if (!data) {
+      return res.status(404).json({ error: "Token Expired" });
+    }
+    const businessId = await Business.findOne({ _id: data.userId });
+    if (!businessId) {
+      return res.status(404).json({ error: "Token and Email not matched" });
+    }
+    if (businessId.isVerified) {
+      return res.status(400).json({ error: "Email Already verified" });
+    }
+    businessId.isVerified = true;
+    businessId.save().then((business) => {
+      if (!business) {
+        return res.status(400).json({ error: "Failed to Verify" });
+      } else {
+        return res.status(200).json({ message: "Email Verified" });
+      }
+    });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }
 };
 
 export const businessLogin = async (req: Request, res: Response) => {
-  const { businessId, primaryEmail, primaryPhone, password } = req.body;
+  const { businessId, primaryEmail, primaryPhone, businessPwd } = req.body;
 
   try {
     const businessid = await Business.findOne({ _id: businessId });
@@ -84,7 +133,10 @@ export const businessLogin = async (req: Request, res: Response) => {
         businessEmail: businessid.primaryEmail,
       });
     }
-    const isPassword = await bcryptjs.compare(password, businessid.password);
+    const isPassword = await bcryptjs.compare(
+      businessPwd,
+      businessid.businessPwd
+    );
 
     if (!isPassword) {
       return res.status(400).json({ error: "password  not matched" });
@@ -423,7 +475,7 @@ export const forgetPwd = async (req: Request, res: Response) => {
 
 export const resetPwd = async (req: Request, res: Response) => {
   const token = req.params.token;
-  const newPwd = req.body.password;
+  const newPwd = req.body.businessPwd;
   try {
     const data = await Token.findOne({ token });
     if (!data) {
@@ -435,7 +487,7 @@ export const resetPwd = async (req: Request, res: Response) => {
     } else {
       const salt = await bcryptjs.genSalt(5);
       let hashedPwd = await bcryptjs.hash(newPwd, salt);
-      businessId.password = hashedPwd;
+      businessId.businessPwd = hashedPwd;
       businessId.save();
 
       await Token.deleteOne({ _id: data._id });

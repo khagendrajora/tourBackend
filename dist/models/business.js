@@ -18,7 +18,7 @@ const businessSchema = new mongoose_1.default.Schema({
         required: true,
         unique: true,
     },
-    address: {
+    businessAddress: {
         type: String,
         required: true,
     },
@@ -36,9 +36,13 @@ const businessSchema = new mongoose_1.default.Schema({
         type: Boolean,
         default: false,
     },
-    password: {
+    businessPwd: {
         type: String,
         required: true,
+    },
+    isVerified: {
+        type: Boolean,
+        default: false,
     },
 });
 exports.default = mongoose_1.default.model("Business", businessSchema);

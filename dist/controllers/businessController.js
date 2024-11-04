@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPwd = exports.forgetPwd = exports.businessSignOut = exports.deleteBusiness = exports.updateBusinessProfile = exports.getBusinessProfileDetails = exports.getBusinessProfile = exports.addbusinessProfile = exports.getBusiness = exports.businessProfile = exports.businessLogin = exports.addBusiness = void 0;
+exports.resetPwd = exports.forgetPwd = exports.businessSignOut = exports.deleteBusiness = exports.updateBusinessProfile = exports.getBusinessProfileDetails = exports.getBusinessProfile = exports.addbusinessProfile = exports.getBusiness = exports.businessProfile = exports.businessLogin = exports.verifyEmail = exports.addBusiness = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const business_1 = __importDefault(require("../models/business"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -21,10 +21,10 @@ const token_1 = __importDefault(require("../models/token"));
 const uuid_1 = require("uuid");
 const setEmail_1 = require("../utils/setEmail");
 const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { businessName, businessCategory, taxRegistration, address, primaryEmail, primaryPhone, password, } = req.body;
+    const { businessName, businessCategory, taxRegistration, businessAddress, primaryEmail, primaryPhone, businessPwd, } = req.body;
     try {
-        if (password == "") {
-            return res.status(400).json({ error: "password is reqired" });
+        if (businessPwd == "") {
+            return res.status(400).json({ error: "Password is reqired" });
         }
         const tax = yield business_1.default.findOne({ taxRegistration });
         if (tax) {
@@ -43,33 +43,81 @@ const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 .json({ error: "Phone Number already registered " });
         }
         const salt = yield bcryptjs_1.default.genSalt(5);
-        let hashedPassword = yield bcryptjs_1.default.hash(password, salt);
+        let hashedPassword = yield bcryptjs_1.default.hash(businessPwd, salt);
         let business = new business_1.default({
             businessName,
             businessCategory,
             taxRegistration,
-            address,
+            businessAddress,
             primaryEmail,
             primaryPhone,
-            password: hashedPassword,
+            businessPwd: hashedPassword,
         });
         business = yield business.save();
         if (!business) {
             hashedPassword = "";
             return res.status(400).json({ error: "Failed to save the business" });
         }
-        else {
-            hashedPassword = "";
-            return res.status(200).json({ message: "Business Added succesfully" });
+        let token = new token_1.default({
+            token: (0, uuid_1.v4)(),
+            userId: business._id,
+        });
+        token = yield token.save();
+        if (!token) {
+            return res.status(400).json({ error: "Token not generated" });
         }
+        const url = `${process.env.FRONTEND_URL}/verifybusinessemail/${token.token}`;
+        const api = `${process.env.Backend_URL}`;
+        (0, setEmail_1.sendEmail)({
+            from: "beta.toursewa@gmail.com",
+            to: business.primaryEmail,
+            subject: "Account Verification Link",
+            text: `Verify your Business Email to Login\n\n
+${api}/verifybusinessemail/${token.token}`,
+            html: `<h1>Click to Verify Email</h1> 
+      <a href='${url}>Click here To verify`,
+        });
+        hashedPassword = "";
+        return res
+            .status(200)
+            .json({ message: "Verifying link has been sent to Email " });
     }
     catch (error) {
         return res.status(500).json({ error: error.message });
     }
 });
 exports.addBusiness = addBusiness;
+const verifyEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = req.params.token;
+    try {
+        const data = yield token_1.default.findOne({ token });
+        if (!data) {
+            return res.status(404).json({ error: "Token Expired" });
+        }
+        const businessId = yield business_1.default.findOne({ _id: data.userId });
+        if (!businessId) {
+            return res.status(404).json({ error: "Token and Email not matched" });
+        }
+        if (businessId.isVerified) {
+            return res.status(400).json({ error: "Email Already verified" });
+        }
+        businessId.isVerified = true;
+        businessId.save().then((business) => {
+            if (!business) {
+                return res.status(400).json({ error: "Failed to Verify" });
+            }
+            else {
+                return res.status(200).json({ message: "Email Verified" });
+            }
+        });
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.verifyEmail = verifyEmail;
 const businessLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { businessId, primaryEmail, primaryPhone, password } = req.body;
+    const { businessId, primaryEmail, primaryPhone, businessPwd } = req.body;
     try {
         const businessid = yield business_1.default.findOne({ _id: businessId });
         if (!businessid) {
@@ -85,7 +133,7 @@ const businessLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 businessEmail: businessid.primaryEmail,
             });
         }
-        const isPassword = yield bcryptjs_1.default.compare(password, businessid.password);
+        const isPassword = yield bcryptjs_1.default.compare(businessPwd, businessid.businessPwd);
         if (!isPassword) {
             return res.status(400).json({ error: "password  not matched" });
         }
@@ -407,7 +455,7 @@ const forgetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.forgetPwd = forgetPwd;
 const resetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.params.token;
-    const newPwd = req.body.password;
+    const newPwd = req.body.businessPwd;
     try {
         const data = yield token_1.default.findOne({ token });
         if (!data) {
@@ -420,7 +468,7 @@ const resetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         else {
             const salt = yield bcryptjs_1.default.genSalt(5);
             let hashedPwd = yield bcryptjs_1.default.hash(newPwd, salt);
-            businessId.password = hashedPwd;
+            businessId.businessPwd = hashedPwd;
             businessId.save();
             yield token_1.default.deleteOne({ _id: data._id });
             return res.status(201).json({ message: "Reset Successful" });
