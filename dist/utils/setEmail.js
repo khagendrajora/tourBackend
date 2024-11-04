@@ -7,7 +7,7 @@ exports.sendEmail = void 0;
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const sendEmail = (options) => {
     let nodemailers = nodemailer_1.default.createTransport({
-        host: "gmail",
+        service: "gmail",
         port: 465,
         secure: true,
         auth: {
