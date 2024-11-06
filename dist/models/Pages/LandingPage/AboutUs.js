@@ -4,13 +4,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
-const aboutUsSchema = new mongoose_1.default.Schema({
-    starting_price: {
+const hotDeals = new mongoose_1.default.Schema({
+    startingPrice: {
         type: String,
     },
-    source_dest: { type: String },
-    dest: { type: String },
-    vehicle: { type: String },
-    travel_name: { type: String },
+    sourceAddress: {
+        type: String,
+    },
+    destAddress: {
+        type: String,
+    },
+    vehicle: {
+        type: String,
+    },
+    travelName: {
+        type: String,
+    },
 });
-exports.default = mongoose_1.default.model("AboutUs", aboutUsSchema);
+exports.default = mongoose_1.default.model("AboutUs", hotDeals);

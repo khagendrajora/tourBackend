@@ -9,12 +9,12 @@ var ICondition;
     ICondition["Good"] = "Good";
     ICondition["Bad"] = "Bad";
 })(ICondition || (ICondition = {}));
-const Veh_Schema = new mongoose_1.default.Schema({
-    veh_Category: {
+const VehSchema = new mongoose_1.default.Schema({
+    vehCategory: {
         type: String,
         required: true,
     },
-    veh_subCategory: {
+    vehSubCategory: {
         type: String,
         required: true,
     },
@@ -34,12 +34,12 @@ const Veh_Schema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    veh_condition: {
+    vehCondition: {
         type: String,
         enum: Object.values(ICondition),
         required: true,
     },
-    veh_number: {
+    vehNumber: {
         type: String,
         required: true,
     },
@@ -57,10 +57,10 @@ const Veh_Schema = new mongoose_1.default.Schema({
         type: Date,
         required: true,
     },
-    veh_images: [
+    vehImages: [
         {
             type: String,
         },
     ],
 });
-exports.default = mongoose_1.default.model("Vehicle", Veh_Schema);
+exports.default = mongoose_1.default.model("Vehicle", VehSchema);

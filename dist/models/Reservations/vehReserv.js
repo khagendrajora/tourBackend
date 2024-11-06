@@ -4,12 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
-const Veh_Rev = new mongoose_1.default.Schema({
-    veh_id: {
+const VehRev = new mongoose_1.default.Schema({
+    vehId: {
         type: String,
         required: true,
     },
-    veh_type: {
+    vehType: {
         type: String,
         required: true,
     },
@@ -24,11 +24,11 @@ const Veh_Rev = new mongoose_1.default.Schema({
     email: {
         type: String,
     },
-    sourceAdd: {
+    sourceAddress: {
         type: String,
         required: true,
     },
-    destAdd: {
+    destAddress: {
         type: String,
         required: true,
     },
@@ -36,15 +36,15 @@ const Veh_Rev = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    veh_number: {
+    vehNumber: {
         type: String,
         required: true,
     },
-    veh_name: {
+    vehName: {
         type: String,
         required: true,
     },
-    passenger_name: {
+    passengerName: {
         type: String,
         required: true,
     },
@@ -58,4 +58,4 @@ const Veh_Rev = new mongoose_1.default.Schema({
         },
     ],
 });
-exports.default = mongoose_1.default.model("VehRev", Veh_Rev);
+exports.default = mongoose_1.default.model("VehRev", VehRev);

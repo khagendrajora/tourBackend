@@ -7,18 +7,21 @@ export interface ICategory extends Document {
   subCategory?: string;
 }
 
-const categorySchema = new mongoose.Schema({
-  categoryName: {
-    type: String,
-    required: true,
+const categorySchema = new mongoose.Schema(
+  {
+    categoryName: {
+      type: String,
+      required: true,
+    },
+    desc: {
+      type: String,
+      required: true,
+    },
+    subCategory: {
+      type: String,
+    },
   },
-  desc: {
-    type: String,
-    required: true,
-  },
-  subCategory: {
-    type: String,
-  },
-});
+  { timestamps: true }
+);
 
 export default mongoose.model<ICategory>("Category", categorySchema);

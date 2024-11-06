@@ -29,8 +29,8 @@ exports.app.use("/api", businessRoute_1.default);
 exports.app.use("/api", productRoute_1.default);
 exports.app.use("/api", propertyRoute_1.default);
 exports.app.use("/api", reservationRoute_1.default);
-console.log("test");
-const port = process.env.PORT || 3000;
+exports.app.use("/api", userRoute_1.default);
+const port = 3000;
 exports.app.listen(port, () => {
     console.log(`Server Started on ${port}`);
 });

@@ -6,26 +6,26 @@ enum ICondition {
 }
 export interface IVeh extends Document {
   _id?: string;
-  veh_Category: string;
-  veh_subCategory: string;
+  vehCategory: string;
+  vehSubCategory: string;
   services: string;
   amenities: string;
-  veh_condition: ICondition;
+  vehCondition: ICondition;
   madeYear: Date;
-  veh_number: string;
+  vehNumber: string;
   quantity: number;
   capacity: string;
   name: string;
   operationDates: Date[];
-  veh_images?: string[];
+  vehImages?: string[];
 }
 
-const Veh_Schema = new mongoose.Schema({
-  veh_Category: {
+const VehSchema = new mongoose.Schema({
+  vehCategory: {
     type: String,
     required: true,
   },
-  veh_subCategory: {
+  vehSubCategory: {
     type: String,
     required: true,
   },
@@ -47,12 +47,12 @@ const Veh_Schema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  veh_condition: {
+  vehCondition: {
     type: String,
     enum: Object.values(ICondition),
     required: true,
   },
-  veh_number: {
+  vehNumber: {
     type: String,
     required: true,
   },
@@ -72,11 +72,11 @@ const Veh_Schema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  veh_images: [
+  vehImages: [
     {
       type: String,
     },
   ],
 });
 
-export default mongoose.model<IVeh>("Vehicle", Veh_Schema);
+export default mongoose.model<IVeh>("Vehicle", VehSchema);

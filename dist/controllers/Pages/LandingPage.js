@@ -12,22 +12,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteDest = exports.updateDest = exports.getDest = exports.addDest = exports.deleteBlogs = exports.updateBlogs = exports.getBlogs = exports.addBlogs = exports.deleteAboutUs = exports.updateAboutUS = exports.getAboutUs = exports.addAboutUs = exports.deleteHero = exports.updateHero = exports.getHero = exports.addHero = void 0;
+exports.deleteDest = exports.updateDest = exports.getDest = exports.addDest = exports.deleteBlogs = exports.updateBlogs = exports.getBlogs = exports.addBlogs = exports.deleteHotDeals = exports.updateHotdeals = exports.getHotDeals = exports.addHotDeals = exports.deleteHero = exports.updateHero = exports.getHero = exports.addHero = void 0;
 const Hero_1 = __importDefault(require("../../models/Pages/LandingPage/Hero"));
 const AboutUs_1 = __importDefault(require("../../models/Pages/LandingPage/AboutUs"));
 const Blogs_1 = __importDefault(require("../../models/Pages/LandingPage/Blogs"));
 const Destination_1 = __importDefault(require("../../models/Pages/LandingPage/Destination"));
 const addHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let hero_image = [];
+        let heroImage = [];
         if (req.files) {
             const files = req.files;
-            if (files["hero_image"]) {
-                hero_image = files["hero_image"].map((file) => file.path);
+            if (files["heroImage"]) {
+                heroImage = files["heroImage"].map((file) => file.path);
             }
         }
         let hero = new Hero_1.default({
-            hero_image,
+            heroImage,
         });
         hero = yield hero.save();
         if (!hero) {
@@ -60,16 +60,16 @@ exports.getHero = getHero;
 const updateHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        let hero_image = req.body.existinghero_image || [];
+        let heroImage = req.body.existingheroImage || [];
         if (req.files) {
             const files = req.files;
-            if (files["hero_image"]) {
-                const uploadedFiles = files["hero_image"].map((file) => file.path);
-                hero_image.push(...uploadedFiles);
+            if (files["heroImage"]) {
+                const uploadedFiles = files["heroImage"].map((file) => file.path);
+                heroImage.push(...uploadedFiles);
             }
         }
         const hero = yield Hero_1.default.findByIdAndUpdate(id, {
-            hero_image,
+            heroImage,
         }, { new: true });
         if (!hero) {
             return res.status(400).json({
@@ -102,15 +102,15 @@ const deleteHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.deleteHero = deleteHero;
-const addAboutUs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { starting_price, source_dest, dest, vehicle, travel_name } = req.body;
+const addHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { startingPrice, sourceAddress, destAddress, vehicle, travelName } = req.body;
     try {
         let data = new AboutUs_1.default({
-            starting_price,
-            source_dest,
-            dest,
+            startingPrice,
+            sourceAddress,
+            destAddress,
             vehicle,
-            travel_name,
+            travelName,
         });
         data = yield data.save();
         if (!data) {
@@ -124,8 +124,8 @@ const addAboutUs = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         return res.status(500).json({ error: error });
     }
 });
-exports.addAboutUs = addAboutUs;
-const getAboutUs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.addHotDeals = addHotDeals;
+const getHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let data = yield AboutUs_1.default.find();
         if (!data) {
@@ -139,17 +139,17 @@ const getAboutUs = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         return res.status(500).json({ error: "internal error" });
     }
 });
-exports.getAboutUs = getAboutUs;
-const updateAboutUS = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getHotDeals = getHotDeals;
+const updateHotdeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    let { starting_price, source_dest, dest, vehicle, travel_name } = req.body;
+    let { startingPrice, sourceAddress, destAddress, vehicle, travelName } = req.body;
     try {
         const aboutUS = yield AboutUs_1.default.findByIdAndUpdate(id, {
-            starting_price,
-            source_dest,
-            dest,
+            startingPrice,
+            sourceAddress,
+            destAddress,
             vehicle,
-            travel_name,
+            travelName,
         }, { new: true });
         if (!aboutUS) {
             return res.status(400).json({
@@ -164,8 +164,8 @@ const updateAboutUS = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         return res.status(500).json({ error: "internal error" });
     }
 });
-exports.updateAboutUS = updateAboutUS;
-const deleteAboutUs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.updateHotdeals = updateHotdeals;
+const deleteHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
         AboutUs_1.default.findByIdAndDelete(id).then((data) => {
@@ -181,21 +181,21 @@ const deleteAboutUs = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         return res.status(500).json({ error: "internal error" });
     }
 });
-exports.deleteAboutUs = deleteAboutUs;
+exports.deleteHotDeals = deleteHotDeals;
 const addBlogs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, desc } = req.body;
     try {
-        let blogs_image = [];
+        let blogsImage = [];
         if (req.files) {
             const files = req.files;
-            if (files["blogs_image"]) {
-                blogs_image = files["blogs_image"].map((file) => file.path);
+            if (files["blogsImage"]) {
+                blogsImage = files["blogsImage"].map((file) => file.path);
             }
         }
         let blogs = new Blogs_1.default({
             title,
             desc,
-            blogs_image,
+            blogsImage,
         });
         blogs = yield blogs.save();
         if (!blogs) {
@@ -229,18 +229,18 @@ const updateBlogs = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const id = req.params.id;
     const { title, desc } = req.body;
     try {
-        let blogs_image = req.body.existingblogs_image || [];
+        let blogsImage = req.body.existingblogsImage || [];
         if (req.files) {
             const files = req.files;
-            if (files["blogs_image"]) {
-                const uploadedFiles = files["blogs_image"].map((file) => file.path);
-                blogs_image.push(...uploadedFiles);
+            if (files["blogsImage"]) {
+                const uploadedFiles = files["blogsImage"].map((file) => file.path);
+                blogsImage.push(...uploadedFiles);
             }
         }
         const blogs = yield Blogs_1.default.findByIdAndUpdate(id, {
             title,
             desc,
-            blogs_image,
+            blogsImage,
         }, { new: true });
         if (!blogs) {
             return res.status(400).json({
@@ -276,16 +276,16 @@ exports.deleteBlogs = deleteBlogs;
 const addDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title } = req.body;
     try {
-        let dest_image = [];
+        let destImage = [];
         if (req.files) {
             const files = req.files;
-            if (files["dest_image"]) {
-                dest_image = files["dest_image"].map((file) => file.path);
+            if (files["destImage"]) {
+                destImage = files["destImage"].map((file) => file.path);
             }
         }
         let dest = new Destination_1.default({
             title,
-            dest_image,
+            destImage,
         });
         dest = yield dest.save();
         if (!dest) {
@@ -319,17 +319,17 @@ const updateDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const id = req.params.id;
     const { title } = req.body;
     try {
-        let dest_image = req.body.existingdest_image || [];
+        let destImage = req.body.existingdestImage || [];
         if (req.files) {
             const files = req.files;
-            if (files["dest_image"]) {
-                const uploadedFiles = files["dest_image"].map((file) => file.path);
-                dest_image.push(...uploadedFiles);
+            if (files["destImage"]) {
+                const uploadedFiles = files["destImage"].map((file) => file.path);
+                destImage.push(...uploadedFiles);
             }
         }
-        const dest = yield Destination_1.default.findByIdAndUpdate(id, {
+        const dest = yield Blogs_1.default.findByIdAndUpdate(id, {
             title,
-            dest_image,
+            destImage,
         }, { new: true });
         if (!dest) {
             return res.status(400).json({

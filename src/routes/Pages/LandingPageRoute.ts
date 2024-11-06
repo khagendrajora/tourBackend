@@ -1,21 +1,21 @@
 import express from "express";
 import {
-  addAboutUs,
   addBlogs,
   addDest,
   addHero,
-  deleteAboutUs,
+  addHotDeals,
   deleteBlogs,
   deleteDest,
   deleteHero,
-  getAboutUs,
+  deleteHotDeals,
   getBlogs,
   getDest,
   getHero,
-  updateAboutUS,
+  getHotDeals,
   updateBlogs,
   updateDest,
   updateHero,
+  updateHotdeals,
 } from "../../controllers/Pages/LandingPage";
 import upload from "../../middleware/fileUpload";
 
@@ -27,22 +27,20 @@ router.post(
   addHero
 );
 router.get("/gethero", getHero);
-
 router.put(
   "/updatehero/:id",
   upload.fields([{ name: "hero_image", maxCount: 10 }]),
   updateHero
 );
-
 router.delete("/deletehero/:id", deleteHero);
 
-router.post("/addaboutus", addAboutUs);
+router.post("/addhotdeals", addHotDeals);
 
-router.get("/getaboutus", getAboutUs);
+router.get("/getaboutus", getHotDeals);
 
-router.put("/updateaboutus/:id", updateAboutUS);
+router.put("/updateaboutus/:id", updateHotdeals);
 
-router.delete("/deleteaboutus/:id", deleteAboutUs);
+router.delete("/deleteaboutus/:id", deleteHotDeals);
 
 router.post(
   "/addblogs",

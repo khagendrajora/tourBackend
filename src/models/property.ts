@@ -12,88 +12,91 @@ interface IAddress {
 
 export interface IProperty extends Document {
   _id?: string;
-  PropName: string;
-  PropCategory: string;
-  PropSubCategory: string;
-  Address: IAddress;
-  Email: string;
-  Website: string;
-  Phone: number;
-  BusinessReg: string;
-  Tax: string;
-  ContactName: string;
-  ContactPhone: number;
-  DateOfEstab: Date;
+  propName: string;
+  propCategory: string;
+  propSubCategory: string;
+  address: IAddress;
+  email: string;
+  website: string;
+  phone: number;
+  businessReg: string;
+  tax: string;
+  contactName: string;
+  contactPhone: number;
+  dateOfEstab: Date;
 }
 
-const propertySchema = new mongoose.Schema({
-  PropName: {
-    type: String,
-    required: true,
-  },
-  PropCategory: {
-    type: String,
-    required: true,
-  },
-  PropSubCategory: {
-    type: String,
-    required: true,
-  },
-  Address: {
-    country: {
+const propertySchema = new mongoose.Schema(
+  {
+    propName: {
       type: String,
+      required: true,
     },
-    state: {
+    propCategory: {
       type: String,
+      required: true,
     },
-    district: {
+    propSubCategory: {
       type: String,
+      required: true,
     },
-    municipality: {
+    address: {
+      country: {
+        type: String,
+      },
+      state: {
+        type: String,
+      },
+      district: {
+        type: String,
+      },
+      municipality: {
+        type: String,
+      },
+      street: {
+        type: String,
+      },
+      subrub: {
+        type: String,
+      },
+      postcode: {
+        type: String,
+      },
+    },
+    email: {
       type: String,
+      required: true,
     },
-    street: {
+    website: {
       type: String,
+      required: true,
     },
-    subrub: {
+    phone: {
+      type: Number,
+      required: true,
+    },
+    businessReg: {
       type: String,
+      required: true,
     },
-    postcode: {
+    tax: {
       type: String,
+      required: true,
+    },
+    contactName: {
+      type: String,
+      required: true,
+    },
+    contactPhone: {
+      type: Number,
+      required: true,
+    },
+    dateOfEstab: {
+      type: Date,
+      required: true,
     },
   },
-  Email: {
-    type: String,
-    required: true,
-  },
-  Website: {
-    type: String,
-    required: true,
-  },
-  Phone: {
-    type: Number,
-    required: true,
-  },
-  BusinessReg: {
-    type: String,
-    required: true,
-  },
-  Tax: {
-    type: String,
-    required: true,
-  },
-  ContactName: {
-    type: String,
-    required: true,
-  },
-  ContactPhone: {
-    type: Number,
-    required: true,
-  },
-  DateOfEstab: {
-    type: Date,
-    required: true,
-  },
-});
+  { timestamps: true }
+);
 
 export default mongoose.model<IProperty>("Property", propertySchema);

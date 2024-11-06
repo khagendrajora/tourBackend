@@ -11,10 +11,10 @@ router.post("/addhero", fileUpload_1.default.fields([{ name: "hero_image", maxCo
 router.get("/gethero", LandingPage_1.getHero);
 router.put("/updatehero/:id", fileUpload_1.default.fields([{ name: "hero_image", maxCount: 10 }]), LandingPage_1.updateHero);
 router.delete("/deletehero/:id", LandingPage_1.deleteHero);
-router.post("/addaboutus", LandingPage_1.addAboutUs);
-router.get("/getaboutus", LandingPage_1.getAboutUs);
-router.put("/updateaboutus/:id", LandingPage_1.updateAboutUS);
-router.delete("/deleteaboutus/:id", LandingPage_1.deleteAboutUs);
+router.post("/addhotdeals", LandingPage_1.addHotDeals);
+router.get("/getaboutus", LandingPage_1.getHotDeals);
+router.put("/updateaboutus/:id", LandingPage_1.updateHotdeals);
+router.delete("/deleteaboutus/:id", LandingPage_1.deleteHotDeals);
 router.post("/addblogs", fileUpload_1.default.fields([{ name: "blogs_image", maxCount: 10 }]), LandingPage_1.addBlogs);
 router.get("/getblogs", LandingPage_1.getBlogs);
 router.put("/updateblogs/:id", fileUpload_1.default.fields([{ name: "blogs_image", maxCount: 10 }]), LandingPage_1.updateBlogs);

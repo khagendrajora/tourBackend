@@ -24,7 +24,7 @@ import {
 const router = express.Router();
 
 router.post("/addbusiness", addBusinessData, validation, addBusiness);
-router.put("/verifybusinessemail/:token", verifyEmail);
+router.put("/verifybusinessemail", verifyEmail);
 router.get("/getbusiness", getBusiness);
 router.get("/businessprofile/:businessId", businessProfile);
 router.get("/businessdata/:id", getBusinessProfileDetails);

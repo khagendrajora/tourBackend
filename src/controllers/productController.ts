@@ -18,11 +18,11 @@ export const addTour = async (req: Request, res: Response) => {
   } = req.body;
 
   try {
-    let tour_images: string[] = [];
+    let tourImages: string[] = [];
     if (req.files) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["tour_images"]) {
-        tour_images = files["tour_images"].map((file) => file.path);
+      if (files["tourImages"]) {
+        tourImages = files["tourImages"].map((file) => file.path);
       }
     }
     let tour = new Tour({
@@ -36,7 +36,7 @@ export const addTour = async (req: Request, res: Response) => {
       name,
       phone,
       operationDates,
-      tour_images,
+      tourImages,
     });
     tour = await tour.save();
     if (!tour) {
@@ -92,12 +92,12 @@ export const updateTour = async (req: Request, res: Response) => {
     operationDates,
   } = req.body;
   try {
-    const tour_images: string[] = req.body.existingTour_images || [];
+    const tourImages: string[] = req.body.existingTourImages || [];
     if (req.files) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["tour_images"]) {
-        const uploadedFiles = files["tour_images"].map((file) => file.path);
-        tour_images.push(...uploadedFiles);
+      if (files["tourImages"]) {
+        const uploadedFiles = files["tourImages"].map((file) => file.path);
+        tourImages.push(...uploadedFiles);
       }
     }
     const data = await Tour.findByIdAndUpdate(
@@ -113,7 +113,7 @@ export const updateTour = async (req: Request, res: Response) => {
         name,
         phone,
         operationDates,
-        tour_images,
+        tourImages,
       },
       { new: true }
     );
@@ -143,11 +143,11 @@ export const addTrek = async (req: Request, res: Response) => {
     operationDates,
   } = req.body;
   try {
-    let trek_images: string[] = [];
+    let trekImages: string[] = [];
     if (req.files) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["trek_images"]) {
-        trek_images = files["trek_images"].map((file) => file.path);
+      if (files["trekImages"]) {
+        trekImages = files["trekImages"].map((file) => file.path);
       }
     }
 
@@ -162,7 +162,7 @@ export const addTrek = async (req: Request, res: Response) => {
       capacity,
       name,
       operationDates,
-      trek_images,
+      trekImages,
     });
     trek = await trek.save();
     if (!trek) {
@@ -218,12 +218,12 @@ export const updateTrek = async (req: Request, res: Response) => {
     operationDates,
   } = req.body;
   try {
-    const trek_images: string[] = req.body.existingTrek_images || [];
+    const trekImages: string[] = req.body.existingTrekImages || [];
     if (req.files) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["trek_images"]) {
-        const uploadedFiles = files["trek_images"].map((file) => file.path);
-        trek_images.push(...uploadedFiles);
+      if (files["trekImages"]) {
+        const uploadedFiles = files["trekImages"].map((file) => file.path);
+        trekImages.push(...uploadedFiles);
       }
     }
     const data = await Trekking.findByIdAndUpdate(
@@ -239,7 +239,7 @@ export const updateTrek = async (req: Request, res: Response) => {
         capacity,
         name,
         operationDates,
-        trek_images,
+        trekImages,
       },
       { new: true }
     );
@@ -257,40 +257,40 @@ export const updateTrek = async (req: Request, res: Response) => {
 
 export const addVehicle = async (req: Request, res: Response) => {
   const {
-    veh_Category,
-    veh_subCategory,
+    vehCategory,
+    vehSubCategory,
     services,
     amenities,
-    veh_condition,
+    vehCondition,
     madeYear,
-    veh_number,
+    vehNumber,
     quantity,
     capacity,
     name,
     operationDates,
   } = req.body;
   try {
-    let veh_images: string[] = [];
+    let vehImages: string[] = [];
     if (req.files) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["veh_images"]) {
-        veh_images = files["veh_images"].map((file) => file.path);
+      if (files["vehImages"]) {
+        vehImages = files["vehImages"].map((file) => file.path);
       }
     }
 
     let veh = new Vehicle({
-      veh_Category,
-      veh_subCategory,
+      vehCategory,
+      vehSubCategory,
       services,
       amenities,
-      veh_condition,
+      vehCondition,
       madeYear,
-      veh_number,
+      vehNumber,
       quantity,
       capacity,
       name,
       operationDates,
-      veh_images,
+      vehImages,
     });
     veh = await veh.save();
     if (!veh) {
@@ -334,42 +334,42 @@ export const vehDetails = async (req: Request, res: Response) => {
 export const updateVeh = async (req: Request, res: Response) => {
   const id = req.params.id;
   const {
-    veh_Category,
-    veh_subCategory,
+    vehCategory,
+    vehSubCategory,
     services,
     amenities,
-    veh_condition,
+    vehCondition,
     madeYear,
-    veh_number,
+    vehNumber,
     quantity,
     capacity,
     name,
     operationDates,
   } = req.body;
   try {
-    let veh_images: string[] = req.body.existingVeh_images || [];
+    let vehImages: string[] = req.body.existingVehImages || [];
     if (req.files) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["veh_images"]) {
-        const uploadedFiles = files["veh_images"].map((file) => file.path);
-        veh_images.push(...uploadedFiles);
+      if (files["vehImages"]) {
+        const uploadedFiles = files["vehImages"].map((file) => file.path);
+        vehImages.push(...uploadedFiles);
       }
     }
     const data = await Vehicle.findByIdAndUpdate(
       id,
       {
-        veh_Category,
-        veh_subCategory,
+        vehCategory,
+        vehSubCategory,
         services,
         amenities,
-        veh_condition,
+        vehCondition,
         madeYear,
-        veh_number,
+        vehNumber,
         quantity,
         capacity,
         name,
         operationDates,
-        veh_images,
+        vehImages,
       },
       { new: true }
     );

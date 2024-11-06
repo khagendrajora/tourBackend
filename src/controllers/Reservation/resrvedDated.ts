@@ -3,10 +3,10 @@ import { Request, Response } from "express";
 import RevDate from "../../models/Reservations/ReservedDated";
 
 export const reservDates = async (req: Request, res: Response) => {
-  const { veh_id, bookingDate } = req.body;
+  const { vehId, bookingDate } = req.body;
   try {
     let revDates = new RevDate({
-      veh_id,
+      vehId,
       bookingDate,
     });
     revDates = await revDates.save();

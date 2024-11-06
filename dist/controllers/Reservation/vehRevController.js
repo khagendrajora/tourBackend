@@ -18,36 +18,36 @@ const vehicle_1 = __importDefault(require("../../models/Product/vehicle"));
 const ReservedDated_1 = __importDefault(require("../../models/Reservations/ReservedDated"));
 const veh_Rev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { passenger_name, age, email, phone, sourceAdd, destAdd, bookingDate, address, } = req.body;
+    const { passengerName, age, email, phone, sourceAddress, destAddress, bookingDate, address, } = req.body;
     try {
-        const veh_data = yield vehicle_1.default.findOne({ _id: id });
-        if (!veh_data) {
+        const vehData = yield vehicle_1.default.findOne({ _id: id });
+        if (!vehData) {
             return res.status(401).json({ error: "not found" });
         }
-        let veh_rev = new vehReserv_1.default({
-            veh_id: veh_data._id,
-            veh_type: veh_data.veh_Category,
-            services: veh_data.services,
-            amenities: veh_data.amenities,
-            veh_number: veh_data.veh_number,
-            capacity: veh_data.capacity,
-            veh_name: veh_data.name,
-            passenger_name,
+        let vehRev = new vehReserv_1.default({
+            vehId: vehData._id,
+            vehType: vehData.vehCategory,
+            services: vehData.services,
+            amenities: vehData.amenities,
+            vehNumber: vehData.vehNumber,
+            capacity: vehData.capacity,
+            veh_name: vehData.name,
+            passengerName,
             age,
-            sourceAdd,
-            destAdd,
+            sourceAddress,
+            destAddress,
             email,
             phone,
             bookingDate,
             address,
         });
-        veh_rev = yield veh_rev.save();
-        if (!veh_rev) {
+        vehRev = yield vehRev.save();
+        if (!vehRev) {
             return res.status(400).json({ error: "Booking failed" });
         }
         else {
             let resrvDate = new ReservedDated_1.default({
-                veh_id: veh_data._id,
+                vehId: vehData._id,
                 bookingDate,
             });
             resrvDate = yield resrvDate.save();

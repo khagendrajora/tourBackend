@@ -1,31 +1,32 @@
 import mongoose from "mongoose";
 
-export interface IAdminUser extends Document {
+export interface IUser extends Document {
   _id?: string;
-  adminName: string;
-  adminEmail: string;
-  adminPwd: string;
+  userName: string;
+  userEmail: string;
+  pwd: string;
+  userRole: string;
   isVerified: boolean;
-  adminRole: boolean;
 }
 
-const adminUserSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
-    adminName: {
+    userName: {
       type: String,
       required: true,
     },
-    adminEmail: {
+    userEmail: {
       type: String,
       required: true,
     },
-    adminPwd: {
+    pwd: {
       type: String,
       required: true,
     },
-    adminRole: {
+
+    userRole: {
       type: Boolean,
-      default: true,
+      default: "0",
     },
     isVerified: {
       type: Boolean,
@@ -35,4 +36,4 @@ const adminUserSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model<IAdminUser>("AdminUser", adminUserSchema);
+export default mongoose.model<IUser>("User", userSchema);

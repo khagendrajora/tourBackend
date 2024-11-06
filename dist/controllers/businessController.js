@@ -117,30 +117,32 @@ const verifyEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.verifyEmail = verifyEmail;
 const businessLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { businessId, primaryEmail, primaryPhone, businessPwd } = req.body;
+    const { primaryEmail, businessPwd } = req.body;
     try {
-        const businessid = yield business_1.default.findOne({ _id: businessId });
-        if (!businessid) {
+        const businessEmail = yield business_1.default.findOne({
+            primaryEmail: primaryEmail,
+        });
+        if (!businessEmail) {
             return res.status(404).json({
-                error: "Business Id not found",
-                businessid: businessid,
+                error: "Email not found",
+                // businessid: businessid,
             });
         }
-        if (businessid.primaryEmail !== primaryEmail) {
-            return res.status(400).json({
-                error: "Email not matched",
-                primaryEmail: primaryEmail,
-                businessEmail: businessid.primaryEmail,
-            });
-        }
-        const isPassword = yield bcryptjs_1.default.compare(businessPwd, businessid.businessPwd);
+        // if (businessid.primaryEmail !== primaryEmail) {
+        //   return res.status(400).json({
+        //     error: "Email not matched",
+        //     primaryEmail: primaryEmail,
+        //     businessEmail: businessid.primaryEmail,
+        //   });
+        // }
+        const isPassword = yield bcryptjs_1.default.compare(businessPwd, businessEmail.businessPwd);
         if (!isPassword) {
-            return res.status(400).json({ error: "password  not matched" });
+            return res.status(400).json({ error: "Incorrect Password" });
         }
-        if (businessid.primaryPhone !== primaryPhone) {
-            return res.status(400).json({ error: "Phone number  not matched" });
-        }
-        const data = { id: businessid._id };
+        // if (businessid.primaryPhone !== primaryPhone) {
+        //   return res.status(400).json({ error: "Phone number  not matched" });
+        // }
+        const data = { id: businessEmail._id };
         const authToken = jsonwebtoken_1.default.sign(data, process.env.JWTSECRET);
         res.cookie("authToken", authToken, {
             httpOnly: true,
@@ -150,9 +152,8 @@ const businessLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         return res.status(200).json({
             message: "Login succssfully",
             authToken: authToken,
-            businesId: businessid._id,
+            businesId: businessEmail._id,
             primaryEmail: primaryEmail,
-            primaryPhone: primaryPhone,
         });
     }
     catch (error) {
@@ -163,10 +164,10 @@ exports.businessLogin = businessLogin;
 const businessProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.businessId;
     try {
-        const authToken = req.cookies.authToken;
-        if (!authToken) {
-            return res.status(400).json({ error: "Session Expired" });
-        }
+        // const authToken = req.cookies.authToken;
+        // if (!authToken) {
+        //   return res.status(400).json({ error: "Session Expired" });
+        // }
         const data = yield business_1.default.findById(id);
         if (!data) {
             return res.status(404).json({ error: "Failed to get business Profile" });
@@ -204,8 +205,8 @@ const addbusinessProfile = (req, res) => __awaiter(void 0, void 0, void 0, funct
             .status(400)
             .json({ error: "Token not found, first login with business ID " });
     }
-    const { businessSubcategory, Website, contactName } = req.body;
-    const { Address, country, state, city } = req.body.businessAddress;
+    const { businessSubcategory, website, contactName } = req.body;
+    const { address, country, state, city } = req.body.businessAddress;
     const { authority, registrationNumber, registrationOn, expiresOn } = req.body.businessRegistration;
     const { platform } = req.body.socialMedia;
     try {
@@ -235,13 +236,13 @@ const addbusinessProfile = (req, res) => __awaiter(void 0, void 0, void 0, funct
             businessCategory: data.businessCategory,
             businessSubcategory,
             businessAddress: {
-                Address,
+                address,
                 country,
                 state,
                 city,
             },
             email: data.primaryEmail,
-            Website,
+            website,
             contactName,
             phone: data.primaryPhone,
             businessRegistration: {

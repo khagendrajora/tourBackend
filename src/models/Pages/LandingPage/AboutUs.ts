@@ -2,20 +2,28 @@ import mongoose from "mongoose";
 
 export interface IAboutUs extends Document {
   _id?: string;
-  starting_price: string;
-  source_dest: string;
-  dest: string;
+  startingPrice: string;
+  sourceAddress: string;
+  destAddress: string;
   vehicle: string;
-  travel_name: string;
+  travelName: string;
 }
 
-const aboutUsSchema = new mongoose.Schema({
-  starting_price: {
+const hotDeals = new mongoose.Schema({
+  startingPrice: {
     type: String,
   },
-  source_dest: { type: String },
-  dest: { type: String },
-  vehicle: { type: String },
-  travel_name: { type: String },
+  sourceAddress: {
+    type: String,
+  },
+  destAddress: {
+    type: String,
+  },
+  vehicle: {
+    type: String,
+  },
+  travelName: {
+    type: String,
+  },
 });
-export default mongoose.model<IAboutUs>("AboutUs", aboutUsSchema);
+export default mongoose.model<IAboutUs>("AboutUs", hotDeals);

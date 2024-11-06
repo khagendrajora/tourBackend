@@ -2,29 +2,29 @@ import mongoose from "mongoose";
 
 export interface IVRev extends Document {
   _id?: string;
-  veh_id: string;
-  veh_type: string;
+  vehId: string;
+  vehType: string;
   services: string;
   amenities: string;
-  veh_number: string;
+  vehNumber: string;
   capacity: string;
-  veh_name: string;
-  passenger_name: string;
+  vehName: string;
+  passengerName: string;
   age: string;
   email?: string;
   phone: string;
-  sourceAdd: string;
-  destAdd: string;
+  sourceAddress: string;
+  destAddress: string;
   bookingDate?: Date[];
   address: string;
 }
 
-const Veh_Rev = new mongoose.Schema({
-  veh_id: {
+const VehRev = new mongoose.Schema({
+  vehId: {
     type: String,
     required: true,
   },
-  veh_type: {
+  vehType: {
     type: String,
     required: true,
   },
@@ -39,12 +39,12 @@ const Veh_Rev = new mongoose.Schema({
   email: {
     type: String,
   },
-  sourceAdd: {
+  sourceAddress: {
     type: String,
     required: true,
   },
 
-  destAdd: {
+  destAddress: {
     type: String,
     required: true,
   },
@@ -52,16 +52,16 @@ const Veh_Rev = new mongoose.Schema({
     type: String,
     required: true,
   },
-  veh_number: {
+  vehNumber: {
     type: String,
     required: true,
   },
 
-  veh_name: {
+  vehName: {
     type: String,
     required: true,
   },
-  passenger_name: {
+  passengerName: {
     type: String,
     required: true,
   },
@@ -76,4 +76,4 @@ const Veh_Rev = new mongoose.Schema({
   ],
 });
 
-export default mongoose.model<IVRev>("VehRev", Veh_Rev);
+export default mongoose.model<IVRev>("VehRev", VehRev);

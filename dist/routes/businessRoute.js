@@ -9,7 +9,7 @@ const fileUpload_1 = __importDefault(require("../middleware/fileUpload"));
 const Validation_1 = require("../validation/Validation");
 const router = express_1.default.Router();
 router.post("/addbusiness", Validation_1.addBusinessData, Validation_1.validation, businessController_1.addBusiness);
-router.put("/verifybusinessemail/:token", businessController_1.verifyEmail);
+router.put("/verifybusinessemail", businessController_1.verifyEmail);
 router.get("/getbusiness", businessController_1.getBusiness);
 router.get("/businessprofile/:businessId", businessController_1.businessProfile);
 router.get("/businessdata/:id", businessController_1.getBusinessProfileDetails);

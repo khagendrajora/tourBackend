@@ -5,19 +5,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const propertySchema = new mongoose_1.default.Schema({
-    PropName: {
+    propName: {
         type: String,
         required: true,
     },
-    PropCategory: {
+    propCategory: {
         type: String,
         required: true,
     },
-    PropSubCategory: {
+    propSubCategory: {
         type: String,
         required: true,
     },
-    Address: {
+    address: {
         country: {
             type: String,
         },
@@ -40,37 +40,37 @@ const propertySchema = new mongoose_1.default.Schema({
             type: String,
         },
     },
-    Email: {
+    email: {
         type: String,
         required: true,
     },
-    Website: {
+    website: {
         type: String,
         required: true,
     },
-    Phone: {
+    phone: {
         type: Number,
         required: true,
     },
-    BusinessReg: {
+    businessReg: {
         type: String,
         required: true,
     },
-    Tax: {
+    tax: {
         type: String,
         required: true,
     },
-    ContactName: {
+    contactName: {
         type: String,
         required: true,
     },
-    ContactPhone: {
+    contactPhone: {
         type: Number,
         required: true,
     },
-    DateOfEstab: {
+    dateOfEstab: {
         type: Date,
         required: true,
     },
-});
+}, { timestamps: true });
 exports.default = mongoose_1.default.model("Property", propertySchema);

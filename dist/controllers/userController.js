@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPass = exports.forgetPass = exports.adminSignOut = exports.businessApprove = exports.getAdmin = exports.adminlogin = exports.addAdminUser = void 0;
+exports.resetPass = exports.forgetPass = exports.businessApprove = exports.getAdmin = exports.adminlogin = exports.addAdminUser = void 0;
 const adminUser_1 = __importDefault(require("../models/adminUser"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const business_1 = __importDefault(require("../models/business"));
@@ -21,22 +21,16 @@ const token_1 = __importDefault(require("../models/token"));
 const uuid_1 = require("uuid");
 const setEmail_1 = require("../utils/setEmail");
 const addAdminUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { adminName, Email, Pwd, cPwd } = req.body;
+    const { adminName, adminEmail, adminPwd } = req.body;
     try {
-        // if (Pwd !== cPwd) {
-        //   return res
-        //     .status(400)
-        //     .json({ error: "password and confirm password dosent matched" });
-        // }
         const salt = yield bcryptjs_1.default.genSalt(5);
-        const hashedPwd = yield bcryptjs_1.default.hash(Pwd, salt);
+        const hashedPwd = yield bcryptjs_1.default.hash(adminPwd, salt);
         let user = new adminUser_1.default({
             adminName,
-            Email,
-            Pwd: hashedPwd,
-            cPwd: hashedPwd,
+            adminEmail,
+            adminPwd: hashedPwd,
         });
-        adminUser_1.default.findOne({ Email }).then((data) => __awaiter(void 0, void 0, void 0, function* () {
+        adminUser_1.default.findOne({ adminEmail }).then((data) => __awaiter(void 0, void 0, void 0, function* () {
             if (data) {
                 return res.status(400).json({ error: "Email already Used" });
             }
@@ -57,30 +51,34 @@ const addAdminUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 });
 exports.addAdminUser = addAdminUser;
 const adminlogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { Email, Pwd } = req.body;
+    const { adminEmail, adminPwd } = req.body;
     try {
-        if (!Email || !Pwd) {
+        if (!adminEmail || !adminPwd) {
             return res.status(400).json({ error: "fill all Fields" });
         }
-        const data = yield adminUser_1.default.findOne({ Email: Email });
+        const data = yield adminUser_1.default.findOne({ adminEmail: adminEmail });
         if (!data) {
             return res.status(404).json({ error: "Email not found" });
         }
-        const isPassword = yield bcryptjs_1.default.compare(Pwd, data.Pwd);
+        const isPassword = yield bcryptjs_1.default.compare(adminPwd, data.adminPwd);
         if (!isPassword) {
             return res.status(400).json({ error: "password  not matched" });
         }
         const userID = data.id;
         const authToken = jsonwebtoken_1.default.sign(userID, process.env.JWTSECRET);
         res.cookie("authToken", authToken, {
+            // httpOnly: true,
+            // sameSite: "strict",
+            // maxAge: 3600000,
+            // secure: false,
             expires: new Date(Date.now() + 99999),
         });
         return res.status(200).json({
-            // message: "Login succssfully",
+            message: "Login succssfully",
             authToken: authToken,
-            // adminEmail: Email,
-            // adminName: data.adminName,
-            // role: data.Role,
+            adminEmail: adminEmail,
+            adminName: data.adminName,
+            role: data.adminRole,
         });
     }
     catch (error) {
@@ -139,16 +137,18 @@ const businessApprove = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.businessApprove = businessApprove;
-const adminSignOut = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // const authToken = req.cookies.authToken;
-    // try {
-    //   if (!authToken) {
-    // return res.status(400).json({ error: "token not found " });
-    // } else {
-    res.clearCookie("authToken");
-    return res.status(200).json({ message: "Sign Out Successfully" });
-});
-exports.adminSignOut = adminSignOut;
+// export const adminSignOut = async (req: Request, res: Response) => {
+//   const authToken = req.cookies.authToken;
+//   try {
+//     if (!authToken) {
+//       return res.status(400).json({ error: "token not found " });
+//     } else {
+//       res.clearCookie("authToken", {
+//         // httpOnly: true,
+//         // sameSite: "strict",
+//       });
+//       return res.status(200).json({ message: "Sign Out Successfully" });
+//     }
 //   } catch (error: any) {
 //     return res.status(500).json({ error: error.message });
 //   }
@@ -172,7 +172,7 @@ const forgetPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const api = `${process.env.Backend_URL}`;
         (0, setEmail_1.sendEmail)({
             from: "beta.toursewa@gmail.com",
-            to: data.Email,
+            to: data.adminEmail,
             subject: "Password Reset Link",
             text: `Reset password USing link below\n\n
     http://${api}/resetpwd/${token.token}
@@ -191,7 +191,7 @@ const forgetPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.forgetPass = forgetPass;
 const resetPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.params.token;
-    const newPwd = req.body.Pwd;
+    const newPwd = req.body.adminPwd;
     try {
         const data = yield token_1.default.findOne({ token });
         if (!data) {
@@ -204,7 +204,7 @@ const resetPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         else {
             const salt = yield bcryptjs_1.default.genSalt(5);
             let hashedPwd = yield bcryptjs_1.default.hash(newPwd, salt);
-            userId.Pwd = hashedPwd;
+            userId.adminPwd = hashedPwd;
             userId.save();
             yield token_1.default.deleteOne({ _id: data._id });
             return res.status(201).json({ message: "Successfully Reset" });

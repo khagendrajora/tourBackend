@@ -10,7 +10,7 @@ const router = express_1.default.Router();
 router.post("/addadmin", Validation_1.adminSignup, Validation_1.validation, userController_1.addAdminUser);
 router.get("/getadmin", userController_1.getAdmin);
 router.put("/businessapprove/:id", userController_1.businessApprove);
-router.post("/adminsignout", userController_1.adminSignOut);
+// router.post("/adminsignout", adminSignOut);
 router.post("/adminlogin", userController_1.adminlogin);
 router.post("/forgetpwd", userController_1.forgetPass);
 router.put("/resetpwd/:token", userController_1.resetPass);

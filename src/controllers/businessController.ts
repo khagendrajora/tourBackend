@@ -116,36 +116,38 @@ export const verifyEmail = async (req: Request, res: Response) => {
 };
 
 export const businessLogin = async (req: Request, res: Response) => {
-  const { businessId, primaryEmail, primaryPhone, businessPwd } = req.body;
+  const { primaryEmail, businessPwd } = req.body;
 
   try {
-    const businessid = await Business.findOne({ _id: businessId });
-    if (!businessid) {
+    const businessEmail = await Business.findOne({
+      primaryEmail: primaryEmail,
+    });
+    if (!businessEmail) {
       return res.status(404).json({
-        error: "Business Id not found",
-        businessid: businessid,
+        error: "Email not found",
+        // businessid: businessid,
       });
     }
-    if (businessid.primaryEmail !== primaryEmail) {
-      return res.status(400).json({
-        error: "Email not matched",
-        primaryEmail: primaryEmail,
-        businessEmail: businessid.primaryEmail,
-      });
-    }
+    // if (businessid.primaryEmail !== primaryEmail) {
+    //   return res.status(400).json({
+    //     error: "Email not matched",
+    //     primaryEmail: primaryEmail,
+    //     businessEmail: businessid.primaryEmail,
+    //   });
+    // }
     const isPassword = await bcryptjs.compare(
       businessPwd,
-      businessid.businessPwd
+      businessEmail.businessPwd
     );
 
     if (!isPassword) {
-      return res.status(400).json({ error: "password  not matched" });
+      return res.status(400).json({ error: "Incorrect Password" });
     }
 
-    if (businessid.primaryPhone !== primaryPhone) {
-      return res.status(400).json({ error: "Phone number  not matched" });
-    }
-    const data = { id: businessid._id };
+    // if (businessid.primaryPhone !== primaryPhone) {
+    //   return res.status(400).json({ error: "Phone number  not matched" });
+    // }
+    const data = { id: businessEmail._id };
     const authToken = jwt.sign(data, process.env.JWTSECRET as string);
     res.cookie("authToken", authToken, {
       httpOnly: true,
@@ -155,9 +157,8 @@ export const businessLogin = async (req: Request, res: Response) => {
     return res.status(200).json({
       message: "Login succssfully",
       authToken: authToken,
-      businesId: businessid._id,
+      businesId: businessEmail._id,
       primaryEmail: primaryEmail,
-      primaryPhone: primaryPhone,
     });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
@@ -168,10 +169,10 @@ export const businessProfile = async (req: Request, res: Response) => {
   const id = req.params.businessId;
 
   try {
-    const authToken = req.cookies.authToken;
-    if (!authToken) {
-      return res.status(400).json({ error: "Session Expired" });
-    }
+    // const authToken = req.cookies.authToken;
+    // if (!authToken) {
+    //   return res.status(400).json({ error: "Session Expired" });
+    // }
     const data = await Business.findById(id);
     if (!data) {
       return res.status(404).json({ error: "Failed to get business Profile" });
@@ -204,9 +205,9 @@ export const addbusinessProfile = async (req: Request, res: Response) => {
       .status(400)
       .json({ error: "Token not found, first login with business ID " });
   }
-  const { businessSubcategory, Website, contactName } = req.body;
+  const { businessSubcategory, website, contactName } = req.body;
 
-  const { Address, country, state, city } = req.body.businessAddress;
+  const { address, country, state, city } = req.body.businessAddress;
   const { authority, registrationNumber, registrationOn, expiresOn } =
     req.body.businessRegistration;
 
@@ -249,13 +250,13 @@ export const addbusinessProfile = async (req: Request, res: Response) => {
       businessCategory: data.businessCategory,
       businessSubcategory,
       businessAddress: {
-        Address,
+        address,
         country,
         state,
         city,
       },
       email: data.primaryEmail,
-      Website,
+      website,
       contactName,
       phone: data.primaryPhone,
       businessRegistration: {

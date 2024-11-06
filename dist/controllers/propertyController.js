@@ -15,22 +15,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteProperty = exports.propertyDetails = exports.getProperty = exports.updateProperty = exports.addProperty = void 0;
 const property_1 = __importDefault(require("../models/property"));
 const addProperty = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { PropName, PropCategory, PropSubCategory, Email, Website, Phone, BusinessReg, Tax, ContactName, ContactPhone, DateOfEstab, } = req.body;
-    const { country, state, district, municipality, street, subrub, postcode } = req.body.Address;
+    const { propName, propCategory, propSubCategory, email, website, phone, businessReg, tax, contactName, contactPhone, dateOfEstab, } = req.body;
+    const { country, state, district, municipality, street, subrub, postcode } = req.body.address;
     try {
         const property = new property_1.default({
-            PropName,
-            PropCategory,
-            PropSubCategory,
-            Email,
-            Website,
-            Phone,
-            BusinessReg,
-            Tax,
-            ContactName,
-            ContactPhone,
-            DateOfEstab,
-            Address: {
+            propName,
+            propCategory,
+            propSubCategory,
+            email,
+            website,
+            phone,
+            businessReg,
+            tax,
+            contactName,
+            contactPhone,
+            dateOfEstab,
+            address: {
                 country,
                 state,
                 district,
@@ -55,22 +55,22 @@ const addProperty = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.addProperty = addProperty;
 const updateProperty = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { PropName, PropCategory, PropSubCategory, Email, Website, Phone, BusinessReg, Tax, ContactName, ContactPhone, DateOfEstab, } = req.body;
-    const { country, state, district, municipality, street, subrub, postcode } = req.body.Address;
+    const { propName, propCategory, propSubCategory, email, website, phone, businessReg, tax, contactName, contactPhone, dateOfEstab, } = req.body;
+    const { country, state, district, municipality, street, subrub, postcode } = req.body.address;
     try {
         const data = yield property_1.default.findByIdAndUpdate(id, {
-            PropName,
-            PropCategory,
-            PropSubCategory,
-            Email,
-            Website,
-            Phone,
-            BusinessReg,
-            Tax,
-            ContactName,
-            ContactPhone,
-            DateOfEstab,
-            Address: {
+            propName,
+            propCategory,
+            propSubCategory,
+            email,
+            website,
+            phone,
+            businessReg,
+            tax,
+            contactName,
+            contactPhone,
+            dateOfEstab,
+            address: {
                 country,
                 state,
                 district,

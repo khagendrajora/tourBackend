@@ -2,7 +2,7 @@ import express from "express";
 import {
   addAdminUser,
   adminlogin,
-  adminSignOut,
+  // adminSignOut,
   businessApprove,
   forgetPass,
   getAdmin,
@@ -14,7 +14,7 @@ const router = express.Router();
 router.post("/addadmin", adminSignup, validation, addAdminUser);
 router.get("/getadmin", getAdmin);
 router.put("/businessapprove/:id", businessApprove);
-router.post("/adminsignout", adminSignOut);
+// router.post("/adminsignout", adminSignOut);
 router.post("/adminlogin", adminlogin);
 router.post("/forgetpwd", forgetPass);
 router.put("/resetpwd/:token", resetPass);

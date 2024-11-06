@@ -44,7 +44,7 @@ const tourSchema = new mongoose_1.default.Schema({
             required: true,
         },
     ],
-    tour_images: [
+    tourImages: [
         {
             type: String,
         },

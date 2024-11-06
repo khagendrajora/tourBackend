@@ -19,11 +19,11 @@ const vehicle_1 = __importDefault(require("../models/Product/vehicle"));
 const addTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { prodCategory, prodsubCategory, inclusion, dest, duration, itinerary, capacity, name, phone, operationDates, } = req.body;
     try {
-        let tour_images = [];
+        let tourImages = [];
         if (req.files) {
             const files = req.files;
-            if (files["tour_images"]) {
-                tour_images = files["tour_images"].map((file) => file.path);
+            if (files["tourImages"]) {
+                tourImages = files["tourImages"].map((file) => file.path);
             }
         }
         let tour = new tour_1.default({
@@ -37,7 +37,7 @@ const addTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             name,
             phone,
             operationDates,
-            tour_images,
+            tourImages,
         });
         tour = yield tour.save();
         if (!tour) {
@@ -87,12 +87,12 @@ const updateTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const id = req.params.id;
     const { prodCategory, prodsubCategory, inclusion, dest, duration, itinerary, capacity, name, phone, operationDates, } = req.body;
     try {
-        const tour_images = req.body.existingTour_images || [];
+        const tourImages = req.body.existingTourImages || [];
         if (req.files) {
             const files = req.files;
-            if (files["tour_images"]) {
-                const uploadedFiles = files["tour_images"].map((file) => file.path);
-                tour_images.push(...uploadedFiles);
+            if (files["tourImages"]) {
+                const uploadedFiles = files["tourImages"].map((file) => file.path);
+                tourImages.push(...uploadedFiles);
             }
         }
         const data = yield tour_1.default.findByIdAndUpdate(id, {
@@ -106,7 +106,7 @@ const updateTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             name,
             phone,
             operationDates,
-            tour_images,
+            tourImages,
         }, { new: true });
         if (!data) {
             return res.status(400).json({
@@ -125,11 +125,11 @@ exports.updateTour = updateTour;
 const addTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { prodCategory, prodsubCategory, inclusion, days, dest, numbers, itinerary, capacity, name, operationDates, } = req.body;
     try {
-        let trek_images = [];
+        let trekImages = [];
         if (req.files) {
             const files = req.files;
-            if (files["trek_images"]) {
-                trek_images = files["trek_images"].map((file) => file.path);
+            if (files["trekImages"]) {
+                trekImages = files["trekImages"].map((file) => file.path);
             }
         }
         let trek = new trekking_1.default({
@@ -143,7 +143,7 @@ const addTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             capacity,
             name,
             operationDates,
-            trek_images,
+            trekImages,
         });
         trek = yield trek.save();
         if (!trek) {
@@ -193,12 +193,12 @@ const updateTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const id = req.params.id;
     const { prodCategory, prodsubCategory, inclusion, days, dest, numbers, itinerary, capacity, name, operationDates, } = req.body;
     try {
-        const trek_images = req.body.existingTrek_images || [];
+        const trekImages = req.body.existingTrekImages || [];
         if (req.files) {
             const files = req.files;
-            if (files["trek_images"]) {
-                const uploadedFiles = files["trek_images"].map((file) => file.path);
-                trek_images.push(...uploadedFiles);
+            if (files["trekImages"]) {
+                const uploadedFiles = files["trekImages"].map((file) => file.path);
+                trekImages.push(...uploadedFiles);
             }
         }
         const data = yield trekking_1.default.findByIdAndUpdate(id, {
@@ -212,7 +212,7 @@ const updateTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             capacity,
             name,
             operationDates,
-            trek_images,
+            trekImages,
         }, { new: true });
         if (!data) {
             return res.status(400).json({
@@ -229,28 +229,28 @@ const updateTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.updateTrek = updateTrek;
 const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { veh_Category, veh_subCategory, services, amenities, veh_condition, madeYear, veh_number, quantity, capacity, name, operationDates, } = req.body;
+    const { vehCategory, vehSubCategory, services, amenities, vehCondition, madeYear, vehNumber, quantity, capacity, name, operationDates, } = req.body;
     try {
-        let veh_images = [];
+        let vehImages = [];
         if (req.files) {
             const files = req.files;
-            if (files["veh_images"]) {
-                veh_images = files["veh_images"].map((file) => file.path);
+            if (files["vehImages"]) {
+                vehImages = files["vehImages"].map((file) => file.path);
             }
         }
         let veh = new vehicle_1.default({
-            veh_Category,
-            veh_subCategory,
+            vehCategory,
+            vehSubCategory,
             services,
             amenities,
-            veh_condition,
+            vehCondition,
             madeYear,
-            veh_number,
+            vehNumber,
             quantity,
             capacity,
             name,
             operationDates,
-            veh_images,
+            vehImages,
         });
         veh = yield veh.save();
         if (!veh) {
@@ -298,29 +298,29 @@ const vehDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.vehDetails = vehDetails;
 const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { veh_Category, veh_subCategory, services, amenities, veh_condition, madeYear, veh_number, quantity, capacity, name, operationDates, } = req.body;
+    const { vehCategory, vehSubCategory, services, amenities, vehCondition, madeYear, vehNumber, quantity, capacity, name, operationDates, } = req.body;
     try {
-        let veh_images = req.body.existingVeh_images || [];
+        let vehImages = req.body.existingVehImages || [];
         if (req.files) {
             const files = req.files;
-            if (files["veh_images"]) {
-                const uploadedFiles = files["veh_images"].map((file) => file.path);
-                veh_images.push(...uploadedFiles);
+            if (files["vehImages"]) {
+                const uploadedFiles = files["vehImages"].map((file) => file.path);
+                vehImages.push(...uploadedFiles);
             }
         }
         const data = yield vehicle_1.default.findByIdAndUpdate(id, {
-            veh_Category,
-            veh_subCategory,
+            vehCategory,
+            vehSubCategory,
             services,
             amenities,
-            veh_condition,
+            vehCondition,
             madeYear,
-            veh_number,
+            vehNumber,
             quantity,
             capacity,
             name,
             operationDates,
-            veh_images,
+            vehImages,
         }, { new: true });
         if (!data) {
             return res.status(400).json({

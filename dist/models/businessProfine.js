@@ -42,7 +42,7 @@ const businessProfileSchema = new mongoose_1.default.Schema({
         type: String,
     },
     businessAddress: {
-        Address: {
+        address: {
             type: String,
         },
         country: {
@@ -60,7 +60,7 @@ const businessProfileSchema = new mongoose_1.default.Schema({
         required: true,
         unique: true,
     },
-    Website: {
+    website: {
         type: String,
         required: true,
     },
@@ -108,5 +108,5 @@ const businessProfileSchema = new mongoose_1.default.Schema({
     profileIcon: {
         type: String,
     },
-});
+}, { timestamps: true });
 exports.default = mongoose_1.default.model("BusinessProfile", businessProfileSchema);

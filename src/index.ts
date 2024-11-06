@@ -25,10 +25,9 @@ app.use("/api", businessRoute);
 app.use("/api", productRoute);
 app.use("/api", propertyRoute);
 app.use("/api", reservationRoute);
+app.use("/api", userRoute);
 
-console.log("test");
-
-const port = process.env.PORT || 3000;
+const port = 3000;
 
 app.listen(port, () => {
   console.log(`Server Started on ${port}`);

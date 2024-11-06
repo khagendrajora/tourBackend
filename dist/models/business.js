@@ -44,5 +44,5 @@ const businessSchema = new mongoose_1.default.Schema({
         type: Boolean,
         default: false,
     },
-});
+}, { timestamps: true });
 exports.default = mongoose_1.default.model("Business", businessSchema);

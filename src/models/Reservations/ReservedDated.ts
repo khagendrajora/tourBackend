@@ -2,20 +2,23 @@ import mongoose from "mongoose";
 
 export interface IRDates extends Document {
   _id?: string;
-  veh_id: string;
+  vehId: string;
   bookingDate: Date[];
 }
 
-const rev_dates = new mongoose.Schema({
-  veh_id: {
-    type: String,
-    required: true,
-  },
-
-  bookingDate: [
-    {
+const revDates = new mongoose.Schema(
+  {
+    vehId: {
       type: String,
+      required: true,
     },
-  ],
-});
-export default mongoose.model<IRDates>("RevDate", rev_dates);
+
+    bookingDate: [
+      {
+        type: String,
+      },
+    ],
+  },
+  { timestamps: true }
+);
+export default mongoose.model<IRDates>("RevDate", revDates);

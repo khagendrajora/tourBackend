@@ -15,10 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getReservDates = exports.reservDates = void 0;
 const ReservedDated_1 = __importDefault(require("../../models/Reservations/ReservedDated"));
 const reservDates = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { veh_id, bookingDate } = req.body;
+    const { vehId, bookingDate } = req.body;
     try {
         let revDates = new ReservedDated_1.default({
-            veh_id,
+            vehId,
             bookingDate,
         });
         revDates = yield revDates.save();

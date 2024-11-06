@@ -6,15 +6,15 @@ import Destination from "../../models/Pages/LandingPage/Destination";
 
 export const addHero = async (req: Request, res: Response) => {
   try {
-    let hero_image: string[] = [];
+    let heroImage: string[] = [];
     if (req.files) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["hero_image"]) {
-        hero_image = files["hero_image"].map((file) => file.path);
+      if (files["heroImage"]) {
+        heroImage = files["heroImage"].map((file) => file.path);
       }
     }
     let hero = new Hero({
-      hero_image,
+      heroImage,
     });
     hero = await hero.save();
     if (!hero) {
@@ -44,18 +44,18 @@ export const updateHero = async (req: Request, res: Response) => {
   const id = req.params.id;
 
   try {
-    let hero_image: string[] = req.body.existinghero_image || [];
+    let heroImage: string[] = req.body.existingheroImage || [];
     if (req.files) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["hero_image"]) {
-        const uploadedFiles = files["hero_image"].map((file) => file.path);
-        hero_image.push(...uploadedFiles);
+      if (files["heroImage"]) {
+        const uploadedFiles = files["heroImage"].map((file) => file.path);
+        heroImage.push(...uploadedFiles);
       }
     }
     const hero = await Hero.findByIdAndUpdate(
       id,
       {
-        hero_image,
+        heroImage,
       },
       { new: true }
     );
@@ -87,15 +87,16 @@ export const deleteHero = async (req: Request, res: Response) => {
   }
 };
 
-export const addAboutUs = async (req: Request, res: Response) => {
-  const { starting_price, source_dest, dest, vehicle, travel_name } = req.body;
+export const addHotDeals = async (req: Request, res: Response) => {
+  const { startingPrice, sourceAddress, destAddress, vehicle, travelName } =
+    req.body;
   try {
     let data = new AboutUs({
-      starting_price,
-      source_dest,
-      dest,
+      startingPrice,
+      sourceAddress,
+      destAddress,
       vehicle,
-      travel_name,
+      travelName,
     });
     data = await data.save();
     if (!data) {
@@ -108,7 +109,7 @@ export const addAboutUs = async (req: Request, res: Response) => {
   }
 };
 
-export const getAboutUs = async (req: Request, res: Response) => {
+export const getHotDeals = async (req: Request, res: Response) => {
   try {
     let data = await AboutUs.find();
     if (!data) {
@@ -121,18 +122,19 @@ export const getAboutUs = async (req: Request, res: Response) => {
   }
 };
 
-export const updateAboutUS = async (req: Request, res: Response) => {
+export const updateHotdeals = async (req: Request, res: Response) => {
   const id = req.params.id;
-  let { starting_price, source_dest, dest, vehicle, travel_name } = req.body;
+  let { startingPrice, sourceAddress, destAddress, vehicle, travelName } =
+    req.body;
   try {
     const aboutUS = await AboutUs.findByIdAndUpdate(
       id,
       {
-        starting_price,
-        source_dest,
-        dest,
+        startingPrice,
+        sourceAddress,
+        destAddress,
         vehicle,
-        travel_name,
+        travelName,
       },
       { new: true }
     );
@@ -148,7 +150,7 @@ export const updateAboutUS = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteAboutUs = async (req: Request, res: Response) => {
+export const deleteHotDeals = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
     AboutUs.findByIdAndDelete(id).then((data) => {
@@ -166,17 +168,17 @@ export const deleteAboutUs = async (req: Request, res: Response) => {
 export const addBlogs = async (req: Request, res: Response) => {
   const { title, desc } = req.body;
   try {
-    let blogs_image: string[] = [];
+    let blogsImage: string[] = [];
     if (req.files) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["blogs_image"]) {
-        blogs_image = files["blogs_image"].map((file) => file.path);
+      if (files["blogsImage"]) {
+        blogsImage = files["blogsImage"].map((file) => file.path);
       }
     }
     let blogs = new Blogs({
       title,
       desc,
-      blogs_image,
+      blogsImage,
     });
     blogs = await blogs.save();
     if (!blogs) {
@@ -207,12 +209,12 @@ export const updateBlogs = async (req: Request, res: Response) => {
   const { title, desc } = req.body;
 
   try {
-    let blogs_image: string[] = req.body.existingblogs_image || [];
+    let blogsImage: string[] = req.body.existingblogsImage || [];
     if (req.files) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["blogs_image"]) {
-        const uploadedFiles = files["blogs_image"].map((file) => file.path);
-        blogs_image.push(...uploadedFiles);
+      if (files["blogsImage"]) {
+        const uploadedFiles = files["blogsImage"].map((file) => file.path);
+        blogsImage.push(...uploadedFiles);
       }
     }
     const blogs = await Blogs.findByIdAndUpdate(
@@ -220,7 +222,7 @@ export const updateBlogs = async (req: Request, res: Response) => {
       {
         title,
         desc,
-        blogs_image,
+        blogsImage,
       },
       { new: true }
     );
@@ -255,16 +257,16 @@ export const deleteBlogs = async (req: Request, res: Response) => {
 export const addDest = async (req: Request, res: Response) => {
   const { title } = req.body;
   try {
-    let dest_image: string[] = [];
+    let destImage: string[] = [];
     if (req.files) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["dest_image"]) {
-        dest_image = files["dest_image"].map((file) => file.path);
+      if (files["destImage"]) {
+        destImage = files["destImage"].map((file) => file.path);
       }
     }
     let dest = new Destination({
       title,
-      dest_image,
+      destImage,
     });
     dest = await dest.save();
     if (!dest) {
@@ -295,19 +297,19 @@ export const updateDest = async (req: Request, res: Response) => {
   const { title } = req.body;
 
   try {
-    let dest_image: string[] = req.body.existingdest_image || [];
+    let destImage: string[] = req.body.existingdestImage || [];
     if (req.files) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["dest_image"]) {
-        const uploadedFiles = files["dest_image"].map((file) => file.path);
-        dest_image.push(...uploadedFiles);
+      if (files["destImage"]) {
+        const uploadedFiles = files["destImage"].map((file) => file.path);
+        destImage.push(...uploadedFiles);
       }
     }
-    const dest = await Destination.findByIdAndUpdate(
+    const dest = await Blogs.findByIdAndUpdate(
       id,
       {
         title,
-        dest_image,
+        destImage,
       },
       { new: true }
     );

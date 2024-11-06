@@ -9,21 +9,21 @@ const adminUserSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    Email: {
+    adminEmail: {
         type: String,
         required: true,
     },
-    Pwd: {
+    adminPwd: {
         type: String,
         required: true,
     },
-    cPwd: {
-        type: String,
-        required: true,
-    },
-    Role: {
+    adminRole: {
         type: Boolean,
         default: true,
     },
-});
+    isVerified: {
+        type: Boolean,
+        default: false,
+    },
+}, { timestamps: true });
 exports.default = mongoose_1.default.model("AdminUser", adminUserSchema);

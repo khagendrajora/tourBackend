@@ -12,7 +12,7 @@ export interface ITour extends Document {
   name: string;
   phone: number;
   operationDates: Date[];
-  tour_images?: string[];
+  tourImages?: string[];
 }
 
 const tourSchema = new mongoose.Schema({
@@ -58,7 +58,7 @@ const tourSchema = new mongoose.Schema({
     },
   ],
 
-  tour_images: [
+  tourImages: [
     {
       type: String,
     },

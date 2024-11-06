@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 
 export interface IHero extends Document {
   _id?: string;
-  hero_image?: string[];
+  heroImage?: string[];
 }
 
 const heroSchema = new mongoose.Schema({
-  hero_image: [
+  heroImage: [
     {
       type: String,
     },

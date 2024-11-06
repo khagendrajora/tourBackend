@@ -6,45 +6,45 @@ import RevDate from "../../models/Reservations/ReservedDated";
 export const veh_Rev = async (req: Request, res: Response) => {
   const id = req.params.id;
   const {
-    passenger_name,
+    passengerName,
     age,
     email,
     phone,
-    sourceAdd,
-    destAdd,
+    sourceAddress,
+    destAddress,
     bookingDate,
     address,
   } = req.body;
 
   try {
-    const veh_data = await Vehicle.findOne({ _id: id });
-    if (!veh_data) {
+    const vehData = await Vehicle.findOne({ _id: id });
+    if (!vehData) {
       return res.status(401).json({ error: "not found" });
     }
 
-    let veh_rev = new VehRev({
-      veh_id: veh_data._id,
-      veh_type: veh_data.veh_Category,
-      services: veh_data.services,
-      amenities: veh_data.amenities,
-      veh_number: veh_data.veh_number,
-      capacity: veh_data.capacity,
-      veh_name: veh_data.name,
-      passenger_name,
+    let vehRev = new VehRev({
+      vehId: vehData._id,
+      vehType: vehData.vehCategory,
+      services: vehData.services,
+      amenities: vehData.amenities,
+      vehNumber: vehData.vehNumber,
+      capacity: vehData.capacity,
+      veh_name: vehData.name,
+      passengerName,
       age,
-      sourceAdd,
-      destAdd,
+      sourceAddress,
+      destAddress,
       email,
       phone,
       bookingDate,
       address,
     });
-    veh_rev = await veh_rev.save();
-    if (!veh_rev) {
+    vehRev = await vehRev.save();
+    if (!vehRev) {
       return res.status(400).json({ error: "Booking failed" });
     } else {
       let resrvDate = new RevDate({
-        veh_id: veh_data._id,
+        vehId: vehData._id,
         bookingDate,
       });
       resrvDate = await resrvDate.save();

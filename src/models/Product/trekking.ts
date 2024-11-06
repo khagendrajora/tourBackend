@@ -12,7 +12,7 @@ export interface ITrekking extends Document {
   capacity: string;
   name: string;
   operationDates?: Date[];
-  trek_images?: string[];
+  trekImages?: string[];
 }
 
 const trekSchema = new mongoose.Schema({
@@ -62,7 +62,7 @@ const trekSchema = new mongoose.Schema({
     },
   ],
 
-  trek_images: [
+  trekImages: [
     {
       type: String,
     },

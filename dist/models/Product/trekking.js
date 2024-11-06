@@ -47,7 +47,7 @@ const trekSchema = new mongoose_1.default.Schema({
             // required: true,
         },
     ],
-    trek_images: [
+    trekImages: [
         {
             type: String,
         },

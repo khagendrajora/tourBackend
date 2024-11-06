@@ -3,35 +3,35 @@ import Property from "../models/property";
 
 export const addProperty = async (req: Request, res: Response) => {
   const {
-    PropName,
-    PropCategory,
-    PropSubCategory,
-    Email,
-    Website,
-    Phone,
-    BusinessReg,
-    Tax,
-    ContactName,
-    ContactPhone,
-    DateOfEstab,
+    propName,
+    propCategory,
+    propSubCategory,
+    email,
+    website,
+    phone,
+    businessReg,
+    tax,
+    contactName,
+    contactPhone,
+    dateOfEstab,
   } = req.body;
 
   const { country, state, district, municipality, street, subrub, postcode } =
-    req.body.Address;
+    req.body.address;
   try {
     const property = new Property({
-      PropName,
-      PropCategory,
-      PropSubCategory,
-      Email,
-      Website,
-      Phone,
-      BusinessReg,
-      Tax,
-      ContactName,
-      ContactPhone,
-      DateOfEstab,
-      Address: {
+      propName,
+      propCategory,
+      propSubCategory,
+      email,
+      website,
+      phone,
+      businessReg,
+      tax,
+      contactName,
+      contactPhone,
+      dateOfEstab,
+      address: {
         country,
         state,
         district,
@@ -55,37 +55,37 @@ export const addProperty = async (req: Request, res: Response) => {
 export const updateProperty = async (req: Request, res: Response) => {
   const id = req.params.id;
   const {
-    PropName,
-    PropCategory,
-    PropSubCategory,
-    Email,
-    Website,
-    Phone,
-    BusinessReg,
-    Tax,
-    ContactName,
-    ContactPhone,
-    DateOfEstab,
+    propName,
+    propCategory,
+    propSubCategory,
+    email,
+    website,
+    phone,
+    businessReg,
+    tax,
+    contactName,
+    contactPhone,
+    dateOfEstab,
   } = req.body;
 
   const { country, state, district, municipality, street, subrub, postcode } =
-    req.body.Address;
+    req.body.address;
   try {
     const data = await Property.findByIdAndUpdate(
       id,
       {
-        PropName,
-        PropCategory,
-        PropSubCategory,
-        Email,
-        Website,
-        Phone,
-        BusinessReg,
-        Tax,
-        ContactName,
-        ContactPhone,
-        DateOfEstab,
-        Address: {
+        propName,
+        propCategory,
+        propSubCategory,
+        email,
+        website,
+        phone,
+        businessReg,
+        tax,
+        contactName,
+        contactPhone,
+        dateOfEstab,
+        address: {
           country,
           state,
           district,

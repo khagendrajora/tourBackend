@@ -14,14 +14,14 @@ export const adminSignup = [
 export const addBusinessData = [
   check("businessName", "Give Your Business Name").trim().notEmpty(),
   check("taxRegistration", "Invalid Tax Registration").trim().notEmpty(),
-  check("businessAddress", "Provide Address").trim().notEmpty(),
+  check("address", "Provide Address").trim().notEmpty(),
   check("primaryEmail", "Email is required")
     .trim()
     .notEmpty()
     .isEmail()
     .withMessage("Invalid Email"),
   check("primaryPhone", "Phone Number is required").trim().notEmpty(),
-  check("businessPwd", "password is required")
+  check("password", "password is required")
     .trim()
     .notEmpty()
     .isLength({ min: 8 })

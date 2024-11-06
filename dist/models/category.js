@@ -16,5 +16,5 @@ const categorySchema = new mongoose_1.default.Schema({
     subCategory: {
         type: String,
     },
-});
+}, { timestamps: true });
 exports.default = mongoose_1.default.model("Category", categorySchema);
