@@ -15,21 +15,21 @@ exports.adminSignup = [
 exports.addBusinessData = [
     (0, express_validator_1.check)("businessName", "Give Your Business Name").trim().notEmpty(),
     (0, express_validator_1.check)("taxRegistration", "Invalid Tax Registration").trim().notEmpty(),
-    (0, express_validator_1.check)("address", "Provide Address").trim().notEmpty(),
+    (0, express_validator_1.check)("businessAddress", "Provide Address").trim().notEmpty(),
     (0, express_validator_1.check)("primaryEmail", "Email is required")
         .trim()
         .notEmpty()
         .isEmail()
         .withMessage("Invalid Email"),
     (0, express_validator_1.check)("primaryPhone", "Phone Number is required").trim().notEmpty(),
-    (0, express_validator_1.check)("password", "password is required")
+    (0, express_validator_1.check)("businessPwd", "password is required")
         .trim()
         .notEmpty()
         .isLength({ min: 8 })
         .withMessage("password length must be 8"),
 ];
 exports.addBusinessProfileData = [
-    (0, express_validator_1.check)("businessAddress[Address]", "Address is required").trim().notEmpty(),
+    (0, express_validator_1.check)("businessAddress[address]", "Address is required").trim().notEmpty(),
     (0, express_validator_1.check)("businessAddress[country]", "Country is required").trim().notEmpty(),
     (0, express_validator_1.check)("businessAddress[city]", "City is required").trim().notEmpty(),
     (0, express_validator_1.check)("businessAddress[state]", "State is required").trim().notEmpty(),
@@ -58,26 +58,26 @@ exports.addSubCategoryData = [
     (0, express_validator_1.check)("subCategoryName", "Sub Category is required").trim().notEmpty(),
 ];
 exports.addPropertyData = [
-    (0, express_validator_1.check)("PropName", "Property name is required").trim().notEmpty(),
-    (0, express_validator_1.check)("PropCategory", "Sub Category is required").trim().notEmpty(),
-    (0, express_validator_1.check)("Email", "Provide Email")
+    (0, express_validator_1.check)("propName", "Property name is required").trim().notEmpty(),
+    (0, express_validator_1.check)("propCategory", "Sub Category is required").trim().notEmpty(),
+    (0, express_validator_1.check)("email", "Provide Email")
         .trim()
         .notEmpty()
         .isEmail()
         .withMessage("Invalid Email"),
-    (0, express_validator_1.check)("Phone", "Phone is required").trim().notEmpty(),
-    (0, express_validator_1.check)("BusinessReg", "BusinessReg  is required").trim().notEmpty(),
-    (0, express_validator_1.check)("Tax", "Tax  is required").trim().notEmpty(),
-    (0, express_validator_1.check)("ContactName", "Contact name  is required").trim().notEmpty(),
-    (0, express_validator_1.check)("ContactPhone", "Contact Phone  is required").trim().notEmpty(),
-    (0, express_validator_1.check)("DateOfEstab", "Date of Estb. is required")
+    (0, express_validator_1.check)("phone", "Phone is required").trim().notEmpty(),
+    (0, express_validator_1.check)("businessReg", "BusinessReg  is required").trim().notEmpty(),
+    (0, express_validator_1.check)("tax", "Tax  is required").trim().notEmpty(),
+    (0, express_validator_1.check)("contactName", "Contact name  is required").trim().notEmpty(),
+    (0, express_validator_1.check)("contactPhone", "Contact Phone  is required").trim().notEmpty(),
+    (0, express_validator_1.check)("dateOfEstab", "Date of Estb. is required")
         .trim()
         .notEmpty()
         .isDate()
         .withMessage("Invalid Date"),
 ];
 exports.reservationData = [
-    (0, express_validator_1.check)("passenger_name", "Provide Passenger Name").trim().notEmpty(),
+    (0, express_validator_1.check)("passengerName", "Provide Passenger Name").trim().notEmpty(),
     (0, express_validator_1.check)("age", "Provide Age")
         .trim()
         .notEmpty()
@@ -89,12 +89,12 @@ exports.reservationData = [
         .isEmail()
         .withMessage("Invalid Email"),
     (0, express_validator_1.check)("phone", "Phone is required").trim().notEmpty(),
-    (0, express_validator_1.check)("sourceAdd", "Provide Source Address")
+    (0, express_validator_1.check)("sourceAddress", "Provide Source Address")
         .trim()
         .notEmpty()
         .isString()
         .withMessage("Address must be string"),
-    (0, express_validator_1.check)("destAdd", "Provide Destination Address")
+    (0, express_validator_1.check)("destAddress", "Provide Destination Address")
         .trim()
         .notEmpty()
         .isString()

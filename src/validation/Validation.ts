@@ -14,14 +14,14 @@ export const adminSignup = [
 export const addBusinessData = [
   check("businessName", "Give Your Business Name").trim().notEmpty(),
   check("taxRegistration", "Invalid Tax Registration").trim().notEmpty(),
-  check("address", "Provide Address").trim().notEmpty(),
+  check("businessAddress", "Provide Address").trim().notEmpty(),
   check("primaryEmail", "Email is required")
     .trim()
     .notEmpty()
     .isEmail()
     .withMessage("Invalid Email"),
   check("primaryPhone", "Phone Number is required").trim().notEmpty(),
-  check("password", "password is required")
+  check("businessPwd", "password is required")
     .trim()
     .notEmpty()
     .isLength({ min: 8 })
@@ -29,7 +29,7 @@ export const addBusinessData = [
 ];
 
 export const addBusinessProfileData = [
-  check("businessAddress[Address]", "Address is required").trim().notEmpty(),
+  check("businessAddress[address]", "Address is required").trim().notEmpty(),
   check("businessAddress[country]", "Country is required").trim().notEmpty(),
   check("businessAddress[city]", "City is required").trim().notEmpty(),
   check("businessAddress[state]", "State is required").trim().notEmpty(),
@@ -64,19 +64,19 @@ export const addSubCategoryData = [
 ];
 
 export const addPropertyData = [
-  check("PropName", "Property name is required").trim().notEmpty(),
-  check("PropCategory", "Sub Category is required").trim().notEmpty(),
-  check("Email", "Provide Email")
+  check("propName", "Property name is required").trim().notEmpty(),
+  check("propCategory", "Sub Category is required").trim().notEmpty(),
+  check("email", "Provide Email")
     .trim()
     .notEmpty()
     .isEmail()
     .withMessage("Invalid Email"),
-  check("Phone", "Phone is required").trim().notEmpty(),
-  check("BusinessReg", "BusinessReg  is required").trim().notEmpty(),
-  check("Tax", "Tax  is required").trim().notEmpty(),
-  check("ContactName", "Contact name  is required").trim().notEmpty(),
-  check("ContactPhone", "Contact Phone  is required").trim().notEmpty(),
-  check("DateOfEstab", "Date of Estb. is required")
+  check("phone", "Phone is required").trim().notEmpty(),
+  check("businessReg", "BusinessReg  is required").trim().notEmpty(),
+  check("tax", "Tax  is required").trim().notEmpty(),
+  check("contactName", "Contact name  is required").trim().notEmpty(),
+  check("contactPhone", "Contact Phone  is required").trim().notEmpty(),
+  check("dateOfEstab", "Date of Estb. is required")
     .trim()
     .notEmpty()
     .isDate()
@@ -84,7 +84,7 @@ export const addPropertyData = [
 ];
 
 export const reservationData = [
-  check("passenger_name", "Provide Passenger Name").trim().notEmpty(),
+  check("passengerName", "Provide Passenger Name").trim().notEmpty(),
   check("age", "Provide Age")
     .trim()
     .notEmpty()
@@ -96,12 +96,12 @@ export const reservationData = [
     .isEmail()
     .withMessage("Invalid Email"),
   check("phone", "Phone is required").trim().notEmpty(),
-  check("sourceAdd", "Provide Source Address")
+  check("sourceAddress", "Provide Source Address")
     .trim()
     .notEmpty()
     .isString()
     .withMessage("Address must be string"),
-  check("destAdd", "Provide Destination Address")
+  check("destAddress", "Provide Destination Address")
     .trim()
     .notEmpty()
     .isString()
