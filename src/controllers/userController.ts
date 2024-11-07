@@ -143,9 +143,9 @@ export const businessApprove = async (req: Request, res: Response) => {
 // };
 
 export const forgetPass = async (req: Request, res: Response) => {
-  let Email = req.body.Email;
+  let adminEmail = req.body.adminEmail;
   try {
-    const data = await AdminUser.findOne({ Email });
+    const data = await AdminUser.findOne({ adminEmail });
     if (!data) {
       return res.status(404).json({ error: "Email not found" });
     }

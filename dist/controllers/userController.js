@@ -155,9 +155,9 @@ exports.businessApprove = businessApprove;
 //   }
 // };
 const forgetPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let Email = req.body.Email;
+    let adminEmail = req.body.adminEmail;
     try {
-        const data = yield adminUser_1.default.findOne({ Email });
+        const data = yield adminUser_1.default.findOne({ adminEmail });
         if (!data) {
             return res.status(404).json({ error: "Email not found" });
         }
