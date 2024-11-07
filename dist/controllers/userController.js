@@ -79,7 +79,7 @@ const adminlogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             userId: data._id,
             adminEmail: adminEmail,
             adminName: data.adminName,
-            role: data.adminRole,
+            adminRole: data.adminRole,
         });
     }
     catch (error) {

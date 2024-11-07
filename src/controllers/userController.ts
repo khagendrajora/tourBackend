@@ -68,7 +68,7 @@ export const adminlogin = async (req: Request, res: Response) => {
       userId: data._id,
       adminEmail: adminEmail,
       adminName: data.adminName,
-      role: data.adminRole,
+      adminRole: data.adminRole,
     });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
