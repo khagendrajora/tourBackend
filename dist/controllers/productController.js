@@ -12,12 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteproduct = exports.updateVeh = exports.vehDetails = exports.getVeh = exports.addVehicle = exports.updateTrek = exports.trekDetails = exports.getTrek = exports.addTrek = exports.updateTour = exports.tourDetails = exports.getTour = exports.addTour = void 0;
+exports.deleteproduct = exports.updateVeh = exports.vehDetails = exports.getVehicleByBusinessId = exports.getVeh = exports.addVehicle = exports.updateTrek = exports.trekDetails = exports.getTrekByBusinessId = exports.getTrek = exports.addTrek = exports.updateTour = exports.tourDetails = exports.getTourByBusinessId = exports.getTour = exports.addTour = void 0;
 const tour_1 = __importDefault(require("../models/Product/tour"));
 const trekking_1 = __importDefault(require("../models/Product/trekking"));
 const vehicle_1 = __importDefault(require("../models/Product/vehicle"));
 const addTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { prodCategory, prodsubCategory, inclusion, dest, duration, itinerary, capacity, name, phone, operationDates, } = req.body;
+    const { businessId, prodCategory, prodsubCategory, inclusion, dest, duration, itinerary, capacity, name, phone, operationDates, } = req.body;
     try {
         let tourImages = [];
         if (req.files) {
@@ -27,6 +27,7 @@ const addTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             }
         }
         let tour = new tour_1.default({
+            businessId,
             prodCategory,
             prodsubCategory,
             inclusion,
@@ -67,6 +68,22 @@ const getTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getTour = getTour;
+const getTourByBusinessId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.businessid;
+    try {
+        let tour = yield tour_1.default.findOne({ businessId: id });
+        if (!tour) {
+            return res.status(404).json({ error: "Failed to fetch Tour" });
+        }
+        else {
+            return res.send(tour);
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: "internal error" });
+    }
+});
+exports.getTourByBusinessId = getTourByBusinessId;
 const tourDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
@@ -85,7 +102,7 @@ const tourDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.tourDetails = tourDetails;
 const updateTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { prodCategory, prodsubCategory, inclusion, dest, duration, itinerary, capacity, name, phone, operationDates, } = req.body;
+    const { businessId, prodCategory, prodsubCategory, inclusion, dest, duration, itinerary, capacity, name, phone, operationDates, } = req.body;
     try {
         const tourImages = req.body.existingTourImages || [];
         if (req.files) {
@@ -96,6 +113,7 @@ const updateTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             }
         }
         const data = yield tour_1.default.findByIdAndUpdate(id, {
+            businessId,
             prodCategory,
             prodsubCategory,
             inclusion,
@@ -123,7 +141,7 @@ const updateTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.updateTour = updateTour;
 const addTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { prodCategory, prodsubCategory, inclusion, days, dest, numbers, itinerary, capacity, name, operationDates, } = req.body;
+    const { businessId, prodCategory, prodsubCategory, inclusion, days, dest, numbers, itinerary, capacity, name, operationDates, } = req.body;
     try {
         let trekImages = [];
         if (req.files) {
@@ -133,6 +151,7 @@ const addTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             }
         }
         let trek = new trekking_1.default({
+            businessId,
             prodCategory,
             prodsubCategory,
             inclusion,
@@ -162,7 +181,7 @@ const getTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let trek = yield trekking_1.default.find();
         if (!trek) {
-            return res.status(404).json({ error: "Failed to fetch tour" });
+            return res.status(404).json({ error: "Failed to fetch Trek" });
         }
         else {
             return res.send(trek);
@@ -173,6 +192,22 @@ const getTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getTrek = getTrek;
+const getTrekByBusinessId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.businessid;
+    try {
+        let trek = yield trekking_1.default.findOne({ businessId: id });
+        if (!trek) {
+            return res.status(404).json({ error: "Failed to fetch Trek" });
+        }
+        else {
+            return res.send(trek);
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: "internal error" });
+    }
+});
+exports.getTrekByBusinessId = getTrekByBusinessId;
 const trekDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
@@ -191,7 +226,7 @@ const trekDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.trekDetails = trekDetails;
 const updateTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { prodCategory, prodsubCategory, inclusion, days, dest, numbers, itinerary, capacity, name, operationDates, } = req.body;
+    const { businessId, prodCategory, prodsubCategory, inclusion, days, dest, numbers, itinerary, capacity, name, operationDates, } = req.body;
     try {
         const trekImages = req.body.existingTrekImages || [];
         if (req.files) {
@@ -202,6 +237,7 @@ const updateTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             }
         }
         const data = yield trekking_1.default.findByIdAndUpdate(id, {
+            businessId,
             prodCategory,
             prodsubCategory,
             inclusion,
@@ -229,7 +265,7 @@ const updateTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.updateTrek = updateTrek;
 const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { vehCategory, vehSubCategory, services, amenities, vehCondition, madeYear, vehNumber, quantity, capacity, name, operationDates, } = req.body;
+    const { businessId, vehCategory, vehSubCategory, services, amenities, vehCondition, madeYear, vehNumber, quantity, capacity, name, operationDates, } = req.body;
     try {
         let vehImages = [];
         if (req.files) {
@@ -239,6 +275,7 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             }
         }
         let veh = new vehicle_1.default({
+            businessId,
             vehCategory,
             vehSubCategory,
             services,
@@ -269,7 +306,7 @@ const getVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let veh = yield vehicle_1.default.find();
         if (!veh) {
-            return res.status(404).json({ error: "Failed to fetch tour" });
+            return res.status(404).json({ error: "Failed to fetch Vehicle" });
         }
         else {
             return res.send(veh);
@@ -280,6 +317,22 @@ const getVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getVeh = getVeh;
+const getVehicleByBusinessId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.businessid;
+    try {
+        let veh = yield vehicle_1.default.findOne({ businessId: id });
+        if (!veh) {
+            return res.status(404).json({ error: "Failed to fetch Vehicle" });
+        }
+        else {
+            return res.send(veh);
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: "internal error" });
+    }
+});
+exports.getVehicleByBusinessId = getVehicleByBusinessId;
 const vehDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
@@ -298,7 +351,7 @@ const vehDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.vehDetails = vehDetails;
 const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { vehCategory, vehSubCategory, services, amenities, vehCondition, madeYear, vehNumber, quantity, capacity, name, operationDates, } = req.body;
+    const { businessId, vehCategory, vehSubCategory, services, amenities, vehCondition, madeYear, vehNumber, quantity, capacity, name, operationDates, } = req.body;
     try {
         let vehImages = req.body.existingVehImages || [];
         if (req.files) {
@@ -309,6 +362,7 @@ const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             }
         }
         const data = yield vehicle_1.default.findByIdAndUpdate(id, {
+            businessId,
             vehCategory,
             vehSubCategory,
             services,

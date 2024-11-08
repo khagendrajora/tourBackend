@@ -5,6 +5,7 @@ import Vehicle from "../models/Product/vehicle";
 
 export const addTour = async (req: Request, res: Response) => {
   const {
+    businessId,
     prodCategory,
     prodsubCategory,
     inclusion,
@@ -26,6 +27,7 @@ export const addTour = async (req: Request, res: Response) => {
       }
     }
     let tour = new Tour({
+      businessId,
       prodCategory,
       prodsubCategory,
       inclusion,
@@ -62,6 +64,20 @@ export const getTour = async (req: Request, res: Response) => {
   }
 };
 
+export const getTourByBusinessId = async (req: Request, res: Response) => {
+  const id = req.params.businessid;
+  try {
+    let tour = await Tour.findOne({ businessId: id });
+    if (!tour) {
+      return res.status(404).json({ error: "Failed to fetch Tour" });
+    } else {
+      return res.send(tour);
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};
+
 export const tourDetails = async (req: Request, res: Response) => {
   const id = req.params.id;
 
@@ -80,6 +96,7 @@ export const tourDetails = async (req: Request, res: Response) => {
 export const updateTour = async (req: Request, res: Response) => {
   const id = req.params.id;
   const {
+    businessId,
     prodCategory,
     prodsubCategory,
     inclusion,
@@ -103,6 +120,7 @@ export const updateTour = async (req: Request, res: Response) => {
     const data = await Tour.findByIdAndUpdate(
       id,
       {
+        businessId,
         prodCategory,
         prodsubCategory,
         inclusion,
@@ -131,6 +149,7 @@ export const updateTour = async (req: Request, res: Response) => {
 
 export const addTrek = async (req: Request, res: Response) => {
   const {
+    businessId,
     prodCategory,
     prodsubCategory,
     inclusion,
@@ -152,6 +171,7 @@ export const addTrek = async (req: Request, res: Response) => {
     }
 
     let trek = new Trekking({
+      businessId,
       prodCategory,
       prodsubCategory,
       inclusion,
@@ -179,7 +199,21 @@ export const getTrek = async (req: Request, res: Response) => {
   try {
     let trek = await Trekking.find();
     if (!trek) {
-      return res.status(404).json({ error: "Failed to fetch tour" });
+      return res.status(404).json({ error: "Failed to fetch Trek" });
+    } else {
+      return res.send(trek);
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};
+
+export const getTrekByBusinessId = async (req: Request, res: Response) => {
+  const id = req.params.businessid;
+  try {
+    let trek = await Trekking.findOne({ businessId: id });
+    if (!trek) {
+      return res.status(404).json({ error: "Failed to fetch Trek" });
     } else {
       return res.send(trek);
     }
@@ -206,6 +240,7 @@ export const trekDetails = async (req: Request, res: Response) => {
 export const updateTrek = async (req: Request, res: Response) => {
   const id = req.params.id;
   const {
+    businessId,
     prodCategory,
     prodsubCategory,
     inclusion,
@@ -229,6 +264,7 @@ export const updateTrek = async (req: Request, res: Response) => {
     const data = await Trekking.findByIdAndUpdate(
       id,
       {
+        businessId,
         prodCategory,
         prodsubCategory,
         inclusion,
@@ -257,6 +293,7 @@ export const updateTrek = async (req: Request, res: Response) => {
 
 export const addVehicle = async (req: Request, res: Response) => {
   const {
+    businessId,
     vehCategory,
     vehSubCategory,
     services,
@@ -279,6 +316,7 @@ export const addVehicle = async (req: Request, res: Response) => {
     }
 
     let veh = new Vehicle({
+      businessId,
       vehCategory,
       vehSubCategory,
       services,
@@ -307,7 +345,21 @@ export const getVeh = async (req: Request, res: Response) => {
   try {
     let veh = await Vehicle.find();
     if (!veh) {
-      return res.status(404).json({ error: "Failed to fetch tour" });
+      return res.status(404).json({ error: "Failed to fetch Vehicle" });
+    } else {
+      return res.send(veh);
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};
+
+export const getVehicleByBusinessId = async (req: Request, res: Response) => {
+  const id = req.params.businessid;
+  try {
+    let veh = await Vehicle.findOne({ businessId: id });
+    if (!veh) {
+      return res.status(404).json({ error: "Failed to fetch Vehicle" });
     } else {
       return res.send(veh);
     }
@@ -334,6 +386,7 @@ export const vehDetails = async (req: Request, res: Response) => {
 export const updateVeh = async (req: Request, res: Response) => {
   const id = req.params.id;
   const {
+    businessId,
     vehCategory,
     vehSubCategory,
     services,
@@ -358,6 +411,7 @@ export const updateVeh = async (req: Request, res: Response) => {
     const data = await Vehicle.findByIdAndUpdate(
       id,
       {
+        businessId,
         vehCategory,
         vehSubCategory,
         services,

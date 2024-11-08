@@ -6,6 +6,7 @@ enum ICondition {
 }
 export interface IVeh extends Document {
   _id?: string;
+  businessId: string;
   vehCategory: string;
   vehSubCategory: string;
   services: string;
@@ -21,6 +22,9 @@ export interface IVeh extends Document {
 }
 
 const VehSchema = new mongoose.Schema({
+  businessId: {
+    type: String,
+  },
   vehCategory: {
     type: String,
     required: true,

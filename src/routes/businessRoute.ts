@@ -20,12 +20,14 @@ import {
   addBusinessProfileData,
   validation,
 } from "../validation/Validation";
+import { getTourByBusinessId } from "../controllers/productController";
 
 const router = express.Router();
 
 router.post("/addbusiness", addBusinessData, validation, addBusiness);
 router.put("/verifybusinessemail/:token", verifyEmail);
 router.get("/getbusiness", getBusiness);
+
 router.get("/businessprofile/:businessId", businessProfile);
 router.get("/businessdata/:id", getBusinessProfileDetails);
 

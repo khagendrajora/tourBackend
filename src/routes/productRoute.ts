@@ -5,8 +5,11 @@ import {
   addVehicle,
   deleteproduct,
   getTour,
+  getTourByBusinessId,
   getTrek,
+  getTrekByBusinessId,
   getVeh,
+  getVehicleByBusinessId,
   tourDetails,
   trekDetails,
   updateTour,
@@ -20,46 +23,52 @@ const router = express.Router();
 
 router.post(
   "/addtour",
-  upload.fields([{ name: "tour_images", maxCount: 1000 }]),
+  upload.fields([{ name: "tourImages", maxCount: 1000 }]),
   addTour
 );
 
 router.get("/gettour", getTour);
-router.get("/gettourdetails/:id", tourDetails);
+router.get("/gettourdetails/:businessid", tourDetails);
+
+router.get("/gettour/:id", getTourByBusinessId);
 
 router.post(
   "/addtrek",
-  upload.fields([{ name: "trek_images", maxCount: 1000 }]),
+  upload.fields([{ name: "trekImages", maxCount: 1000 }]),
   addTrek
 );
 
 router.get("/gettrek", getTrek);
+router.get("/gettrek/:businessid", getTrekByBusinessId);
+
 router.get("/gettrekdetails/:id", trekDetails);
 
 router.post(
   "/addveh",
-  upload.fields([{ name: "veh_images", maxCount: 1000 }]),
+  upload.fields([{ name: "vehImages", maxCount: 1000 }]),
   addVehicle
 );
 
 router.get("/getveh", getVeh);
+router.get("/getvehicle/:businessid", getVehicleByBusinessId);
+
 router.get("/getvehdetails/:id", vehDetails);
 
 router.put(
   "/updatetour/:id",
-  upload.fields([{ name: "tour_images", maxCount: 1000 }]),
+  upload.fields([{ name: "tourImages", maxCount: 1000 }]),
   updateTour
 );
 
 router.put(
   "/updatetrek/:id",
-  upload.fields([{ name: "trek_images", maxCount: 1000 }]),
+  upload.fields([{ name: "trekImages", maxCount: 1000 }]),
   updateTrek
 );
 
 router.put(
   "/updateveh/:id",
-  upload.fields([{ name: "veh_images", maxCount: 1000 }]),
+  upload.fields([{ name: "vehImages", maxCount: 1000 }]),
   updateVeh
 );
 

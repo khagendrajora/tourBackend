@@ -75,7 +75,7 @@ const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             text: `Verify your Business Email to Login\n\n
 ${api}/verifybusinessemail/${token.token}`,
             html: `<h1>Click to Verify Email</h1> 
-      <a href='${url}>Click here To verify`,
+      <a href='${url}'>Click here To verify</a>`,
         });
         hashedPassword = "";
         return res

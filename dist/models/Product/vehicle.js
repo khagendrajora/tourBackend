@@ -10,6 +10,9 @@ var ICondition;
     ICondition["Bad"] = "Bad";
 })(ICondition || (ICondition = {}));
 const VehSchema = new mongoose_1.default.Schema({
+    businessId: {
+        type: String,
+    },
     vehCategory: {
         type: String,
         required: true,

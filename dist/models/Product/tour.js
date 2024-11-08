@@ -5,6 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const tourSchema = new mongoose_1.default.Schema({
+    businessId: {
+        type: String,
+    },
     prodCategory: {
         type: String,
         required: true,
