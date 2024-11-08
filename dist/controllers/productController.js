@@ -71,8 +71,8 @@ exports.getTour = getTour;
 const getTourByBusinessId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.businessid;
     try {
-        let tour = yield tour_1.default.findOne({ businessId: id });
-        if (!tour) {
+        let tour = yield tour_1.default.find({ businessId: id });
+        if (tour.length === 0) {
             return res.status(404).json({ error: "Failed to fetch Tour" });
         }
         else {
@@ -195,8 +195,8 @@ exports.getTrek = getTrek;
 const getTrekByBusinessId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.businessid;
     try {
-        let trek = yield trekking_1.default.findOne({ businessId: id });
-        if (!trek) {
+        let trek = yield trekking_1.default.find({ businessId: id });
+        if (trek.length === 0) {
             return res.status(404).json({ error: "Failed to fetch Trek" });
         }
         else {
@@ -320,8 +320,8 @@ exports.getVeh = getVeh;
 const getVehicleByBusinessId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.businessid;
     try {
-        let veh = yield vehicle_1.default.findOne({ businessId: id });
-        if (!veh) {
+        let veh = yield vehicle_1.default.find({ businessId: id });
+        if (veh.length === 0) {
             return res.status(404).json({ error: "Failed to fetch Vehicle" });
         }
         else {

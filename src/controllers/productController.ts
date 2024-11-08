@@ -67,8 +67,8 @@ export const getTour = async (req: Request, res: Response) => {
 export const getTourByBusinessId = async (req: Request, res: Response) => {
   const id = req.params.businessid;
   try {
-    let tour = await Tour.findOne({ businessId: id });
-    if (!tour) {
+    let tour = await Tour.find({ businessId: id });
+    if (tour.length === 0) {
       return res.status(404).json({ error: "Failed to fetch Tour" });
     } else {
       return res.send(tour);
@@ -211,8 +211,8 @@ export const getTrek = async (req: Request, res: Response) => {
 export const getTrekByBusinessId = async (req: Request, res: Response) => {
   const id = req.params.businessid;
   try {
-    let trek = await Trekking.findOne({ businessId: id });
-    if (!trek) {
+    let trek = await Trekking.find({ businessId: id });
+    if (trek.length === 0) {
       return res.status(404).json({ error: "Failed to fetch Trek" });
     } else {
       return res.send(trek);
@@ -357,8 +357,8 @@ export const getVeh = async (req: Request, res: Response) => {
 export const getVehicleByBusinessId = async (req: Request, res: Response) => {
   const id = req.params.businessid;
   try {
-    let veh = await Vehicle.findOne({ businessId: id });
-    if (!veh) {
+    let veh = await Vehicle.find({ businessId: id });
+    if (veh.length === 0) {
       return res.status(404).json({ error: "Failed to fetch Vehicle" });
     } else {
       return res.send(veh);
