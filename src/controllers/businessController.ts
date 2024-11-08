@@ -125,16 +125,9 @@ export const businessLogin = async (req: Request, res: Response) => {
     if (!businessEmail) {
       return res.status(404).json({
         error: "Email not found",
-        // businessid: businessid,
       });
     }
-    // if (businessid.primaryEmail !== primaryEmail) {
-    //   return res.status(400).json({
-    //     error: "Email not matched",
-    //     primaryEmail: primaryEmail,
-    //     businessEmail: businessid.primaryEmail,
-    //   });
-    // }
+
     const isPassword = await bcryptjs.compare(
       businessPwd,
       businessEmail.businessPwd
@@ -144,9 +137,6 @@ export const businessLogin = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Incorrect Password" });
     }
 
-    // if (businessid.primaryPhone !== primaryPhone) {
-    //   return res.status(400).json({ error: "Phone number  not matched" });
-    // }
     const data = { id: businessEmail._id };
     const authToken = jwt.sign(data, process.env.JWTSECRET as string);
     res.cookie("authToken", authToken, {

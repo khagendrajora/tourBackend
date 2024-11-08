@@ -11,6 +11,7 @@ import LandingPageRoute from "./routes/Pages/LandingPageRoute";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import reservationRoute from "./routes/reservationRoute";
+import UserRoute from "./routes/ClientRoutes/UserRoute";
 
 export const app: Express = express();
 app.use(express.json());
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
 app.use("/public/uploads", express.static("public/uploads"));
+app.use("/api", UserRoute);
 app.use("/api", LandingPageRoute);
 app.use("/api", userRoute);
 app.use("/api", categoryRoute);

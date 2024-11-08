@@ -4,7 +4,7 @@ export interface IUser extends Document {
   _id?: string;
   userName: string;
   userEmail: string;
-  pwd: string;
+  userPwd: string;
   userRole: string;
   isVerified: boolean;
 }
@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    pwd: {
+    userPwd: {
       type: String,
       required: true,
     },
@@ -36,4 +36,4 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model<IUser>("User", userSchema);
+export default mongoose.model<IUser>("ClientUser", userSchema);

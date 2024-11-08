@@ -13,7 +13,7 @@ const userSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    pwd: {
+    userPwd: {
         type: String,
         required: true,
     },
@@ -26,4 +26,4 @@ const userSchema = new mongoose_1.default.Schema({
         default: false,
     },
 }, { timestamps: true });
-exports.default = mongoose_1.default.model("User", userSchema);
+exports.default = mongoose_1.default.model("ClientUser", userSchema);

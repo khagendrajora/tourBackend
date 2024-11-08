@@ -125,23 +125,12 @@ const businessLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         if (!businessEmail) {
             return res.status(404).json({
                 error: "Email not found",
-                // businessid: businessid,
             });
         }
-        // if (businessid.primaryEmail !== primaryEmail) {
-        //   return res.status(400).json({
-        //     error: "Email not matched",
-        //     primaryEmail: primaryEmail,
-        //     businessEmail: businessid.primaryEmail,
-        //   });
-        // }
         const isPassword = yield bcryptjs_1.default.compare(businessPwd, businessEmail.businessPwd);
         if (!isPassword) {
             return res.status(400).json({ error: "Incorrect Password" });
         }
-        // if (businessid.primaryPhone !== primaryPhone) {
-        //   return res.status(400).json({ error: "Phone number  not matched" });
-        // }
         const data = { id: businessEmail._id };
         const authToken = jsonwebtoken_1.default.sign(data, process.env.JWTSECRET);
         res.cookie("authToken", authToken, {

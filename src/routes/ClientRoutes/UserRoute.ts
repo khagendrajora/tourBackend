@@ -1,6 +1,20 @@
 import express from "express";
-import { addNewUser } from "../../controllers/Client/userController";
+import {
+  addNewClient,
+  clientLogin,
+  deleteClient,
+  forgetPwd,
+  resetPwd,
+  verifyUserEmail,
+} from "../../controllers/Client/userController";
 
-export const router = express.Router();
+const router = express.Router();
 
-router.post("/addUser", addNewUser);
+router.post("/addclient", addNewClient);
+router.put("/verifyuseremail/:token", verifyUserEmail);
+router.post("/clientlogin", clientLogin);
+router.delete("/deleteclient/:id", deleteClient);
+router.post("/forgotclientpwd", forgetPwd);
+router.put("/resetclientpwd/:token", resetPwd);
+
+export default router;

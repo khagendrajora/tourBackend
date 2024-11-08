@@ -17,11 +17,13 @@ const LandingPageRoute_1 = __importDefault(require("./routes/Pages/LandingPageRo
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const cors_1 = __importDefault(require("cors"));
 const reservationRoute_1 = __importDefault(require("./routes/reservationRoute"));
+const UserRoute_1 = __importDefault(require("./routes/ClientRoutes/UserRoute"));
 exports.app = (0, express_1.default)();
 exports.app.use(express_1.default.json());
 exports.app.use((0, cookie_parser_1.default)());
 exports.app.use((0, cors_1.default)());
 exports.app.use("/public/uploads", express_1.default.static("public/uploads"));
+exports.app.use("/api", UserRoute_1.default);
 exports.app.use("/api", LandingPageRoute_1.default);
 exports.app.use("/api", userRoute_1.default);
 exports.app.use("/api", categoryRoute_1.default);
