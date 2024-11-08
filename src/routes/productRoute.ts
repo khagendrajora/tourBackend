@@ -30,7 +30,7 @@ router.post(
 router.get("/gettour", getTour);
 router.get("/gettourdetails/:businessid", tourDetails);
 
-router.get("/gettour/:id", getTourByBusinessId);
+router.get("/gettour/:businessid", getTourByBusinessId);
 
 router.post(
   "/addtrek",
