@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema(
     },
 
     userRole: {
-      type: Boolean,
+      type: String,
       default: "0",
     },
     isVerified: {
