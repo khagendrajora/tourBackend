@@ -8,10 +8,15 @@ import {
   resetPwd,
   verifyUserEmail,
 } from "../../controllers/Client/userController";
+import upload from "../../middleware/fileUpload";
 
 const router = express.Router();
 
-router.post("/addclient", addNewClient);
+router.post(
+  "/addclient",
+  upload.fields([{ name: "userImage", maxCount: 1 }]),
+  addNewClient
+);
 router.put("/verifyuseremail/:token", verifyUserEmail);
 router.post("/clientlogin", clientLogin);
 router.get("/getclientbyid/:id", getClientById);

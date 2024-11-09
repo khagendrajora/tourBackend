@@ -20,7 +20,6 @@ import {
   addBusinessProfileData,
   validation,
 } from "../validation/Validation";
-import { getTourByBusinessId } from "../controllers/productController";
 
 const router = express.Router();
 
