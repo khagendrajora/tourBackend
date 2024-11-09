@@ -116,6 +116,7 @@ export const clientLogin = async (req: Request, res: Response) => {
       authToken: authToken,
       clientId: clientEmail._id,
       userEmail: clientEmail,
+      userRole: clientEmail.userRole,
     });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });

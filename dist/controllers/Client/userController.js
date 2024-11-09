@@ -126,6 +126,7 @@ const clientLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             authToken: authToken,
             clientId: clientEmail._id,
             userEmail: clientEmail,
+            userRole: clientEmail.userRole,
         });
     }
     catch (error) {
