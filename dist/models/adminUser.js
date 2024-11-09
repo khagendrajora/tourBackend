@@ -19,7 +19,7 @@ const adminUserSchema = new mongoose_1.default.Schema({
     },
     adminRole: {
         type: Boolean,
-        default: true,
+        default: "1",
     },
     isVerified: {
         type: Boolean,

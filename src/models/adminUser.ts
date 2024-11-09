@@ -6,7 +6,7 @@ export interface IAdminUser extends Document {
   adminEmail: string;
   adminPwd: string;
   isVerified: boolean;
-  adminRole: boolean;
+  adminRole: string;
 }
 
 const adminUserSchema = new mongoose.Schema(
@@ -25,7 +25,7 @@ const adminUserSchema = new mongoose.Schema(
     },
     adminRole: {
       type: Boolean,
-      default: true,
+      default: "1",
     },
     isVerified: {
       type: Boolean,
