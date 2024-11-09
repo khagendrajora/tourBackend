@@ -9,6 +9,7 @@ const router = express_1.default.Router();
 router.post("/addclient", userController_1.addNewClient);
 router.put("/verifyuseremail/:token", userController_1.verifyUserEmail);
 router.post("/clientlogin", userController_1.clientLogin);
+router.get("/getclientbyid/:id", userController_1.getClientById);
 router.delete("/deleteclient/:id", userController_1.deleteClient);
 router.post("/forgotclientpwd", userController_1.forgetPwd);
 router.put("/resetclientpwd/:token", userController_1.resetPwd);

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPwd = exports.forgetPwd = exports.deleteClient = exports.clientLogin = exports.verifyUserEmail = exports.addNewClient = void 0;
+exports.resetPwd = exports.forgetPwd = exports.deleteClient = exports.getClientById = exports.clientLogin = exports.verifyUserEmail = exports.addNewClient = void 0;
 const userModel_1 = __importDefault(require("../../models/Client/userModel"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const token_1 = __importDefault(require("../../models/token"));
@@ -134,6 +134,22 @@ const clientLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.clientLogin = clientLogin;
+const getClientById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        const client = yield userModel_1.default.findById(id);
+        if (!client) {
+            return res.status(200).json({ error: "Failed to get the Profile" });
+        }
+        else {
+            return res.send(client);
+        }
+    }
+    catch (error) {
+        return res.status(400).json({ error: error.message });
+    }
+});
+exports.getClientById = getClientById;
 const deleteClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {

@@ -123,6 +123,20 @@ export const clientLogin = async (req: Request, res: Response) => {
   }
 };
 
+export const getClientById = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    const client = await ClientUser.findById(id);
+    if (!client) {
+      return res.status(200).json({ error: "Failed to get the Profile" });
+    } else {
+      return res.send(client);
+    }
+  } catch (error: any) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
 export const deleteClient = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
