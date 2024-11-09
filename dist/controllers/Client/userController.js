@@ -20,8 +20,16 @@ const uuidv4_1 = require("uuidv4");
 const setEmail_1 = require("../../utils/setEmail");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const addNewClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const { userName, userEmail, userPwd } = req.body;
     try {
+        let userImage = undefined;
+        if (req.files) {
+            const files = req.files;
+            if (files["userImage"]) {
+                userImage = (_a = files["userImage"][0]) === null || _a === void 0 ? void 0 : _a.path;
+            }
+        }
         if (userPwd == "") {
             return res.status(400).json({ error: "Password is reqired" });
         }
@@ -35,6 +43,7 @@ const addNewClient = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             userName,
             userEmail,
             userPwd: hashedPassword,
+            userImage,
         });
         clientUser = yield clientUser.save();
         if (!clientUser) {

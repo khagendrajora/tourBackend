@@ -17,6 +17,9 @@ const userSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    userImage: {
+        type: String,
+    },
     userRole: {
         type: String,
         default: "0",

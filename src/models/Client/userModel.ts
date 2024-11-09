@@ -7,6 +7,7 @@ export interface IUser extends Document {
   userPwd: string;
   userRole: string;
   isVerified: boolean;
+  userImage?: string;
 }
 
 const userSchema = new mongoose.Schema(
@@ -23,7 +24,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-
+    userImage: {
+      type: String,
+    },
     userRole: {
       type: String,
       default: "0",
