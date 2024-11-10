@@ -146,6 +146,37 @@ export const getClientById = async (req: Request, res: Response) => {
   }
 };
 
+export const updateProfileById = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const { userName, userEmail } = req.body;
+  try {
+    let userImage: string | undefined = undefined;
+    if (req.files) {
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+
+      if (files["userImage"]) {
+        userImage = files["userImage"][0]?.path;
+      }
+    }
+    const data = await ClientUser.findByIdAndUpdate(
+      id,
+      {
+        userName,
+        userEmail,
+        userImage,
+      },
+      { new: true }
+    );
+    if (!data) {
+      return res.status(400).json({ error: "Failed To Update" });
+    } else {
+      return res.status(200).json({ message: "Sucessfully Updated" });
+    }
+  } catch (error: any) {
+    return res.status(200).json({ error: error.message });
+  }
+};
+
 export const deleteClient = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {

@@ -8,6 +8,7 @@ const userController_1 = require("../../controllers/Client/userController");
 const fileUpload_1 = __importDefault(require("../../middleware/fileUpload"));
 const router = express_1.default.Router();
 router.post("/addclient", fileUpload_1.default.fields([{ name: "userImage", maxCount: 1 }]), userController_1.addNewClient);
+router.put("/updateclient/:id", fileUpload_1.default.fields([{ name: "userImage", maxCount: 1 }]), userController_1.updateProfileById);
 router.put("/verifyuseremail/:token", userController_1.verifyUserEmail);
 router.post("/clientlogin", userController_1.clientLogin);
 router.get("/getclientbyid/:id", userController_1.getClientById);

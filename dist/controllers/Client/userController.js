@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPwd = exports.forgetPwd = exports.deleteClient = exports.getClientById = exports.clientLogin = exports.verifyUserEmail = exports.addNewClient = void 0;
+exports.resetPwd = exports.forgetPwd = exports.deleteClient = exports.updateProfileById = exports.getClientById = exports.clientLogin = exports.verifyUserEmail = exports.addNewClient = void 0;
 const userModel_1 = __importDefault(require("../../models/Client/userModel"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const token_1 = __importDefault(require("../../models/token"));
@@ -159,6 +159,35 @@ const getClientById = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.getClientById = getClientById;
+const updateProfileById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const id = req.params.id;
+    const { userName, userEmail } = req.body;
+    try {
+        let userImage = undefined;
+        if (req.files) {
+            const files = req.files;
+            if (files["userImage"]) {
+                userImage = (_a = files["userImage"][0]) === null || _a === void 0 ? void 0 : _a.path;
+            }
+        }
+        const data = yield userModel_1.default.findByIdAndUpdate(id, {
+            userName,
+            userEmail,
+            userImage,
+        }, { new: true });
+        if (!data) {
+            return res.status(400).json({ error: "Failed To Update" });
+        }
+        else {
+            return res.status(200).json({ message: "Sucessfully Updated" });
+        }
+    }
+    catch (error) {
+        return res.status(200).json({ error: error.message });
+    }
+});
+exports.updateProfileById = updateProfileById;
 const deleteClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
