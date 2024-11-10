@@ -1,6 +1,7 @@
 import express from "express";
 import {
   addNewClient,
+  changePwd,
   clientLogin,
   deleteClient,
   forgetPwd,
@@ -23,6 +24,7 @@ router.put(
   upload.fields([{ name: "userImage", maxCount: 1 }]),
   updateProfileById
 );
+router.put("/changepwd/:id", changePwd);
 router.put("/verifyuseremail/:token", verifyUserEmail);
 router.post("/clientlogin", clientLogin);
 router.get("/getclientbyid/:id", getClientById);

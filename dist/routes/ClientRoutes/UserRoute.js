@@ -9,6 +9,7 @@ const fileUpload_1 = __importDefault(require("../../middleware/fileUpload"));
 const router = express_1.default.Router();
 router.post("/addclient", fileUpload_1.default.fields([{ name: "userImage", maxCount: 1 }]), userController_1.addNewClient);
 router.put("/updateclient/:id", fileUpload_1.default.fields([{ name: "userImage", maxCount: 1 }]), userController_1.updateProfileById);
+router.put("/changepwd/:id", userController_1.changePwd);
 router.put("/verifyuseremail/:token", userController_1.verifyUserEmail);
 router.post("/clientlogin", userController_1.clientLogin);
 router.get("/getclientbyid/:id", userController_1.getClientById);

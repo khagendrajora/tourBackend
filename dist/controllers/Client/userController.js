@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPwd = exports.forgetPwd = exports.deleteClient = exports.updateProfileById = exports.getClientById = exports.clientLogin = exports.verifyUserEmail = exports.addNewClient = void 0;
+exports.resetPwd = exports.forgetPwd = exports.deleteClient = exports.updateProfileById = exports.changePwd = exports.getClientById = exports.clientLogin = exports.verifyUserEmail = exports.addNewClient = void 0;
 const userModel_1 = __importDefault(require("../../models/Client/userModel"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const token_1 = __importDefault(require("../../models/token"));
@@ -159,6 +159,35 @@ const getClientById = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.getClientById = getClientById;
+const changePwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const { newPwd, userPwd } = req.body;
+    try {
+        const userData = yield userModel_1.default.findById(id);
+        if (!userData) {
+            return res.status(400).json({ error: "Failed" });
+        }
+        const isPwd = yield bcryptjs_1.default.compare(userPwd, userData.userPwd);
+        if (!isPwd) {
+            return res.status(400).json({ error: "Incorrect Old Password" });
+        }
+        const salt = yield bcryptjs_1.default.genSalt(5);
+        let hashedPwd = yield bcryptjs_1.default.hash(newPwd, salt);
+        const newData = yield userModel_1.default.findByIdAndUpdate(id, {
+            userPwd: hashedPwd,
+        }, { new: true });
+        if (!newData) {
+            return res.status(400).json({ error: "Failed to Change" });
+        }
+        else {
+            return res.status(200).json({ message: "success" });
+        }
+    }
+    catch (error) {
+        return res.status(400).json({ error: error.message });
+    }
+});
+exports.changePwd = changePwd;
 const updateProfileById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const id = req.params.id;

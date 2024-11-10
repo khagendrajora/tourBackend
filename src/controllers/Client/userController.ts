@@ -146,6 +146,37 @@ export const getClientById = async (req: Request, res: Response) => {
   }
 };
 
+export const changePwd = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const { newPwd, userPwd } = req.body;
+  try {
+    const userData = await ClientUser.findById(id);
+    if (!userData) {
+      return res.status(400).json({ error: "Failed" });
+    }
+    const isPwd = await bcryptjs.compare(userPwd, userData.userPwd);
+    if (!isPwd) {
+      return res.status(400).json({ error: "Incorrect Old Password" });
+    }
+    const salt = await bcryptjs.genSalt(5);
+    let hashedPwd = await bcryptjs.hash(newPwd, salt);
+    const newData = await ClientUser.findByIdAndUpdate(
+      id,
+      {
+        userPwd: hashedPwd,
+      },
+      { new: true }
+    );
+    if (!newData) {
+      return res.status(400).json({ error: "Failed to Change" });
+    } else {
+      return res.status(200).json({ message: "success" });
+    }
+  } catch (error: any) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
 export const updateProfileById = async (req: Request, res: Response) => {
   const id = req.params.id;
   const { userName, userEmail } = req.body;
