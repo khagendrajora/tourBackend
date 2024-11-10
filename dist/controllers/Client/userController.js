@@ -171,8 +171,8 @@ const updateProfileById = (req, res) => __awaiter(void 0, void 0, void 0, functi
                 userImage = (_a = files["userImage"][0]) === null || _a === void 0 ? void 0 : _a.path;
             }
         }
-        else if (req.body.existingUserImage) {
-            userImage = req.body.existingUserImage;
+        else if (req.body.userImage) {
+            userImage = req.body.userImage;
         }
         else if (req.body.userImage === "") {
             userImage = null;

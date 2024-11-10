@@ -157,8 +157,8 @@ export const updateProfileById = async (req: Request, res: Response) => {
       if (files["userImage"]) {
         userImage = files["userImage"][0]?.path;
       }
-    } else if (req.body.existingUserImage) {
-      userImage = req.body.existingUserImage;
+    } else if (req.body.userImage) {
+      userImage = req.body.userImage;
     } else if (req.body.userImage === "") {
       userImage = null;
     }
