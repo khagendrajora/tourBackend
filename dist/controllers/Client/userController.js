@@ -164,7 +164,7 @@ const updateProfileById = (req, res) => __awaiter(void 0, void 0, void 0, functi
     const id = req.params.id;
     const { userName, userEmail } = req.body;
     try {
-        let userImage = null;
+        let userImage = req.body.userImage || null;
         if (req.files) {
             const files = req.files;
             if (files["userImage"]) {

@@ -150,7 +150,7 @@ export const updateProfileById = async (req: Request, res: Response) => {
   const id = req.params.id;
   const { userName, userEmail } = req.body;
   try {
-    let userImage: string | null = null;
+    let userImage: string | null = req.body.userImage || null;
     if (req.files) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
