@@ -150,14 +150,17 @@ export const updateProfileById = async (req: Request, res: Response) => {
   const id = req.params.id;
   const { userName, userEmail } = req.body;
   try {
-    let userImage: string | undefined = undefined;
+    let userImage: string | null = null;
     if (req.files) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
       if (files["userImage"]) {
         userImage = files["userImage"][0]?.path;
       }
+    } else if (req.body.userImage === "") {
+      userImage = null;
     }
+
     const data = await ClientUser.findByIdAndUpdate(
       id,
       {

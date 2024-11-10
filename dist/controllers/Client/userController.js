@@ -164,12 +164,15 @@ const updateProfileById = (req, res) => __awaiter(void 0, void 0, void 0, functi
     const id = req.params.id;
     const { userName, userEmail } = req.body;
     try {
-        let userImage = undefined;
+        let userImage = null;
         if (req.files) {
             const files = req.files;
             if (files["userImage"]) {
                 userImage = (_a = files["userImage"][0]) === null || _a === void 0 ? void 0 : _a.path;
             }
+        }
+        else if (req.body.userImage === "") {
+            userImage = null;
         }
         const data = yield userModel_1.default.findByIdAndUpdate(id, {
             userName,
