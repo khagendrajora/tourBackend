@@ -180,7 +180,7 @@ const changePwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return res.status(400).json({ error: "Failed to Change" });
         }
         else {
-            return res.status(200).json({ message: "success" });
+            return res.status(200).json({ message: "Password Changed" });
         }
     }
     catch (error) {

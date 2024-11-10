@@ -170,7 +170,7 @@ export const changePwd = async (req: Request, res: Response) => {
     if (!newData) {
       return res.status(400).json({ error: "Failed to Change" });
     } else {
-      return res.status(200).json({ message: "success" });
+      return res.status(200).json({ message: "Password Changed" });
     }
   } catch (error: any) {
     return res.status(400).json({ error: error.message });
