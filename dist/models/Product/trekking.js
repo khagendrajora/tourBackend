@@ -16,10 +16,12 @@ const trekSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    inclusion: {
-        type: [String],
-        required: true,
-    },
+    inclusion: [
+        {
+            type: String,
+            required: true,
+        },
+    ],
     dest: {
         type: String,
         required: true,

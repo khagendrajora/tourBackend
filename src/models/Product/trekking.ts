@@ -29,10 +29,12 @@ const trekSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  inclusion: {
-    type: [String],
-    required: true,
-  },
+  inclusion: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
   dest: {
     type: String,
     required: true,
