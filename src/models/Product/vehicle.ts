@@ -10,7 +10,7 @@ export interface IVeh extends Document {
   vehCategory: string;
   vehSubCategory: string;
   services: string;
-  amenities: string;
+  amenities: string[];
   vehCondition: ICondition;
   madeYear: Date;
   vehNumber: string;
@@ -38,10 +38,12 @@ const VehSchema = new mongoose.Schema({
     required: true,
   },
 
-  amenities: {
-    type: String,
-    required: true,
-  },
+  amenities: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
   quantity: {
     type: Number,
     required: true,

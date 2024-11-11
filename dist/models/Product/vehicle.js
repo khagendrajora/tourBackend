@@ -25,10 +25,12 @@ const VehSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    amenities: {
-        type: String,
-        required: true,
-    },
+    amenities: [
+        {
+            type: String,
+            required: true,
+        },
+    ],
     quantity: {
         type: Number,
         required: true,
