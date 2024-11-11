@@ -49,7 +49,6 @@ const trekSchema = new mongoose_1.default.Schema({
     operationDates: [
         {
             type: String,
-            // required: true,
         },
     ],
     trekImages: [

@@ -16,10 +16,12 @@ const tourSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    inclusion: {
-        type: String,
-        required: true,
-    },
+    inclusion: [
+        {
+            type: String,
+            required: true,
+        },
+    ],
     dest: {
         type: String,
         required: true,
@@ -37,7 +39,7 @@ const tourSchema = new mongoose_1.default.Schema({
         required: true,
     },
     phone: {
-        type: String,
+        type: Number,
         required: true,
         unique: true,
     },
