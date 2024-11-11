@@ -30,7 +30,7 @@ const trekSchema = new mongoose.Schema({
     required: true,
   },
   inclusion: {
-    type: String,
+    type: [String],
     required: true,
   },
   dest: {
@@ -38,11 +38,11 @@ const trekSchema = new mongoose.Schema({
     required: true,
   },
   numbers: {
-    type: String,
+    type: Number,
     required: true,
   },
   days: {
-    type: String,
+    type: Number,
     required: true,
   },
 
