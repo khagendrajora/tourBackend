@@ -192,11 +192,11 @@ export const getBusiness = async (req: Request, res: Response) => {
 export const addbusinessProfile = async (req: Request, res: Response) => {
   const businessId = req.params.businessid;
   const authToken = req.cookies.authToken;
-  if (!authToken) {
-    return res
-      .status(400)
-      .json({ error: "Token not found, first login with business ID " });
-  }
+  // if (!authToken) {
+  //   return res
+  //     .status(400)
+  //     .json({ error: "Token not found, first login with business ID " });
+  // }
   const { businessSubcategory, website, contactName } = req.body;
 
   const { address, country, state, city } = req.body.businessAddress;

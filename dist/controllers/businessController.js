@@ -191,11 +191,11 @@ const addbusinessProfile = (req, res) => __awaiter(void 0, void 0, void 0, funct
     var _a;
     const businessId = req.params.businessid;
     const authToken = req.cookies.authToken;
-    if (!authToken) {
-        return res
-            .status(400)
-            .json({ error: "Token not found, first login with business ID " });
-    }
+    // if (!authToken) {
+    //   return res
+    //     .status(400)
+    //     .json({ error: "Token not found, first login with business ID " });
+    // }
     const { businessSubcategory, website, contactName } = req.body;
     const { address, country, state, city } = req.body.businessAddress;
     const { authority, registrationNumber, registrationOn, expiresOn } = req.body.businessRegistration;
