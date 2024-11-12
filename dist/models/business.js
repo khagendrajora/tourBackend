@@ -40,6 +40,10 @@ const businessSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    businessRole: {
+        type: String,
+        default: "1",
+    },
     isVerified: {
         type: Boolean,
         default: false,

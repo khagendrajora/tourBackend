@@ -10,6 +10,7 @@ export interface IBusiness extends Document {
   primaryPhone: string;
   isActive: boolean;
   businessPwd: string;
+  businessRole: string;
   isVerified: boolean;
 }
 
@@ -49,6 +50,10 @@ const businessSchema = new mongoose.Schema(
     businessPwd: {
       type: String,
       required: true,
+    },
+    businessRole: {
+      type: String,
+      default: "1",
     },
     isVerified: {
       type: Boolean,
