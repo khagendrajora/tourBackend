@@ -189,6 +189,7 @@ const getBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getBusiness = getBusiness;
 const addbusinessProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
+    const businessId = req.params.businessid;
     const authToken = req.cookies.authToken;
     if (!authToken) {
         return res
@@ -201,11 +202,11 @@ const addbusinessProfile = (req, res) => __awaiter(void 0, void 0, void 0, funct
     const { platform } = req.body.socialMedia;
     try {
         const decodedToken = jsonwebtoken_1.default.verify(authToken, process.env.JWTSECRET);
-        const businessId = decodedToken.id;
+        // const businessId = decodedToken.id;
         const data = yield business_1.default.findOne({ _id: businessId });
         if (!data) {
             return res.status(400).json({
-                error: "Failed to fetch Business Data",
+                error: "Business ID not found",
                 businessId: businessId,
             });
         }

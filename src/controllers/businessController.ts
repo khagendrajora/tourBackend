@@ -190,6 +190,7 @@ export const getBusiness = async (req: Request, res: Response) => {
 };
 
 export const addbusinessProfile = async (req: Request, res: Response) => {
+  const businessId = req.params.businessid;
   const authToken = req.cookies.authToken;
   if (!authToken) {
     return res
@@ -209,13 +210,13 @@ export const addbusinessProfile = async (req: Request, res: Response) => {
       authToken,
       process.env.JWTSECRET as string
     ) as { id: string };
-    const businessId = decodedToken.id;
+    // const businessId = decodedToken.id;
 
     const data = await Business.findOne({ _id: businessId });
 
     if (!data) {
       return res.status(400).json({
-        error: "Failed to fetch Business Data",
+        error: "Business ID not found",
         businessId: businessId,
       });
     }

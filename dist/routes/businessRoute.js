@@ -13,7 +13,7 @@ router.put("/verifybusinessemail/:token", businessController_1.verifyEmail);
 router.get("/getbusiness", businessController_1.getBusiness);
 router.get("/businessprofile/:businessId", businessController_1.businessProfile);
 router.get("/businessdata/:id", businessController_1.getBusinessProfileDetails);
-router.post("/addbusinessprofile", fileUpload_1.default.fields([
+router.post("/addbusinessprofile/:businessid", fileUpload_1.default.fields([
     { name: "profileIcon", maxCount: 1 },
     { name: "imageGallery", maxCount: 1000 },
 ]), Validation_1.addBusinessProfileData, Validation_1.validation, businessController_1.addbusinessProfile);

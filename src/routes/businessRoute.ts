@@ -31,7 +31,7 @@ router.get("/businessprofile/:businessId", businessProfile);
 router.get("/businessdata/:id", getBusinessProfileDetails);
 
 router.post(
-  "/addbusinessprofile",
+  "/addbusinessprofile/:businessid",
   upload.fields([
     { name: "profileIcon", maxCount: 1 },
     { name: "imageGallery", maxCount: 1000 },
