@@ -143,7 +143,7 @@ const businessLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             authToken: authToken,
             businesId: businessEmail._id,
             primaryEmail: primaryEmail,
-            adminRole: primaryEmail.adminRole,
+            businessRole: primaryEmail.businessRole,
         });
     }
     catch (error) {
