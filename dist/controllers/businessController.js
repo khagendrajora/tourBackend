@@ -201,7 +201,10 @@ const addbusinessProfile = (req, res) => __awaiter(void 0, void 0, void 0, funct
     const { authority, registrationNumber, registrationOn, expiresOn } = req.body.businessRegistration;
     const { platform } = req.body.socialMedia;
     try {
-        const decodedToken = jsonwebtoken_1.default.verify(authToken, process.env.JWTSECRET);
+        // const decodedToken = jwt.verify(
+        //   authToken,
+        //   process.env.JWTSECRET as string
+        // ) as { id: string };
         // const businessId = decodedToken.id;
         const data = yield business_1.default.findOne({ _id: businessId });
         if (!data) {

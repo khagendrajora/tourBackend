@@ -206,10 +206,10 @@ export const addbusinessProfile = async (req: Request, res: Response) => {
   const { platform } = req.body.socialMedia;
 
   try {
-    const decodedToken = jwt.verify(
-      authToken,
-      process.env.JWTSECRET as string
-    ) as { id: string };
+    // const decodedToken = jwt.verify(
+    //   authToken,
+    //   process.env.JWTSECRET as string
+    // ) as { id: string };
     // const businessId = decodedToken.id;
 
     const data = await Business.findOne({ _id: businessId });
