@@ -48,8 +48,9 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
         }
         else {
             let resrvDate = new ReservedDated_1.default({
-                vehId: vehData._id,
+                vehicleId: vehData._id,
                 bookingDate,
+                bookedBy,
             });
             resrvDate = yield resrvDate.save();
             if (!resrvDate) {

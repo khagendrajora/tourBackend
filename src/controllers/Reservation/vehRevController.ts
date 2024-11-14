@@ -46,8 +46,9 @@ export const vehReservation = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Booking failed" });
     } else {
       let resrvDate = new RevDate({
-        vehId: vehData._id,
+        vehicleId: vehData._id,
         bookingDate,
+        bookedBy,
       });
       resrvDate = await resrvDate.save();
       if (!resrvDate) {
