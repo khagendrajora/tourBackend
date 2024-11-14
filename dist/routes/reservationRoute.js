@@ -8,6 +8,6 @@ const vehRevController_1 = require("../controllers/Reservation/vehRevController"
 const resrvedDated_1 = require("../controllers/Reservation/resrvedDated");
 const Validation_1 = require("../validation/Validation");
 const router = express_1.default.Router();
-router.post("/addRev/:id", Validation_1.reservationData, Validation_1.validation, vehRevController_1.veh_Rev);
-router.get("/reservdates/:id", resrvedDated_1.getReservDates);
+router.post("/addRev/:id", Validation_1.reservationData, Validation_1.validation, vehRevController_1.vehReservation);
+router.get("/reservdates/:id", resrvedDated_1.getReservedDates);
 exports.default = router;

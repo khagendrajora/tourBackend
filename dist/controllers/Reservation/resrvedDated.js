@@ -12,14 +12,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getReservDates = exports.reservDates = void 0;
+exports.getReservedDates = exports.saveReservedDated = void 0;
 const ReservedDated_1 = __importDefault(require("../../models/Reservations/ReservedDated"));
-const reservDates = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { vehId, bookingDate } = req.body;
+const saveReservedDated = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { vehicleId, bookedBy, bookingDate } = req.body;
     try {
         let revDates = new ReservedDated_1.default({
-            vehId,
+            vehicleId,
             bookingDate,
+            bookedBy,
         });
         revDates = yield revDates.save();
         if (!revDates) {
@@ -33,17 +34,17 @@ const reservDates = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         return res.status(500).json({ error: error.message });
     }
 });
-exports.reservDates = reservDates;
-const getReservDates = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.saveReservedDated = saveReservedDated;
+const getReservedDates = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        const data = yield ReservedDated_1.default.find({ veh_id: id });
-        if (data) {
-            return res.json(data);
+        const data = yield ReservedDated_1.default.find({ vehicleId: id });
+        if (data.length > 0) {
+            return res.send(data);
         }
     }
     catch (error) {
         return res.status(500).json({ error: error.message });
     }
 });
-exports.getReservDates = getReservDates;
+exports.getReservedDates = getReservedDates;

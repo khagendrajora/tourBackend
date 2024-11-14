@@ -1,43 +1,45 @@
 import { Request, Response } from "express";
-import VehRev from "../../models/Reservations/vehReserv";
+import VehicleReservation from "../../models/Reservations/vehReserv";
 import Vehicle from "../../models/Product/vehicle";
 import RevDate from "../../models/Reservations/ReservedDated";
 
-export const veh_Rev = async (req: Request, res: Response) => {
+export const vehReservation = async (req: Request, res: Response) => {
   const id = req.params.id;
   const {
-    passengerName,
+    bookingName,
     age,
     email,
     phone,
     sourceAddress,
-    destAddress,
+    destinationAddress,
     bookingDate,
     address,
+    bookedBy,
   } = req.body;
 
   try {
     const vehData = await Vehicle.findOne({ _id: id });
     if (!vehData) {
-      return res.status(401).json({ error: "not found" });
+      return res.status(401).json({ error: "Vehicle Unavailable" });
     }
 
-    let vehRev = new VehRev({
-      vehId: vehData._id,
-      vehType: vehData.vehCategory,
+    let vehRev = new VehicleReservation({
+      vehicleId: vehData._id,
+      vehicleType: vehData.vehCategory,
       services: vehData.services,
       amenities: vehData.amenities,
-      vehNumber: vehData.vehNumber,
+      vehicleNumber: vehData.vehNumber,
       capacity: vehData.capacity,
-      veh_name: vehData.name,
-      passengerName,
+      vehicleName: vehData.name,
+      bookedBy,
       age,
       sourceAddress,
-      destAddress,
+      destinationAddress,
       email,
       phone,
       bookingDate,
       address,
+      bookingName,
     });
     vehRev = await vehRev.save();
     if (!vehRev) {

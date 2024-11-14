@@ -4,18 +4,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
-const VehRev = new mongoose_1.default.Schema({
-    vehId: {
+const VehicleReservation = new mongoose_1.default.Schema({
+    vehicleId: {
         type: String,
         required: true,
     },
-    vehType: {
+    vehicleType: {
+        type: String,
+        required: true,
+    },
+    capacity: {
         type: String,
         required: true,
     },
     services: {
         type: String,
-        required: true,
     },
     age: {
         type: String,
@@ -28,23 +31,26 @@ const VehRev = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    destAddress: {
+    destinationAddress: {
         type: String,
         required: true,
     },
     amenities: {
         type: String,
-        required: true,
     },
-    vehNumber: {
+    vehicleNumber: {
         type: String,
         required: true,
     },
-    vehName: {
+    vehicleName: {
         type: String,
         required: true,
     },
-    passengerName: {
+    bookingName: {
+        type: String,
+        required: true,
+    },
+    bookedBy: {
         type: String,
         required: true,
     },
@@ -52,10 +58,14 @@ const VehRev = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    address: {
+        type: String,
+        rwquired: true,
+    },
     bookingDate: [
         {
             type: String,
         },
     ],
-});
-exports.default = mongoose_1.default.model("VehRev", VehRev);
+}, { timestamps: true });
+exports.default = mongoose_1.default.model("VehicleReservation", VehicleReservation);

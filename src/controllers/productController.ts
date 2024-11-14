@@ -55,7 +55,7 @@ export const getTour = async (req: Request, res: Response) => {
   try {
     let tour = await Tour.find();
     if (!tour) {
-      return res.status(404).json({ error: "Failed to fetch tour" });
+      return res.status(404).json({ error: "No Data Found" });
     } else {
       return res.send(tour);
     }
@@ -69,7 +69,7 @@ export const getTourByBusinessId = async (req: Request, res: Response) => {
   try {
     let tour = await Tour.find({ businessId: id });
     if (tour.length === 0) {
-      return res.status(404).json({ error: "Failed to fetch Tour" });
+      return res.status(404).json({ error: "No Data found" });
     } else {
       return res.send(tour);
     }
@@ -84,7 +84,7 @@ export const tourDetails = async (req: Request, res: Response) => {
   try {
     const data = await Tour.findById(id);
     if (!data) {
-      return res.status(404).json({ error: "Failed to get Tour" });
+      return res.status(404).json({ error: "No Data found" });
     } else {
       return res.send(data);
     }
@@ -198,8 +198,8 @@ export const addTrek = async (req: Request, res: Response) => {
 export const getTrek = async (req: Request, res: Response) => {
   try {
     let trek = await Trekking.find();
-    if (!trek) {
-      return res.status(404).json({ error: "Failed to fetch Trek" });
+    if (trek.length === 0) {
+      return res.status(404).json({ error: "No Data Found" });
     } else {
       return res.send(trek);
     }
@@ -213,7 +213,7 @@ export const getTrekByBusinessId = async (req: Request, res: Response) => {
   try {
     let trek = await Trekking.find({ businessId: id });
     if (trek.length === 0) {
-      return res.status(404).json({ error: "Failed to fetch Trek" });
+      return res.status(404).json({ error: "No Data Found" });
     } else {
       return res.send(trek);
     }
@@ -344,8 +344,8 @@ export const addVehicle = async (req: Request, res: Response) => {
 export const getVeh = async (req: Request, res: Response) => {
   try {
     let veh = await Vehicle.find();
-    if (!veh) {
-      return res.status(404).json({ error: "Failed to fetch Vehicle" });
+    if (veh.length === 0) {
+      return res.status(404).json({ error: "No Data found" });
     } else {
       return res.send(veh);
     }
@@ -359,7 +359,7 @@ export const getVehicleByBusinessId = async (req: Request, res: Response) => {
   try {
     let veh = await Vehicle.find({ businessId: id });
     if (veh.length === 0) {
-      return res.status(404).json({ error: "Failed to fetch Vehicle" });
+      return res.status(404).json({ error: "No Data Found" });
     } else {
       return res.send(veh);
     }

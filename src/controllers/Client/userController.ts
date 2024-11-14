@@ -5,6 +5,7 @@ import Token from "../../models/token";
 import { uuid } from "uuidv4";
 import { sendEmail } from "../../utils/setEmail";
 import jwt from "jsonwebtoken";
+import ReservationDate from "../../models/Reservations/ReservedDated";
 
 export const addNewClient = async (req: Request, res: Response) => {
   const { userName, userEmail, userPwd } = req.body;
@@ -282,6 +283,20 @@ export const resetPwd = async (req: Request, res: Response) => {
       await Token.deleteOne({ _id: data._id });
 
       return res.status(201).json({ message: "Reset Successful" });
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const getMyReservations = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    const myReservation = await ReservationDate.find({ bookedBy: id });
+    if (!myReservation) {
+      return res.status(404).json({ error: "NO Reservation" });
+    } else {
+      return res.send(myReservation);
     }
   } catch (error: any) {
     return res.status(500).json({ error: error.message });

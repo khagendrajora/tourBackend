@@ -12,34 +12,35 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.veh_Rev = void 0;
+exports.vehReservation = void 0;
 const vehReserv_1 = __importDefault(require("../../models/Reservations/vehReserv"));
 const vehicle_1 = __importDefault(require("../../models/Product/vehicle"));
 const ReservedDated_1 = __importDefault(require("../../models/Reservations/ReservedDated"));
-const veh_Rev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { passengerName, age, email, phone, sourceAddress, destAddress, bookingDate, address, } = req.body;
+    const { bookingName, age, email, phone, sourceAddress, destinationAddress, bookingDate, address, bookedBy, } = req.body;
     try {
         const vehData = yield vehicle_1.default.findOne({ _id: id });
         if (!vehData) {
-            return res.status(401).json({ error: "not found" });
+            return res.status(401).json({ error: "Vehicle Unavailable" });
         }
         let vehRev = new vehReserv_1.default({
-            vehId: vehData._id,
-            vehType: vehData.vehCategory,
+            vehicleId: vehData._id,
+            vehicleType: vehData.vehCategory,
             services: vehData.services,
             amenities: vehData.amenities,
-            vehNumber: vehData.vehNumber,
+            vehicleNumber: vehData.vehNumber,
             capacity: vehData.capacity,
-            veh_name: vehData.name,
-            passengerName,
+            vehicleName: vehData.name,
+            bookedBy,
             age,
             sourceAddress,
-            destAddress,
+            destinationAddress,
             email,
             phone,
             bookingDate,
             address,
+            bookingName,
         });
         vehRev = yield vehRev.save();
         if (!vehRev) {
@@ -63,4 +64,4 @@ const veh_Rev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.status(500).json({ error: error.message });
     }
 });
-exports.veh_Rev = veh_Rev;
+exports.vehReservation = vehReservation;

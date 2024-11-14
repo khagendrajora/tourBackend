@@ -12,13 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPwd = exports.forgetPwd = exports.deleteClient = exports.updateProfileById = exports.changePwd = exports.getClientById = exports.clientLogin = exports.verifyUserEmail = exports.addNewClient = void 0;
+exports.getMyReservations = exports.resetPwd = exports.forgetPwd = exports.deleteClient = exports.updateProfileById = exports.changePwd = exports.getClientById = exports.clientLogin = exports.verifyUserEmail = exports.addNewClient = void 0;
 const userModel_1 = __importDefault(require("../../models/Client/userModel"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const token_1 = __importDefault(require("../../models/token"));
 const uuidv4_1 = require("uuidv4");
 const setEmail_1 = require("../../utils/setEmail");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const ReservedDated_1 = __importDefault(require("../../models/Reservations/ReservedDated"));
 const addNewClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const { userName, userEmail, userPwd } = req.body;
@@ -299,3 +300,19 @@ const resetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.resetPwd = resetPwd;
+const getMyReservations = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        const myReservation = yield ReservedDated_1.default.find({ bookedBy: id });
+        if (!myReservation) {
+            return res.status(404).json({ error: "NO Reservation" });
+        }
+        else {
+            return res.send(myReservation);
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.getMyReservations = getMyReservations;

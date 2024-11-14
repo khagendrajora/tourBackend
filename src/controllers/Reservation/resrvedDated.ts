@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 
-import RevDate from "../../models/Reservations/ReservedDated";
+import ReservedDate from "../../models/Reservations/ReservedDated";
 
-export const reservDates = async (req: Request, res: Response) => {
-  const { vehId, bookingDate } = req.body;
+export const saveReservedDated = async (req: Request, res: Response) => {
+  const { vehicleId, bookedBy, bookingDate } = req.body;
   try {
-    let revDates = new RevDate({
-      vehId,
+    let revDates = new ReservedDate({
+      vehicleId,
       bookingDate,
+      bookedBy,
     });
     revDates = await revDates.save();
     if (!revDates) {
@@ -20,12 +21,12 @@ export const reservDates = async (req: Request, res: Response) => {
   }
 };
 
-export const getReservDates = async (req: Request, res: Response) => {
+export const getReservedDates = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
-    const data = await RevDate.find({ veh_id: id });
-    if (data) {
-      return res.json(data);
+    const data = await ReservedDate.find({ vehicleId: id });
+    if (data.length > 0) {
+      return res.send(data);
     }
   } catch (error: any) {
     return res.status(500).json({ error: error.message });

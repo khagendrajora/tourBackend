@@ -57,7 +57,7 @@ const getTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let tour = yield tour_1.default.find();
         if (!tour) {
-            return res.status(404).json({ error: "Failed to fetch tour" });
+            return res.status(404).json({ error: "No Data Found" });
         }
         else {
             return res.send(tour);
@@ -73,7 +73,7 @@ const getTourByBusinessId = (req, res) => __awaiter(void 0, void 0, void 0, func
     try {
         let tour = yield tour_1.default.find({ businessId: id });
         if (tour.length === 0) {
-            return res.status(404).json({ error: "Failed to fetch Tour" });
+            return res.status(404).json({ error: "No Data found" });
         }
         else {
             return res.send(tour);
@@ -89,7 +89,7 @@ const tourDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     try {
         const data = yield tour_1.default.findById(id);
         if (!data) {
-            return res.status(404).json({ error: "Failed to get Tour" });
+            return res.status(404).json({ error: "No Data found" });
         }
         else {
             return res.send(data);
@@ -180,8 +180,8 @@ exports.addTrek = addTrek;
 const getTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let trek = yield trekking_1.default.find();
-        if (!trek) {
-            return res.status(404).json({ error: "Failed to fetch Trek" });
+        if (trek.length === 0) {
+            return res.status(404).json({ error: "No Data Found" });
         }
         else {
             return res.send(trek);
@@ -197,7 +197,7 @@ const getTrekByBusinessId = (req, res) => __awaiter(void 0, void 0, void 0, func
     try {
         let trek = yield trekking_1.default.find({ businessId: id });
         if (trek.length === 0) {
-            return res.status(404).json({ error: "Failed to fetch Trek" });
+            return res.status(404).json({ error: "No Data Found" });
         }
         else {
             return res.send(trek);
@@ -305,8 +305,8 @@ exports.addVehicle = addVehicle;
 const getVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let veh = yield vehicle_1.default.find();
-        if (!veh) {
-            return res.status(404).json({ error: "Failed to fetch Vehicle" });
+        if (veh.length === 0) {
+            return res.status(404).json({ error: "No Data found" });
         }
         else {
             return res.send(veh);
@@ -322,7 +322,7 @@ const getVehicleByBusinessId = (req, res) => __awaiter(void 0, void 0, void 0, f
     try {
         let veh = yield vehicle_1.default.find({ businessId: id });
         if (veh.length === 0) {
-            return res.status(404).json({ error: "Failed to fetch Vehicle" });
+            return res.status(404).json({ error: "No Data Found" });
         }
         else {
             return res.send(veh);

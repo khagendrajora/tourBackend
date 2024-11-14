@@ -5,7 +5,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const revDates = new mongoose_1.default.Schema({
-    vehId: {
+    vehicleId: {
+        type: String,
+        required: true,
+    },
+    bookedBy: {
         type: String,
         required: true,
     },
@@ -15,4 +19,4 @@ const revDates = new mongoose_1.default.Schema({
         },
     ],
 }, { timestamps: true });
-exports.default = mongoose_1.default.model("RevDate", revDates);
+exports.default = mongoose_1.default.model("ReservedDate", revDates);
