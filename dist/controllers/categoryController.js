@@ -47,10 +47,7 @@ exports.addCategory = addCategory;
 const getCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let category = yield category_1.default.find();
-        if (!category) {
-            return res.status(404).json({ error: "Failed to fetch category" });
-        }
-        else {
+        if (category.length > 0) {
             return res.send(category);
         }
     }

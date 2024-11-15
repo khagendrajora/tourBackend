@@ -32,9 +32,7 @@ export const addCategory = async (req: Request, res: Response) => {
 export const getCategory = async (req: Request, res: Response) => {
   try {
     let category = await Category.find();
-    if (!category) {
-      return res.status(404).json({ error: "Failed to fetch category" });
-    } else {
+    if (category.length > 0) {
       return res.send(category);
     }
   } catch (error: any) {

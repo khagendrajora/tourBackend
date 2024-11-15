@@ -56,10 +56,7 @@ exports.addTour = addTour;
 const getTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let tour = yield tour_1.default.find();
-        if (!tour) {
-            return res.status(404).json({ error: "No Data Found" });
-        }
-        else {
+        if (tour.length > 0) {
             return res.send(tour);
         }
     }
@@ -180,10 +177,7 @@ exports.addTrek = addTrek;
 const getTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let trek = yield trekking_1.default.find();
-        if (trek.length === 0) {
-            return res.status(404).json({ error: "No Data Found" });
-        }
-        else {
+        if (trek.length > 0) {
             return res.send(trek);
         }
     }
@@ -305,10 +299,7 @@ exports.addVehicle = addVehicle;
 const getVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let veh = yield vehicle_1.default.find();
-        if (veh.length === 0) {
-            return res.status(404).json({ error: "No Data found" });
-        }
-        else {
+        if (veh.length > 0) {
             return res.send(veh);
         }
     }

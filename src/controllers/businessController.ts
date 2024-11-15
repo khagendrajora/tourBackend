@@ -178,9 +178,7 @@ export const businessProfile = async (req: Request, res: Response) => {
 export const getBusiness = async (req: Request, res: Response) => {
   try {
     await Business.find().then((data) => {
-      if (!data) {
-        return res.status(400).json({ error: "Failed to get business" });
-      } else {
+      if (data.length > 0) {
         return res.send(data);
       }
     });

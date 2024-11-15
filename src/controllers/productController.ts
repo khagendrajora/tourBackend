@@ -54,9 +54,7 @@ export const addTour = async (req: Request, res: Response) => {
 export const getTour = async (req: Request, res: Response) => {
   try {
     let tour = await Tour.find();
-    if (!tour) {
-      return res.status(404).json({ error: "No Data Found" });
-    } else {
+    if (tour.length > 0) {
       return res.send(tour);
     }
   } catch (error: any) {
@@ -198,9 +196,7 @@ export const addTrek = async (req: Request, res: Response) => {
 export const getTrek = async (req: Request, res: Response) => {
   try {
     let trek = await Trekking.find();
-    if (trek.length === 0) {
-      return res.status(404).json({ error: "No Data Found" });
-    } else {
+    if (trek.length > 0) {
       return res.send(trek);
     }
   } catch (error: any) {
@@ -344,9 +340,7 @@ export const addVehicle = async (req: Request, res: Response) => {
 export const getVeh = async (req: Request, res: Response) => {
   try {
     let veh = await Vehicle.find();
-    if (veh.length === 0) {
-      return res.status(404).json({ error: "No Data found" });
-    } else {
+    if (veh.length > 0) {
       return res.send(veh);
     }
   } catch (error: any) {

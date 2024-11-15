@@ -174,10 +174,7 @@ exports.businessProfile = businessProfile;
 const getBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield business_1.default.find().then((data) => {
-            if (!data) {
-                return res.status(400).json({ error: "Failed to get business" });
-            }
-            else {
+            if (data.length > 0) {
                 return res.send(data);
             }
         });
