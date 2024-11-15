@@ -112,9 +112,7 @@ export const updateProperty = async (req: Request, res: Response) => {
 export const getProperty = async (req: Request, res: Response) => {
   try {
     let property = await Property.find();
-    if (!property) {
-      return res.status(404).json({ error: "Failed to fetch property" });
-    } else {
+    if (property.length === 0) {
       return res.send(property);
     }
   } catch (error: any) {

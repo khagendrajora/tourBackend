@@ -276,13 +276,16 @@ export const addbusinessProfile = async (req: Request, res: Response) => {
 export const getBusinessProfile = async (req: Request, res: Response) => {
   const businessId = req.params.businessId;
   try {
-    const data = await BusinessProfile.findOne({ businessId });
-    if (!data) {
-      return res
-        .status(404)
-        .json({ error: "Failed to get business full Profile" });
+    const businessData = await Business.findOne({ _id: businessId });
+    if (!businessData) {
+      const data = await BusinessProfile.findOne({ businessId: businessId });
+      if (!data) {
+        return res.status(404).json({ error: "Data Not Found" });
+      } else {
+        return res.send(data);
+      }
     } else {
-      return res.send(data);
+      return res.send(businessData);
     }
   } catch (error: any) {
     return res.status(500).json({ error: error.message });

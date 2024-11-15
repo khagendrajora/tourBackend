@@ -264,14 +264,18 @@ exports.addbusinessProfile = addbusinessProfile;
 const getBusinessProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const businessId = req.params.businessId;
     try {
-        const data = yield businessProfine_1.default.findOne({ businessId });
-        if (!data) {
-            return res
-                .status(404)
-                .json({ error: "Failed to get business full Profile" });
+        const businessData = yield business_1.default.findOne({ _id: businessId });
+        if (!businessData) {
+            const data = yield businessProfine_1.default.findOne({ businessId: businessId });
+            if (!data) {
+                return res.status(404).json({ error: "Data Not Found" });
+            }
+            else {
+                return res.send(data);
+            }
         }
         else {
-            return res.send(data);
+            return res.send(businessData);
         }
     }
     catch (error) {

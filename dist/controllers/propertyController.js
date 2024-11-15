@@ -97,10 +97,7 @@ exports.updateProperty = updateProperty;
 const getProperty = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let property = yield property_1.default.find();
-        if (!property) {
-            return res.status(404).json({ error: "Failed to fetch property" });
-        }
-        else {
+        if (property.length === 0) {
             return res.send(property);
         }
     }
