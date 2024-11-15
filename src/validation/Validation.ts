@@ -85,6 +85,7 @@ export const addPropertyData = [
 
 export const reservationData = [
   check("bookingName", "Provide Passenger Name").trim().notEmpty(),
+
   check("age", "Provide Age")
     .trim()
     .notEmpty()
