@@ -5,7 +5,7 @@ import { reservationData, validation } from "../validation/Validation";
 
 const router = express.Router();
 
-router.post("/addRev/:id", reservationData, validation, vehReservation);
+router.post("/addRev/:id", vehReservation);
 
 router.get("/reservdates/:id", getReservedDates);
 
