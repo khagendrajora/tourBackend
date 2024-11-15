@@ -84,7 +84,7 @@ export const addPropertyData = [
 ];
 
 export const reservationData = [
-  check("passengerName", "Provide Passenger Name").trim().notEmpty(),
+  check("bookingName", "Provide Passenger Name").trim().notEmpty(),
   check("age", "Provide Age")
     .trim()
     .notEmpty()
@@ -101,7 +101,7 @@ export const reservationData = [
     .notEmpty()
     .isString()
     .withMessage("Address must be string"),
-  check("destAddress", "Provide Destination Address")
+  check("destinationAddress", "Provide Destination Address")
     .trim()
     .notEmpty()
     .isString()

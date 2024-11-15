@@ -77,7 +77,7 @@ exports.addPropertyData = [
         .withMessage("Invalid Date"),
 ];
 exports.reservationData = [
-    (0, express_validator_1.check)("passengerName", "Provide Passenger Name").trim().notEmpty(),
+    (0, express_validator_1.check)("bookingName", "Provide Passenger Name").trim().notEmpty(),
     (0, express_validator_1.check)("age", "Provide Age")
         .trim()
         .notEmpty()
@@ -94,7 +94,7 @@ exports.reservationData = [
         .notEmpty()
         .isString()
         .withMessage("Address must be string"),
-    (0, express_validator_1.check)("destAddress", "Provide Destination Address")
+    (0, express_validator_1.check)("destinationAddress", "Provide Destination Address")
         .trim()
         .notEmpty()
         .isString()
