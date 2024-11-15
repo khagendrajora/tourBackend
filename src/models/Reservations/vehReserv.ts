@@ -83,7 +83,7 @@ const VehicleReservation = new mongoose.Schema(
     },
     bookingDate: [
       {
-        type: String,
+        type: Date,
       },
     ],
   },
