@@ -20,7 +20,7 @@ const revDates = new mongoose.Schema(
 
     bookingDate: [
       {
-        type: String,
+        type: Date,
       },
     ],
   },

@@ -15,7 +15,7 @@ const revDates = new mongoose_1.default.Schema({
     },
     bookingDate: [
         {
-            type: String,
+            type: Date,
         },
     ],
 }, { timestamps: true });
