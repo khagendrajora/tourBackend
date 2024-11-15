@@ -4,8 +4,8 @@ export interface IVRev extends Document {
   _id?: string;
   vehicleId: string;
   vehicleType: string;
-  services?: string;
-  amenities?: string;
+  // services?: string;
+  // amenities?: string;
   vehicleNumber: string;
   capacity: string;
   vehicleName: string;
@@ -34,9 +34,9 @@ const VehicleReservation = new mongoose.Schema(
       type: String,
       required: true,
     },
-    services: {
-      type: String,
-    },
+    // services: {
+    //   type: String,
+    // },
     age: {
       type: String,
       required: true,
@@ -53,9 +53,9 @@ const VehicleReservation = new mongoose.Schema(
       type: String,
       required: true,
     },
-    amenities: {
-      type: String,
-    },
+    // amenities: {
+    //   type: String,
+    // },
     vehicleNumber: {
       type: String,
       required: true,

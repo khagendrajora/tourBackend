@@ -26,8 +26,8 @@ export const vehReservation = async (req: Request, res: Response) => {
     let vehRev = new VehicleReservation({
       vehicleId: vehData._id,
       vehicleType: vehData.vehCategory,
-      services: vehData.services,
-      amenities: vehData.amenities,
+      // services: vehData.services,
+      // amenities: vehData.amenities,
       vehicleNumber: vehData.vehNumber,
       capacity: vehData.capacity,
       vehicleName: vehData.name,

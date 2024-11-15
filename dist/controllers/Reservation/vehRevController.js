@@ -27,8 +27,8 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
         let vehRev = new vehReserv_1.default({
             vehicleId: vehData._id,
             vehicleType: vehData.vehCategory,
-            services: vehData.services,
-            amenities: vehData.amenities,
+            // services: vehData.services,
+            // amenities: vehData.amenities,
             vehicleNumber: vehData.vehNumber,
             capacity: vehData.capacity,
             vehicleName: vehData.name,
