@@ -69,7 +69,7 @@ const VehSchema = new mongoose.Schema({
 
   operationDates: [
     {
-      type: String,
+      type: Date,
       required: true,
     },
   ],
