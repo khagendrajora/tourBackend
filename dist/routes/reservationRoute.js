@@ -9,4 +9,5 @@ const resrvedDated_1 = require("../controllers/Reservation/resrvedDated");
 const router = express_1.default.Router();
 router.post("/addRev/:id", vehRevController_1.vehReservation);
 router.get("/reservdates/:id", resrvedDated_1.getReservedDates);
+router.get("/getclientrev/:id", vehRevController_1.getRevByClientId);
 exports.default = router;

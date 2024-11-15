@@ -61,3 +61,15 @@ export const vehReservation = async (req: Request, res: Response) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+export const getRevByClientId = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    const data = await VehicleReservation.find({ bookedBy: id });
+    if (data.length > 0) {
+      return res.send(data);
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
