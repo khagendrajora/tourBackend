@@ -17,6 +17,8 @@ const vehReserv_1 = __importDefault(require("../../models/Reservations/vehReserv
 const vehicle_1 = __importDefault(require("../../models/Product/vehicle"));
 const ReservedDated_1 = __importDefault(require("../../models/Reservations/ReservedDated"));
 const nanoid_1 = require("nanoid");
+const setEmail_1 = require("../../utils/setEmail");
+const business_1 = __importDefault(require("../../models/business"));
 const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const customId = (0, nanoid_1.customAlphabet)("1234567890", 4);
@@ -27,6 +29,7 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
         if (!vehData) {
             return res.status(401).json({ error: "Vehicle Unavailable" });
         }
+        const businessdata = yield business_1.default.findOne({ _id: vehData.businessId });
         let vehRev = new vehReserv_1.default({
             vehicleId: vehData._id,
             vehicleType: vehData.vehCategory,
@@ -62,6 +65,18 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 return res.status(400).json({ error: "failed to save date" });
             }
             else {
+                (0, setEmail_1.sendEmail)({
+                    from: "beta.toursewa@gmail.com",
+                    to: email,
+                    subject: "Booking Confirmation",
+                    html: `<h2>Your booking has been successfully Created with Booking Id ${bookingId} </h2>`,
+                });
+                (0, setEmail_1.sendEmail)({
+                    from: "beta.toursewa@gmail.com",
+                    to: businessdata === null || businessdata === void 0 ? void 0 : businessdata.primaryEmail,
+                    subject: "New Booking",
+                    html: `<h2>A new booking with booking Id ${bookingId} of vehicle ${vehData._id}</h2>`,
+                });
                 return res.status(200).json({ message: "Booked" });
             }
         }
@@ -86,7 +101,7 @@ const getRevByClientId = (req, res) => __awaiter(void 0, void 0, void 0, functio
 exports.getRevByClientId = getRevByClientId;
 const updateReservationStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { status, bookingId } = req.body;
+    const { status, bookingId, email } = req.body;
     try {
         const data = yield vehReserv_1.default.findByIdAndUpdate(id, {
             status: status,
@@ -102,6 +117,12 @@ const updateReservationStatus = (req, res) => __awaiter(void 0, void 0, void 0, 
                 return res.status(400).json({ error: "failed to Update" });
             }
             else {
+                (0, setEmail_1.sendEmail)({
+                    from: "beta.toursewa@gmail.com",
+                    to: email,
+                    subject: "Booking Status",
+                    html: `<h2>Your Booking with booking id ${bookingId} has been ${status}</h2>`,
+                });
                 return res.status(200).json({ message: status });
             }
         }

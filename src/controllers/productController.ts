@@ -301,6 +301,9 @@ export const addVehicle = async (req: Request, res: Response) => {
     capacity,
     name,
     operationDates,
+    manufacturer,
+    model,
+    VIN,
   } = req.body;
   try {
     let vehImages: string[] = [];
@@ -325,6 +328,9 @@ export const addVehicle = async (req: Request, res: Response) => {
       name,
       operationDates,
       vehImages,
+      manufacturer,
+      model,
+      VIN,
     });
     veh = await veh.save();
     if (!veh) {

@@ -3,6 +3,8 @@ import VehicleReservation from "../../models/Reservations/vehReserv";
 import Vehicle from "../../models/Product/vehicle";
 import ReservedDate from "../../models/Reservations/ReservedDated";
 import { customAlphabet } from "nanoid";
+import { sendEmail } from "../../utils/setEmail";
+import Business from "../../models/business";
 
 export const vehReservation = async (req: Request, res: Response) => {
   const id = req.params.id;
@@ -25,6 +27,7 @@ export const vehReservation = async (req: Request, res: Response) => {
     if (!vehData) {
       return res.status(401).json({ error: "Vehicle Unavailable" });
     }
+    const businessdata = await Business.findOne({ _id: vehData.businessId });
 
     let vehRev = new VehicleReservation({
       vehicleId: vehData._id,
@@ -59,6 +62,18 @@ export const vehReservation = async (req: Request, res: Response) => {
       if (!resrvDate) {
         return res.status(400).json({ error: "failed to save date" });
       } else {
+        sendEmail({
+          from: "beta.toursewa@gmail.com",
+          to: email,
+          subject: "Booking Confirmation",
+          html: `<h2>Your booking has been successfully Created with Booking Id ${bookingId} </h2>`,
+        });
+        sendEmail({
+          from: "beta.toursewa@gmail.com",
+          to: businessdata?.primaryEmail,
+          subject: "New Booking",
+          html: `<h2>A new booking with booking Id ${bookingId} of vehicle ${vehData._id}</h2>`,
+        });
         return res.status(200).json({ message: "Booked" });
       }
     }
@@ -81,7 +96,7 @@ export const getRevByClientId = async (req: Request, res: Response) => {
 
 export const updateReservationStatus = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const { status, bookingId } = req.body;
+  const { status, bookingId, email } = req.body;
   try {
     const data = await VehicleReservation.findByIdAndUpdate(id, {
       status: status,
@@ -95,6 +110,12 @@ export const updateReservationStatus = async (req: Request, res: Response) => {
       if (!revDate) {
         return res.status(400).json({ error: "failed to Update" });
       } else {
+        sendEmail({
+          from: "beta.toursewa@gmail.com",
+          to: email,
+          subject: "Booking Status",
+          html: `<h2>Your Booking with booking id ${bookingId} has been ${status}</h2>`,
+        });
         return res.status(200).json({ message: status });
       }
     }

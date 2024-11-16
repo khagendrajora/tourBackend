@@ -60,6 +60,18 @@ const VehSchema = new mongoose_1.default.Schema({
             required: true,
         },
     ],
+    manufacturer: {
+        type: String,
+        required: true,
+    },
+    model: {
+        type: String,
+        required: true,
+    },
+    VIN: {
+        type: String,
+        required: true,
+    },
     madeYear: {
         type: Date,
         required: true,

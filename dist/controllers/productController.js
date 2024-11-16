@@ -259,7 +259,7 @@ const updateTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.updateTrek = updateTrek;
 const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { businessId, vehCategory, vehSubCategory, services, amenities, vehCondition, madeYear, vehNumber, quantity, capacity, name, operationDates, } = req.body;
+    const { businessId, vehCategory, vehSubCategory, services, amenities, vehCondition, madeYear, vehNumber, quantity, capacity, name, operationDates, manufacturer, model, VIN, } = req.body;
     try {
         let vehImages = [];
         if (req.files) {
@@ -282,6 +282,9 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             name,
             operationDates,
             vehImages,
+            manufacturer,
+            model,
+            VIN,
         });
         veh = yield veh.save();
         if (!veh) {

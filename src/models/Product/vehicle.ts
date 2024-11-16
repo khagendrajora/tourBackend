@@ -19,6 +19,9 @@ export interface IVeh extends Document {
   name: string;
   operationDates: Date[];
   vehImages?: string[];
+  manufacturer: string;
+  model: string;
+  VIN: string;
 }
 
 const VehSchema = new mongoose.Schema({
@@ -75,7 +78,20 @@ const VehSchema = new mongoose.Schema({
       required: true,
     },
   ],
+  manufacturer: {
+    type: String,
+    required: true,
+  },
 
+  model: {
+    type: String,
+    required: true,
+  },
+
+  VIN: {
+    type: String,
+    required: true,
+  },
   madeYear: {
     type: Date,
     required: true,
