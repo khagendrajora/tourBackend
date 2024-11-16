@@ -105,7 +105,7 @@ const updateReservationStatus = (req, res) => __awaiter(void 0, void 0, void 0, 
     try {
         const data = yield vehReserv_1.default.findByIdAndUpdate(id, {
             status: status,
-        });
+        }, { new: true });
         if (!data) {
             return res.status(400).json({ error: "Failed to Update" });
         }

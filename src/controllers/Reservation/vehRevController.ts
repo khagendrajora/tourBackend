@@ -98,9 +98,13 @@ export const updateReservationStatus = async (req: Request, res: Response) => {
   const id = req.params.id;
   const { status, bookingId, email } = req.body;
   try {
-    const data = await VehicleReservation.findByIdAndUpdate(id, {
-      status: status,
-    });
+    const data = await VehicleReservation.findByIdAndUpdate(
+      id,
+      {
+        status: status,
+      },
+      { new: true }
+    );
     if (!data) {
       return res.status(400).json({ error: "Failed to Update" });
     } else {
