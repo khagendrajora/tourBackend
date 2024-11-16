@@ -307,6 +307,9 @@ const getVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (veh.length > 0) {
             return res.send(veh);
         }
+        else {
+            return res.status(400).json({ error: "Not Found" });
+        }
     }
     catch (error) {
         return res.status(500).json({ error: "internal error" });
@@ -319,6 +322,9 @@ const getVehicleByBusinessId = (req, res) => __awaiter(void 0, void 0, void 0, f
         let veh = yield vehicle_1.default.find({ businessId: id });
         if (veh.length > 0) {
             return res.send(veh);
+        }
+        else {
+            return res.status(400).json({ error: "No Data Found" });
         }
     }
     catch (error) {

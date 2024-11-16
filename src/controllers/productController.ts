@@ -348,6 +348,8 @@ export const getVeh = async (req: Request, res: Response) => {
     let veh = await Vehicle.find();
     if (veh.length > 0) {
       return res.send(veh);
+    } else {
+      return res.status(400).json({ error: "Not Found" });
     }
   } catch (error: any) {
     return res.status(500).json({ error: "internal error" });
@@ -360,6 +362,8 @@ export const getVehicleByBusinessId = async (req: Request, res: Response) => {
     let veh = await Vehicle.find({ businessId: id });
     if (veh.length > 0) {
       return res.send(veh);
+    } else {
+      return res.status(400).json({ error: "No Data Found" });
     }
   } catch (error: any) {
     return res.status(500).json({ error: "internal error" });
