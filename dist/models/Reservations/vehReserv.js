@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 var IStatus;
 (function (IStatus) {
-    IStatus["active"] = "Active";
-    IStatus["cancel"] = "Canceled";
-    IStatus["fullfilled"] = "Fulfill";
+    IStatus["Active"] = "Active";
+    IStatus["Cancel"] = "Canceled";
+    IStatus["Fullfilled"] = "Fulfill";
 })(IStatus || (IStatus = {}));
 const VehicleReservation = new mongoose_1.default.Schema({
     vehicleId: {
@@ -81,7 +81,7 @@ const VehicleReservation = new mongoose_1.default.Schema({
         type: String,
         enum: Object.values(IStatus),
         required: true,
-        default: IStatus.active,
+        default: IStatus.Active,
     },
 }, { timestamps: true });
 exports.default = mongoose_1.default.model("VehicleReservation", VehicleReservation);
