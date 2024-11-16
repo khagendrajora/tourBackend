@@ -125,7 +125,7 @@ export const clientLogin = async (req: Request, res: Response) => {
       message: "Login succssfully",
       authToken: authToken,
       clientId: clientEmail._id,
-      userEmail: clientEmail,
+      userEmail: clientEmail.userEmail,
       userRole: clientEmail.userRole,
     });
   } catch (error: any) {
