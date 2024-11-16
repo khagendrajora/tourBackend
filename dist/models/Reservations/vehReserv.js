@@ -8,7 +8,7 @@ var IStatus;
 (function (IStatus) {
     IStatus["active"] = "Active";
     IStatus["cancel"] = "Canceled";
-    IStatus["fullfilled"] = "fulfill";
+    IStatus["fullfilled"] = "Fulfill";
 })(IStatus || (IStatus = {}));
 const VehicleReservation = new mongoose_1.default.Schema({
     vehicleId: {
@@ -81,7 +81,7 @@ const VehicleReservation = new mongoose_1.default.Schema({
         type: String,
         enum: Object.values(IStatus),
         required: true,
-        default: "active",
+        default: IStatus.active,
     },
 }, { timestamps: true });
 exports.default = mongoose_1.default.model("VehicleReservation", VehicleReservation);
