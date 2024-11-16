@@ -8,7 +8,7 @@ var IStatus;
 (function (IStatus) {
     IStatus["Active"] = "Active";
     IStatus["Cancel"] = "Canceled";
-    IStatus["Fullfilled"] = "Fulfill";
+    IStatus["Fullfilled"] = "Fulfilled";
 })(IStatus || (IStatus = {}));
 const VehicleReservation = new mongoose_1.default.Schema({
     vehicleId: {
