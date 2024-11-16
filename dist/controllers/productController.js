@@ -259,7 +259,9 @@ const updateTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.updateTrek = updateTrek;
 const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { businessId, vehCategory, vehSubCategory, services, amenities, vehCondition, madeYear, vehNumber, quantity, capacity, name, operationDates, manufacturer, model, VIN, } = req.body;
+    const { businessId, vehCategory, vehSubCategory, services, amenities, vehCondition, madeYear, vehNumber, 
+    // quantity,
+    capacity, name, operationDates, manufacturer, model, VIN, } = req.body;
     try {
         let vehImages = [];
         if (req.files) {
@@ -277,7 +279,7 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             vehCondition,
             madeYear,
             vehNumber,
-            quantity,
+            // quantity,
             capacity,
             name,
             operationDates,
@@ -315,10 +317,7 @@ const getVehicleByBusinessId = (req, res) => __awaiter(void 0, void 0, void 0, f
     const id = req.params.businessid;
     try {
         let veh = yield vehicle_1.default.find({ businessId: id });
-        if (veh.length === 0) {
-            return res.status(404).json({ error: "No Data Found" });
-        }
-        else {
+        if (veh.length > 0) {
             return res.send(veh);
         }
     }
@@ -345,7 +344,9 @@ const vehDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.vehDetails = vehDetails;
 const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { businessId, vehCategory, vehSubCategory, services, amenities, vehCondition, madeYear, vehNumber, quantity, capacity, name, operationDates, } = req.body;
+    const { businessId, vehCategory, vehSubCategory, services, amenities, vehCondition, madeYear, vehNumber, 
+    // quantity,
+    capacity, name, operationDates, } = req.body;
     try {
         let vehImages = req.body.existingVehImages || [];
         if (req.files) {
@@ -364,7 +365,7 @@ const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             vehCondition,
             madeYear,
             vehNumber,
-            quantity,
+            // quantity,
             capacity,
             name,
             operationDates,

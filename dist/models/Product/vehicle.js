@@ -33,10 +33,10 @@ const VehSchema = new mongoose_1.default.Schema({
             required: true,
         },
     ],
-    quantity: {
-        type: Number,
-        required: true,
-    },
+    // quantity: {
+    //   type: Number,
+    //   required: true,
+    // },
     capacity: {
         type: String,
         required: true,

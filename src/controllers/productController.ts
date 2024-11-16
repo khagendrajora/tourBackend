@@ -297,7 +297,7 @@ export const addVehicle = async (req: Request, res: Response) => {
     vehCondition,
     madeYear,
     vehNumber,
-    quantity,
+    // quantity,
     capacity,
     name,
     operationDates,
@@ -323,7 +323,7 @@ export const addVehicle = async (req: Request, res: Response) => {
       vehCondition,
       madeYear,
       vehNumber,
-      quantity,
+      // quantity,
       capacity,
       name,
       operationDates,
@@ -358,9 +358,7 @@ export const getVehicleByBusinessId = async (req: Request, res: Response) => {
   const id = req.params.businessid;
   try {
     let veh = await Vehicle.find({ businessId: id });
-    if (veh.length === 0) {
-      return res.status(404).json({ error: "No Data Found" });
-    } else {
+    if (veh.length > 0) {
       return res.send(veh);
     }
   } catch (error: any) {
@@ -394,7 +392,7 @@ export const updateVeh = async (req: Request, res: Response) => {
     vehCondition,
     madeYear,
     vehNumber,
-    quantity,
+    // quantity,
     capacity,
     name,
     operationDates,
@@ -419,7 +417,7 @@ export const updateVeh = async (req: Request, res: Response) => {
         vehCondition,
         madeYear,
         vehNumber,
-        quantity,
+        // quantity,
         capacity,
         name,
         operationDates,

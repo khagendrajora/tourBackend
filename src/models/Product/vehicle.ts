@@ -14,7 +14,7 @@ export interface IVeh extends Document {
   vehCondition: ICondition;
   madeYear: Date;
   vehNumber: string;
-  quantity: number;
+  // quantity: number;
   capacity: string;
   name: string;
   operationDates: Date[];
@@ -49,10 +49,10 @@ const VehSchema = new mongoose.Schema({
       required: true,
     },
   ],
-  quantity: {
-    type: Number,
-    required: true,
-  },
+  // quantity: {
+  //   type: Number,
+  //   required: true,
+  // },
 
   capacity: {
     type: String,
