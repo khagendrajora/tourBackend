@@ -7,8 +7,8 @@ const mongoose_1 = __importDefault(require("mongoose"));
 var IStatus;
 (function (IStatus) {
     IStatus["Active"] = "Active";
-    IStatus["Cancel"] = "Canceled";
-    IStatus["Fullfilled"] = "Fulfilled";
+    IStatus["Canceled"] = "Canceled";
+    IStatus["Fulfilled"] = "Fulfilled";
 })(IStatus || (IStatus = {}));
 const VehicleReservation = new mongoose_1.default.Schema({
     vehicleId: {

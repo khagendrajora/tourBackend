@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 
 enum IStatus {
   Active = "Active",
-  Cancel = "Canceled",
-  Fullfilled = "Fulfilled",
+  Canceled = "Canceled",
+  Fulfilled = "Fulfilled",
 }
 
 export interface IVRev extends Document {
