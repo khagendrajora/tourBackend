@@ -5,11 +5,16 @@ export interface IRDates extends Document {
   vehicleId: string;
   bookingDate: Date[];
   bookedBy: string;
+  bookingId: string;
 }
 
 const revDates = new mongoose.Schema(
   {
     vehicleId: {
+      type: String,
+      required: true,
+    },
+    bookingId: {
       type: String,
       required: true,
     },

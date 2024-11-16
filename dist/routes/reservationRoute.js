@@ -10,4 +10,5 @@ const router = express_1.default.Router();
 router.post("/addRev/:id", vehRevController_1.vehReservation);
 router.get("/reservdates/:id", resrvedDated_1.getReservedDates);
 router.get("/getclientrev/:id", vehRevController_1.getRevByClientId);
+router.put("/updateRevStatus/:id", vehRevController_1.updateReservationStatus);
 exports.default = router;

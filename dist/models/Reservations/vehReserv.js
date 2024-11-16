@@ -4,8 +4,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
+var IStatus;
+(function (IStatus) {
+    IStatus["active"] = "Active";
+    IStatus["cancel"] = "Canceled";
+    IStatus["fullfilled"] = "fulfill";
+})(IStatus || (IStatus = {}));
 const VehicleReservation = new mongoose_1.default.Schema({
     vehicleId: {
+        type: String,
+        required: true,
+    },
+    bookingId: {
         type: String,
         required: true,
     },
@@ -67,5 +77,11 @@ const VehicleReservation = new mongoose_1.default.Schema({
             type: Date,
         },
     ],
+    status: {
+        type: String,
+        enum: Object.values(IStatus),
+        required: true,
+        default: "active",
+    },
 }, { timestamps: true });
 exports.default = mongoose_1.default.model("VehicleReservation", VehicleReservation);

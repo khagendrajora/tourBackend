@@ -12,12 +12,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getRevByClientId = exports.vehReservation = void 0;
+exports.updateReservationStatus = exports.getRevByClientId = exports.vehReservation = void 0;
 const vehReserv_1 = __importDefault(require("../../models/Reservations/vehReserv"));
 const vehicle_1 = __importDefault(require("../../models/Product/vehicle"));
 const ReservedDated_1 = __importDefault(require("../../models/Reservations/ReservedDated"));
+const nanoid_1 = require("nanoid");
 const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
+    const customId = (0, nanoid_1.customAlphabet)("1234567890", 4);
+    const bookingId = customId();
     const { bookingName, age, email, phone, sourceAddress, destinationAddress, bookingDate, address, bookedBy, } = req.body;
     try {
         const vehData = yield vehicle_1.default.findOne({ _id: id });
@@ -32,6 +35,7 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
             vehicleNumber: vehData.vehNumber,
             capacity: vehData.capacity,
             vehicleName: vehData.name,
+            bookingId: bookingId,
             bookedBy,
             age,
             sourceAddress,
@@ -51,6 +55,7 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 vehicleId: vehData._id,
                 bookingDate,
                 bookedBy,
+                bookingId: bookingId,
             });
             resrvDate = yield resrvDate.save();
             if (!resrvDate) {
@@ -79,3 +84,30 @@ const getRevByClientId = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.getRevByClientId = getRevByClientId;
+const updateReservationStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const { status, bookingId } = req.body;
+    try {
+        const data = yield vehReserv_1.default.findByIdAndUpdate(id, {
+            status: status,
+        });
+        if (!data) {
+            return res.status(400).json({ error: "Failed to Update" });
+        }
+        else {
+            const revDate = yield ReservedDated_1.default.findOneAndDelete({
+                bookingId: bookingId,
+            });
+            if (!revDate) {
+                return res.status(400).json({ error: "failed to Update" });
+            }
+            else {
+                return res.status(200).json({ message: status });
+            }
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.updateReservationStatus = updateReservationStatus;

@@ -9,6 +9,10 @@ const revDates = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    bookingId: {
+        type: String,
+        required: true,
+    },
     bookedBy: {
         type: String,
         required: true,
