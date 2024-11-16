@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import VehicleReservation from "../../models/Reservations/vehReserv";
 import Vehicle from "../../models/Product/vehicle";
 import ReservedDate from "../../models/Reservations/ReservedDated";
-import { customAlphabet } from "nanoid";
+const { customAlphabet } = require("nanoid");
 import { sendEmail } from "../../utils/setEmail";
 import Business from "../../models/business";
 

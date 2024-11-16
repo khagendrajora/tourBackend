@@ -16,12 +16,12 @@ exports.updateReservationStatus = exports.getRevByClientId = exports.vehReservat
 const vehReserv_1 = __importDefault(require("../../models/Reservations/vehReserv"));
 const vehicle_1 = __importDefault(require("../../models/Product/vehicle"));
 const ReservedDated_1 = __importDefault(require("../../models/Reservations/ReservedDated"));
-const nanoid_1 = require("nanoid");
+const { customAlphabet } = require("nanoid");
 const setEmail_1 = require("../../utils/setEmail");
 const business_1 = __importDefault(require("../../models/business"));
 const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const customId = (0, nanoid_1.customAlphabet)("1234567890", 4);
+    const customId = customAlphabet("1234567890", 4);
     const bookingId = customId();
     const { bookingName, age, email, phone, sourceAddress, destinationAddress, bookingDate, address, bookedBy, } = req.body;
     try {
