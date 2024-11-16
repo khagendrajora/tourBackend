@@ -116,15 +116,13 @@ const updateReservationStatus = (req, res) => __awaiter(void 0, void 0, void 0, 
             if (!revDate) {
                 return res.status(400).json({ error: "failed to Update" });
             }
-            else {
-                (0, setEmail_1.sendEmail)({
-                    from: "beta.toursewa@gmail.com",
-                    to: email,
-                    subject: "Booking Status",
-                    html: `<h2>Your Booking with booking id ${bookingId} has been ${status}</h2>`,
-                });
-                return res.status(200).json({ message: status });
-            }
+            (0, setEmail_1.sendEmail)({
+                from: "beta.toursewa@gmail.com",
+                to: email,
+                subject: "Booking Status",
+                html: `<h2>Your Booking with booking id ${bookingId} has been ${status}</h2>`,
+            });
+            return res.status(200).json({ message: status });
         }
     }
     catch (error) {

@@ -113,15 +113,14 @@ export const updateReservationStatus = async (req: Request, res: Response) => {
       });
       if (!revDate) {
         return res.status(400).json({ error: "failed to Update" });
-      } else {
-        sendEmail({
-          from: "beta.toursewa@gmail.com",
-          to: email,
-          subject: "Booking Status",
-          html: `<h2>Your Booking with booking id ${bookingId} has been ${status}</h2>`,
-        });
-        return res.status(200).json({ message: status });
       }
+      sendEmail({
+        from: "beta.toursewa@gmail.com",
+        to: email,
+        subject: "Booking Status",
+        html: `<h2>Your Booking with booking id ${bookingId} has been ${status}</h2>`,
+      });
+      return res.status(200).json({ message: status });
     }
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
