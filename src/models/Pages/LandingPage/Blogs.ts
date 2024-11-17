@@ -5,6 +5,7 @@ export interface IBlogs extends Document {
   blogsImage?: string[];
   title: string;
   desc: string;
+  blogId: string;
 }
 
 const blogsSchema = new mongoose.Schema({
@@ -13,6 +14,10 @@ const blogsSchema = new mongoose.Schema({
       type: String,
     },
   ],
+  blogId: {
+    type: String,
+    required: true,
+  },
   title: {
     type: String,
   },

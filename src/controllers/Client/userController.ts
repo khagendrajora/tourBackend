@@ -5,11 +5,13 @@ import Token from "../../models/token";
 import { uuid } from "uuidv4";
 import { sendEmail } from "../../utils/setEmail";
 import jwt from "jsonwebtoken";
+const { customAlphabet } = require("nanoid");
 import ReservationDate from "../../models/Reservations/ReservedDated";
 
 export const addNewClient = async (req: Request, res: Response) => {
   const { userName, userEmail, userPwd } = req.body;
-
+  const customId = customAlphabet("1234567890", 4);
+  const userId = customId();
   try {
     let userImage: string | undefined = undefined;
     if (req.files) {
@@ -35,6 +37,7 @@ export const addNewClient = async (req: Request, res: Response) => {
       userEmail,
       userPwd: hashedPassword,
       userImage,
+      userId: userId,
     });
     clientUser = await clientUser.save();
 

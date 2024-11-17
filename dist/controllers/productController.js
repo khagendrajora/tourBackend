@@ -16,7 +16,10 @@ exports.deleteproduct = exports.updateVeh = exports.vehDetails = exports.getVehi
 const tour_1 = __importDefault(require("../models/Product/tour"));
 const trekking_1 = __importDefault(require("../models/Product/trekking"));
 const vehicle_1 = __importDefault(require("../models/Product/vehicle"));
+const { customAlphabet } = require("nanoid");
 const addTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const customId = customAlphabet("1234567890", 4);
+    const tourId = customId();
     const { businessId, prodCategory, prodsubCategory, inclusion, dest, duration, itinerary, capacity, name, phone, operationDates, } = req.body;
     try {
         let tourImages = [];
@@ -27,6 +30,7 @@ const addTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             }
         }
         let tour = new tour_1.default({
+            tourId: tourId,
             businessId,
             prodCategory,
             prodsubCategory,
@@ -138,6 +142,8 @@ const updateTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.updateTour = updateTour;
 const addTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const customId = customAlphabet("1234567890", 4);
+    const trekId = customId();
     const { businessId, prodCategory, prodsubCategory, inclusion, days, dest, numbers, itinerary, capacity, name, operationDates, } = req.body;
     try {
         let trekImages = [];
@@ -154,6 +160,7 @@ const addTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             inclusion,
             days,
             dest,
+            trekId: trekId,
             numbers,
             itinerary,
             capacity,
@@ -259,6 +266,8 @@ const updateTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.updateTrek = updateTrek;
 const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const customId = customAlphabet("1234567890", 4);
+    const vehId = customId();
     const { businessId, vehCategory, vehSubCategory, services, amenities, vehCondition, madeYear, vehNumber, 
     // quantity,
     capacity, name, operationDates, manufacturer, model, VIN, } = req.body;
@@ -275,6 +284,7 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             vehCategory,
             vehSubCategory,
             services,
+            vehId: vehId,
             amenities,
             vehCondition,
             madeYear,

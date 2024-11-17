@@ -10,6 +10,10 @@ const popularDestSchema = new mongoose_1.default.Schema({
             type: String,
         },
     ],
+    destId: {
+        type: String,
+        required: true,
+    },
     title: {
         type: String,
     },

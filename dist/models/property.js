@@ -9,6 +9,10 @@ const propertySchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    propertyId: {
+        type: String,
+        required: true,
+    },
     propCategory: {
         type: String,
         required: true,

@@ -19,10 +19,13 @@ const token_1 = __importDefault(require("../../models/token"));
 const uuidv4_1 = require("uuidv4");
 const setEmail_1 = require("../../utils/setEmail");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const { customAlphabet } = require("nanoid");
 const ReservedDated_1 = __importDefault(require("../../models/Reservations/ReservedDated"));
 const addNewClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const { userName, userEmail, userPwd } = req.body;
+    const customId = customAlphabet("1234567890", 4);
+    const userId = customId();
     try {
         let userImage = undefined;
         if (req.files) {
@@ -45,6 +48,7 @@ const addNewClient = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             userEmail,
             userPwd: hashedPassword,
             userImage,
+            userId: userId,
         });
         clientUser = yield clientUser.save();
         if (!clientUser) {

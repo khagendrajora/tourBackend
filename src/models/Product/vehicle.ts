@@ -22,11 +22,16 @@ export interface IVeh extends Document {
   manufacturer: string;
   model: string;
   VIN: string;
+  vehId: string;
 }
 
 const VehSchema = new mongoose.Schema({
   businessId: {
     type: String,
+  },
+  vehId: {
+    type: String,
+    required: true,
   },
   vehCategory: {
     type: String,

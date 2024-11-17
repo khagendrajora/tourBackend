@@ -12,11 +12,16 @@ export interface IBusiness extends Document {
   businessPwd: string;
   businessRole: string;
   isVerified: boolean;
+  bId: string;
 }
 
 const businessSchema = new mongoose.Schema(
   {
     businessName: {
+      type: String,
+      required: true,
+    },
+    bId: {
       type: String,
       required: true,
     },

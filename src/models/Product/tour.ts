@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 export interface ITour extends Document {
   _id?: string;
+  tourId: string;
   businessId: string;
   prodCategory: string;
   prodsubCategory: string;
@@ -19,6 +20,10 @@ export interface ITour extends Document {
 const tourSchema = new mongoose.Schema({
   businessId: {
     type: String,
+  },
+  tourId: {
+    type: String,
+    required: true,
   },
   prodCategory: {
     type: String,

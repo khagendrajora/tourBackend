@@ -14,11 +14,16 @@ export interface ITrekking extends Document {
   name: string;
   operationDates?: Date[];
   trekImages?: string[];
+  trekId: string;
 }
 
 const trekSchema = new mongoose.Schema({
   businessId: {
     type: String,
+  },
+  trekId: {
+    type: String,
+    required: true,
   },
   prodCategory: {
     type: String,

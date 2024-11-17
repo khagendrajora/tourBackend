@@ -9,6 +9,10 @@ const adminUserSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    adminId: {
+        type: String,
+        required: true,
+    },
     adminEmail: {
         type: String,
         required: true,

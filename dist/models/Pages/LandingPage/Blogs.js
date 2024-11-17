@@ -10,6 +10,10 @@ const blogsSchema = new mongoose_1.default.Schema({
             type: String,
         },
     ],
+    blogId: {
+        type: String,
+        required: true,
+    },
     title: {
         type: String,
     },

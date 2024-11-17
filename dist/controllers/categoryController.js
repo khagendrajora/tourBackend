@@ -15,14 +15,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateSubcategory = exports.subcategoryDetails = exports.deleteSubCategory = exports.getSubCategory = exports.addSubCategory = exports.deleteCategory = exports.updateCategory = exports.getCategoryDetails = exports.getCategory = exports.addCategory = void 0;
 const category_1 = __importDefault(require("../models/category"));
 const subCategory_1 = __importDefault(require("../models/subCategory"));
+const { customAlphabet } = require("nanoid");
 const addCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let { categoryName, desc, subCategory } = req.body;
     categoryName = categoryName.toLowerCase().trim();
+    const customId = customAlphabet("1234567890", 4);
+    const categoryId = customId();
     try {
         let category = new category_1.default({
             categoryName,
             desc,
             subCategory,
+            categoryId: categoryId,
         });
         category_1.default.findOne({ categoryName }).then((data) => __awaiter(void 0, void 0, void 0, function* () {
             if (data) {

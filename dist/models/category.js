@@ -9,6 +9,10 @@ const categorySchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    categoryId: {
+        type: String,
+        required: true,
+    },
     desc: {
         type: String,
         required: true,

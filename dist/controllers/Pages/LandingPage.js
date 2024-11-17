@@ -16,6 +16,7 @@ exports.deleteDest = exports.updateDest = exports.getDest = exports.addDest = ex
 const Hero_1 = __importDefault(require("../../models/Pages/LandingPage/Hero"));
 const AboutUs_1 = __importDefault(require("../../models/Pages/LandingPage/AboutUs"));
 const Blogs_1 = __importDefault(require("../../models/Pages/LandingPage/Blogs"));
+const { customAlphabet } = require("nanoid");
 const Destination_1 = __importDefault(require("../../models/Pages/LandingPage/Destination"));
 const addHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -184,6 +185,8 @@ const deleteHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.deleteHotDeals = deleteHotDeals;
 const addBlogs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, desc } = req.body;
+    const customId = customAlphabet("1234567890", 4);
+    const blogId = customId();
     try {
         let blogsImage = [];
         if (req.files) {
@@ -196,6 +199,7 @@ const addBlogs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             title,
             desc,
             blogsImage,
+            blogId: blogId,
         });
         blogs = yield blogs.save();
         if (!blogs) {
@@ -275,6 +279,8 @@ const deleteBlogs = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.deleteBlogs = deleteBlogs;
 const addDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title } = req.body;
+    const customId = customAlphabet("1234567890", 4);
+    const destgId = customId();
     try {
         let destImage = [];
         if (req.files) {
@@ -286,6 +292,7 @@ const addDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         let dest = new Destination_1.default({
             title,
             destImage,
+            destgId: destgId,
         });
         dest = yield dest.save();
         if (!dest) {

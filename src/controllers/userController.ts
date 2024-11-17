@@ -4,11 +4,14 @@ import bcryptjs from "bcryptjs";
 import Business from "../models/business";
 import jwt from "jsonwebtoken";
 import Token from "../models/token";
+const { customAlphabet } = require("nanoid");
 import { v4 as uuid } from "uuid";
 import { sendEmail } from "../utils/setEmail";
 
 export const addAdminUser = async (req: Request, res: Response) => {
   const { adminName, adminEmail, adminPwd } = req.body;
+  const customId = customAlphabet("1234567890", 4);
+  const adminId = customId();
   try {
     const salt = await bcryptjs.genSalt(5);
     const hashedPwd = await bcryptjs.hash(adminPwd, salt);
@@ -17,6 +20,7 @@ export const addAdminUser = async (req: Request, res: Response) => {
       adminName,
       adminEmail,
       adminPwd: hashedPwd,
+      adminId: adminId,
     });
     AdminUser.findOne({ adminEmail }).then(async (data) => {
       if (data) {

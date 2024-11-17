@@ -2,8 +2,11 @@ import { Request, Response } from "express";
 import Tour from "../models/Product/tour";
 import Trekking from "../models/Product/trekking";
 import Vehicle from "../models/Product/vehicle";
+const { customAlphabet } = require("nanoid");
 
 export const addTour = async (req: Request, res: Response) => {
+  const customId = customAlphabet("1234567890", 4);
+  const tourId = customId();
   const {
     businessId,
     prodCategory,
@@ -27,6 +30,7 @@ export const addTour = async (req: Request, res: Response) => {
       }
     }
     let tour = new Tour({
+      tourId: tourId,
       businessId,
       prodCategory,
       prodsubCategory,
@@ -146,6 +150,8 @@ export const updateTour = async (req: Request, res: Response) => {
 };
 
 export const addTrek = async (req: Request, res: Response) => {
+  const customId = customAlphabet("1234567890", 4);
+  const trekId = customId();
   const {
     businessId,
     prodCategory,
@@ -175,6 +181,7 @@ export const addTrek = async (req: Request, res: Response) => {
       inclusion,
       days,
       dest,
+      trekId: trekId,
       numbers,
       itinerary,
       capacity,
@@ -288,6 +295,8 @@ export const updateTrek = async (req: Request, res: Response) => {
 };
 
 export const addVehicle = async (req: Request, res: Response) => {
+  const customId = customAlphabet("1234567890", 4);
+  const vehId = customId();
   const {
     businessId,
     vehCategory,
@@ -319,6 +328,7 @@ export const addVehicle = async (req: Request, res: Response) => {
       vehCategory,
       vehSubCategory,
       services,
+      vehId: vehId,
       amenities,
       vehCondition,
       madeYear,

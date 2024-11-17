@@ -8,6 +8,10 @@ const trekSchema = new mongoose_1.default.Schema({
     businessId: {
         type: String,
     },
+    trekId: {
+        type: String,
+        required: true,
+    },
     prodCategory: {
         type: String,
         required: true,

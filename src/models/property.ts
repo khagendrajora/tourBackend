@@ -24,11 +24,16 @@ export interface IProperty extends Document {
   contactName: string;
   contactPhone: number;
   dateOfEstab: Date;
+  propertyId: string;
 }
 
 const propertySchema = new mongoose.Schema(
   {
     propName: {
+      type: String,
+      required: true,
+    },
+    propertyId: {
       type: String,
       required: true,
     },

@@ -1,15 +1,19 @@
 import { Request, Response } from "express";
 import Category from "../models/category";
 import SubCategory from "../models/subCategory";
+const { customAlphabet } = require("nanoid");
 
 export const addCategory = async (req: Request, res: Response) => {
   let { categoryName, desc, subCategory } = req.body;
   categoryName = categoryName.toLowerCase().trim();
+  const customId = customAlphabet("1234567890", 4);
+  const categoryId = customId();
   try {
     let category = new Category({
       categoryName,
       desc,
       subCategory,
+      categoryId: categoryId,
     });
 
     Category.findOne({ categoryName }).then(async (data) => {

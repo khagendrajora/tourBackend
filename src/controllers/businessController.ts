@@ -6,8 +6,11 @@ import BusinessProfile from "../models/businessProfine";
 import Token from "../models/token";
 import { v4 as uuid } from "uuid";
 import { sendEmail } from "../utils/setEmail";
+const { customAlphabet } = require("nanoid");
 
 export const addBusiness = async (req: Request, res: Response) => {
+  const customId = customAlphabet("1234567890", 4);
+  const bId = customId();
   const {
     businessName,
     businessCategory,
@@ -50,6 +53,7 @@ export const addBusiness = async (req: Request, res: Response) => {
       businessAddress,
       primaryEmail,
       primaryPhone,
+      bId: bId,
       businessPwd: hashedPassword,
     });
     business = await business.save();

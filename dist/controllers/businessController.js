@@ -20,7 +20,10 @@ const businessProfine_1 = __importDefault(require("../models/businessProfine"));
 const token_1 = __importDefault(require("../models/token"));
 const uuid_1 = require("uuid");
 const setEmail_1 = require("../utils/setEmail");
+const { customAlphabet } = require("nanoid");
 const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const customId = customAlphabet("1234567890", 4);
+    const bId = customId();
     const { businessName, businessCategory, taxRegistration, businessAddress, primaryEmail, primaryPhone, businessPwd, } = req.body;
     try {
         if (businessPwd == "") {
@@ -51,6 +54,7 @@ const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             businessAddress,
             primaryEmail,
             primaryPhone,
+            bId: bId,
             businessPwd: hashedPassword,
         });
         business = yield business.save();

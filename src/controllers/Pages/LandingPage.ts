@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Hero from "../../models/Pages/LandingPage/Hero";
 import AboutUs from "../../models/Pages/LandingPage/AboutUs";
 import Blogs from "../../models/Pages/LandingPage/Blogs";
+const { customAlphabet } = require("nanoid");
 import Destination from "../../models/Pages/LandingPage/Destination";
 
 export const addHero = async (req: Request, res: Response) => {
@@ -167,6 +168,8 @@ export const deleteHotDeals = async (req: Request, res: Response) => {
 
 export const addBlogs = async (req: Request, res: Response) => {
   const { title, desc } = req.body;
+  const customId = customAlphabet("1234567890", 4);
+  const blogId = customId();
   try {
     let blogsImage: string[] = [];
     if (req.files) {
@@ -179,6 +182,7 @@ export const addBlogs = async (req: Request, res: Response) => {
       title,
       desc,
       blogsImage,
+      blogId: blogId,
     });
     blogs = await blogs.save();
     if (!blogs) {
@@ -256,6 +260,8 @@ export const deleteBlogs = async (req: Request, res: Response) => {
 
 export const addDest = async (req: Request, res: Response) => {
   const { title } = req.body;
+  const customId = customAlphabet("1234567890", 4);
+  const destgId = customId();
   try {
     let destImage: string[] = [];
     if (req.files) {
@@ -267,6 +273,7 @@ export const addDest = async (req: Request, res: Response) => {
     let dest = new Destination({
       title,
       destImage,
+      destgId: destgId,
     });
     dest = await dest.save();
     if (!dest) {

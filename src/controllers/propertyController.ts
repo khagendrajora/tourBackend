@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import Property from "../models/property";
+const { customAlphabet } = require("nanoid");
 
 export const addProperty = async (req: Request, res: Response) => {
+  const customId = customAlphabet("1234567890", 4);
+  const propertyId = customId();
   const {
     propName,
     propCategory,
@@ -23,6 +26,7 @@ export const addProperty = async (req: Request, res: Response) => {
       propName,
       propCategory,
       propSubCategory,
+      propertyId: propertyId,
       email,
       website,
       phone,

@@ -4,6 +4,7 @@ export interface IDest extends Document {
   _id?: string;
   destImage: string[];
   title: string;
+  destId: string;
 }
 
 const popularDestSchema = new mongoose.Schema({
@@ -12,6 +13,10 @@ const popularDestSchema = new mongoose.Schema({
       type: String,
     },
   ],
+  destId: {
+    type: String,
+    required: true,
+  },
   title: {
     type: String,
   },

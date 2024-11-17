@@ -9,6 +9,10 @@ const businessSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    bId: {
+        type: String,
+        required: true,
+    },
     businessCategory: {
         type: String,
         required: true,

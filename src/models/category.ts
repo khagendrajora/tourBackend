@@ -5,11 +5,16 @@ export interface ICategory extends Document {
   categoryName: string;
   desc: string;
   subCategory?: string;
+  categoryId: string;
 }
 
 const categorySchema = new mongoose.Schema(
   {
     categoryName: {
+      type: String,
+      required: true,
+    },
+    categoryId: {
       type: String,
       required: true,
     },

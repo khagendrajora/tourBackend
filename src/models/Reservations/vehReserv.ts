@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-enum IStatus {
+export enum IStatus {
   Active = "Active",
   Canceled = "Canceled",
   Fulfilled = "Fulfilled",

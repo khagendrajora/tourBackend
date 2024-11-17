@@ -18,10 +18,13 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const business_1 = __importDefault(require("../models/business"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const token_1 = __importDefault(require("../models/token"));
+const { customAlphabet } = require("nanoid");
 const uuid_1 = require("uuid");
 const setEmail_1 = require("../utils/setEmail");
 const addAdminUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { adminName, adminEmail, adminPwd } = req.body;
+    const customId = customAlphabet("1234567890", 4);
+    const adminId = customId();
     try {
         const salt = yield bcryptjs_1.default.genSalt(5);
         const hashedPwd = yield bcryptjs_1.default.hash(adminPwd, salt);
@@ -29,6 +32,7 @@ const addAdminUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             adminName,
             adminEmail,
             adminPwd: hashedPwd,
+            adminId: adminId,
         });
         adminUser_1.default.findOne({ adminEmail }).then((data) => __awaiter(void 0, void 0, void 0, function* () {
             if (data) {
