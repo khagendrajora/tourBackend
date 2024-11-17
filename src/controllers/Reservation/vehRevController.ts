@@ -40,7 +40,7 @@ export const vehReservation = async (req: Request, res: Response) => {
       vehicleName: vehData.name,
       bookingId: bookingId,
       businessId: vehData.businessId,
-      vehicleImage: vehData.vehImages,
+      vehicleImage: vehData.vehImages?.length ? vehData.vehImages : [],
       bookedBy,
       age,
       sourceAddress,

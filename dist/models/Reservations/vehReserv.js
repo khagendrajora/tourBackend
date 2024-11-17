@@ -31,9 +31,11 @@ const VehicleReservation = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    vehicleImage: {
-        type: String,
-    },
+    vehicleImage: [
+        {
+            type: String,
+        },
+    ],
     capacity: {
         type: String,
         required: true,

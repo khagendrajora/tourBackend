@@ -20,6 +20,7 @@ const { customAlphabet } = require("nanoid");
 const setEmail_1 = require("../../utils/setEmail");
 const business_1 = __importDefault(require("../../models/business"));
 const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const id = req.params.id;
     const customId = customAlphabet("1234567890", 4);
     const bookingId = customId();
@@ -40,7 +41,7 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
             vehicleName: vehData.name,
             bookingId: bookingId,
             businessId: vehData.businessId,
-            vehicleImage: vehData.vehImages,
+            vehicleImage: ((_a = vehData.vehImages) === null || _a === void 0 ? void 0 : _a.length) ? vehData.vehImages : [],
             bookedBy,
             age,
             sourceAddress,
