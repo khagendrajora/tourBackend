@@ -15,6 +15,14 @@ const VehicleReservation = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    numberOfPassengers: {
+        type: Number,
+        required: true,
+    },
+    businessId: {
+        type: String,
+        required: true,
+    },
     bookingId: {
         type: String,
         required: true,
@@ -22,6 +30,9 @@ const VehicleReservation = new mongoose_1.default.Schema({
     vehicleType: {
         type: String,
         required: true,
+    },
+    vehicleImage: {
+        type: String,
     },
     capacity: {
         type: String,

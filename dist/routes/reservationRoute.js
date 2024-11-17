@@ -11,4 +11,6 @@ router.post("/addRev/:id", vehRevController_1.vehReservation);
 router.get("/reservdates/:id", resrvedDated_1.getReservedDates);
 router.get("/getclientrev/:id", vehRevController_1.getRevByClientId);
 router.put("/updateRevStatus/:id", vehRevController_1.updateReservationStatus);
+router.get("/getbusinessrev/:id", vehRevController_1.getRevByBusinessId);
+router.put("/updateRevbybid/:id", vehRevController_1.updateReservationByBid);
 exports.default = router;

@@ -26,11 +26,22 @@ export interface IVRev extends Document {
   address: string;
   bookingName: string;
   status: IStatus;
+  businessId: string;
+  vehicleImage?: string;
+  numberOfPassengers: number;
 }
 
 const VehicleReservation = new mongoose.Schema(
   {
     vehicleId: {
+      type: String,
+      required: true,
+    },
+    numberOfPassengers: {
+      type: Number,
+      required: true,
+    },
+    businessId: {
       type: String,
       required: true,
     },
@@ -41,6 +52,9 @@ const VehicleReservation = new mongoose.Schema(
     vehicleType: {
       type: String,
       required: true,
+    },
+    vehicleImage: {
+      type: String,
     },
     capacity: {
       type: String,

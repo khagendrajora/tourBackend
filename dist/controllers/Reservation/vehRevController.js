@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateReservationStatus = exports.getRevByClientId = exports.vehReservation = void 0;
+exports.updateReservationByBid = exports.getRevByBusinessId = exports.updateReservationStatus = exports.getRevByClientId = exports.vehReservation = void 0;
 const vehReserv_1 = __importDefault(require("../../models/Reservations/vehReserv"));
 const vehicle_1 = __importDefault(require("../../models/Product/vehicle"));
 const ReservedDated_1 = __importDefault(require("../../models/Reservations/ReservedDated"));
@@ -23,7 +23,7 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const id = req.params.id;
     const customId = customAlphabet("1234567890", 4);
     const bookingId = customId();
-    const { bookingName, age, email, phone, sourceAddress, destinationAddress, bookingDate, address, bookedBy, } = req.body;
+    const { bookingName, age, email, phone, sourceAddress, destinationAddress, bookingDate, address, bookedBy, numberOfPassengers, } = req.body;
     try {
         const vehData = yield vehicle_1.default.findOne({ _id: id });
         if (!vehData) {
@@ -39,6 +39,8 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
             capacity: vehData.capacity,
             vehicleName: vehData.name,
             bookingId: bookingId,
+            businessId: vehData.businessId,
+            vehicleImage: vehData.vehImages,
             bookedBy,
             age,
             sourceAddress,
@@ -48,6 +50,7 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
             bookingDate,
             address,
             bookingName,
+            numberOfPassengers,
         });
         vehRev = yield vehRev.save();
         if (!vehRev) {
@@ -130,3 +133,45 @@ const updateReservationStatus = (req, res) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.updateReservationStatus = updateReservationStatus;
+const getRevByBusinessId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        const data = yield vehReserv_1.default.find({ businessId: id });
+        if (data.length > 0) {
+            return res.send(data);
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.getRevByBusinessId = getRevByBusinessId;
+const updateReservationByBid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const { status, email } = req.body;
+    try {
+        const data = yield vehReserv_1.default.findOneAndUpdate({ bookingId: id }, { status: status }, { new: true });
+        if (!data) {
+            return res.status(400).json({ error: "Failed to update" });
+        }
+        else {
+            const revDate = yield ReservedDated_1.default.findOneAndDelete({
+                bookingId: id,
+            });
+            if (!revDate) {
+                return res.status(400).json({ error: "Failed" });
+            }
+            (0, setEmail_1.sendEmail)({
+                from: "beta.toursewa@gmail.com",
+                to: email,
+                subject: "Booking Status",
+                html: `<h2>Your Booking with booking id ${id} has been ${status}</h2>`,
+            });
+            return res.status(200).json({ message: status });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.updateReservationByBid = updateReservationByBid;
