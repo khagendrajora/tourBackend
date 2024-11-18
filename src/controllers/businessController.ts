@@ -141,6 +141,12 @@ export const businessLogin = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Incorrect Password" });
     }
 
+    const isActive = businessEmail.isActive;
+
+    if (!isActive) {
+      return res.status(400).json({ error: "Account not Activated" });
+    }
+
     const data = { id: businessEmail._id };
     const authToken = jwt.sign(data, process.env.JWTSECRET as string);
     res.cookie("authToken", authToken, {

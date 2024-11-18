@@ -135,6 +135,10 @@ const businessLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         if (!isPassword) {
             return res.status(400).json({ error: "Incorrect Password" });
         }
+        const isActive = businessEmail.isActive;
+        if (!isActive) {
+            return res.status(400).json({ error: "Account not Activated" });
+        }
         const data = { id: businessEmail._id };
         const authToken = jsonwebtoken_1.default.sign(data, process.env.JWTSECRET);
         res.cookie("authToken", authToken, {
