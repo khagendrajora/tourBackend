@@ -87,7 +87,7 @@ ${api}/verifybusinessemail/${token.token}`,
             to: "khagijora2074@gmail.com",
             subject: "New Business Registered",
             html: `<h2>A new business with business Id ${bId} has been registered</h2>
-      <a href='${api}/businessapprove/${bId}'>Click to verify and activate the business account</a>
+      <a href='${process.env.FRONTEND_URL}/businessapprove/${bId}'>Click to verify and activate the business account</a>
       `,
         });
         return res
