@@ -110,12 +110,19 @@ export const businessApprove = async (req: Request, res: Response) => {
     //   return res.status(404).json({ err: "failed to Get user ID" });
     // }
     // if (user?.Role == true) {
-    const business = await Business.findById(id);
+    const business = await Business.findOne({ bId: id });
     if (!business) {
       return res.status(404).json({ error: "Business not found" });
     }
     business.isActive = !business.isActive;
     const updatedBusiness = await business.save();
+
+    sendEmail({
+      from: "beta.toursewa@gmail.com",
+      to: business.primaryEmail,
+      subject: "Business Account Status ",
+      html: `<h2>Your business account with business Id ${id} has been made ${business.isActive}</h2>`,
+    });
 
     return res.status(200).json({
       data: updatedBusiness,

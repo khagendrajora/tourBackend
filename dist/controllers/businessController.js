@@ -82,6 +82,14 @@ ${api}/verifybusinessemail/${token.token}`,
       <a href='${url}'>Click here To verify</a>`,
         });
         hashedPassword = "";
+        (0, setEmail_1.sendEmail)({
+            from: "beta.toursewa@gmail.com",
+            to: "khagijora2074@gmail.com",
+            subject: "New Business Registered",
+            html: `<h2>A new business with business Id ${bId} has been registered</h2>
+      <a href='${api}/businessapprove/${bId}'>Click to verify and activate the business account</a>
+      `,
+        });
         return res
             .status(200)
             .json({ message: "Verifying link has been sent to Email " });

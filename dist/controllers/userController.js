@@ -124,12 +124,18 @@ const businessApprove = (req, res) => __awaiter(void 0, void 0, void 0, function
         //   return res.status(404).json({ err: "failed to Get user ID" });
         // }
         // if (user?.Role == true) {
-        const business = yield business_1.default.findById(id);
+        const business = yield business_1.default.findOne({ bId: id });
         if (!business) {
             return res.status(404).json({ error: "Business not found" });
         }
         business.isActive = !business.isActive;
         const updatedBusiness = yield business.save();
+        (0, setEmail_1.sendEmail)({
+            from: "beta.toursewa@gmail.com",
+            to: business.primaryEmail,
+            subject: "Business Account Status ",
+            html: `<h2>Your business account with business Id ${id} has been made ${business.isActive}</h2>`,
+        });
         return res.status(200).json({
             data: updatedBusiness,
         });
