@@ -95,6 +95,7 @@ export const getAdmin = async (req: Request, res: Response) => {
 
 export const businessApprove = async (req: Request, res: Response) => {
   const id = req.params.id;
+  let status = "";
   // const authToken = req.cookies.authToken;
   // if (!authToken) {
   //   return res.status(404).json({ error: "Token not found or login first" });
@@ -117,15 +118,22 @@ export const businessApprove = async (req: Request, res: Response) => {
     business.isActive = !business.isActive;
     const updatedBusiness = await business.save();
 
+    if (business.isActive) {
+      status = "Activated";
+    } else {
+      status = "Deactivated";
+    }
+
     sendEmail({
       from: "beta.toursewa@gmail.com",
       to: business.primaryEmail,
       subject: "Business Account Status ",
-      html: `<h2>Your business account with business Id ${id} has been made ${business.isActive}</h2>`,
+      html: `<h2>Your business account with business Id ${id} has been made ${status}</h2>`,
     });
 
     return res.status(200).json({
       data: updatedBusiness,
+      message: `Business is ${status}`,
     });
     // } else {
     //   return res.status(401).json({ error: "Unauthorized" });

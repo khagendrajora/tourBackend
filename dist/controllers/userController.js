@@ -109,6 +109,7 @@ const getAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getAdmin = getAdmin;
 const businessApprove = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
+    let status = "";
     // const authToken = req.cookies.authToken;
     // if (!authToken) {
     //   return res.status(404).json({ error: "Token not found or login first" });
@@ -130,14 +131,21 @@ const businessApprove = (req, res) => __awaiter(void 0, void 0, void 0, function
         }
         business.isActive = !business.isActive;
         const updatedBusiness = yield business.save();
+        if (business.isActive) {
+            status = "Activated";
+        }
+        else {
+            status = "Deactivated";
+        }
         (0, setEmail_1.sendEmail)({
             from: "beta.toursewa@gmail.com",
             to: business.primaryEmail,
             subject: "Business Account Status ",
-            html: `<h2>Your business account with business Id ${id} has been made ${business.isActive}</h2>`,
+            html: `<h2>Your business account with business Id ${id} has been made ${status}</h2>`,
         });
         return res.status(200).json({
             data: updatedBusiness,
+            message: `Business is ${status}`,
         });
         // } else {
         //   return res.status(401).json({ error: "Unauthorized" });
