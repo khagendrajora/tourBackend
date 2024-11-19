@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
 
 export enum IStatus {
-  Active = "Active",
+  Active = "Approved",
   Canceled = "Canceled",
   Fulfilled = "Fulfilled",
+  Pending = "Pending",
 }
 
 export interface IVRev extends Document {
@@ -122,7 +123,7 @@ const VehicleReservation = new mongoose.Schema(
       type: String,
       enum: Object.values(IStatus),
       required: true,
-      default: IStatus.Active,
+      default: IStatus.Pending,
     },
   },
 
