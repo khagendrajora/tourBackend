@@ -16,6 +16,9 @@ const VehicleReservation = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    createdAt: {
+        type: Date,
+    },
     numberOfPassengers: {
         type: Number,
         required: true,

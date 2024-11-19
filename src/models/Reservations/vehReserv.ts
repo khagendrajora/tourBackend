@@ -29,6 +29,7 @@ export interface IVRev extends Document {
   businessId: string;
   vehicleImage?: string[];
   numberOfPassengers: number;
+  createdAt?: Date;
 }
 
 const VehicleReservation = new mongoose.Schema(
@@ -36,6 +37,9 @@ const VehicleReservation = new mongoose.Schema(
     vehicleId: {
       type: String,
       required: true,
+    },
+    createdAt: {
+      type: Date,
     },
     numberOfPassengers: {
       type: Number,

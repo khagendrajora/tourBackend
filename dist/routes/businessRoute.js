@@ -13,24 +13,12 @@ router.put("/verifybusinessemail/:token", businessController_1.verifyEmail);
 router.post("/businesslogin", businessController_1.businessLogin);
 router.get("/getbusiness", businessController_1.getBusiness);
 router.get("/businessprofile/:businessId", businessController_1.businessProfile);
-// router.get("/businessdata/:id", getBusinessProfileDetails);
-// router.post(
-//   "/addbusinessprofile/:businessid",
-//   upload.fields([
-//     { name: "profileIcon", maxCount: 1 },
-//     { name: "imageGallery", maxCount: 1000 },
-//   ]),
-//   addBusinessProfileData,
-//   validation,
-//   addbusinessProfile
-// );
 router.put("/updatebusinessprofile/:businessid", fileUpload_1.default.fields([
     { name: "profileIcon", maxCount: 1 },
     { name: "imageGallery", maxCount: 100 },
 ]), businessController_1.updateBusinessProfile);
 router.delete("/deletebusiness/:id", businessController_1.deleteBusiness);
 router.post("/businesssignout", businessController_1.businessSignOut);
-// router.get("/getbusinessprofile/:businessId", getBusinessProfile);
 router.post("/forgetbusinesspwd", businessController_1.forgetPwd);
 router.put("/resetbusinesspwd/:token", businessController_1.resetPwd);
 exports.default = router;

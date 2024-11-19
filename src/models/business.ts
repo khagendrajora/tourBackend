@@ -17,7 +17,7 @@ export interface IBusiness extends Document {
   businessName: string;
   businessCategory: string;
   businessSubCategory?: string;
-  // taxRegistration: string;
+
   businessAddress: {
     address: string;
     country?: string;

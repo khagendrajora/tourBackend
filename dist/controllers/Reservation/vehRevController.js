@@ -138,7 +138,10 @@ const getRevByBusinessId = (req, res) => __awaiter(void 0, void 0, void 0, funct
     const id = req.params.id;
     try {
         const data = yield vehReserv_1.default.find({ businessId: id });
-        if (data.length > 0) {
+        if (data.length === 0) {
+            return res.status(404).json({ error: "No Data found" });
+        }
+        else {
             return res.send(data);
         }
     }

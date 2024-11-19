@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import bcryptjs from "bcryptjs";
 import Business from "../models/business";
 import jwt from "jsonwebtoken";
-// import BusinessProfile from "../models/businessProfine";
+
 import Token from "../models/token";
 import { v4 as uuid } from "uuid";
 import { sendEmail } from "../utils/setEmail";
@@ -185,10 +185,6 @@ export const businessProfile = async (req: Request, res: Response) => {
   const id = req.params.businessId;
 
   try {
-    // const authToken = req.cookies.authToken;
-    // if (!authToken) {
-    //   return res.status(400).json({ error: "Session Expired" });
-    // }
     const data = await Business.findById(id);
     if (!data) {
       return res.status(404).json({ error: "Failed to get business Profile" });
@@ -212,137 +208,7 @@ export const getBusiness = async (req: Request, res: Response) => {
   }
 };
 
-// export const addbusinessProfile = async (req: Request, res: Response) => {
-//   const businessId = req.params.businessid;
-//   const authToken = req.cookies.authToken;
-//   // if (!authToken) {
-//   //   return res
-//   //     .status(400)
-//   //     .json({ error: "Token not found, first login with business ID " });
-//   // }
-//   const { businessSubcategory, website, contactName } = req.body;
-
-//   const { address, country, state, city } = req.body.businessAddress;
-//   const { authority, registrationNumber, registrationOn, expiresOn } =
-//     req.body.businessRegistration;
-
-//   const { platform } = req.body.socialMedia;
-
-//   try {
-//     // const decodedToken = jwt.verify(
-//     //   authToken,
-//     //   process.env.JWTSECRET as string
-//     // ) as { id: string };
-//     // const businessId = decodedToken.id;
-
-//     const data = await Business.findOne({ _id: businessId });
-
-//     if (!data) {
-//       return res.status(400).json({
-//         error: "Business ID not found",
-//         businessId: businessId,
-//       });
-//     }
-
-//     let imageGallery: string[] = [];
-//     let profileIcon: string | undefined = undefined;
-
-//     if (req.files) {
-//       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-
-//       if (files["imageGallery"]) {
-//         imageGallery = files["imageGallery"].map((file) => file.path);
-//       }
-
-//       if (files["profileIcon"]) {
-//         profileIcon = files["profileIcon"][0]?.path;
-//       }
-//     }
-
-//     const businessProfile = new BusinessProfile({
-//       businessId: data._id,
-//       businessName: data.businessName,
-//       businessCategory: data.businessCategory,
-//       businessSubcategory,
-//       businessAddress: {
-//         address,
-//         country,
-//         state,
-//         city,
-//       },
-//       email: data.primaryEmail,
-//       website,
-//       contactName,
-//       phone: data.primaryPhone,
-//       businessRegistration: {
-//         authority,
-//         registrationNumber,
-//         registrationOn,
-//         expiresOn,
-//       },
-//       socialMedia: {
-//         platform,
-//       },
-//       imageGallery,
-//       profileIcon,
-//     });
-
-//     const savedData = await businessProfile.save();
-//     if (!savedData) {
-//       return res.status(400).json({ error: "failed to save" });
-//     } else {
-//       return res.send(savedData);
-//     }
-//   } catch (error: any) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
-
-// export const getBusinessProfile = async (req: Request, res: Response) => {
-//   const businessId = req.params.businessId;
-//   try {
-//     const businessData = await Business.findOne({ _id: businessId });
-//     if (!businessData) {
-//       const data = await BusinessProfile.findOne({ businessId: businessId });
-//       if (!data) {
-//         return res.status(404).json({ error: "Data Not Found" });
-//       } else {
-//         return res.send(data);
-//       }
-//     } else {
-//       return res.send(businessData);
-//     }
-//   } catch (error: any) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
-
-// export const getBusinessProfileDetails = async (
-//   req: Request,
-//   res: Response
-// ) => {
-//   const id = req.params.id;
-//   try {
-//     const data = await BusinessProfile.findById(id);
-//     if (!data) {
-//       return res
-//         .status(404)
-//         .json({ error: "Failed to get business Profile Data" });
-//     } else {
-//       return res.send(data);
-//     }
-//   } catch (error: any) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
-
 export const updateBusinessProfile = async (req: Request, res: Response) => {
-  // const authToken = req.cookies.authToken;
-  // if (!authToken) {
-  //   return res
-  //     .status(400)
-  //     .json({ error: "Token not found, first login with business ID " });
-  // }
   const id = req.params.businessid;
   try {
     const imageGallery: string[] = req.body.existingImageGallery || [];
@@ -363,10 +229,9 @@ export const updateBusinessProfile = async (req: Request, res: Response) => {
     const data = await Business.findByIdAndUpdate(
       id,
       {
-        // businessId: req.body.businessId,
         businessName: req.body.businessName,
         businessCategory: req.body.businessCategory,
-        businessSubcategory: req.body.businessSubcategory,
+        businessSubCategory: req.body.businessSubCategory,
         businessAddress: {
           address: req.body.businessAddress.address,
           country: req.body.businessAddress.country,
@@ -385,6 +250,7 @@ export const updateBusinessProfile = async (req: Request, res: Response) => {
         },
         socialMedia: {
           platform: req.body.socialMedia.platform,
+          url: req.body.socialMedia.url,
         },
         imageGallery,
         profileIcon,
@@ -396,21 +262,9 @@ export const updateBusinessProfile = async (req: Request, res: Response) => {
         error: "Failed to Update",
       });
     } else {
-      // const newData = await Business.findByIdAndUpdate(
-      //   req.body.businessId,
-      //   {
-      //     businessName: req.body.businessName,
-      //     businessCategory: req.body.businessCategory,
-      //     address: req.body.businessAddress.Address,
-      //     primaryEmail: req.body.email,
-      //     primaryPhone: req.body.phone,
-      //   },
-      //   { new: true }
-      // );
       return res.send({
         message: "Updated",
         data: data,
-        // newData: newData,
       });
     }
   } catch (error: any) {
@@ -425,15 +279,6 @@ export const deleteBusiness = async (req: Request, res: Response) => {
     if (!deleteBusiness) {
       return res.status(404).json({ error: "Failed to delete" });
     }
-    // const deletedBusinessProfile = await BusinessProfile.findOneAndDelete({
-    //   businessId: id,
-    // });
-
-    // if (!deletedBusinessProfile) {
-    //   return res
-    //     .status(404)
-    //     .json({ error: "Failed to delete associated business profile" });
-    // }
 
     return res.status(200).json({ message: "Successfully Deleted" });
   } catch (error: any) {

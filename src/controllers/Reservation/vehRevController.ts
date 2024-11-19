@@ -135,7 +135,9 @@ export const getRevByBusinessId = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
     const data = await VehicleReservation.find({ businessId: id });
-    if (data.length > 0) {
+    if (data.length === 0) {
+      return res.status(404).json({ error: "No Data found" });
+    } else {
       return res.send(data);
     }
   } catch (error: any) {
