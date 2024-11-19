@@ -10,21 +10,27 @@ const Validation_1 = require("../validation/Validation");
 const router = express_1.default.Router();
 router.post("/addbusiness", Validation_1.addBusinessData, Validation_1.validation, businessController_1.addBusiness);
 router.put("/verifybusinessemail/:token", businessController_1.verifyEmail);
+router.post("/businesslogin", businessController_1.businessLogin);
 router.get("/getbusiness", businessController_1.getBusiness);
 router.get("/businessprofile/:businessId", businessController_1.businessProfile);
-router.get("/businessdata/:id", businessController_1.getBusinessProfileDetails);
-router.post("/addbusinessprofile/:businessid", fileUpload_1.default.fields([
-    { name: "profileIcon", maxCount: 1 },
-    { name: "imageGallery", maxCount: 1000 },
-]), Validation_1.addBusinessProfileData, Validation_1.validation, businessController_1.addbusinessProfile);
-router.post("/businesslogin", businessController_1.businessLogin);
-router.post("/businesssignout", businessController_1.businessSignOut);
-router.put("/updatebusinessprofile/:profileId", fileUpload_1.default.fields([
+// router.get("/businessdata/:id", getBusinessProfileDetails);
+// router.post(
+//   "/addbusinessprofile/:businessid",
+//   upload.fields([
+//     { name: "profileIcon", maxCount: 1 },
+//     { name: "imageGallery", maxCount: 1000 },
+//   ]),
+//   addBusinessProfileData,
+//   validation,
+//   addbusinessProfile
+// );
+router.put("/updatebusinessprofile/:businessid", fileUpload_1.default.fields([
     { name: "profileIcon", maxCount: 1 },
     { name: "imageGallery", maxCount: 100 },
 ]), businessController_1.updateBusinessProfile);
-router.get("/getbusinessprofile/:businessId", businessController_1.getBusinessProfile);
+router.delete("/deletebusiness/:id", businessController_1.deleteBusiness);
+router.post("/businesssignout", businessController_1.businessSignOut);
+// router.get("/getbusinessprofile/:businessId", getBusinessProfile);
 router.post("/forgetbusinesspwd", businessController_1.forgetPwd);
 router.put("/resetbusinesspwd/:token", businessController_1.resetPwd);
-router.delete("/deletebusiness/:id", businessController_1.deleteBusiness);
 exports.default = router;

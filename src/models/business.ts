@@ -1,11 +1,29 @@
 import mongoose from "mongoose";
 
+interface ISocialMedia {
+  platform: string;
+  url: string;
+}
+
+interface IBusinessRegistration {
+  authority: string;
+  registrationNumber: string;
+  registrationOn: Date;
+  expiresOn: Date;
+}
+
 export interface IBusiness extends Document {
   _id?: string;
   businessName: string;
   businessCategory: string;
-  taxRegistration: string;
-  businessAddress: string;
+  businessSubCategory?: string;
+  // taxRegistration: string;
+  businessAddress: {
+    address: string;
+    country?: string;
+    state?: string;
+    city?: string;
+  };
   primaryEmail: string;
   primaryPhone: string;
   isActive: boolean;
@@ -13,6 +31,12 @@ export interface IBusiness extends Document {
   businessRole: string;
   isVerified: boolean;
   bId: string;
+  website?: string;
+  contactName?: string;
+  businessRegistration?: IBusinessRegistration;
+  socialMedia?: ISocialMedia;
+  imageGallery?: string[];
+  profileIcon?: string;
 }
 
 const businessSchema = new mongoose.Schema(
@@ -29,14 +53,38 @@ const businessSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    taxRegistration: {
+    businessSubCategory: {
       type: String,
-      required: true,
-      unique: true,
+    },
+    businessRegistration: {
+      authority: {
+        type: String,
+      },
+      registrationNumber: {
+        type: String,
+        required: true,
+        unique: true,
+      },
+      registrationOn: {
+        type: Date,
+      },
+      expiresOn: {
+        type: Date,
+      },
     },
     businessAddress: {
-      type: String,
-      required: true,
+      address: {
+        type: String,
+      },
+      country: {
+        type: String,
+      },
+      state: {
+        type: String,
+      },
+      city: {
+        type: String,
+      },
     },
     primaryEmail: {
       type: String,
@@ -63,6 +111,29 @@ const businessSchema = new mongoose.Schema(
     isVerified: {
       type: Boolean,
       default: false,
+    },
+    website: {
+      type: String,
+    },
+    contactName: {
+      type: String,
+    },
+
+    socialMedia: {
+      platform: {
+        type: String,
+      },
+      url: {
+        type: String,
+      },
+    },
+    imageGallery: [
+      {
+        type: String,
+      },
+    ],
+    profileIcon: {
+      type: String,
     },
   },
   { timestamps: true }

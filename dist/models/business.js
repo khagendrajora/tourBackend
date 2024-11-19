@@ -17,14 +17,38 @@ const businessSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    taxRegistration: {
+    businessSubCategory: {
         type: String,
-        required: true,
-        unique: true,
+    },
+    businessRegistration: {
+        authority: {
+            type: String,
+        },
+        registrationNumber: {
+            type: String,
+            required: true,
+            unique: true,
+        },
+        registrationOn: {
+            type: Date,
+        },
+        expiresOn: {
+            type: Date,
+        },
     },
     businessAddress: {
-        type: String,
-        required: true,
+        address: {
+            type: String,
+        },
+        country: {
+            type: String,
+        },
+        state: {
+            type: String,
+        },
+        city: {
+            type: String,
+        },
     },
     primaryEmail: {
         type: String,
@@ -51,6 +75,28 @@ const businessSchema = new mongoose_1.default.Schema({
     isVerified: {
         type: Boolean,
         default: false,
+    },
+    website: {
+        type: String,
+    },
+    contactName: {
+        type: String,
+    },
+    socialMedia: {
+        platform: {
+            type: String,
+        },
+        url: {
+            type: String,
+        },
+    },
+    imageGallery: [
+        {
+            type: String,
+        },
+    ],
+    profileIcon: {
+        type: String,
     },
 }, { timestamps: true });
 exports.default = mongoose_1.default.model("Business", businessSchema);

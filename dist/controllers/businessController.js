@@ -12,11 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPwd = exports.forgetPwd = exports.businessSignOut = exports.deleteBusiness = exports.updateBusinessProfile = exports.getBusinessProfileDetails = exports.getBusinessProfile = exports.addbusinessProfile = exports.getBusiness = exports.businessProfile = exports.businessLogin = exports.verifyEmail = exports.addBusiness = void 0;
+exports.resetPwd = exports.forgetPwd = exports.businessSignOut = exports.deleteBusiness = exports.updateBusinessProfile = exports.getBusiness = exports.businessProfile = exports.businessLogin = exports.verifyEmail = exports.addBusiness = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const business_1 = __importDefault(require("../models/business"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const businessProfine_1 = __importDefault(require("../models/businessProfine"));
+// import BusinessProfile from "../models/businessProfine";
 const token_1 = __importDefault(require("../models/token"));
 const uuid_1 = require("uuid");
 const setEmail_1 = require("../utils/setEmail");
@@ -24,12 +24,16 @@ const { customAlphabet } = require("nanoid");
 const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
     const bId = customId();
-    const { businessName, businessCategory, taxRegistration, businessAddress, primaryEmail, primaryPhone, businessPwd, } = req.body;
+    const { registrationNumber } = req.body.businessRegistration;
+    const { address } = req.body.businessAddress;
+    const { businessName, businessCategory, primaryEmail, primaryPhone, businessPwd, } = req.body;
     try {
         if (businessPwd == "") {
             return res.status(400).json({ error: "Password is reqired" });
         }
-        const tax = yield business_1.default.findOne({ taxRegistration });
+        const tax = yield business_1.default.findOne({
+            "businessRegistration.registrationNumber": registrationNumber,
+        });
         if (tax) {
             return res
                 .status(400)
@@ -50,8 +54,12 @@ const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         let business = new business_1.default({
             businessName,
             businessCategory,
-            taxRegistration,
-            businessAddress,
+            businessRegistration: {
+                registrationNumber,
+            },
+            businessAddress: {
+                address,
+            },
             primaryEmail,
             primaryPhone,
             bId: bId,
@@ -82,14 +90,6 @@ ${api}/verifybusinessemail/${token.token}`,
       <a href='${url}'>Click here To verify</a>`,
         });
         hashedPassword = "";
-        (0, setEmail_1.sendEmail)({
-            from: "beta.toursewa@gmail.com",
-            to: "khagijora2074@gmail.com",
-            subject: "New Business Registered",
-            html: `<h2>A new business with business Id ${bId} has been registered</h2>
-      <a href='${process.env.FRONTEND_URL}/businessapprove/${bId}'>Click to verify and activate the business account</a>
-      `,
-        });
         return res
             .status(200)
             .json({ message: "Verifying link has been sent to Email " });
@@ -119,6 +119,14 @@ const verifyEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 return res.status(400).json({ error: "Failed to Verify" });
             }
             else {
+                (0, setEmail_1.sendEmail)({
+                    from: "beta.toursewa@gmail.com",
+                    to: "khagijora2074@gmail.com",
+                    subject: "New Business Registered",
+                    html: `<h2>A new business with business Id ${businessId.bId} has been registered</h2>
+          <a href='${process.env.FRONTEND_URL}/businessapprove/${businessId.bId}'>Click to verify and activate the business account</a>
+          `,
+                });
                 return res.status(200).json({ message: "Email Verified" });
             }
         });
@@ -200,123 +208,116 @@ const getBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.getBusiness = getBusiness;
-const addbusinessProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    const businessId = req.params.businessid;
-    const authToken = req.cookies.authToken;
-    // if (!authToken) {
-    //   return res
-    //     .status(400)
-    //     .json({ error: "Token not found, first login with business ID " });
-    // }
-    const { businessSubcategory, website, contactName } = req.body;
-    const { address, country, state, city } = req.body.businessAddress;
-    const { authority, registrationNumber, registrationOn, expiresOn } = req.body.businessRegistration;
-    const { platform } = req.body.socialMedia;
-    try {
-        // const decodedToken = jwt.verify(
-        //   authToken,
-        //   process.env.JWTSECRET as string
-        // ) as { id: string };
-        // const businessId = decodedToken.id;
-        const data = yield business_1.default.findOne({ _id: businessId });
-        if (!data) {
-            return res.status(400).json({
-                error: "Business ID not found",
-                businessId: businessId,
-            });
-        }
-        let imageGallery = [];
-        let profileIcon = undefined;
-        if (req.files) {
-            const files = req.files;
-            if (files["imageGallery"]) {
-                imageGallery = files["imageGallery"].map((file) => file.path);
-            }
-            if (files["profileIcon"]) {
-                profileIcon = (_a = files["profileIcon"][0]) === null || _a === void 0 ? void 0 : _a.path;
-            }
-        }
-        const businessProfile = new businessProfine_1.default({
-            businessId: data._id,
-            businessName: data.businessName,
-            businessCategory: data.businessCategory,
-            businessSubcategory,
-            businessAddress: {
-                address,
-                country,
-                state,
-                city,
-            },
-            email: data.primaryEmail,
-            website,
-            contactName,
-            phone: data.primaryPhone,
-            businessRegistration: {
-                authority,
-                registrationNumber,
-                registrationOn,
-                expiresOn,
-            },
-            socialMedia: {
-                platform,
-            },
-            imageGallery,
-            profileIcon,
-        });
-        const savedData = yield businessProfile.save();
-        if (!savedData) {
-            return res.status(400).json({ error: "failed to save" });
-        }
-        else {
-            return res.send(savedData);
-        }
-    }
-    catch (error) {
-        return res.status(500).json({ error: error.message });
-    }
-});
-exports.addbusinessProfile = addbusinessProfile;
-const getBusinessProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const businessId = req.params.businessId;
-    try {
-        const businessData = yield business_1.default.findOne({ _id: businessId });
-        if (!businessData) {
-            const data = yield businessProfine_1.default.findOne({ businessId: businessId });
-            if (!data) {
-                return res.status(404).json({ error: "Data Not Found" });
-            }
-            else {
-                return res.send(data);
-            }
-        }
-        else {
-            return res.send(businessData);
-        }
-    }
-    catch (error) {
-        return res.status(500).json({ error: error.message });
-    }
-});
-exports.getBusinessProfile = getBusinessProfile;
-const getBusinessProfileDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = req.params.id;
-    try {
-        const data = yield businessProfine_1.default.findById(id);
-        if (!data) {
-            return res
-                .status(404)
-                .json({ error: "Failed to get business Profile Data" });
-        }
-        else {
-            return res.send(data);
-        }
-    }
-    catch (error) {
-        return res.status(500).json({ error: error.message });
-    }
-});
-exports.getBusinessProfileDetails = getBusinessProfileDetails;
+// export const addbusinessProfile = async (req: Request, res: Response) => {
+//   const businessId = req.params.businessid;
+//   const authToken = req.cookies.authToken;
+//   // if (!authToken) {
+//   //   return res
+//   //     .status(400)
+//   //     .json({ error: "Token not found, first login with business ID " });
+//   // }
+//   const { businessSubcategory, website, contactName } = req.body;
+//   const { address, country, state, city } = req.body.businessAddress;
+//   const { authority, registrationNumber, registrationOn, expiresOn } =
+//     req.body.businessRegistration;
+//   const { platform } = req.body.socialMedia;
+//   try {
+//     // const decodedToken = jwt.verify(
+//     //   authToken,
+//     //   process.env.JWTSECRET as string
+//     // ) as { id: string };
+//     // const businessId = decodedToken.id;
+//     const data = await Business.findOne({ _id: businessId });
+//     if (!data) {
+//       return res.status(400).json({
+//         error: "Business ID not found",
+//         businessId: businessId,
+//       });
+//     }
+//     let imageGallery: string[] = [];
+//     let profileIcon: string | undefined = undefined;
+//     if (req.files) {
+//       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+//       if (files["imageGallery"]) {
+//         imageGallery = files["imageGallery"].map((file) => file.path);
+//       }
+//       if (files["profileIcon"]) {
+//         profileIcon = files["profileIcon"][0]?.path;
+//       }
+//     }
+//     const businessProfile = new BusinessProfile({
+//       businessId: data._id,
+//       businessName: data.businessName,
+//       businessCategory: data.businessCategory,
+//       businessSubcategory,
+//       businessAddress: {
+//         address,
+//         country,
+//         state,
+//         city,
+//       },
+//       email: data.primaryEmail,
+//       website,
+//       contactName,
+//       phone: data.primaryPhone,
+//       businessRegistration: {
+//         authority,
+//         registrationNumber,
+//         registrationOn,
+//         expiresOn,
+//       },
+//       socialMedia: {
+//         platform,
+//       },
+//       imageGallery,
+//       profileIcon,
+//     });
+//     const savedData = await businessProfile.save();
+//     if (!savedData) {
+//       return res.status(400).json({ error: "failed to save" });
+//     } else {
+//       return res.send(savedData);
+//     }
+//   } catch (error: any) {
+//     return res.status(500).json({ error: error.message });
+//   }
+// };
+// export const getBusinessProfile = async (req: Request, res: Response) => {
+//   const businessId = req.params.businessId;
+//   try {
+//     const businessData = await Business.findOne({ _id: businessId });
+//     if (!businessData) {
+//       const data = await BusinessProfile.findOne({ businessId: businessId });
+//       if (!data) {
+//         return res.status(404).json({ error: "Data Not Found" });
+//       } else {
+//         return res.send(data);
+//       }
+//     } else {
+//       return res.send(businessData);
+//     }
+//   } catch (error: any) {
+//     return res.status(500).json({ error: error.message });
+//   }
+// };
+// export const getBusinessProfileDetails = async (
+//   req: Request,
+//   res: Response
+// ) => {
+//   const id = req.params.id;
+//   try {
+//     const data = await BusinessProfile.findById(id);
+//     if (!data) {
+//       return res
+//         .status(404)
+//         .json({ error: "Failed to get business Profile Data" });
+//     } else {
+//       return res.send(data);
+//     }
+//   } catch (error: any) {
+//     return res.status(500).json({ error: error.message });
+//   }
+// };
 const updateBusinessProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     // const authToken = req.cookies.authToken;
@@ -325,7 +326,7 @@ const updateBusinessProfile = (req, res) => __awaiter(void 0, void 0, void 0, fu
     //     .status(400)
     //     .json({ error: "Token not found, first login with business ID " });
     // }
-    const id = req.params.profileId;
+    const id = req.params.businessid;
     try {
         const imageGallery = req.body.existingImageGallery || [];
         let profileIcon = undefined;
@@ -339,21 +340,21 @@ const updateBusinessProfile = (req, res) => __awaiter(void 0, void 0, void 0, fu
                 profileIcon = (_a = files["profileIcon"][0]) === null || _a === void 0 ? void 0 : _a.path;
             }
         }
-        const data = yield businessProfine_1.default.findByIdAndUpdate(id, {
-            businessId: req.body.businessId,
+        const data = yield business_1.default.findByIdAndUpdate(id, {
+            // businessId: req.body.businessId,
             businessName: req.body.businessName,
             businessCategory: req.body.businessCategory,
             businessSubcategory: req.body.businessSubcategory,
             businessAddress: {
-                Address: req.body.businessAddress.Address,
+                address: req.body.businessAddress.address,
                 country: req.body.businessAddress.country,
                 state: req.body.businessAddress.state,
                 city: req.body.businessAddress.city,
             },
-            email: req.body.email,
-            Website: req.body.Website,
+            primaryEmail: req.body.primaryEmail,
+            website: req.body.website,
             contactName: req.body.contactName,
-            phone: req.body.phone,
+            primaryPhone: req.body.primaryPhone,
             businessRegistration: {
                 authority: req.body.businessRegistration.authority,
                 registrationNumber: req.body.businessRegistration.registrationNumber,
@@ -368,20 +369,25 @@ const updateBusinessProfile = (req, res) => __awaiter(void 0, void 0, void 0, fu
         }, { new: true });
         if (!data) {
             return res.status(400).json({
-                error: "failed",
+                error: "Failed to Update",
             });
         }
         else {
-            const newData = yield business_1.default.findByIdAndUpdate(req.body.businessId, {
-                businessName: req.body.businessName,
-                businessCategory: req.body.businessCategory,
-                address: req.body.businessAddress.Address,
-                primaryEmail: req.body.email,
-                primaryPhone: req.body.phone,
-            }, { new: true });
+            // const newData = await Business.findByIdAndUpdate(
+            //   req.body.businessId,
+            //   {
+            //     businessName: req.body.businessName,
+            //     businessCategory: req.body.businessCategory,
+            //     address: req.body.businessAddress.Address,
+            //     primaryEmail: req.body.email,
+            //     primaryPhone: req.body.phone,
+            //   },
+            //   { new: true }
+            // );
             return res.send({
+                message: "Updated",
                 data: data,
-                newData: newData,
+                // newData: newData,
             });
         }
     }
@@ -397,14 +403,14 @@ const deleteBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function*
         if (!deleteBusiness) {
             return res.status(404).json({ error: "Failed to delete" });
         }
-        const deletedBusinessProfile = yield businessProfine_1.default.findOneAndDelete({
-            businessId: id,
-        });
-        if (!deletedBusinessProfile) {
-            return res
-                .status(404)
-                .json({ error: "Failed to delete associated business profile" });
-        }
+        // const deletedBusinessProfile = await BusinessProfile.findOneAndDelete({
+        //   businessId: id,
+        // });
+        // if (!deletedBusinessProfile) {
+        //   return res
+        //     .status(404)
+        //     .json({ error: "Failed to delete associated business profile" });
+        // }
         return res.status(200).json({ message: "Successfully Deleted" });
     }
     catch (error) {

@@ -1,15 +1,15 @@
 import express from "express";
 import {
   addBusiness,
-  addbusinessProfile,
+  // addbusinessProfile,
   businessLogin,
   businessProfile,
   businessSignOut,
   deleteBusiness,
   forgetPwd,
   getBusiness,
-  getBusinessProfile,
-  getBusinessProfileDetails,
+  // getBusinessProfile,
+  // getBusinessProfileDetails,
   resetPwd,
   updateBusinessProfile,
   verifyEmail,
@@ -17,7 +17,7 @@ import {
 import upload from "../middleware/fileUpload";
 import {
   addBusinessData,
-  addBusinessProfileData,
+  // addBusinessProfileData,
   validation,
 } from "../validation/Validation";
 
@@ -25,25 +25,24 @@ const router = express.Router();
 
 router.post("/addbusiness", addBusinessData, validation, addBusiness);
 router.put("/verifybusinessemail/:token", verifyEmail);
+router.post("/businesslogin", businessLogin);
 router.get("/getbusiness", getBusiness);
 
 router.get("/businessprofile/:businessId", businessProfile);
-router.get("/businessdata/:id", getBusinessProfileDetails);
+// router.get("/businessdata/:id", getBusinessProfileDetails);
 
-router.post(
-  "/addbusinessprofile/:businessid",
-  upload.fields([
-    { name: "profileIcon", maxCount: 1 },
-    { name: "imageGallery", maxCount: 1000 },
-  ]),
-  addBusinessProfileData,
-  validation,
-  addbusinessProfile
-);
-router.post("/businesslogin", businessLogin);
-router.post("/businesssignout", businessSignOut);
+// router.post(
+//   "/addbusinessprofile/:businessid",
+//   upload.fields([
+//     { name: "profileIcon", maxCount: 1 },
+//     { name: "imageGallery", maxCount: 1000 },
+//   ]),
+//   addBusinessProfileData,
+//   validation,
+//   addbusinessProfile
+// );
 router.put(
-  "/updatebusinessprofile/:profileId",
+  "/updatebusinessprofile/:businessid",
   upload.fields([
     { name: "profileIcon", maxCount: 1 },
     { name: "imageGallery", maxCount: 100 },
@@ -51,9 +50,11 @@ router.put(
   updateBusinessProfile
 );
 
-router.get("/getbusinessprofile/:businessId", getBusinessProfile);
+router.delete("/deletebusiness/:id", deleteBusiness);
+router.post("/businesssignout", businessSignOut);
+
+// router.get("/getbusinessprofile/:businessId", getBusinessProfile);
 router.post("/forgetbusinesspwd", forgetPwd);
 router.put("/resetbusinesspwd/:token", resetPwd);
-router.delete("/deletebusiness/:id", deleteBusiness);
 
 export default router;
