@@ -32,7 +32,7 @@ const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             return res.status(400).json({ error: "Password is reqired" });
         }
         const tax = yield business_1.default.findOne({
-            "businessRegistration.registrationNumber": registrationNumber,
+            registrationNumber,
         });
         if (tax) {
             return res

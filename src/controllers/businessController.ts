@@ -26,7 +26,7 @@ export const addBusiness = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Password is reqired" });
     }
     const tax = await Business.findOne({
-      "businessRegistration.registrationNumber": registrationNumber,
+      registrationNumber,
     });
     if (tax) {
       return res
