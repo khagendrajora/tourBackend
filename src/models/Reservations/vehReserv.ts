@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 export enum IStatus {
-  Active = "Approved",
+  Approved = "Approved",
   Canceled = "Canceled",
   Fulfilled = "Fulfilled",
   Pending = "Pending",

@@ -7,7 +7,7 @@ exports.IStatus = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 var IStatus;
 (function (IStatus) {
-    IStatus["Active"] = "Approved";
+    IStatus["Approved"] = "Approved";
     IStatus["Canceled"] = "Canceled";
     IStatus["Fulfilled"] = "Fulfilled";
     IStatus["Pending"] = "Pending";
