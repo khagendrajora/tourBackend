@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validation = exports.reservationData = exports.addPropertyData = exports.addSubCategoryData = exports.addCategoryData = exports.addBusinessProfileData = exports.addBusinessData = exports.adminSignup = void 0;
+exports.validation = exports.reservationData = exports.addPropertyData = exports.addSubCategoryData = exports.addCategoryData = exports.addBusinessData = exports.adminSignup = void 0;
 const express_validator_1 = require("express-validator");
 exports.adminSignup = [
     (0, express_validator_1.check)("adminName").trim().notEmpty().withMessage("Admin Name is required"),
@@ -14,8 +14,10 @@ exports.adminSignup = [
 ];
 exports.addBusinessData = [
     (0, express_validator_1.check)("businessName", "Give Your Business Name").trim().notEmpty(),
-    (0, express_validator_1.check)("taxRegistration", "Invalid Tax Registration").trim().notEmpty(),
-    (0, express_validator_1.check)("businessAddress", "Provide Address").trim().notEmpty(),
+    (0, express_validator_1.check)("businessRegistration[registrationNumber]", "Invalid Tax Registration")
+        .trim()
+        .notEmpty(),
+    (0, express_validator_1.check)("businessAddress[address]", "Provide Address").trim().notEmpty(),
     (0, express_validator_1.check)("primaryEmail", "Email is required")
         .trim()
         .notEmpty()
@@ -28,29 +30,32 @@ exports.addBusinessData = [
         .isLength({ min: 8 })
         .withMessage("password length must be 8"),
 ];
-exports.addBusinessProfileData = [
-    (0, express_validator_1.check)("businessAddress[address]", "Address is required").trim().notEmpty(),
-    (0, express_validator_1.check)("businessAddress[country]", "Country is required").trim().notEmpty(),
-    (0, express_validator_1.check)("businessAddress[city]", "City is required").trim().notEmpty(),
-    (0, express_validator_1.check)("businessAddress[state]", "State is required").trim().notEmpty(),
-    (0, express_validator_1.check)("businessRegistration[authority]", "Authority is required")
-        .trim()
-        .notEmpty(),
-    (0, express_validator_1.check)("businessRegistration[registrationNumber]", "Registration Number is required")
-        .trim()
-        .notEmpty(),
-    (0, express_validator_1.check)("businessRegistration[registrationOn]", "Registration Date is required")
-        .trim()
-        .notEmpty()
-        .isDate()
-        .withMessage("Invalid Date"),
-    (0, express_validator_1.check)("businessRegistration[expiresOn]", "Expiery Date is required")
-        .trim()
-        .notEmpty()
-        .isDate()
-        .withMessage("Invalid Date"),
-    (0, express_validator_1.check)("contactName", "Contact Name is required").trim().notEmpty(),
-];
+// export const addBusinessProfileData = [
+//   check("businessAddress[address]", "Address is required").trim().notEmpty(),
+//   check("businessAddress[country]", "Country is required").trim().notEmpty(),
+//   check("businessAddress[city]", "City is required").trim().notEmpty(),
+//   check("businessAddress[state]", "State is required").trim().notEmpty(),
+//   check("businessRegistration[authority]", "Authority is required")
+//     .trim()
+//     .notEmpty(),
+//   check(
+//     "businessRegistration[registrationNumber]",
+//     "Registration Number is required"
+//   )
+//     .trim()
+//     .notEmpty(),
+//   check("businessRegistration[registrationOn]", "Registration Date is required")
+//     .trim()
+//     .notEmpty()
+//     .isDate()
+//     .withMessage("Invalid Date"),
+//   check("businessRegistration[expiresOn]", "Expiery Date is required")
+//     .trim()
+//     .notEmpty()
+//     .isDate()
+//     .withMessage("Invalid Date"),
+//   check("contactName", "Contact Name is required").trim().notEmpty(),
+// ];
 exports.addCategoryData = [
     (0, express_validator_1.check)("categoryName", "Category is required").trim().notEmpty(),
 ];

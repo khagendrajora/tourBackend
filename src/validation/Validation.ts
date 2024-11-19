@@ -13,8 +13,10 @@ export const adminSignup = [
 
 export const addBusinessData = [
   check("businessName", "Give Your Business Name").trim().notEmpty(),
-  check("taxRegistration", "Invalid Tax Registration").trim().notEmpty(),
-  check("businessAddress", "Provide Address").trim().notEmpty(),
+  check("businessRegistration[registrationNumber]", "Invalid Tax Registration")
+    .trim()
+    .notEmpty(),
+  check("businessAddress[address]", "Provide Address").trim().notEmpty(),
   check("primaryEmail", "Email is required")
     .trim()
     .notEmpty()
@@ -28,32 +30,32 @@ export const addBusinessData = [
     .withMessage("password length must be 8"),
 ];
 
-export const addBusinessProfileData = [
-  check("businessAddress[address]", "Address is required").trim().notEmpty(),
-  check("businessAddress[country]", "Country is required").trim().notEmpty(),
-  check("businessAddress[city]", "City is required").trim().notEmpty(),
-  check("businessAddress[state]", "State is required").trim().notEmpty(),
-  check("businessRegistration[authority]", "Authority is required")
-    .trim()
-    .notEmpty(),
-  check(
-    "businessRegistration[registrationNumber]",
-    "Registration Number is required"
-  )
-    .trim()
-    .notEmpty(),
-  check("businessRegistration[registrationOn]", "Registration Date is required")
-    .trim()
-    .notEmpty()
-    .isDate()
-    .withMessage("Invalid Date"),
-  check("businessRegistration[expiresOn]", "Expiery Date is required")
-    .trim()
-    .notEmpty()
-    .isDate()
-    .withMessage("Invalid Date"),
-  check("contactName", "Contact Name is required").trim().notEmpty(),
-];
+// export const addBusinessProfileData = [
+//   check("businessAddress[address]", "Address is required").trim().notEmpty(),
+//   check("businessAddress[country]", "Country is required").trim().notEmpty(),
+//   check("businessAddress[city]", "City is required").trim().notEmpty(),
+//   check("businessAddress[state]", "State is required").trim().notEmpty(),
+//   check("businessRegistration[authority]", "Authority is required")
+//     .trim()
+//     .notEmpty(),
+//   check(
+//     "businessRegistration[registrationNumber]",
+//     "Registration Number is required"
+//   )
+//     .trim()
+//     .notEmpty(),
+//   check("businessRegistration[registrationOn]", "Registration Date is required")
+//     .trim()
+//     .notEmpty()
+//     .isDate()
+//     .withMessage("Invalid Date"),
+//   check("businessRegistration[expiresOn]", "Expiery Date is required")
+//     .trim()
+//     .notEmpty()
+//     .isDate()
+//     .withMessage("Invalid Date"),
+//   check("contactName", "Contact Name is required").trim().notEmpty(),
+// ];
 
 export const addCategoryData = [
   check("categoryName", "Category is required").trim().notEmpty(),
