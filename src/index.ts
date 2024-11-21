@@ -12,6 +12,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import reservationRoute from "./routes/reservationRoute";
 import UserRoute from "./routes/ClientRoutes/UserRoute";
+import DriverRoute from "./routes/driverRoutes/DriverRoute";
 
 export const app: Express = express();
 app.use(express.json());
@@ -28,6 +29,7 @@ app.use("/api", productRoute);
 app.use("/api", propertyRoute);
 app.use("/api", reservationRoute);
 app.use("/api", userRoute);
+app.use("/api", DriverRoute);
 
 const port = 3000;
 
