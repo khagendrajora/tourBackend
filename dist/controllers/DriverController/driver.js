@@ -73,6 +73,7 @@ ${api}/verifydriveremail/${token.token}`,
             html: `<h1>Click to Verify Email</h1> 
     <a href='${url}'>Click here To verify</a>`,
         });
+        return res.status(200).json({ message: "Verification link send" });
     }
     catch (error) {
         return res.status(500).json({ error: error.message });
