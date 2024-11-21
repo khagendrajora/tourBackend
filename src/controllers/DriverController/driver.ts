@@ -189,6 +189,20 @@ export const getDrivers = async (req: Request, res: Response) => {
   }
 };
 
+export const getDriverByBId = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    const data = await Driver.find({ businessId: id });
+    if (data.length === 0) {
+      return res.status(400).json({ error: "No driver Found" });
+    } else {
+      return res.send(data);
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 export const getDriverById = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
@@ -212,6 +226,53 @@ export const deleteDriver = async (req: Request, res: Response) => {
     }
 
     return res.status(200).json({ message: "Successfully Deleted" });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const updateDriver = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const {
+    driverName,
+    driverAge,
+    driverPhone,
+    driverEmail,
+    vehicleId,
+    businessId,
+  } = req.body;
+  try {
+    let driverImage: string | undefined = undefined;
+
+    if (req.files) {
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      if (files["driverImage"]) {
+        driverImage = files["driverImage"][0]?.path;
+      }
+    }
+    const data = await Driver.findByIdAndUpdate(
+      id,
+      {
+        driverName,
+        driverAge,
+        driverPhone,
+        driverEmail,
+        vehicleId,
+        businessId,
+        driverImage,
+      },
+      { new: true }
+    );
+    if (!data) {
+      return res.status(400).json({
+        error: "Failed to Update",
+      });
+    } else {
+      return res.send({
+        message: "Updated",
+        data: data,
+      });
+    }
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }

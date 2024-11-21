@@ -3,8 +3,10 @@ import {
   addDriver,
   deleteDriver,
   driverLogin,
+  getDriverByBId,
   getDriverById,
   getDrivers,
+  updateDriver,
   updateDriverStatus,
   verifyDriverEmail,
 } from "../../controllers/DriverController/driver";
@@ -22,8 +24,10 @@ router.put("/verifydriveremail/:token", verifyDriverEmail);
 router.post("/driverlogin", driverLogin);
 router.get("/getdrivers", getDrivers);
 router.get("/getdrivers/:id", getDriverById);
+router.get("/getdriverbybid/:id", getDriverByBId);
 
-router.put("/updatedriver/:id", updateDriverStatus);
+router.put("/updatedriverstatus/:id", updateDriverStatus);
 router.delete("/deletedriver/:id", deleteDriver);
+router.put("/updatedriver/:id", updateDriver);
 
 export default router;

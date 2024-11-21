@@ -36,7 +36,7 @@ const driverSchema = new mongoose_1.default.Schema({
         required: true,
     },
     driverAge: {
-        type: String,
+        type: Number,
         required: true,
     },
     driverName: {
