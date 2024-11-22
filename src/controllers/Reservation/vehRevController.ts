@@ -25,17 +25,16 @@ export const vehReservation = async (req: Request, res: Response) => {
   } = req.body;
 
   try {
-    const vehData = await Vehicle.findOne({ _id: id });
+    const vehData = await Vehicle.findOne({ vehId: id });
     if (!vehData) {
       return res.status(401).json({ error: "Vehicle Unavailable" });
     }
     const businessdata = await Business.findOne({ _id: vehData.businessId });
 
     let vehRev = new VehicleReservation({
-      vehicleId: vehData._id,
+      vehicleId: vehData.vehId,
       vehicleType: vehData.vehCategory,
-      // services: vehData.services,
-      // amenities: vehData.amenities,
+
       vehicleNumber: vehData.vehNumber,
       capacity: vehData.capacity,
       vehicleName: vehData.name,
@@ -59,7 +58,7 @@ export const vehReservation = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Booking failed" });
     } else {
       let resrvDate = new ReservedDate({
-        vehicleId: vehData._id,
+        vehicleId: id,
         bookingDate,
         bookedBy,
         bookingId: bookingId,

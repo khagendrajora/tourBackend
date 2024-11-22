@@ -26,16 +26,14 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const bookingId = customId();
     const { bookingName, age, email, phone, sourceAddress, destinationAddress, bookingDate, address, bookedBy, bookedByName, numberOfPassengers, } = req.body;
     try {
-        const vehData = yield vehicle_1.default.findOne({ _id: id });
+        const vehData = yield vehicle_1.default.findOne({ vehId: id });
         if (!vehData) {
             return res.status(401).json({ error: "Vehicle Unavailable" });
         }
         const businessdata = yield business_1.default.findOne({ _id: vehData.businessId });
         let vehRev = new vehReserv_1.default({
-            vehicleId: vehData._id,
+            vehicleId: vehData.vehId,
             vehicleType: vehData.vehCategory,
-            // services: vehData.services,
-            // amenities: vehData.amenities,
             vehicleNumber: vehData.vehNumber,
             capacity: vehData.capacity,
             vehicleName: vehData.name,
@@ -60,7 +58,7 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
         }
         else {
             let resrvDate = new ReservedDated_1.default({
-                vehicleId: vehData._id,
+                vehicleId: id,
                 bookingDate,
                 bookedBy,
                 bookingId: bookingId,
