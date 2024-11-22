@@ -177,6 +177,7 @@ export const businessLogin = async (req: Request, res: Response) => {
       primaryEmail: primaryEmail,
       businessRole: primaryEmail.businessRole,
       businessName: businessEmail.businessName,
+      bId: businessEmail.bId,
     });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
