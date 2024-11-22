@@ -357,7 +357,7 @@ export const addVehicle = async (req: Request, res: Response) => {
         vehicleId: vehId,
         bookingDate: operationDates,
         bookedBy: businessId,
-        bookingId: "",
+        bookingId: businessId,
       });
       revDates = await revDates.save();
       if (!revDates) {

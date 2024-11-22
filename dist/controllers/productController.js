@@ -311,7 +311,7 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 vehicleId: vehId,
                 bookingDate: operationDates,
                 bookedBy: businessId,
-                bookingId: "",
+                bookingId: businessId,
             });
             revDates = yield revDates.save();
             if (!revDates) {
