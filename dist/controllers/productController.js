@@ -363,7 +363,7 @@ exports.getVehicleByBusinessId = getVehicleByBusinessId;
 const vehDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        const data = yield vehicle_1.default.findById(id);
+        const data = yield vehicle_1.default.find({ vehId: id });
         if (!data) {
             return res.status(404).json({ error: "Failed to get Tour" });
         }
