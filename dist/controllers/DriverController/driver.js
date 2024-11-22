@@ -147,6 +147,7 @@ const driverLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             driver_id: email._id,
             driverId: email.driverId,
             driverEmail: email.driverEmail,
+            driverName: email.driverName,
         });
     }
     catch (error) {

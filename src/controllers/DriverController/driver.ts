@@ -143,6 +143,7 @@ export const driverLogin = async (req: Request, res: Response) => {
       driver_id: email._id,
       driverId: email.driverId,
       driverEmail: email.driverEmail,
+      driverName: email.driverName,
     });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });

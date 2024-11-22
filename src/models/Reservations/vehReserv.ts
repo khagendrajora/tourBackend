@@ -12,12 +12,11 @@ export interface IVRev extends Document {
   bookingId: string;
   vehicleId: string;
   vehicleType: string;
-  // services?: string;
-  // amenities?: string;
   vehicleNumber: string;
   capacity: string;
   vehicleName: string;
   bookedBy: string;
+  bookedByName: string;
   age: string;
   email?: string;
   phone: string;
@@ -54,6 +53,10 @@ const VehicleReservation = new mongoose.Schema(
       type: String,
       required: true,
     },
+    bookedByName: {
+      required: true,
+      type: String,
+    },
     vehicleType: {
       type: String,
       required: true,
@@ -67,9 +70,7 @@ const VehicleReservation = new mongoose.Schema(
       type: String,
       required: true,
     },
-    // services: {
-    //   type: String,
-    // },
+
     age: {
       type: String,
       required: true,
@@ -86,9 +87,7 @@ const VehicleReservation = new mongoose.Schema(
       type: String,
       required: true,
     },
-    // amenities: {
-    //   type: String,
-    // },
+
     vehicleNumber: {
       type: String,
       required: true,

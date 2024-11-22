@@ -130,6 +130,7 @@ export const clientLogin = async (req: Request, res: Response) => {
       clientId: clientEmail._id,
       userEmail: clientEmail.userEmail,
       userRole: clientEmail.userRole,
+      userName: clientEmail.userName,
     });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });

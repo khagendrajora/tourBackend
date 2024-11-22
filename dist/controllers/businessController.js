@@ -167,6 +167,7 @@ const businessLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             businesId: businessEmail._id,
             primaryEmail: primaryEmail,
             businessRole: primaryEmail.businessRole,
+            businessName: businessEmail.businessName,
         });
     }
     catch (error) {

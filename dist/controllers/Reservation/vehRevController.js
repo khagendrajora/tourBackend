@@ -24,7 +24,7 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const id = req.params.id;
     const customId = customAlphabet("1234567890", 4);
     const bookingId = customId();
-    const { bookingName, age, email, phone, sourceAddress, destinationAddress, bookingDate, address, bookedBy, numberOfPassengers, } = req.body;
+    const { bookingName, age, email, phone, sourceAddress, destinationAddress, bookingDate, address, bookedBy, bookedByName, numberOfPassengers, } = req.body;
     try {
         const vehData = yield vehicle_1.default.findOne({ _id: id });
         if (!vehData) {
@@ -43,6 +43,7 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
             businessId: vehData.businessId,
             vehicleImage: ((_a = vehData.vehImages) === null || _a === void 0 ? void 0 : _a.length) ? vehData.vehImages : [],
             bookedBy,
+            bookedByName,
             age,
             sourceAddress,
             destinationAddress,

@@ -20,6 +20,7 @@ export const vehReservation = async (req: Request, res: Response) => {
     bookingDate,
     address,
     bookedBy,
+    bookedByName,
     numberOfPassengers,
   } = req.body;
 
@@ -42,6 +43,7 @@ export const vehReservation = async (req: Request, res: Response) => {
       businessId: vehData.businessId,
       vehicleImage: vehData.vehImages?.length ? vehData.vehImages : [],
       bookedBy,
+      bookedByName,
       age,
       sourceAddress,
       destinationAddress,
