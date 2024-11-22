@@ -32,3 +32,14 @@ export const getReservedDates = async (req: Request, res: Response) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+export const getAllRevDates = async (req: Request, res: Response) => {
+  try {
+    const data = await ReservedDate.find();
+    if (data.length > 0) {
+      return res.send(data);
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};

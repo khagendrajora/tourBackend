@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getReservedDates = exports.saveReservedDated = void 0;
+exports.getAllRevDates = exports.getReservedDates = exports.saveReservedDated = void 0;
 const ReservedDated_1 = __importDefault(require("../../models/Reservations/ReservedDated"));
 const saveReservedDated = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { vehicleId, bookedBy, bookingDate } = req.body;
@@ -48,3 +48,15 @@ const getReservedDates = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.getReservedDates = getReservedDates;
+const getAllRevDates = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const data = yield ReservedDated_1.default.find();
+        if (data.length > 0) {
+            return res.send(data);
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.getAllRevDates = getAllRevDates;
