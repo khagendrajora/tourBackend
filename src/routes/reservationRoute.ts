@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  getAllReservations,
   getRevByBusinessId,
   getRevByClientId,
   updateReservationByBid,
@@ -21,5 +22,6 @@ router.put("/updateRevStatus/:id", updateReservationStatus);
 router.get("/getbusinessrev/:id", getRevByBusinessId);
 router.put("/updateRevbybid/:id", updateReservationByBid);
 router.get("/getalldates", getAllRevDates);
+router.get("/getallreservations", getAllReservations);
 
 export default router;

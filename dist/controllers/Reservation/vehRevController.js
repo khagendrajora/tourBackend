@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateReservationByBid = exports.getRevByBusinessId = exports.updateReservationStatus = exports.getRevByClientId = exports.vehReservation = void 0;
+exports.getAllReservations = exports.updateReservationByBid = exports.getRevByBusinessId = exports.updateReservationStatus = exports.getRevByClientId = exports.vehReservation = void 0;
 const vehReserv_1 = __importDefault(require("../../models/Reservations/vehReserv"));
 const vehicle_1 = __importDefault(require("../../models/Product/vehicle"));
 const ReservedDated_1 = __importDefault(require("../../models/Reservations/ReservedDated"));
@@ -182,3 +182,15 @@ const updateReservationByBid = (req, res) => __awaiter(void 0, void 0, void 0, f
     }
 });
 exports.updateReservationByBid = updateReservationByBid;
+const getAllReservations = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const data = yield vehReserv_1.default.find();
+        if (data.length > 0) {
+            return res.send(data);
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.getAllReservations = getAllReservations;
