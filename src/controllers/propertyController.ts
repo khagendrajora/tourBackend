@@ -4,7 +4,8 @@ const { customAlphabet } = require("nanoid");
 
 export const addProperty = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);
-  const propertyId = customId();
+  let propertyId = customId();
+  propertyId = "P" + propertyId;
   const {
     propName,
     propCategory,

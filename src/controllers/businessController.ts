@@ -10,7 +10,8 @@ const { customAlphabet } = require("nanoid");
 
 export const addBusiness = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);
-  const bId = customId();
+  let bId = customId();
+  bId = "B" + bId;
   const { registrationNumber } = req.body.businessRegistration;
   const { address } = req.body.businessAddress;
   const {

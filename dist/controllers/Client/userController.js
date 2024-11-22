@@ -25,7 +25,8 @@ const addNewClient = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     var _a;
     const { userName, userEmail, userPwd } = req.body;
     const customId = customAlphabet("1234567890", 4);
-    const userId = customId();
+    let userId = customId();
+    userId = "U" + userId;
     try {
         let userImage = undefined;
         if (req.files) {

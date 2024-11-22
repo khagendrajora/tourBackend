@@ -9,7 +9,9 @@ import Business from "../../models/business";
 export const vehReservation = async (req: Request, res: Response) => {
   const id = req.params.id;
   const customId = customAlphabet("1234567890", 4);
-  const bookingId = customId();
+  let bookingId = customId();
+  bookingId = "R" + bookingId;
+
   const {
     bookingName,
     age,

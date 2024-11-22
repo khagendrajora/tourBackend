@@ -20,7 +20,8 @@ const addCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     let { categoryName, desc, subCategory } = req.body;
     categoryName = categoryName.toLowerCase().trim();
     const customId = customAlphabet("1234567890", 4);
-    const categoryId = customId();
+    let categoryId = customId();
+    categoryId = "C" + categoryId;
     try {
         let category = new category_1.default({
             categoryName,

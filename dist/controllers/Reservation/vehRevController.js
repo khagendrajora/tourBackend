@@ -23,7 +23,8 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
     var _a;
     const id = req.params.id;
     const customId = customAlphabet("1234567890", 4);
-    const bookingId = customId();
+    let bookingId = customId();
+    bookingId = "R" + bookingId;
     const { bookingName, age, email, phone, sourceAddress, destinationAddress, bookingDate, address, bookedBy, bookedByName, numberOfPassengers, } = req.body;
     try {
         const vehData = yield vehicle_1.default.findOne({ vehId: id });

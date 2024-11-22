@@ -7,7 +7,8 @@ export const addCategory = async (req: Request, res: Response) => {
   let { categoryName, desc, subCategory } = req.body;
   categoryName = categoryName.toLowerCase().trim();
   const customId = customAlphabet("1234567890", 4);
-  const categoryId = customId();
+  let categoryId = customId();
+  categoryId = "C" + categoryId;
   try {
     let category = new Category({
       categoryName,

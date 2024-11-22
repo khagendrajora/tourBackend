@@ -17,7 +17,8 @@ const property_1 = __importDefault(require("../models/property"));
 const { customAlphabet } = require("nanoid");
 const addProperty = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
-    const propertyId = customId();
+    let propertyId = customId();
+    propertyId = "P" + propertyId;
     const { propName, propCategory, propSubCategory, email, website, phone, businessReg, tax, contactName, contactPhone, dateOfEstab, } = req.body;
     const { country, state, district, municipality, street, subrub, postcode } = req.body.address;
     try {

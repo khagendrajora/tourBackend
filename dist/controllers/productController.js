@@ -19,7 +19,8 @@ const vehicle_1 = __importDefault(require("../models/Product/vehicle"));
 const { customAlphabet } = require("nanoid");
 const addTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
-    const tourId = customId();
+    let tourId = customId();
+    tourId = "TU" + tourId;
     const { businessId, prodCategory, prodsubCategory, inclusion, dest, duration, itinerary, capacity, name, phone, operationDates, } = req.body;
     try {
         let tourImages = [];
@@ -143,7 +144,8 @@ const updateTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.updateTour = updateTour;
 const addTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
-    const trekId = customId();
+    let trekId = customId();
+    trekId = "TR" + trekId;
     const { businessId, prodCategory, prodsubCategory, inclusion, days, dest, numbers, itinerary, capacity, name, operationDates, } = req.body;
     try {
         let trekImages = [];
@@ -267,7 +269,8 @@ const updateTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.updateTrek = updateTrek;
 const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
-    const vehId = customId();
+    let vehId = customId();
+    vehId = "V" + vehId;
     const { businessId, vehCategory, vehSubCategory, services, amenities, vehCondition, madeYear, vehNumber, 
     // quantity,
     capacity, name, operationDates, manufacturer, model, VIN, } = req.body;

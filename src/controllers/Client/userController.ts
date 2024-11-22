@@ -11,7 +11,8 @@ import ReservationDate from "../../models/Reservations/ReservedDated";
 export const addNewClient = async (req: Request, res: Response) => {
   const { userName, userEmail, userPwd } = req.body;
   const customId = customAlphabet("1234567890", 4);
-  const userId = customId();
+  let userId = customId();
+  userId = "U" + userId;
   try {
     let userImage: string | undefined = undefined;
     if (req.files) {

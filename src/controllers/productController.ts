@@ -6,7 +6,8 @@ const { customAlphabet } = require("nanoid");
 
 export const addTour = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);
-  const tourId = customId();
+  let tourId = customId();
+  tourId = "TU" + tourId;
   const {
     businessId,
     prodCategory,
@@ -151,7 +152,9 @@ export const updateTour = async (req: Request, res: Response) => {
 
 export const addTrek = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);
-  const trekId = customId();
+  let trekId = customId();
+  trekId = "TR" + trekId;
+
   const {
     businessId,
     prodCategory,
@@ -296,7 +299,9 @@ export const updateTrek = async (req: Request, res: Response) => {
 
 export const addVehicle = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);
-  const vehId = customId();
+  let vehId = customId();
+  vehId = "V" + vehId;
+
   const {
     businessId,
     vehCategory,

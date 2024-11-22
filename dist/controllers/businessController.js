@@ -22,7 +22,8 @@ const setEmail_1 = require("../utils/setEmail");
 const { customAlphabet } = require("nanoid");
 const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
-    const bId = customId();
+    let bId = customId();
+    bId = "B" + bId;
     const { registrationNumber } = req.body.businessRegistration;
     const { address } = req.body.businessAddress;
     const { businessName, businessCategory, primaryEmail, primaryPhone, businessPwd, } = req.body;

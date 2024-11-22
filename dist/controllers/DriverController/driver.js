@@ -23,7 +23,8 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const addDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const customId = customAlphabet("1234567890", 4);
-    const driverId = customId();
+    let driverId = customId();
+    driverId = "D" + driverId;
     const { driverName, driverAge, driverPhone, driverEmail, vehicleId, businessId, driverPwd, } = req.body;
     try {
         let driverImage = undefined;

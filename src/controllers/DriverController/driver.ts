@@ -9,7 +9,8 @@ import jwt from "jsonwebtoken";
 
 export const addDriver = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);
-  const driverId = customId();
+  let driverId = customId();
+  driverId = "D" + driverId;
   const {
     driverName,
     driverAge,
