@@ -17,6 +17,7 @@ const tour_1 = __importDefault(require("../models/Product/tour"));
 const trekking_1 = __importDefault(require("../models/Product/trekking"));
 const vehicle_1 = __importDefault(require("../models/Product/vehicle"));
 const { customAlphabet } = require("nanoid");
+const ReservedDated_1 = __importDefault(require("../models/Reservations/ReservedDated"));
 const addTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
     let tourId = customId();
@@ -306,7 +307,21 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             return res.status(400).json({ error: "failed to save" });
         }
         else {
-            return res.status(200).json({ message: "Vehicle Registered" });
+            let revDates = new ReservedDated_1.default({
+                vehicleId: vehId,
+                bookingDate: operationDates,
+                bookedBy: businessId,
+                bookingId: "",
+            });
+            revDates = yield revDates.save();
+            if (!revDates) {
+                return res
+                    .status(400)
+                    .json({ error: "failed to save Operational Dated" });
+            }
+            else {
+                return res.status(200).json({ message: "Vehicle Registered" });
+            }
         }
     }
     catch (error) {

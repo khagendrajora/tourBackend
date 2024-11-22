@@ -4,6 +4,8 @@ import Trekking from "../models/Product/trekking";
 import Vehicle from "../models/Product/vehicle";
 const { customAlphabet } = require("nanoid");
 
+import ReservedDate from "../models/Reservations/ReservedDated";
+
 export const addTour = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);
   let tourId = customId();
@@ -351,7 +353,20 @@ export const addVehicle = async (req: Request, res: Response) => {
     if (!veh) {
       return res.status(400).json({ error: "failed to save" });
     } else {
-      return res.status(200).json({ message: "Vehicle Registered" });
+      let revDates = new ReservedDate({
+        vehicleId: vehId,
+        bookingDate: operationDates,
+        bookedBy: businessId,
+        bookingId: "",
+      });
+      revDates = await revDates.save();
+      if (!revDates) {
+        return res
+          .status(400)
+          .json({ error: "failed to save Operational Dated" });
+      } else {
+        return res.status(200).json({ message: "Vehicle Registered" });
+      }
     }
   } catch (error: any) {
     return res.status(500).json({ error: error });
