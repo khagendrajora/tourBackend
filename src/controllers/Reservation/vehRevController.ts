@@ -66,6 +66,14 @@ export const vehReservation = async (req: Request, res: Response) => {
       if (!resrvDate) {
         return res.status(400).json({ error: "failed to save date" });
       } else {
+        await Vehicle.findByIdAndUpdate(
+          id,
+          {
+            operationDates: bookingDate,
+          },
+          { new: true }
+        );
+
         sendEmail({
           from: "beta.toursewa@gmail.com",
           to: email,

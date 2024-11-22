@@ -406,7 +406,7 @@ export const updateVeh = async (req: Request, res: Response) => {
     vehCondition,
     madeYear,
     vehNumber,
-    // quantity,
+
     capacity,
     name,
     operationDates,
