@@ -20,7 +20,9 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const token_1 = __importDefault(require("../models/token"));
 const { customAlphabet } = require("nanoid");
 const uuid_1 = require("uuid");
+const Driver_1 = __importDefault(require("../models/Drivers/Driver"));
 const setEmail_1 = require("../utils/setEmail");
+const userModel_1 = __importDefault(require("../models/Client/userModel"));
 const addAdminUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { adminName, adminEmail, adminPwd } = req.body;
     const customId = customAlphabet("1234567890", 4);
@@ -34,6 +36,18 @@ const addAdminUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             adminPwd: hashedPwd,
             adminId: adminId,
         });
+        const email = yield userModel_1.default.findOne({ userEmail: adminEmail });
+        if (email) {
+            return res.status(400).json({ error: "Email already registered" });
+        }
+        const driverEmail = yield Driver_1.default.findOne({ driverEmail: adminEmail });
+        if (driverEmail) {
+            return res.status(400).json({ error: "Email already registered" });
+        }
+        const businessEmail = yield business_1.default.findOne({ primaryEmail: adminEmail });
+        if (businessEmail) {
+            return res.status(400).json({ error: "Email already registered" });
+        }
         adminUser_1.default.findOne({ adminEmail }).then((data) => __awaiter(void 0, void 0, void 0, function* () {
             if (data) {
                 return res.status(400).json({ error: "Email already Used" });

@@ -2,10 +2,12 @@ import { Request, Response } from "express";
 import bcryptjs from "bcryptjs";
 import Business from "../models/business";
 import jwt from "jsonwebtoken";
-
+import Driver from "../models/Drivers/Driver";
+import AdminUser from "../models/adminUser";
 import Token from "../models/token";
 import { v4 as uuid } from "uuid";
 import { sendEmail } from "../utils/setEmail";
+import ClientUser from "../models/Client/userModel";
 const { customAlphabet } = require("nanoid");
 
 export const addBusiness = async (req: Request, res: Response) => {
@@ -37,6 +39,20 @@ export const addBusiness = async (req: Request, res: Response) => {
 
     const email = await Business.findOne({ primaryEmail });
     if (email) {
+      return res.status(400).json({ error: "Email already registered" });
+    }
+
+    const userEmail = await ClientUser.findOne({ userEmail: primaryEmail });
+    if (userEmail) {
+      return res.status(400).json({ error: "Email already registered" });
+    }
+    const driverEmail = await Driver.findOne({ driverEmail: primaryEmail });
+    if (driverEmail) {
+      return res.status(400).json({ error: "Email already registered" });
+    }
+
+    const adminEmail = await AdminUser.findOne({ adminEmail: primaryEmail });
+    if (adminEmail) {
       return res.status(400).json({ error: "Email already registered" });
     }
 

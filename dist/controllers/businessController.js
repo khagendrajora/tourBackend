@@ -16,9 +16,12 @@ exports.resetPwd = exports.forgetPwd = exports.businessSignOut = exports.deleteB
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const business_1 = __importDefault(require("../models/business"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const Driver_1 = __importDefault(require("../models/Drivers/Driver"));
+const adminUser_1 = __importDefault(require("../models/adminUser"));
 const token_1 = __importDefault(require("../models/token"));
 const uuid_1 = require("uuid");
 const setEmail_1 = require("../utils/setEmail");
+const userModel_1 = __importDefault(require("../models/Client/userModel"));
 const { customAlphabet } = require("nanoid");
 const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
@@ -41,6 +44,18 @@ const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
         const email = yield business_1.default.findOne({ primaryEmail });
         if (email) {
+            return res.status(400).json({ error: "Email already registered" });
+        }
+        const userEmail = yield userModel_1.default.findOne({ userEmail: primaryEmail });
+        if (userEmail) {
+            return res.status(400).json({ error: "Email already registered" });
+        }
+        const driverEmail = yield Driver_1.default.findOne({ driverEmail: primaryEmail });
+        if (driverEmail) {
+            return res.status(400).json({ error: "Email already registered" });
+        }
+        const adminEmail = yield adminUser_1.default.findOne({ adminEmail: primaryEmail });
+        if (adminEmail) {
             return res.status(400).json({ error: "Email already registered" });
         }
         const phone = yield business_1.default.findOne({ primaryPhone });

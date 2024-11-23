@@ -20,6 +20,9 @@ const setEmail_1 = require("../../utils/setEmail");
 const { customAlphabet } = require("nanoid");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const business_1 = __importDefault(require("../../models/business"));
+const adminUser_1 = __importDefault(require("../../models/adminUser"));
+const userModel_1 = __importDefault(require("../../models/Client/userModel"));
 const addDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const customId = customAlphabet("1234567890", 4);
@@ -37,6 +40,22 @@ const addDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const driverNumber = yield Driver_1.default.findOne({ driverPhone });
         if (driverNumber) {
             return res.status(400).json({ error: "Phone Number is already used " });
+        }
+        const driver = yield Driver_1.default.findOne({ driverEmail });
+        if (driver) {
+            return res.status(400).json({ error: "Email already registered" });
+        }
+        const email = yield userModel_1.default.findOne({ userEmail: driverEmail });
+        if (email) {
+            return res.status(400).json({ error: "Email already registered" });
+        }
+        const businessEmail = yield business_1.default.findOne({ primaryEmail: driverEmail });
+        if (businessEmail) {
+            return res.status(400).json({ error: "Email already registered" });
+        }
+        const adminEmail = yield adminUser_1.default.findOne({ adminEmail: driverEmail });
+        if (adminEmail) {
+            return res.status(400).json({ error: "Email already registered" });
         }
         const salt = yield bcryptjs_1.default.genSalt(5);
         let hashedPassword = yield bcryptjs_1.default.hash(driverPwd, salt);

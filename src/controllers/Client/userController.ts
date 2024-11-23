@@ -7,6 +7,9 @@ import { sendEmail } from "../../utils/setEmail";
 import jwt from "jsonwebtoken";
 const { customAlphabet } = require("nanoid");
 import ReservationDate from "../../models/Reservations/ReservedDated";
+import Driver from "../../models/Drivers/Driver";
+import Business from "../../models/business";
+import AdminUser from "../../models/adminUser";
 
 export const addNewClient = async (req: Request, res: Response) => {
   const { userName, userEmail, userPwd } = req.body;
@@ -28,6 +31,20 @@ export const addNewClient = async (req: Request, res: Response) => {
 
     const email = await ClientUser.findOne({ userEmail });
     if (email) {
+      return res.status(400).json({ error: "Email already registered" });
+    }
+    const driverEmail = await Driver.findOne({ driverEmail: userName });
+    if (driverEmail) {
+      return res.status(400).json({ error: "Email already registered" });
+    }
+
+    const businessEmail = await Business.findOne({ primaryEmail: userName });
+    if (businessEmail) {
+      return res.status(400).json({ error: "Email already registered" });
+    }
+
+    const adminEmail = await AdminUser.findOne({ adminEmail: userName });
+    if (adminEmail) {
       return res.status(400).json({ error: "Email already registered" });
     }
 
@@ -62,7 +79,7 @@ export const addNewClient = async (req: Request, res: Response) => {
       to: clientUser.userEmail,
       subject: "Account Verification Link",
       text: `Verify your Business Email to Login\n\n
-    ${api}/verifyclientEmail/${token.token}`,
+    ${api}/verifyclientemail/${token.token}`,
       html: `<h1>Click to Verify Email</h1> 
           <a href='${url}'>Click here To verify</a>`,
     });

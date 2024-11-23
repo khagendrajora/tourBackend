@@ -21,6 +21,9 @@ const setEmail_1 = require("../../utils/setEmail");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const { customAlphabet } = require("nanoid");
 const ReservedDated_1 = __importDefault(require("../../models/Reservations/ReservedDated"));
+const Driver_1 = __importDefault(require("../../models/Drivers/Driver"));
+const business_1 = __importDefault(require("../../models/business"));
+const adminUser_1 = __importDefault(require("../../models/adminUser"));
 const addNewClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const { userName, userEmail, userPwd } = req.body;
@@ -40,6 +43,18 @@ const addNewClient = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
         const email = yield userModel_1.default.findOne({ userEmail });
         if (email) {
+            return res.status(400).json({ error: "Email already registered" });
+        }
+        const driverEmail = yield Driver_1.default.findOne({ driverEmail: userName });
+        if (driverEmail) {
+            return res.status(400).json({ error: "Email already registered" });
+        }
+        const businessEmail = yield business_1.default.findOne({ primaryEmail: userName });
+        if (businessEmail) {
+            return res.status(400).json({ error: "Email already registered" });
+        }
+        const adminEmail = yield adminUser_1.default.findOne({ adminEmail: userName });
+        if (adminEmail) {
             return res.status(400).json({ error: "Email already registered" });
         }
         const salt = yield bcryptjs_1.default.genSalt(5);
@@ -71,7 +86,7 @@ const addNewClient = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             to: clientUser.userEmail,
             subject: "Account Verification Link",
             text: `Verify your Business Email to Login\n\n
-    ${api}/verifyclientEmail/${token.token}`,
+    ${api}/verifyclientemail/${token.token}`,
             html: `<h1>Click to Verify Email</h1> 
           <a href='${url}'>Click here To verify</a>`,
         });

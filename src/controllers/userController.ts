@@ -6,7 +6,9 @@ import jwt from "jsonwebtoken";
 import Token from "../models/token";
 const { customAlphabet } = require("nanoid");
 import { v4 as uuid } from "uuid";
+import Driver from "../models/Drivers/Driver";
 import { sendEmail } from "../utils/setEmail";
+import ClientUser from "../models/Client/userModel";
 
 export const addAdminUser = async (req: Request, res: Response) => {
   const { adminName, adminEmail, adminPwd } = req.body;
@@ -22,6 +24,22 @@ export const addAdminUser = async (req: Request, res: Response) => {
       adminPwd: hashedPwd,
       adminId: adminId,
     });
+
+    const email = await ClientUser.findOne({ userEmail: adminEmail });
+    if (email) {
+      return res.status(400).json({ error: "Email already registered" });
+    }
+
+    const driverEmail = await Driver.findOne({ driverEmail: adminEmail });
+    if (driverEmail) {
+      return res.status(400).json({ error: "Email already registered" });
+    }
+
+    const businessEmail = await Business.findOne({ primaryEmail: adminEmail });
+    if (businessEmail) {
+      return res.status(400).json({ error: "Email already registered" });
+    }
+
     AdminUser.findOne({ adminEmail }).then(async (data) => {
       if (data) {
         return res.status(400).json({ error: "Email already Used" });

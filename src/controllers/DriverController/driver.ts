@@ -6,6 +6,9 @@ import { sendEmail } from "../../utils/setEmail";
 const { customAlphabet } = require("nanoid");
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
+import Business from "../../models/business";
+import AdminUser from "../../models/adminUser";
+import ClientUser from "../../models/Client/userModel";
 
 export const addDriver = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);
@@ -32,6 +35,27 @@ export const addDriver = async (req: Request, res: Response) => {
     if (driverNumber) {
       return res.status(400).json({ error: "Phone Number is already used " });
     }
+
+    const driver = await Driver.findOne({ driverEmail });
+    if (driver) {
+      return res.status(400).json({ error: "Email already registered" });
+    }
+
+    const email = await ClientUser.findOne({ userEmail: driverEmail });
+    if (email) {
+      return res.status(400).json({ error: "Email already registered" });
+    }
+
+    const businessEmail = await Business.findOne({ primaryEmail: driverEmail });
+    if (businessEmail) {
+      return res.status(400).json({ error: "Email already registered" });
+    }
+
+    const adminEmail = await AdminUser.findOne({ adminEmail: driverEmail });
+    if (adminEmail) {
+      return res.status(400).json({ error: "Email already registered" });
+    }
+
     const salt = await bcryptjs.genSalt(5);
     let hashedPassword = await bcryptjs.hash(driverPwd, salt);
 
