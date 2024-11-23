@@ -33,17 +33,17 @@ export const addNewClient = async (req: Request, res: Response) => {
     if (email) {
       return res.status(400).json({ error: "Email already registered" });
     }
-    const driverEmail = await Driver.findOne({ driverEmail: userName });
+    const driverEmail = await Driver.findOne({ driverEmail: userEmail });
     if (driverEmail) {
       return res.status(400).json({ error: "Email already registered" });
     }
 
-    const businessEmail = await Business.findOne({ primaryEmail: userName });
+    const businessEmail = await Business.findOne({ primaryEmail: userEmail });
     if (businessEmail) {
       return res.status(400).json({ error: "Email already registered" });
     }
 
-    const adminEmail = await AdminUser.findOne({ adminEmail: userName });
+    const adminEmail = await AdminUser.findOne({ adminEmail: userEmail });
     if (adminEmail) {
       return res.status(400).json({ error: "Email already registered" });
     }

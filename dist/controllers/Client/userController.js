@@ -45,15 +45,15 @@ const addNewClient = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         if (email) {
             return res.status(400).json({ error: "Email already registered" });
         }
-        const driverEmail = yield Driver_1.default.findOne({ driverEmail: userName });
+        const driverEmail = yield Driver_1.default.findOne({ driverEmail: userEmail });
         if (driverEmail) {
             return res.status(400).json({ error: "Email already registered" });
         }
-        const businessEmail = yield business_1.default.findOne({ primaryEmail: userName });
+        const businessEmail = yield business_1.default.findOne({ primaryEmail: userEmail });
         if (businessEmail) {
             return res.status(400).json({ error: "Email already registered" });
         }
-        const adminEmail = yield adminUser_1.default.findOne({ adminEmail: userName });
+        const adminEmail = yield adminUser_1.default.findOne({ adminEmail: userEmail });
         if (adminEmail) {
             return res.status(400).json({ error: "Email already registered" });
         }
