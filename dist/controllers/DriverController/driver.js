@@ -34,10 +34,10 @@ const addDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 driverImage = (_a = files["driverImage"][0]) === null || _a === void 0 ? void 0 : _a.path;
             }
         }
-        // const driverNumber = await Driver.findOne({ driverPhone });
-        // if (driverNumber) {
-        //   return res.status(400).json({ error: "Phone Number is already used " });
-        // }
+        const driverNumber = yield Driver_1.default.findOne({ driverPhone });
+        if (driverNumber) {
+            return res.status(400).json({ error: "Phone Number is already used " });
+        }
         const salt = yield bcryptjs_1.default.genSalt(5);
         let hashedPassword = yield bcryptjs_1.default.hash(driverPwd, salt);
         let newDriver = new Driver_1.default({

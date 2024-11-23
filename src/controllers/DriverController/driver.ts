@@ -28,10 +28,10 @@ export const addDriver = async (req: Request, res: Response) => {
         driverImage = files["driverImage"][0]?.path;
       }
     }
-    // const driverNumber = await Driver.findOne({ driverPhone });
-    // if (driverNumber) {
-    //   return res.status(400).json({ error: "Phone Number is already used " });
-    // }
+    const driverNumber = await Driver.findOne({ driverPhone });
+    if (driverNumber) {
+      return res.status(400).json({ error: "Phone Number is already used " });
+    }
     const salt = await bcryptjs.genSalt(5);
     let hashedPassword = await bcryptjs.hash(driverPwd, salt);
 
