@@ -404,9 +404,9 @@ export const vehDetails = async (req: Request, res: Response) => {
   const id = req.params.id;
 
   try {
-    const data = await Vehicle.find({ vehId: id });
+    const data = await Vehicle.findById(id);
     if (!data) {
-      return res.status(404).json({ error: "Failed to get Tour" });
+      return res.status(404).json({ error: "Failed" });
     } else {
       return res.send(data);
     }
