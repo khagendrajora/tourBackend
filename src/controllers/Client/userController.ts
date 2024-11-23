@@ -4,7 +4,7 @@ import bcryptjs from "bcryptjs";
 import Token from "../../models/token";
 import { uuid } from "uuidv4";
 import { sendEmail } from "../../utils/setEmail";
-import jwt from "jsonwebtoken";
+// import jwt from "jsonwebtoken";
 const { customAlphabet } = require("nanoid");
 import ReservationDate from "../../models/Reservations/ReservedDated";
 import Driver from "../../models/Drivers/Driver";
@@ -120,40 +120,40 @@ export const verifyUserEmail = async (req: Request, res: Response) => {
   }
 };
 
-export const clientLogin = async (req: Request, res: Response) => {
-  const { userEmail, userPwd } = req.body;
-  try {
-    const clientEmail = await ClientUser.findOne({
-      userEmail: userEmail,
-    });
-    if (!clientEmail) {
-      return res.status(404).json({
-        error: "Email not found",
-      });
-    }
-    const isPassword = await bcryptjs.compare(userPwd, clientEmail.userPwd);
-    if (!isPassword) {
-      return res.status(400).json({ error: "Incorrect Password" });
-    }
-    const data = { id: clientEmail._id };
-    const authToken = jwt.sign(data, process.env.JWTSECRET as string);
-    res.cookie("authToken", authToken, {
-      httpOnly: true,
-      sameSite: "strict",
-      maxAge: 3600000,
-    });
-    return res.status(200).json({
-      message: "Login succssfully",
-      authToken: authToken,
-      clientId: clientEmail._id,
-      userEmail: clientEmail.userEmail,
-      userRole: clientEmail.userRole,
-      userName: clientEmail.userName,
-    });
-  } catch (error: any) {
-    return res.status(500).json({ error: error.message });
-  }
-};
+// export const clientLogin = async (req: Request, res: Response) => {
+//   const { userEmail, userPwd } = req.body;
+//   try {
+//     const clientEmail = await ClientUser.findOne({
+//       userEmail: userEmail,
+//     });
+//     if (!clientEmail) {
+//       return res.status(404).json({
+//         error: "Email not found",
+//       });
+//     }
+//     const isPassword = await bcryptjs.compare(userPwd, clientEmail.userPwd);
+//     if (!isPassword) {
+//       return res.status(400).json({ error: "Incorrect Password" });
+//     }
+//     const data = { id: clientEmail._id };
+//     const authToken = jwt.sign(data, process.env.JWTSECRET as string);
+//     res.cookie("authToken", authToken, {
+//       httpOnly: true,
+//       sameSite: "strict",
+//       maxAge: 3600000,
+//     });
+//     return res.status(200).json({
+//       message: "Login succssfully",
+//       authToken: authToken,
+//       clientId: clientEmail._id,
+//       userEmail: clientEmail.userEmail,
+//       userRole: clientEmail.userRole,
+//       userName: clientEmail.userName,
+//     });
+//   } catch (error: any) {
+//     return res.status(500).json({ error: error.message });
+//   }
+// };
 
 export const getClientById = async (req: Request, res: Response) => {
   const id = req.params.id;

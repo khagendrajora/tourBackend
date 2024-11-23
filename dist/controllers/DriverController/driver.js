@@ -12,14 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateDriver = exports.deleteDriver = exports.getDriverById = exports.getDriverByBId = exports.getDrivers = exports.updateDriverStatus = exports.driverLogin = exports.verifyDriverEmail = exports.addDriver = void 0;
+exports.updateDriver = exports.deleteDriver = exports.getDriverById = exports.getDriverByBId = exports.getDrivers = exports.updateDriverStatus = exports.verifyDriverEmail = exports.addDriver = void 0;
 const Driver_1 = __importDefault(require("../../models/Drivers/Driver"));
 const token_1 = __importDefault(require("../../models/token"));
 const uuid_1 = require("uuid");
 const setEmail_1 = require("../../utils/setEmail");
 const { customAlphabet } = require("nanoid");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+// import jwt from "jsonwebtoken";
 const business_1 = __importDefault(require("../../models/business"));
 const adminUser_1 = __importDefault(require("../../models/adminUser"));
 const userModel_1 = __importDefault(require("../../models/Client/userModel"));
@@ -135,46 +135,44 @@ const verifyDriverEmail = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.verifyDriverEmail = verifyDriverEmail;
-const driverLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { driverEmail, driverPwd } = req.body;
-    try {
-        const email = yield Driver_1.default.findOne({
-            driverEmail: driverEmail,
-        });
-        if (!email) {
-            return res.status(404).json({
-                error: "Email not found",
-            });
-        }
-        const isPassword = yield bcryptjs_1.default.compare(driverPwd, email.driverPwd);
-        if (!isPassword) {
-            return res.status(400).json({ error: "Incorrect Password" });
-        }
-        const isVerified = email.isVerified;
-        if (!isVerified) {
-            return res.status(400).json({ error: "Email not Verified" });
-        }
-        const data = { id: email._id };
-        const authToken = jsonwebtoken_1.default.sign(data, process.env.JWTSECRET);
-        res.cookie("authToken", authToken, {
-            httpOnly: true,
-            sameSite: "strict",
-            maxAge: 3600000,
-        });
-        return res.status(200).json({
-            message: "Login succssfully",
-            authToken: authToken,
-            driver_id: email._id,
-            driverId: email.driverId,
-            driverEmail: email.driverEmail,
-            driverName: email.driverName,
-        });
-    }
-    catch (error) {
-        return res.status(500).json({ error: error.message });
-    }
-});
-exports.driverLogin = driverLogin;
+// export const driverLogin = async (req: Request, res: Response) => {
+//   const { driverEmail, driverPwd } = req.body;
+//   try {
+//     const email = await Driver.findOne({
+//       driverEmail: driverEmail,
+//     });
+//     if (!email) {
+//       return res.status(404).json({
+//         error: "Email not found",
+//       });
+//     }
+//     const isPassword = await bcryptjs.compare(driverPwd, email.driverPwd);
+//     if (!isPassword) {
+//       return res.status(400).json({ error: "Incorrect Password" });
+//     }
+//     const isVerified = email.isVerified;
+//     if (!isVerified) {
+//       return res.status(400).json({ error: "Email not Verified" });
+//     }
+//     const data = { id: email._id };
+//     const authToken = jwt.sign(data, process.env.JWTSECRET as string);
+//     res.cookie("authToken", authToken, {
+//       httpOnly: true,
+//       sameSite: "strict",
+//       maxAge: 3600000,
+//     });
+//     return res.status(200).json({
+//       message: "Login succssfully",
+//       authToken: authToken,
+//       driver_id: email._id,
+//       driverId: email.driverId,
+//       driverEmail: email.driverEmail,
+//       driverName: email.driverName,
+//     });
+//   } catch (error: any) {
+//     return res.status(500).json({ error: error.message });
+//   }
+// };
 const updateDriverStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const { status, driverEmail } = req.body;

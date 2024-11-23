@@ -19,6 +19,7 @@ const cors_1 = __importDefault(require("cors"));
 const reservationRoute_1 = __importDefault(require("./routes/reservationRoute"));
 const UserRoute_1 = __importDefault(require("./routes/ClientRoutes/UserRoute"));
 const DriverRoute_1 = __importDefault(require("./routes/driverRoutes/DriverRoute"));
+const Login_1 = __importDefault(require("./routes/Login/Login"));
 exports.app = (0, express_1.default)();
 exports.app.use(express_1.default.json());
 exports.app.use((0, cookie_parser_1.default)());
@@ -34,6 +35,7 @@ exports.app.use("/api", propertyRoute_1.default);
 exports.app.use("/api", reservationRoute_1.default);
 exports.app.use("/api", userRoute_1.default);
 exports.app.use("/api", DriverRoute_1.default);
+exports.app.use("/api", Login_1.default);
 const port = 3000;
 exports.app.listen(port, () => {
     console.log(`Server Started on ${port}`);

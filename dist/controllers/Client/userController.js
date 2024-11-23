@@ -12,13 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getMyReservations = exports.resetPwd = exports.forgetPwd = exports.deleteClient = exports.updateProfileById = exports.changePwd = exports.getClientById = exports.clientLogin = exports.verifyUserEmail = exports.addNewClient = void 0;
+exports.getMyReservations = exports.resetPwd = exports.forgetPwd = exports.deleteClient = exports.updateProfileById = exports.changePwd = exports.getClientById = exports.verifyUserEmail = exports.addNewClient = void 0;
 const userModel_1 = __importDefault(require("../../models/Client/userModel"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const token_1 = __importDefault(require("../../models/token"));
 const uuidv4_1 = require("uuidv4");
 const setEmail_1 = require("../../utils/setEmail");
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+// import jwt from "jsonwebtoken";
 const { customAlphabet } = require("nanoid");
 const ReservedDated_1 = __importDefault(require("../../models/Reservations/ReservedDated"));
 const Driver_1 = __importDefault(require("../../models/Drivers/Driver"));
@@ -129,42 +129,40 @@ const verifyUserEmail = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.verifyUserEmail = verifyUserEmail;
-const clientLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { userEmail, userPwd } = req.body;
-    try {
-        const clientEmail = yield userModel_1.default.findOne({
-            userEmail: userEmail,
-        });
-        if (!clientEmail) {
-            return res.status(404).json({
-                error: "Email not found",
-            });
-        }
-        const isPassword = yield bcryptjs_1.default.compare(userPwd, clientEmail.userPwd);
-        if (!isPassword) {
-            return res.status(400).json({ error: "Incorrect Password" });
-        }
-        const data = { id: clientEmail._id };
-        const authToken = jsonwebtoken_1.default.sign(data, process.env.JWTSECRET);
-        res.cookie("authToken", authToken, {
-            httpOnly: true,
-            sameSite: "strict",
-            maxAge: 3600000,
-        });
-        return res.status(200).json({
-            message: "Login succssfully",
-            authToken: authToken,
-            clientId: clientEmail._id,
-            userEmail: clientEmail.userEmail,
-            userRole: clientEmail.userRole,
-            userName: clientEmail.userName,
-        });
-    }
-    catch (error) {
-        return res.status(500).json({ error: error.message });
-    }
-});
-exports.clientLogin = clientLogin;
+// export const clientLogin = async (req: Request, res: Response) => {
+//   const { userEmail, userPwd } = req.body;
+//   try {
+//     const clientEmail = await ClientUser.findOne({
+//       userEmail: userEmail,
+//     });
+//     if (!clientEmail) {
+//       return res.status(404).json({
+//         error: "Email not found",
+//       });
+//     }
+//     const isPassword = await bcryptjs.compare(userPwd, clientEmail.userPwd);
+//     if (!isPassword) {
+//       return res.status(400).json({ error: "Incorrect Password" });
+//     }
+//     const data = { id: clientEmail._id };
+//     const authToken = jwt.sign(data, process.env.JWTSECRET as string);
+//     res.cookie("authToken", authToken, {
+//       httpOnly: true,
+//       sameSite: "strict",
+//       maxAge: 3600000,
+//     });
+//     return res.status(200).json({
+//       message: "Login succssfully",
+//       authToken: authToken,
+//       clientId: clientEmail._id,
+//       userEmail: clientEmail.userEmail,
+//       userRole: clientEmail.userRole,
+//       userName: clientEmail.userName,
+//     });
+//   } catch (error: any) {
+//     return res.status(500).json({ error: error.message });
+//   }
+// };
 const getClientById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {

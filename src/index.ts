@@ -13,6 +13,7 @@ import cors from "cors";
 import reservationRoute from "./routes/reservationRoute";
 import UserRoute from "./routes/ClientRoutes/UserRoute";
 import DriverRoute from "./routes/driverRoutes/DriverRoute";
+import Login from "./routes/Login/Login";
 
 export const app: Express = express();
 app.use(express.json());
@@ -30,6 +31,7 @@ app.use("/api", propertyRoute);
 app.use("/api", reservationRoute);
 app.use("/api", userRoute);
 app.use("/api", DriverRoute);
+app.use("/api", Login);
 
 const port = 3000;
 

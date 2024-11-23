@@ -2,7 +2,7 @@ import express from "express";
 import {
   addDriver,
   deleteDriver,
-  driverLogin,
+  // driverLogin,
   getDriverByBId,
   getDriverById,
   getDrivers,
@@ -21,7 +21,7 @@ router.post(
 );
 
 router.put("/verifydriveremail/:token", verifyDriverEmail);
-router.post("/driverlogin", driverLogin);
+// router.post("/driverlogin", driverLogin);
 router.get("/getdrivers", getDrivers);
 router.get("/getdrivers/:id", getDriverById);
 router.get("/getdriverbybid/:id", getDriverByBId);

@@ -5,7 +5,7 @@ import { v4 as uuid } from "uuid";
 import { sendEmail } from "../../utils/setEmail";
 const { customAlphabet } = require("nanoid");
 import bcryptjs from "bcryptjs";
-import jwt from "jsonwebtoken";
+// import jwt from "jsonwebtoken";
 import Business from "../../models/business";
 import AdminUser from "../../models/adminUser";
 import ClientUser from "../../models/Client/userModel";
@@ -133,47 +133,47 @@ export const verifyDriverEmail = async (req: Request, res: Response) => {
   }
 };
 
-export const driverLogin = async (req: Request, res: Response) => {
-  const { driverEmail, driverPwd } = req.body;
-  try {
-    const email = await Driver.findOne({
-      driverEmail: driverEmail,
-    });
-    if (!email) {
-      return res.status(404).json({
-        error: "Email not found",
-      });
-    }
-    const isPassword = await bcryptjs.compare(driverPwd, email.driverPwd);
-    if (!isPassword) {
-      return res.status(400).json({ error: "Incorrect Password" });
-    }
+// export const driverLogin = async (req: Request, res: Response) => {
+//   const { driverEmail, driverPwd } = req.body;
+//   try {
+//     const email = await Driver.findOne({
+//       driverEmail: driverEmail,
+//     });
+//     if (!email) {
+//       return res.status(404).json({
+//         error: "Email not found",
+//       });
+//     }
+//     const isPassword = await bcryptjs.compare(driverPwd, email.driverPwd);
+//     if (!isPassword) {
+//       return res.status(400).json({ error: "Incorrect Password" });
+//     }
 
-    const isVerified = email.isVerified;
+//     const isVerified = email.isVerified;
 
-    if (!isVerified) {
-      return res.status(400).json({ error: "Email not Verified" });
-    }
+//     if (!isVerified) {
+//       return res.status(400).json({ error: "Email not Verified" });
+//     }
 
-    const data = { id: email._id };
-    const authToken = jwt.sign(data, process.env.JWTSECRET as string);
-    res.cookie("authToken", authToken, {
-      httpOnly: true,
-      sameSite: "strict",
-      maxAge: 3600000,
-    });
-    return res.status(200).json({
-      message: "Login succssfully",
-      authToken: authToken,
-      driver_id: email._id,
-      driverId: email.driverId,
-      driverEmail: email.driverEmail,
-      driverName: email.driverName,
-    });
-  } catch (error: any) {
-    return res.status(500).json({ error: error.message });
-  }
-};
+//     const data = { id: email._id };
+//     const authToken = jwt.sign(data, process.env.JWTSECRET as string);
+//     res.cookie("authToken", authToken, {
+//       httpOnly: true,
+//       sameSite: "strict",
+//       maxAge: 3600000,
+//     });
+//     return res.status(200).json({
+//       message: "Login succssfully",
+//       authToken: authToken,
+//       driver_id: email._id,
+//       driverId: email.driverId,
+//       driverEmail: email.driverEmail,
+//       driverName: email.driverName,
+//     });
+//   } catch (error: any) {
+//     return res.status(500).json({ error: error.message });
+//   }
+// };
 
 export const updateDriverStatus = async (req: Request, res: Response) => {
   const id = req.params.id;

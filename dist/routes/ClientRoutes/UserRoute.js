@@ -11,7 +11,7 @@ router.post("/addclient", fileUpload_1.default.fields([{ name: "userImage", maxC
 router.put("/updateclient/:id", fileUpload_1.default.fields([{ name: "userImage", maxCount: 1 }]), userController_1.updateProfileById);
 router.put("/changepwd/:id", userController_1.changePwd);
 router.put("/verifyuseremail/:token", userController_1.verifyUserEmail);
-router.post("/clientlogin", userController_1.clientLogin);
+// router.post("/clientlogin", clientLogin);
 router.get("/getclientbyid/:id", userController_1.getClientById);
 router.delete("/deleteclient/:id", userController_1.deleteClient);
 router.post("/forgotclientpwd", userController_1.forgetPwd);

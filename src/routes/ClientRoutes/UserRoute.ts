@@ -2,7 +2,6 @@ import express from "express";
 import {
   addNewClient,
   changePwd,
-  clientLogin,
   deleteClient,
   forgetPwd,
   getClientById,
@@ -26,7 +25,7 @@ router.put(
 );
 router.put("/changepwd/:id", changePwd);
 router.put("/verifyuseremail/:token", verifyUserEmail);
-router.post("/clientlogin", clientLogin);
+// router.post("/clientlogin", clientLogin);
 router.get("/getclientbyid/:id", getClientById);
 router.delete("/deleteclient/:id", deleteClient);
 router.post("/forgotclientpwd", forgetPwd);
