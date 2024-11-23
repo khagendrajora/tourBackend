@@ -86,7 +86,7 @@ const addNewClient = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             to: clientUser.userEmail,
             subject: "Account Verification Link",
             text: `Verify your Business Email to Login\n\n
-    ${api}/verifyclientemail/${token.token}`,
+    ${api}/verifyuseremail/${token.token}`,
             html: `<h1>Click to Verify Email</h1> 
           <a href='${url}'>Click here To verify</a>`,
         });

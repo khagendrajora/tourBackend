@@ -79,7 +79,7 @@ export const addNewClient = async (req: Request, res: Response) => {
       to: clientUser.userEmail,
       subject: "Account Verification Link",
       text: `Verify your Business Email to Login\n\n
-    ${api}/verifyclientemail/${token.token}`,
+    ${api}/verifyuseremail/${token.token}`,
       html: `<h1>Click to Verify Email</h1> 
           <a href='${url}'>Click here To verify</a>`,
     });
