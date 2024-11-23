@@ -404,7 +404,7 @@ export const vehDetails = async (req: Request, res: Response) => {
   const id = req.params.id;
 
   try {
-    const data = await Vehicle.findById(id);
+    const data = await Vehicle.findOne({ vehId: id });
     if (!data) {
       return res.status(404).json({ error: "Failed" });
     } else {
