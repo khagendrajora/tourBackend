@@ -82,7 +82,7 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
                     from: "beta.toursewa@gmail.com",
                     to: businessdata === null || businessdata === void 0 ? void 0 : businessdata.primaryEmail,
                     subject: "New Booking",
-                    html: `<h2>A new booking with booking Id ${bookingId} of vehicle ${vehData._id}</h2>`,
+                    html: `<h2>A new booking with booking Id ${bookingId} of vehicle ${id}</h2>`,
                 });
                 return res.status(200).json({ message: "Booked" });
             }

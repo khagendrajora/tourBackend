@@ -87,7 +87,7 @@ export const vehReservation = async (req: Request, res: Response) => {
           from: "beta.toursewa@gmail.com",
           to: businessdata?.primaryEmail,
           subject: "New Booking",
-          html: `<h2>A new booking with booking Id ${bookingId} of vehicle ${vehData._id}</h2>`,
+          html: `<h2>A new booking with booking Id ${bookingId} of vehicle ${id}</h2>`,
         });
         return res.status(200).json({ message: "Booked" });
       }
