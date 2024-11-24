@@ -31,7 +31,7 @@ export const vehReservation = async (req: Request, res: Response) => {
     if (!vehData) {
       return res.status(401).json({ error: "Vehicle Unavailable" });
     }
-    const businessdata = await Business.findOne({ _id: vehData.businessId });
+    const businessdata = await Business.findOne({ bId: vehData.businessId });
 
     let vehRev = new VehicleReservation({
       vehicleId: vehData.vehId,

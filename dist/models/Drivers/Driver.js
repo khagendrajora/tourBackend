@@ -10,6 +10,7 @@ var IStatus;
     IStatus["Available"] = "Available";
     IStatus["Unavailable"] = "Unavailable";
     IStatus["Leave"] = "Leave";
+    IStatus["Occupied"] = "Occupied";
 })(IStatus || (exports.IStatus = IStatus = {}));
 const driverSchema = new mongoose_1.default.Schema({
     vehicleId: {

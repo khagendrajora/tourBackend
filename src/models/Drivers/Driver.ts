@@ -4,6 +4,7 @@ export enum IStatus {
   Available = "Available",
   Unavailable = "Unavailable",
   Leave = "Leave",
+  Occupied = "Occupied",
 }
 
 export interface IDriver extends Document {

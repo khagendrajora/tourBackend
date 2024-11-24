@@ -31,7 +31,7 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
         if (!vehData) {
             return res.status(401).json({ error: "Vehicle Unavailable" });
         }
-        const businessdata = yield business_1.default.findOne({ _id: vehData.businessId });
+        const businessdata = yield business_1.default.findOne({ bId: vehData.businessId });
         let vehRev = new vehReserv_1.default({
             vehicleId: vehData.vehId,
             vehicleType: vehData.vehCategory,
