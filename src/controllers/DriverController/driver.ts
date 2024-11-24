@@ -229,6 +229,20 @@ export const getDriverByBId = async (req: Request, res: Response) => {
   }
 };
 
+export const getDriverByVehId = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    const data = await Driver.find({ vehicleId: id });
+    if (data.length === 0) {
+      return res.status(400).json({ error: "No  Data" });
+    } else {
+      return res.send(data);
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 export const getDriverById = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {

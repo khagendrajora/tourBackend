@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllReservations = exports.updateReservationByBid = exports.getRevByBusinessId = exports.updateReservationStatusByBid = exports.updateReservationStatusByClient = exports.getRevByClientId = exports.vehReservation = void 0;
+exports.getAllReservations = exports.updateReservationByBid = exports.getRevByVehicleId = exports.getRevByBusinessId = exports.updateReservationStatusByBid = exports.updateReservationStatusByClient = exports.getRevByClientId = exports.vehReservation = void 0;
 const vehReserv_1 = __importDefault(require("../../models/Reservations/vehReserv"));
 const vehicle_1 = __importDefault(require("../../models/Product/vehicle"));
 const ReservedDated_1 = __importDefault(require("../../models/Reservations/ReservedDated"));
@@ -180,6 +180,22 @@ const getRevByBusinessId = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.getRevByBusinessId = getRevByBusinessId;
+const getRevByVehicleId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        const data = yield vehReserv_1.default.find({ vehicleId: id });
+        if (data.length === 0) {
+            return res.status(404).json({ error: "No Reservations found" });
+        }
+        else {
+            return res.send(data);
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.getRevByVehicleId = getRevByVehicleId;
 const updateReservationByBid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const { status, email } = req.body;

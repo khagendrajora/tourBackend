@@ -3,6 +3,7 @@ import {
   getAllReservations,
   getRevByBusinessId,
   getRevByClientId,
+  getRevByVehicleId,
   updateReservationByBid,
   updateReservationStatusByBid,
   updateReservationStatusByClient,
@@ -25,5 +26,6 @@ router.get("/getbusinessrev/:id", getRevByBusinessId);
 router.put("/updateRevbybid/:id", updateReservationByBid);
 router.get("/getalldates", getAllRevDates);
 router.get("/getallreservations", getAllReservations);
+router.get("/getrevbyvehid/:id", getRevByVehicleId);
 
 export default router;

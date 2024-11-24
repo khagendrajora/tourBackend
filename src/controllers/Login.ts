@@ -93,6 +93,7 @@ export const login = async (req: Request, res: Response) => {
             driverId: driverEmail.driverId,
             driverEmail: driverEmail.driverEmail,
             driverName: driverEmail.driverName,
+            vehicleId: driverEmail.vehicleId,
           });
         } else {
           return res.status(400).json({ error: "Email Not Found" });

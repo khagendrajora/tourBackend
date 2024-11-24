@@ -102,6 +102,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                         driverId: driverEmail.driverId,
                         driverEmail: driverEmail.driverEmail,
                         driverName: driverEmail.driverName,
+                        vehicleId: driverEmail.vehicleId,
                     });
                 }
                 else {

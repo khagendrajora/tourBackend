@@ -195,6 +195,20 @@ export const getRevByBusinessId = async (req: Request, res: Response) => {
   }
 };
 
+export const getRevByVehicleId = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    const data = await VehicleReservation.find({ vehicleId: id });
+    if (data.length === 0) {
+      return res.status(404).json({ error: "No Reservations found" });
+    } else {
+      return res.send(data);
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 export const updateReservationByBid = async (req: Request, res: Response) => {
   const id = req.params.id;
   const { status, email } = req.body;

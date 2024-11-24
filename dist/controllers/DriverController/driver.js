@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateDriver = exports.deleteDriver = exports.getDriverById = exports.getDriverByBId = exports.getDrivers = exports.updateDriverStatus = exports.verifyDriverEmail = exports.addDriver = void 0;
+exports.updateDriver = exports.deleteDriver = exports.getDriverById = exports.getDriverByVehId = exports.getDriverByBId = exports.getDrivers = exports.updateDriverStatus = exports.verifyDriverEmail = exports.addDriver = void 0;
 const Driver_1 = __importDefault(require("../../models/Drivers/Driver"));
 const token_1 = __importDefault(require("../../models/token"));
 const uuid_1 = require("uuid");
@@ -228,6 +228,22 @@ const getDriverByBId = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.getDriverByBId = getDriverByBId;
+const getDriverByVehId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        const data = yield Driver_1.default.find({ vehicleId: id });
+        if (data.length === 0) {
+            return res.status(400).json({ error: "No  Data" });
+        }
+        else {
+            return res.send(data);
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.getDriverByVehId = getDriverByVehId;
 const getDriverById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
