@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllReservations = exports.updateReservationByBid = exports.getRevByBusinessId = exports.updateReservationStatus = exports.getRevByClientId = exports.vehReservation = void 0;
+exports.getAllReservations = exports.updateReservationByBid = exports.getRevByBusinessId = exports.updateReservationStatusByBid = exports.updateReservationStatusByClient = exports.getRevByClientId = exports.vehReservation = void 0;
 const vehReserv_1 = __importDefault(require("../../models/Reservations/vehReserv"));
 const vehicle_1 = __importDefault(require("../../models/Product/vehicle"));
 const ReservedDated_1 = __importDefault(require("../../models/Reservations/ReservedDated"));
@@ -106,7 +106,7 @@ const getRevByClientId = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.getRevByClientId = getRevByClientId;
-const updateReservationStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const updateReservationStatusByClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const { status, bookingId, email } = req.body;
     try {
@@ -116,27 +116,54 @@ const updateReservationStatus = (req, res) => __awaiter(void 0, void 0, void 0, 
         if (!data) {
             return res.status(400).json({ error: "Failed to Update" });
         }
-        else {
-            const revDate = yield ReservedDated_1.default.findOneAndDelete({
-                bookingId: bookingId,
-            });
-            if (!revDate) {
-                return res.status(400).json({ error: "failed to Update" });
-            }
-            (0, setEmail_1.sendEmail)({
-                from: "beta.toursewa@gmail.com",
-                to: email,
-                subject: "Booking Status",
-                html: `<h2>Your Booking with booking id ${bookingId} has been ${status}</h2>`,
-            });
-            return res.status(200).json({ message: status });
+        const revDate = yield ReservedDated_1.default.findOneAndDelete({
+            bookingId: bookingId,
+        });
+        if (!revDate) {
+            return res.status(400).json({ error: "failed to Update" });
         }
+        (0, setEmail_1.sendEmail)({
+            from: "beta.toursewa@gmail.com",
+            to: email,
+            subject: "Booking Status",
+            html: `<h2>Your Booking with booking id ${bookingId} has been ${status}</h2>`,
+        });
+        return res.status(200).json({ message: status });
     }
     catch (error) {
         return res.status(500).json({ error: error.message });
     }
 });
-exports.updateReservationStatus = updateReservationStatus;
+exports.updateReservationStatusByClient = updateReservationStatusByClient;
+const updateReservationStatusByBid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const { status, bookingId, email } = req.body;
+    try {
+        const data = yield vehReserv_1.default.findByIdAndUpdate(id, {
+            status: status,
+        }, { new: true });
+        if (!data) {
+            return res.status(400).json({ error: "Failed to Update" });
+        }
+        // const revDate = await ReservedDate.findOneAndDelete({
+        //   bookingId: bookingId,
+        // });
+        // if (!revDate) {
+        //   return res.status(400).json({ error: "failed to Update" });
+        // }
+        (0, setEmail_1.sendEmail)({
+            from: "beta.toursewa@gmail.com",
+            to: email,
+            subject: "Booking Status",
+            html: `<h2>Your Booking with booking id ${bookingId} has been ${status}</h2>`,
+        });
+        return res.status(200).json({ message: status });
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.updateReservationStatusByBid = updateReservationStatusByBid;
 const getRevByBusinessId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {

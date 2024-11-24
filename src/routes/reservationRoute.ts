@@ -4,7 +4,8 @@ import {
   getRevByBusinessId,
   getRevByClientId,
   updateReservationByBid,
-  updateReservationStatus,
+  updateReservationStatusByBid,
+  updateReservationStatusByClient,
   vehReservation,
 } from "../controllers/Reservation/vehRevController";
 import {
@@ -18,7 +19,8 @@ router.post("/addRev/:id", vehReservation);
 router.get("/reservdates/:id", getReservedDates);
 
 router.get("/getclientrev/:id", getRevByClientId);
-router.put("/updateRevStatus/:id", updateReservationStatus);
+router.put("/updateRevStatusbyclient/:id", updateReservationStatusByClient);
+router.put("/updateRevStatusbybid/:id", updateReservationStatusByBid);
 router.get("/getbusinessrev/:id", getRevByBusinessId);
 router.put("/updateRevbybid/:id", updateReservationByBid);
 router.get("/getalldates", getAllRevDates);

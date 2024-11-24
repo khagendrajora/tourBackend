@@ -109,7 +109,10 @@ export const getRevByClientId = async (req: Request, res: Response) => {
   }
 };
 
-export const updateReservationStatus = async (req: Request, res: Response) => {
+export const updateReservationStatusByClient = async (
+  req: Request,
+  res: Response
+) => {
   const id = req.params.id;
   const { status, bookingId, email } = req.body;
   try {
@@ -122,21 +125,57 @@ export const updateReservationStatus = async (req: Request, res: Response) => {
     );
     if (!data) {
       return res.status(400).json({ error: "Failed to Update" });
-    } else {
-      const revDate = await ReservedDate.findOneAndDelete({
-        bookingId: bookingId,
-      });
-      if (!revDate) {
-        return res.status(400).json({ error: "failed to Update" });
-      }
-      sendEmail({
-        from: "beta.toursewa@gmail.com",
-        to: email,
-        subject: "Booking Status",
-        html: `<h2>Your Booking with booking id ${bookingId} has been ${status}</h2>`,
-      });
-      return res.status(200).json({ message: status });
     }
+
+    const revDate = await ReservedDate.findOneAndDelete({
+      bookingId: bookingId,
+    });
+    if (!revDate) {
+      return res.status(400).json({ error: "failed to Update" });
+    }
+    sendEmail({
+      from: "beta.toursewa@gmail.com",
+      to: email,
+      subject: "Booking Status",
+      html: `<h2>Your Booking with booking id ${bookingId} has been ${status}</h2>`,
+    });
+    return res.status(200).json({ message: status });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const updateReservationStatusByBid = async (
+  req: Request,
+  res: Response
+) => {
+  const id = req.params.id;
+  const { status, bookingId, email } = req.body;
+  try {
+    const data = await VehicleReservation.findByIdAndUpdate(
+      id,
+      {
+        status: status,
+      },
+      { new: true }
+    );
+    if (!data) {
+      return res.status(400).json({ error: "Failed to Update" });
+    }
+
+    // const revDate = await ReservedDate.findOneAndDelete({
+    //   bookingId: bookingId,
+    // });
+    // if (!revDate) {
+    //   return res.status(400).json({ error: "failed to Update" });
+    // }
+    sendEmail({
+      from: "beta.toursewa@gmail.com",
+      to: email,
+      subject: "Booking Status",
+      html: `<h2>Your Booking with booking id ${bookingId} has been ${status}</h2>`,
+    });
+    return res.status(200).json({ message: status });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }
