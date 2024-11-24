@@ -69,7 +69,7 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 return res.status(400).json({ error: "failed to save date" });
             }
             else {
-                yield vehicle_1.default.findByIdAndUpdate(id, {
+                yield vehicle_1.default.findOneAndUpdate({ vehId: id }, {
                     operationDates: bookingDate,
                 }, { new: true });
                 (0, setEmail_1.sendEmail)({

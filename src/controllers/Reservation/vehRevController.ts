@@ -69,8 +69,8 @@ export const vehReservation = async (req: Request, res: Response) => {
       if (!resrvDate) {
         return res.status(400).json({ error: "failed to save date" });
       } else {
-        await Vehicle.findByIdAndUpdate(
-          id,
+        await Vehicle.findOneAndUpdate(
+          { vehId: id },
           {
             operationDates: bookingDate,
           },
