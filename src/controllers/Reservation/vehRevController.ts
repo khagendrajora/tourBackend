@@ -34,7 +34,7 @@ export const vehReservation = async (req: Request, res: Response) => {
     const businessdata = await Business.findOne({ bId: vehData.businessId });
 
     let vehRev = new VehicleReservation({
-      vehicleId: vehData.vehId,
+      vehicleId: id,
       vehicleType: vehData.vehCategory,
 
       vehicleNumber: vehData.vehNumber,

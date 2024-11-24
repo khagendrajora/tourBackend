@@ -33,7 +33,7 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
         }
         const businessdata = yield business_1.default.findOne({ bId: vehData.businessId });
         let vehRev = new vehReserv_1.default({
-            vehicleId: vehData.vehId,
+            vehicleId: id,
             vehicleType: vehData.vehCategory,
             vehicleNumber: vehData.vehNumber,
             capacity: vehData.capacity,
