@@ -78,11 +78,11 @@ const getTourByBusinessId = (req, res) => __awaiter(void 0, void 0, void 0, func
     const id = req.params.businessid;
     try {
         let tour = yield tour_1.default.find({ businessId: id });
-        if (tour.length === 0) {
-            return res.status(404).json({ error: "No Data found" });
+        if (tour.length > 0) {
+            return res.send(tour);
         }
         else {
-            return res.send(tour);
+            return res.status(404).json({ error: "No Data found" });
         }
     }
     catch (error) {
@@ -206,11 +206,11 @@ const getTrekByBusinessId = (req, res) => __awaiter(void 0, void 0, void 0, func
     const id = req.params.businessid;
     try {
         let trek = yield trekking_1.default.find({ businessId: id });
-        if (trek.length === 0) {
-            return res.status(404).json({ error: "No Data Found" });
+        if (trek.length > 0) {
+            return res.send(trek);
         }
         else {
-            return res.send(trek);
+            return res.status(404).json({ error: "No Data Found" });
         }
     }
     catch (error) {
