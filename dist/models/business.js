@@ -27,7 +27,6 @@ const businessSchema = new mongoose_1.default.Schema({
         registrationNumber: {
             type: String,
             required: true,
-            unique: true,
         },
         registrationOn: {
             type: Date,

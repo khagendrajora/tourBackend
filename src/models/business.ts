@@ -6,10 +6,10 @@ interface ISocialMedia {
 }
 
 interface IBusinessRegistration {
-  authority: string;
+  authority?: string;
   registrationNumber: string;
-  registrationOn: Date;
-  expiresOn: Date;
+  registrationOn?: Date;
+  expiresOn?: Date;
 }
 
 export interface IBusiness extends Document {
@@ -63,7 +63,6 @@ const businessSchema = new mongoose.Schema(
       registrationNumber: {
         type: String,
         required: true,
-        unique: true,
       },
       registrationOn: {
         type: Date,
