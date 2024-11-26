@@ -17,7 +17,6 @@ const tour_1 = __importDefault(require("../models/Product/tour"));
 const trekking_1 = __importDefault(require("../models/Product/trekking"));
 const vehicle_1 = __importDefault(require("../models/Product/vehicle"));
 const { customAlphabet } = require("nanoid");
-const ReservedDated_1 = __importDefault(require("../models/Reservations/ReservedDated"));
 const addTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
     let tourId = customId();
@@ -278,9 +277,7 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const customId = customAlphabet("1234567890", 4);
     let vehId = customId();
     vehId = "V" + vehId;
-    const { businessId, vehCategory, vehSubCategory, services, amenities, vehCondition, madeYear, vehNumber, 
-    // quantity,
-    capacity, name, operationDates, manufacturer, model, VIN, } = req.body;
+    const { businessId, vehCategory, vehSubCategory, services, amenities, vehCondition, madeYear, vehNumber, capacity, name, operationDates, manufacturer, model, VIN, } = req.body;
     try {
         let vehImages = [];
         if (req.files) {
@@ -322,23 +319,7 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (!veh) {
             return res.status(400).json({ error: "failed to save" });
         }
-        else {
-            let revDates = new ReservedDated_1.default({
-                vehicleId: vehId,
-                bookingDate: operationDates,
-                bookedBy: businessId,
-                bookingId: businessId,
-            });
-            revDates = yield revDates.save();
-            if (!revDates) {
-                return res
-                    .status(400)
-                    .json({ error: "failed to save Operational Dated" });
-            }
-            else {
-                return res.status(200).json({ message: "Vehicle Registered" });
-            }
-        }
+        return res.status(200).json({ message: "Vehicle Registered" });
     }
     catch (error) {
         return res.status(500).json({ error: error });
@@ -404,7 +385,7 @@ const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 vehImages.push(...uploadedFiles);
             }
         }
-        const data = yield vehicle_1.default.findByIdAndUpdate(id, {
+        const data = yield vehicle_1.default.findOneAndUpdate({ vehId: id }, {
             businessId,
             vehCategory,
             vehSubCategory,
@@ -413,7 +394,6 @@ const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             vehCondition,
             madeYear,
             vehNumber,
-            // quantity,
             capacity,
             name,
             operationDates,

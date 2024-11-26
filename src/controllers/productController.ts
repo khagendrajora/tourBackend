@@ -317,7 +317,7 @@ export const addVehicle = async (req: Request, res: Response) => {
     vehCondition,
     madeYear,
     vehNumber,
-    // quantity,
+
     capacity,
     name,
     operationDates,
@@ -367,22 +367,9 @@ export const addVehicle = async (req: Request, res: Response) => {
     veh = await veh.save();
     if (!veh) {
       return res.status(400).json({ error: "failed to save" });
-    } else {
-      let revDates = new ReservedDate({
-        vehicleId: vehId,
-        bookingDate: operationDates,
-        bookedBy: businessId,
-        bookingId: businessId,
-      });
-      revDates = await revDates.save();
-      if (!revDates) {
-        return res
-          .status(400)
-          .json({ error: "failed to save Operational Dated" });
-      } else {
-        return res.status(200).json({ message: "Vehicle Registered" });
-      }
     }
+
+    return res.status(200).json({ message: "Vehicle Registered" });
   } catch (error: any) {
     return res.status(500).json({ error: error });
   }
@@ -441,7 +428,6 @@ export const updateVeh = async (req: Request, res: Response) => {
     vehCondition,
     madeYear,
     vehNumber,
-
     capacity,
     name,
     operationDates,
@@ -455,8 +441,8 @@ export const updateVeh = async (req: Request, res: Response) => {
         vehImages.push(...uploadedFiles);
       }
     }
-    const data = await Vehicle.findByIdAndUpdate(
-      id,
+    const data = await Vehicle.findOneAndUpdate(
+      { vehId: id },
       {
         businessId,
         vehCategory,
@@ -466,7 +452,7 @@ export const updateVeh = async (req: Request, res: Response) => {
         vehCondition,
         madeYear,
         vehNumber,
-        // quantity,
+
         capacity,
         name,
         operationDates,
