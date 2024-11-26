@@ -42,31 +42,22 @@ const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 .status(400)
                 .json({ error: "Registration Number is already Used" });
         }
-        // const email = await Business.findOne({ primaryEmail });
-        // if (email) {
-        //   return res.status(400).json({ error: "Email already registered" });
-        // }
-        const isEmail = yield Promise.all([
-            business_1.default.findOne({ primaryEmail }),
-            userModel_1.default.findOne({ userEmail: primaryEmail }),
-            Driver_1.default.findOne({ driverEmail: primaryEmail }),
-            adminUser_1.default.findOne({ adminEmail: primaryEmail }),
-        ]);
-        if (isEmail) {
+        const email = yield business_1.default.findOne({ primaryEmail });
+        if (email) {
             return res.status(400).json({ error: "Email already registered" });
         }
-        // const userEmail = await ClientUser.findOne({ userEmail: primaryEmail });
-        // if (userEmail) {
-        //   return res.status(400).json({ error: "Email already registered" });
-        // }
-        // const driverEmail = await Driver.findOne({ driverEmail: primaryEmail });
-        // if (driverEmail) {
-        //   return res.status(400).json({ error: "Email already registered" });
-        // }
-        // const adminEmail = await AdminUser.findOne({ adminEmail: primaryEmail });
-        // if (adminEmail) {
-        //   return res.status(400).json({ error: "Email already registered" });
-        // }
+        const userEmail = yield userModel_1.default.findOne({ userEmail: primaryEmail });
+        if (userEmail) {
+            return res.status(400).json({ error: "Email already registered" });
+        }
+        const driverEmail = yield Driver_1.default.findOne({ driverEmail: primaryEmail });
+        if (driverEmail) {
+            return res.status(400).json({ error: "Email already registered" });
+        }
+        const adminEmail = yield adminUser_1.default.findOne({ adminEmail: primaryEmail });
+        if (adminEmail) {
+            return res.status(400).json({ error: "Email already registered" });
+        }
         const phone = yield business_1.default.findOne({ primaryPhone });
         if (phone) {
             return res

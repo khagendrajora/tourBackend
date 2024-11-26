@@ -37,34 +37,24 @@ export const addBusiness = async (req: Request, res: Response) => {
         .json({ error: "Registration Number is already Used" });
     }
 
-    // const email = await Business.findOne({ primaryEmail });
-    // if (email) {
-    //   return res.status(400).json({ error: "Email already registered" });
-    // }
-
-    const isEmail = await Promise.all([
-      Business.findOne({ primaryEmail }),
-      ClientUser.findOne({ userEmail: primaryEmail }),
-      Driver.findOne({ driverEmail: primaryEmail }),
-      AdminUser.findOne({ adminEmail: primaryEmail }),
-    ]);
-    if (isEmail) {
+    const email = await Business.findOne({ primaryEmail });
+    if (email) {
       return res.status(400).json({ error: "Email already registered" });
     }
 
-    // const userEmail = await ClientUser.findOne({ userEmail: primaryEmail });
-    // if (userEmail) {
-    //   return res.status(400).json({ error: "Email already registered" });
-    // }
-    // const driverEmail = await Driver.findOne({ driverEmail: primaryEmail });
-    // if (driverEmail) {
-    //   return res.status(400).json({ error: "Email already registered" });
-    // }
+    const userEmail = await ClientUser.findOne({ userEmail: primaryEmail });
+    if (userEmail) {
+      return res.status(400).json({ error: "Email already registered" });
+    }
+    const driverEmail = await Driver.findOne({ driverEmail: primaryEmail });
+    if (driverEmail) {
+      return res.status(400).json({ error: "Email already registered" });
+    }
 
-    // const adminEmail = await AdminUser.findOne({ adminEmail: primaryEmail });
-    // if (adminEmail) {
-    //   return res.status(400).json({ error: "Email already registered" });
-    // }
+    const adminEmail = await AdminUser.findOne({ adminEmail: primaryEmail });
+    if (adminEmail) {
+      return res.status(400).json({ error: "Email already registered" });
+    }
 
     const phone = await Business.findOne({ primaryPhone });
     if (phone) {
