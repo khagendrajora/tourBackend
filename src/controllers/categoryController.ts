@@ -39,6 +39,8 @@ export const getCategory = async (req: Request, res: Response) => {
     let category = await Category.find();
     if (category.length > 0) {
       return res.send(category);
+    } else {
+      return res.status(400).json({ error: "Not Found" });
     }
   } catch (error: any) {
     return res.status(500).json({ error: "internal error" });

@@ -155,6 +155,20 @@ export const verifyUserEmail = async (req: Request, res: Response) => {
 //   }
 // };
 
+export const getClients = async (req: Request, res: Response) => {
+  try {
+    await ClientUser.find().then((data) => {
+      if (data.length > 0) {
+        return res.send(data);
+      } else {
+        return res.status(400).json({ error: "Not Found" });
+      }
+    });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 export const getClientById = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {

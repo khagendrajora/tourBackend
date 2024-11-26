@@ -31,10 +31,10 @@ export const addHero = async (req: Request, res: Response) => {
 export const getHero = async (req: Request, res: Response) => {
   try {
     let hero = await Hero.find();
-    if (!hero) {
-      return res.status(404).json({ error: "Failed to get image" });
-    } else {
+    if (hero.length > 0) {
       return res.send(hero);
+    } else {
+      return res.status(404).json({ error: "Failed to get image" });
     }
   } catch (error: any) {
     return res.status(500).json({ error: "internal error" });

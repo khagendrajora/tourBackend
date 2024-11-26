@@ -5,6 +5,7 @@ import {
   deleteClient,
   forgetPwd,
   getClientById,
+  getClients,
   resetPwd,
   updateProfileById,
   verifyUserEmail,
@@ -25,6 +26,8 @@ router.put(
 );
 router.put("/changepwd/:id", changePwd);
 router.put("/verifyuseremail/:token", verifyUserEmail);
+router.get("/getclients", getClients);
+
 // router.post("/clientlogin", clientLogin);
 router.get("/getclientbyid/:id", getClientById);
 router.delete("/deleteclient/:id", deleteClient);

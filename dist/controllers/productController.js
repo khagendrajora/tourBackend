@@ -65,6 +65,9 @@ const getTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (tour.length > 0) {
             return res.send(tour);
         }
+        else {
+            return res.status(400).json({ error: "Not Found" });
+        }
     }
     catch (error) {
         return res.status(500).json({ error: "internal error" });
@@ -189,6 +192,9 @@ const getTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         let trek = yield trekking_1.default.find();
         if (trek.length > 0) {
             return res.send(trek);
+        }
+        else {
+            return res.status(400).json({ error: "Not Found" });
         }
     }
     catch (error) {

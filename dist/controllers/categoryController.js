@@ -55,6 +55,9 @@ const getCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         if (category.length > 0) {
             return res.send(category);
         }
+        else {
+            return res.status(400).json({ error: "Not Found" });
+        }
     }
     catch (error) {
         return res.status(500).json({ error: "internal error" });

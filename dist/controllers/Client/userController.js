@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getMyReservations = exports.resetPwd = exports.forgetPwd = exports.deleteClient = exports.updateProfileById = exports.changePwd = exports.getClientById = exports.verifyUserEmail = exports.addNewClient = void 0;
+exports.getMyReservations = exports.resetPwd = exports.forgetPwd = exports.deleteClient = exports.updateProfileById = exports.changePwd = exports.getClientById = exports.getClients = exports.verifyUserEmail = exports.addNewClient = void 0;
 const userModel_1 = __importDefault(require("../../models/Client/userModel"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const token_1 = __importDefault(require("../../models/token"));
@@ -163,6 +163,22 @@ exports.verifyUserEmail = verifyUserEmail;
 //     return res.status(500).json({ error: error.message });
 //   }
 // };
+const getClients = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield userModel_1.default.find().then((data) => {
+            if (data.length > 0) {
+                return res.send(data);
+            }
+            else {
+                return res.status(400).json({ error: "Not Found" });
+            }
+        });
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.getClients = getClients;
 const getClientById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {

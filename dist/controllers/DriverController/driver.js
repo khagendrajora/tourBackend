@@ -203,7 +203,7 @@ const getDrivers = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 return res.send(data);
             }
             else {
-                return res.status(200).json({ message: "Do data available" });
+                return res.status(200).json({ message: "Not Found" });
             }
         });
     }

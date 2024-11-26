@@ -63,6 +63,8 @@ export const getTour = async (req: Request, res: Response) => {
     let tour = await Tour.find();
     if (tour.length > 0) {
       return res.send(tour);
+    } else {
+      return res.status(400).json({ error: "Not Found" });
     }
   } catch (error: any) {
     return res.status(500).json({ error: "internal error" });
@@ -210,6 +212,8 @@ export const getTrek = async (req: Request, res: Response) => {
     let trek = await Trekking.find();
     if (trek.length > 0) {
       return res.send(trek);
+    } else {
+      return res.status(400).json({ error: "Not Found" });
     }
   } catch (error: any) {
     return res.status(500).json({ error: "internal error" });

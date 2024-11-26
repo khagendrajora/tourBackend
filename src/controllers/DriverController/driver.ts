@@ -207,7 +207,7 @@ export const getDrivers = async (req: Request, res: Response) => {
       if (data.length > 0) {
         return res.send(data);
       } else {
-        return res.status(200).json({ message: "Do data available" });
+        return res.status(200).json({ message: "Not Found" });
       }
     });
   } catch (error: any) {

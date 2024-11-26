@@ -103,6 +103,8 @@ export const getRevByClientId = async (req: Request, res: Response) => {
     const data = await VehicleReservation.find({ bookedBy: id });
     if (data.length > 0) {
       return res.send(data);
+    } else {
+      return res.status(400).json({ error: "Not Found" });
     }
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
@@ -245,6 +247,8 @@ export const getAllReservations = async (req: Request, res: Response) => {
     const data = await VehicleReservation.find();
     if (data.length > 0) {
       return res.send(data);
+    } else {
+      return res.status(400).json({ error: "Not Found" });
     }
   } catch (error: any) {
     return res.status(500).json({ error: error.message });

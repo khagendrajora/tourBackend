@@ -46,11 +46,11 @@ exports.addHero = addHero;
 const getHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let hero = yield Hero_1.default.find();
-        if (!hero) {
-            return res.status(404).json({ error: "Failed to get image" });
+        if (hero.length > 0) {
+            return res.send(hero);
         }
         else {
-            return res.send(hero);
+            return res.status(404).json({ error: "Failed to get image" });
         }
     }
     catch (error) {

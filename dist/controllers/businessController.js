@@ -215,6 +215,9 @@ const getBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             if (data.length > 0) {
                 return res.send(data);
             }
+            else {
+                return res.status(400).json({ error: "Not Found" });
+            }
         });
     }
     catch (error) {

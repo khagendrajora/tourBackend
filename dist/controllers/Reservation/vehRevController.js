@@ -100,6 +100,9 @@ const getRevByClientId = (req, res) => __awaiter(void 0, void 0, void 0, functio
         if (data.length > 0) {
             return res.send(data);
         }
+        else {
+            return res.status(400).json({ error: "Not Found" });
+        }
     }
     catch (error) {
         return res.status(500).json({ error: error.message });
@@ -230,6 +233,9 @@ const getAllReservations = (req, res) => __awaiter(void 0, void 0, void 0, funct
         const data = yield vehReserv_1.default.find();
         if (data.length > 0) {
             return res.send(data);
+        }
+        else {
+            return res.status(400).json({ error: "Not Found" });
         }
     }
     catch (error) {

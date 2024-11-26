@@ -119,6 +119,8 @@ export const getProperty = async (req: Request, res: Response) => {
     let property = await Property.find();
     if (property.length === 0) {
       return res.send(property);
+    } else {
+      return res.status(400).json({ error: "Not Found" });
     }
   } catch (error: any) {
     return res.status(500).json({ error: "internal error" });
