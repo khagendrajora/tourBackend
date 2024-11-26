@@ -289,6 +289,16 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 vehImages = files["vehImages"].map((file) => file.path);
             }
         }
+        const vehicleNumber = yield vehicle_1.default.findOne({ vehNumber: vehNumber });
+        if (vehicleNumber) {
+            return res
+                .status(400)
+                .json({ error: "Vehicle Number already registered" });
+        }
+        const vehicleVIN = yield vehicle_1.default.findOne({ VIN: VIN });
+        if (vehicleVIN) {
+            return res.status(400).json({ error: "VIN Number already registered" });
+        }
         let veh = new vehicle_1.default({
             businessId,
             vehCategory,
@@ -384,7 +394,7 @@ const vehDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.vehDetails = vehDetails;
 const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { businessId, vehCategory, vehSubCategory, services, amenities, vehCondition, madeYear, vehNumber, capacity, name, operationDates, } = req.body;
+    const { businessId, vehCategory, vehSubCategory, services, amenities, vehCondition, madeYear, capacity, name, operationDates, } = req.body;
     try {
         let vehImages = req.body.existingVehImages || [];
         if (req.files) {
@@ -402,8 +412,6 @@ const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             amenities,
             vehCondition,
             madeYear,
-            vehNumber,
-            // quantity,
             capacity,
             name,
             operationDates,

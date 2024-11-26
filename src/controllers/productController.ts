@@ -333,6 +333,17 @@ export const addVehicle = async (req: Request, res: Response) => {
         vehImages = files["vehImages"].map((file) => file.path);
       }
     }
+    const vehicleNumber = await Vehicle.findOne({ vehNumber: vehNumber });
+    if (vehicleNumber) {
+      return res
+        .status(400)
+        .json({ error: "Vehicle Number already registered" });
+    }
+
+    const vehicleVIN = await Vehicle.findOne({ VIN: VIN });
+    if (vehicleVIN) {
+      return res.status(400).json({ error: "VIN Number already registered" });
+    }
 
     let veh = new Vehicle({
       businessId,
@@ -429,7 +440,6 @@ export const updateVeh = async (req: Request, res: Response) => {
     amenities,
     vehCondition,
     madeYear,
-    vehNumber,
 
     capacity,
     name,
@@ -454,8 +464,7 @@ export const updateVeh = async (req: Request, res: Response) => {
         amenities,
         vehCondition,
         madeYear,
-        vehNumber,
-        // quantity,
+
         capacity,
         name,
         operationDates,
