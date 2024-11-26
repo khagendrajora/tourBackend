@@ -440,6 +440,7 @@ export const updateVeh = async (req: Request, res: Response) => {
     amenities,
     vehCondition,
     madeYear,
+    vehNumber,
 
     capacity,
     name,
@@ -464,7 +465,8 @@ export const updateVeh = async (req: Request, res: Response) => {
         amenities,
         vehCondition,
         madeYear,
-
+        vehNumber,
+        // quantity,
         capacity,
         name,
         operationDates,

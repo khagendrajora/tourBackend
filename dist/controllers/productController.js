@@ -394,7 +394,7 @@ const vehDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.vehDetails = vehDetails;
 const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { businessId, vehCategory, vehSubCategory, services, amenities, vehCondition, madeYear, capacity, name, operationDates, } = req.body;
+    const { businessId, vehCategory, vehSubCategory, services, amenities, vehCondition, madeYear, vehNumber, capacity, name, operationDates, } = req.body;
     try {
         let vehImages = req.body.existingVehImages || [];
         if (req.files) {
@@ -412,6 +412,8 @@ const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             amenities,
             vehCondition,
             madeYear,
+            vehNumber,
+            // quantity,
             capacity,
             name,
             operationDates,
