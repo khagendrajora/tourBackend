@@ -35,29 +35,38 @@ const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             return res.status(400).json({ error: "Password is reqired" });
         }
         const tax = yield business_1.default.findOne({
-            registrationNumber,
+            "businessRegistration.registrationNumber": registrationNumber,
         });
         if (tax) {
             return res
                 .status(400)
                 .json({ error: "Registration Number is already Used" });
         }
-        const email = yield business_1.default.findOne({ primaryEmail });
-        if (email) {
+        // const email = await Business.findOne({ primaryEmail });
+        // if (email) {
+        //   return res.status(400).json({ error: "Email already registered" });
+        // }
+        const isEmail = yield Promise.all([
+            business_1.default.findOne({ primaryEmail }),
+            userModel_1.default.findOne({ userEmail: primaryEmail }),
+            Driver_1.default.findOne({ driverEmail: primaryEmail }),
+            adminUser_1.default.findOne({ adminEmail: primaryEmail }),
+        ]);
+        if (isEmail) {
             return res.status(400).json({ error: "Email already registered" });
         }
-        const userEmail = yield userModel_1.default.findOne({ userEmail: primaryEmail });
-        if (userEmail) {
-            return res.status(400).json({ error: "Email already registered" });
-        }
-        const driverEmail = yield Driver_1.default.findOne({ driverEmail: primaryEmail });
-        if (driverEmail) {
-            return res.status(400).json({ error: "Email already registered" });
-        }
-        const adminEmail = yield adminUser_1.default.findOne({ adminEmail: primaryEmail });
-        if (adminEmail) {
-            return res.status(400).json({ error: "Email already registered" });
-        }
+        // const userEmail = await ClientUser.findOne({ userEmail: primaryEmail });
+        // if (userEmail) {
+        //   return res.status(400).json({ error: "Email already registered" });
+        // }
+        // const driverEmail = await Driver.findOne({ driverEmail: primaryEmail });
+        // if (driverEmail) {
+        //   return res.status(400).json({ error: "Email already registered" });
+        // }
+        // const adminEmail = await AdminUser.findOne({ adminEmail: primaryEmail });
+        // if (adminEmail) {
+        //   return res.status(400).json({ error: "Email already registered" });
+        // }
         const phone = yield business_1.default.findOne({ primaryPhone });
         if (phone) {
             return res
