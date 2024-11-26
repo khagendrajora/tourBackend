@@ -398,6 +398,28 @@ const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             name,
             vehImages,
         };
+        if (services !== undefined) {
+            if (Array.isArray(services) && services.length === 0) {
+                updateData.services = [];
+            }
+            else {
+                updateData.services = services;
+            }
+        }
+        else {
+            updateData.services = [];
+        }
+        if (amenities !== undefined) {
+            if (Array.isArray(amenities) && amenities.length === 0) {
+                updateData.amenities = [];
+            }
+            else {
+                updateData.amenities = amenities;
+            }
+        }
+        else {
+            updateData.amenities = [];
+        }
         if (operationDates !== undefined) {
             if (Array.isArray(operationDates) && operationDates.length === 0) {
                 updateData.operationDates = [];
