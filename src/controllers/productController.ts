@@ -457,10 +457,13 @@ export const updateVeh = async (req: Request, res: Response) => {
     };
 
     if (operationDates !== undefined) {
-      updateData.operationDates =
-        Array.isArray(operationDates) && operationDates.length === 0
-          ? []
-          : operationDates;
+      if (Array.isArray(operationDates) && operationDates.length === 0) {
+        updateData.operationDates = [];
+      } else {
+        updateData.operationDates = operationDates;
+      }
+    } else {
+      updateData.operationDates = [];
     }
 
     const data = await Vehicle.findOneAndUpdate(

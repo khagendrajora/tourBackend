@@ -399,10 +399,15 @@ const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             vehImages,
         };
         if (operationDates !== undefined) {
-            updateData.operationDates =
-                Array.isArray(operationDates) && operationDates.length === 0
-                    ? []
-                    : operationDates;
+            if (Array.isArray(operationDates) && operationDates.length === 0) {
+                updateData.operationDates = [];
+            }
+            else {
+                updateData.operationDates = operationDates;
+            }
+        }
+        else {
+            updateData.operationDates = [];
         }
         const data = yield vehicle_1.default.findOneAndUpdate({ vehId: id }, updateData, 
         // {
