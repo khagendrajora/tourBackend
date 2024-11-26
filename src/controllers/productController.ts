@@ -441,23 +441,46 @@ export const updateVeh = async (req: Request, res: Response) => {
         vehImages.push(...uploadedFiles);
       }
     }
+
+    const updateData: { [key: string]: any } = {
+      businessId,
+      vehCategory,
+      vehSubCategory,
+      services,
+      amenities,
+      vehCondition,
+      madeYear,
+      vehNumber,
+      capacity,
+      name,
+      vehImages,
+    };
+
+    if (operationDates !== undefined) {
+      updateData.operationDates =
+        Array.isArray(operationDates) && operationDates.length === 0
+          ? []
+          : operationDates;
+    }
+
     const data = await Vehicle.findOneAndUpdate(
       { vehId: id },
-      {
-        businessId,
-        vehCategory,
-        vehSubCategory,
-        services,
-        amenities,
-        vehCondition,
-        madeYear,
-        vehNumber,
+      updateData,
+      // {
+      //   businessId,
+      //   vehCategory,
+      //   vehSubCategory,
+      //   services,
+      //   amenities,
+      //   vehCondition,
+      //   madeYear,
+      //   vehNumber,
 
-        capacity,
-        name,
-        operationDates,
-        vehImages,
-      },
+      //   capacity,
+      //   name,
+      //   operationDates,
+      //   vehImages,
+      // },
       { new: true }
     );
     if (!data) {

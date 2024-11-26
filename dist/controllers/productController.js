@@ -385,7 +385,7 @@ const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 vehImages.push(...uploadedFiles);
             }
         }
-        const data = yield vehicle_1.default.findOneAndUpdate({ vehId: id }, {
+        const updateData = {
             businessId,
             vehCategory,
             vehSubCategory,
@@ -396,9 +396,30 @@ const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             vehNumber,
             capacity,
             name,
-            operationDates,
             vehImages,
-        }, { new: true });
+        };
+        if (operationDates !== undefined) {
+            updateData.operationDates =
+                Array.isArray(operationDates) && operationDates.length === 0
+                    ? []
+                    : operationDates;
+        }
+        const data = yield vehicle_1.default.findOneAndUpdate({ vehId: id }, updateData, 
+        // {
+        //   businessId,
+        //   vehCategory,
+        //   vehSubCategory,
+        //   services,
+        //   amenities,
+        //   vehCondition,
+        //   madeYear,
+        //   vehNumber,
+        //   capacity,
+        //   name,
+        //   operationDates,
+        //   vehImages,
+        // },
+        { new: true });
         if (!data) {
             return res.status(400).json({
                 error: "failed",
