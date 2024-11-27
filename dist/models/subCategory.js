@@ -13,10 +13,11 @@ const subCategorySchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    subCategoryName: {
-        type: String,
-        required: true,
-    },
+    subCategoryName: [
+        {
+            type: String,
+        },
+    ],
     desc: {
         type: String,
     },

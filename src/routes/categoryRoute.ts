@@ -25,7 +25,12 @@ router.delete("/deletecategory/:id", deleteCategory);
 router.get("/categorydetail/:id", getCategoryDetails);
 router.put("/updatecategory/:id", updateCategory);
 
-router.post("/addsubcategory", addSubCategoryData, validation, addSubCategory);
+router.put(
+  "/addsubcategory/:id",
+  addSubCategoryData,
+  validation,
+  addSubCategory
+);
 router.get("/getsubcategory", getSubCategory);
 router.get("/subcategorydetails/:id", subcategoryDetails);
 router.delete("/deletesubcategory/:id", deleteSubCategory);

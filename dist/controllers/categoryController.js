@@ -17,7 +17,7 @@ const category_1 = __importDefault(require("../models/category"));
 const subCategory_1 = __importDefault(require("../models/subCategory"));
 const { customAlphabet } = require("nanoid");
 const addCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let { categoryName, desc, subCategory } = req.body;
+    let { categoryName, desc, subCategoryName } = req.body;
     categoryName = categoryName.toLowerCase().trim();
     const customId = customAlphabet("1234567890", 4);
     let categoryId = customId();
@@ -26,7 +26,7 @@ const addCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         let category = new category_1.default({
             categoryName,
             desc,
-            subCategory,
+            subCategoryName,
             categoryId: categoryId,
         });
         category_1.default.findOne({ categoryName }).then((data) => __awaiter(void 0, void 0, void 0, function* () {
@@ -67,7 +67,7 @@ exports.getCategory = getCategory;
 const getCategoryDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        let categoryDetails = yield category_1.default.findById(id);
+        let categoryDetails = yield category_1.default.findOne({ categoryId: id });
         if (!categoryDetails) {
             return res
                 .status(404)
@@ -84,14 +84,26 @@ const getCategoryDetails = (req, res) => __awaiter(void 0, void 0, void 0, funct
 exports.getCategoryDetails = getCategoryDetails;
 const updateCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    let { categoryName, desc, subCategory } = req.body;
+    let { categoryName, desc, subCategoryName } = req.body;
     categoryName = categoryName.toLowerCase().trim();
     try {
-        const category = yield category_1.default.findByIdAndUpdate(id, {
+        const updatedData = {
             categoryName,
             desc,
-            subCategory,
-        }, { new: true });
+            subCategoryName,
+        };
+        if (subCategoryName !== undefined) {
+            if (Array.isArray(subCategoryName) && subCategoryName.length === 0) {
+                updatedData.subCategoryName = [];
+            }
+            else {
+                updatedData.subCategoryName = subCategoryName;
+            }
+        }
+        else {
+            updatedData.subCategoryName = [];
+        }
+        const category = yield category_1.default.findOneAndUpdate({ categoryId: id }, updatedData, { new: true });
         if (!category) {
             return res.status(400).json({
                 error: "Failed to Update",
@@ -124,32 +136,16 @@ const deleteCategory = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.deleteCategory = deleteCategory;
 const addSubCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let { categoryName, subCategoryName, desc } = req.body;
-    categoryName = categoryName.toLowerCase().trim();
+    const id = req.params.id;
+    let { subCategoryName } = req.body;
     subCategoryName = subCategoryName.trim();
-    let categoryId;
     try {
-        const data = yield category_1.default.findOne({ categoryName });
+        const data = yield category_1.default.findOneAndUpdate({ categoryId: id }, { $push: { subCategoryName: subCategoryName } }, { new: true });
         if (data) {
-            categoryId = data._id;
+            return res.status(200).json({ message: "Sub Category Added" });
         }
         else {
-            return res
-                .status(404)
-                .json({ error: "Category not found,  add category First" });
-        }
-        let subCategory = new subCategory_1.default({
-            categoryName,
-            categoryId: categoryId,
-            subCategoryName,
-            desc,
-        });
-        subCategory = yield subCategory.save();
-        if (!subCategory) {
-            return res.status(409).json({ error: "fail to add subcategory" });
-        }
-        else {
-            return res.send(subCategory);
+            return res.status(404).json({ error: "Failed TO add" });
         }
     }
     catch (error) {

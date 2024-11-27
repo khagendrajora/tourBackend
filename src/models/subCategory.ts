@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 export interface ISubCategory extends Document {
   categoryName: string;
-  subCategoryName: string;
+  subCategoryName?: string[];
   desc?: string;
   categoryId: string;
   _id?: string;
@@ -18,10 +18,11 @@ const subCategorySchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    subCategoryName: {
-      type: String,
-      required: true,
-    },
+    subCategoryName: [
+      {
+        type: String,
+      },
+    ],
     desc: {
       type: String,
     },

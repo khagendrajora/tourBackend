@@ -333,7 +333,9 @@ export const addVehicle = async (req: Request, res: Response) => {
         vehImages = files["vehImages"].map((file) => file.path);
       }
     }
-    const vehicleNumber = await Vehicle.findOne({ vehNumber: vehNumber });
+    const vehicleNumber = await Vehicle.findOne({
+      vehNumber: vehNumber,
+    });
     if (vehicleNumber) {
       return res
         .status(400)
@@ -355,7 +357,7 @@ export const addVehicle = async (req: Request, res: Response) => {
       vehCondition,
       madeYear,
       vehNumber,
-      // quantity,
+
       capacity,
       name,
       operationDates,

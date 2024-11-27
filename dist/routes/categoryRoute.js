@@ -12,7 +12,7 @@ router.get("/getcategory", categoryController_1.getCategory);
 router.delete("/deletecategory/:id", categoryController_1.deleteCategory);
 router.get("/categorydetail/:id", categoryController_1.getCategoryDetails);
 router.put("/updatecategory/:id", categoryController_1.updateCategory);
-router.post("/addsubcategory", Validation_1.addSubCategoryData, Validation_1.validation, categoryController_1.addSubCategory);
+router.put("/addsubcategory/:id", Validation_1.addSubCategoryData, Validation_1.validation, categoryController_1.addSubCategory);
 router.get("/getsubcategory", categoryController_1.getSubCategory);
 router.get("/subcategorydetails/:id", categoryController_1.subcategoryDetails);
 router.delete("/deletesubcategory/:id", categoryController_1.deleteSubCategory);

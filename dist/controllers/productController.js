@@ -286,7 +286,9 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 vehImages = files["vehImages"].map((file) => file.path);
             }
         }
-        const vehicleNumber = yield vehicle_1.default.findOne({ vehNumber: vehNumber });
+        const vehicleNumber = yield vehicle_1.default.findOne({
+            vehNumber: vehNumber,
+        });
         if (vehicleNumber) {
             return res
                 .status(400)
@@ -306,7 +308,6 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             vehCondition,
             madeYear,
             vehNumber,
-            // quantity,
             capacity,
             name,
             operationDates,

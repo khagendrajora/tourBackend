@@ -4,7 +4,7 @@ import SubCategory from "../models/subCategory";
 const { customAlphabet } = require("nanoid");
 
 export const addCategory = async (req: Request, res: Response) => {
-  let { categoryName, desc, subCategory } = req.body;
+  let { categoryName, desc, subCategoryName } = req.body;
   categoryName = categoryName.toLowerCase().trim();
   const customId = customAlphabet("1234567890", 4);
   let categoryId = customId();
@@ -13,7 +13,7 @@ export const addCategory = async (req: Request, res: Response) => {
     let category = new Category({
       categoryName,
       desc,
-      subCategory,
+      subCategoryName,
       categoryId: categoryId,
     });
 
@@ -50,7 +50,7 @@ export const getCategory = async (req: Request, res: Response) => {
 export const getCategoryDetails = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
-    let categoryDetails = await Category.findById(id);
+    let categoryDetails = await Category.findOne({ categoryId: id });
     if (!categoryDetails) {
       return res
         .status(404)
@@ -65,17 +65,31 @@ export const getCategoryDetails = async (req: Request, res: Response) => {
 
 export const updateCategory = async (req: Request, res: Response) => {
   const id = req.params.id;
-  let { categoryName, desc, subCategory } = req.body;
+  let { categoryName, desc, subCategoryName } = req.body;
   categoryName = categoryName.toLowerCase().trim();
 
   try {
-    const category = await Category.findByIdAndUpdate(
-      id,
-      {
-        categoryName,
-        desc,
-        subCategory,
-      },
+    const updatedData: { [key: string]: any } = {
+      categoryName,
+      desc,
+      subCategoryName,
+    };
+
+    if (subCategoryName !== undefined) {
+      if (Array.isArray(subCategoryName) && subCategoryName.length === 0) {
+        updatedData.subCategoryName = [];
+      } else {
+        updatedData.subCategoryName = subCategoryName;
+      }
+    } else {
+      updatedData.subCategoryName = [];
+    }
+
+    const category = await Category.findOneAndUpdate(
+      { categoryId: id },
+
+      updatedData,
+
       { new: true }
     );
 
@@ -107,33 +121,21 @@ export const deleteCategory = async (req: Request, res: Response) => {
 };
 
 export const addSubCategory = async (req: Request, res: Response) => {
-  let { categoryName, subCategoryName, desc } = req.body;
-  categoryName = categoryName.toLowerCase().trim();
+  const id = req.params.id;
+  let { subCategoryName } = req.body;
+
   subCategoryName = subCategoryName.trim();
 
-  let categoryId;
-
   try {
-    const data = await Category.findOne({ categoryName });
+    const data = await Category.findOneAndUpdate(
+      { categoryId: id },
+      { $push: { subCategoryName: subCategoryName } },
+      { new: true }
+    );
     if (data) {
-      categoryId = data._id;
+      return res.status(200).json({ message: "Sub Category Added" });
     } else {
-      return res
-        .status(404)
-        .json({ error: "Category not found,  add category First" });
-    }
-
-    let subCategory = new SubCategory({
-      categoryName,
-      categoryId: categoryId,
-      subCategoryName,
-      desc,
-    });
-    subCategory = await subCategory.save();
-    if (!subCategory) {
-      return res.status(409).json({ error: "fail to add subcategory" });
-    } else {
-      return res.send(subCategory);
+      return res.status(404).json({ error: "Failed TO add" });
     }
   } catch (error: any) {
     return res.status(500).json({ error: error });
