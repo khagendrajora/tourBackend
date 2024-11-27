@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 export interface ICategory extends Document {
   _id?: string;
   categoryName: string;
-  desc: string;
-  subCategory?: string;
+  desc?: string;
+  subCategory?: string[];
   categoryId: string;
 }
 
@@ -20,11 +20,12 @@ const categorySchema = new mongoose.Schema(
     },
     desc: {
       type: String,
-      required: true,
     },
-    subCategory: {
-      type: String,
-    },
+    subCategory: [
+      {
+        type: String,
+      },
+    ],
   },
   { timestamps: true }
 );

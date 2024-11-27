@@ -6,10 +6,10 @@ import {
   deleteSubCategory,
   getCategory,
   getCategoryDetails,
-  getSubCategory,
-  subcategoryDetails,
+  // getSubCategory,
+  // subcategoryDetails,
   updateCategory,
-  updateSubcategory,
+  // updateSubcategory,
 } from "../controllers/categoryController";
 import {
   addCategoryData,
@@ -31,9 +31,9 @@ router.put(
   validation,
   addSubCategory
 );
-router.get("/getsubcategory", getSubCategory);
-router.get("/subcategorydetails/:id", subcategoryDetails);
+// router.get("/getsubcategory", getSubCategory);
+// router.get("/subcategorydetails/:id", subcategoryDetails);
 router.delete("/deletesubcategory/:id", deleteSubCategory);
-router.put("/updatesubcategory/:id", updateSubcategory);
+// router.put("/updatesubcategory/:id", updateSubcategory);
 
 export default router;
