@@ -11,11 +11,7 @@ import {
   updateCategory,
   // updateSubcategory,
 } from "../controllers/categoryController";
-import {
-  addCategoryData,
-  addSubCategoryData,
-  validation,
-} from "../validation/Validation";
+import { addCategoryData, validation } from "../validation/Validation";
 
 const router = express.Router();
 
@@ -27,8 +23,7 @@ router.put("/updatecategory/:id", updateCategory);
 
 router.put(
   "/addsubcategory/:id",
-  addSubCategoryData,
-  validation,
+
   addSubCategory
 );
 // router.get("/getsubcategory", getSubCategory);

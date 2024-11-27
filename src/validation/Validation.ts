@@ -34,9 +34,9 @@ export const addCategoryData = [
   check("categoryName", "Category is required").trim().notEmpty(),
 ];
 
-export const addSubCategoryData = [
-  check("subCategoryName", "Sub Category is required").trim().notEmpty(),
-];
+// export const addSubCategoryData = [
+//   check("subCategoryName", "Sub Category is required").trim().notEmpty(),
+// ];
 
 export const addPropertyData = [
   check("propName", "Property name is required").trim().notEmpty(),

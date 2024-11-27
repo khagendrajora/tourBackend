@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validation = exports.reservationData = exports.addPropertyData = exports.addSubCategoryData = exports.addCategoryData = exports.addBusinessData = exports.adminSignup = void 0;
+exports.validation = exports.reservationData = exports.addPropertyData = exports.addCategoryData = exports.addBusinessData = exports.adminSignup = void 0;
 const express_validator_1 = require("express-validator");
 exports.adminSignup = [
     (0, express_validator_1.check)("adminName").trim().notEmpty().withMessage("Admin Name is required"),
@@ -33,9 +33,9 @@ exports.addBusinessData = [
 exports.addCategoryData = [
     (0, express_validator_1.check)("categoryName", "Category is required").trim().notEmpty(),
 ];
-exports.addSubCategoryData = [
-    (0, express_validator_1.check)("subCategoryName", "Sub Category is required").trim().notEmpty(),
-];
+// export const addSubCategoryData = [
+//   check("subCategoryName", "Sub Category is required").trim().notEmpty(),
+// ];
 exports.addPropertyData = [
     (0, express_validator_1.check)("propName", "Property name is required").trim().notEmpty(),
     (0, express_validator_1.check)("propCategory", "Sub Category is required").trim().notEmpty(),
