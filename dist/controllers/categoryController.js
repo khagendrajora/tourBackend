@@ -17,8 +17,8 @@ const category_1 = __importDefault(require("../models/category"));
 const subCategory_1 = __importDefault(require("../models/subCategory"));
 const { customAlphabet } = require("nanoid");
 const addCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let { categoryName, desc, subCategory } = req.body;
-    categoryName = categoryName.toLowerCase().trim();
+    const { categoryName, desc, subCategory } = req.body;
+    // categoryName = categoryName.toLowerCase().trim();
     const customId = customAlphabet("1234567890", 4);
     let categoryId = customId();
     categoryId = "C" + categoryId;
@@ -84,8 +84,8 @@ const getCategoryDetails = (req, res) => __awaiter(void 0, void 0, void 0, funct
 exports.getCategoryDetails = getCategoryDetails;
 const updateCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    let { categoryName, desc, subCategory } = req.body;
-    categoryName = categoryName.toLowerCase().trim();
+    const { categoryName, desc, subCategory } = req.body;
+    // categoryName = categoryName.toLowerCase().trim();
     try {
         const updatedData = {
             categoryName,
@@ -137,8 +137,8 @@ const deleteCategory = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.deleteCategory = deleteCategory;
 const addSubCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    let { subCategory } = req.body;
-    subCategory = subCategory.trim();
+    const { subCategory } = req.body;
+    // subCategory = subCategory.trim();
     try {
         const data = yield category_1.default.findOneAndUpdate({ categoryId: id }, { $push: { subCategory: subCategory } }, { new: true });
         if (data) {

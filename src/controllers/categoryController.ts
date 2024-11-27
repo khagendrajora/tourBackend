@@ -4,8 +4,8 @@ import SubCategory from "../models/subCategory";
 const { customAlphabet } = require("nanoid");
 
 export const addCategory = async (req: Request, res: Response) => {
-  let { categoryName, desc, subCategory } = req.body;
-  categoryName = categoryName.toLowerCase().trim();
+  const { categoryName, desc, subCategory } = req.body;
+  // categoryName = categoryName.toLowerCase().trim();
   const customId = customAlphabet("1234567890", 4);
   let categoryId = customId();
   categoryId = "C" + categoryId;
@@ -65,8 +65,8 @@ export const getCategoryDetails = async (req: Request, res: Response) => {
 
 export const updateCategory = async (req: Request, res: Response) => {
   const id = req.params.id;
-  let { categoryName, desc, subCategory } = req.body;
-  categoryName = categoryName.toLowerCase().trim();
+  const { categoryName, desc, subCategory } = req.body;
+  // categoryName = categoryName.toLowerCase().trim();
 
   try {
     const updatedData: { [key: string]: any } = {
@@ -118,9 +118,9 @@ export const deleteCategory = async (req: Request, res: Response) => {
 
 export const addSubCategory = async (req: Request, res: Response) => {
   const id = req.params.id;
-  let { subCategory } = req.body;
+  const { subCategory } = req.body;
 
-  subCategory = subCategory.trim();
+  // subCategory = subCategory.trim();
 
   try {
     const data = await Category.findOneAndUpdate(
