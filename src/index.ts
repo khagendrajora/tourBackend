@@ -2,6 +2,7 @@ import express, { Express } from "express";
 import dotenv from "dotenv";
 import logger from "./logger";
 import morgan from "morgan";
+import useragent from "express-useragent";
 dotenv.config();
 import "./db/database";
 import userRoute from "./routes/userRoute";
@@ -22,8 +23,9 @@ app.use(express.json());
 
 app.use(cookieParser());
 app.use(cors());
+app.use(useragent.express());
 
-const morganFormat = ":method :url :status :response-time ms";
+const morganFormat = ":method :url :status :response-time ms :ip :device";
 
 app.use(
   morgan(morganFormat, {
@@ -50,7 +52,6 @@ app.use("/api", businessRoute);
 app.use("/api", productRoute);
 app.use("/api", propertyRoute);
 app.use("/api", reservationRoute);
-app.use("/api", userRoute);
 app.use("/api", DriverRoute);
 app.use("/api", Login);
 
