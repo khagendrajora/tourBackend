@@ -23,6 +23,7 @@ router.put("/updateblogs/:id", fileUpload_1.default.fields([{ name: "blogsImage"
 router.delete("/deleteblog/:id", LandingPage_1.deleteBlogs);
 router.post("/addDest", fileUpload_1.default.fields([{ name: "destImage", maxCount: 10 }]), LandingPage_1.addDest);
 router.get("/getDest", LandingPage_1.getDest);
+router.get("/getdestbyid/:id", LandingPage_1.getDestById);
 router.put("/updateDest/:id", fileUpload_1.default.fields([{ name: "destImage", maxCount: 10 }]), LandingPage_1.updateDest);
 router.delete("/deletedest/:id", LandingPage_1.deleteDest);
 exports.default = router;

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteDest = exports.updateDest = exports.getDest = exports.addDest = exports.deleteBlogs = exports.updateBlogs = exports.getBlogsById = exports.getBlogs = exports.addBlogs = exports.deleteHotDeals = exports.updateHotdeals = exports.getHotDealsById = exports.getHotDeals = exports.addHotDeals = exports.deleteHero = exports.updateHero = exports.getHero = exports.addHero = void 0;
+exports.deleteDest = exports.updateDest = exports.getDestById = exports.getDest = exports.addDest = exports.deleteBlogs = exports.updateBlogs = exports.getBlogsById = exports.getBlogs = exports.addBlogs = exports.deleteHotDeals = exports.updateHotdeals = exports.getHotDealsById = exports.getHotDeals = exports.addHotDeals = exports.deleteHero = exports.updateHero = exports.getHero = exports.addHero = void 0;
 const Hero_1 = __importDefault(require("../../models/Pages/LandingPage/Hero"));
 const AboutUs_1 = __importDefault(require("../../models/Pages/LandingPage/AboutUs"));
 const Blogs_1 = __importDefault(require("../../models/Pages/LandingPage/Blogs"));
@@ -309,7 +309,7 @@ exports.deleteBlogs = deleteBlogs;
 const addDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title } = req.body;
     const customId = customAlphabet("1234567890", 4);
-    const destgId = customId();
+    const destId = customId();
     try {
         let destImage = [];
         if (req.files) {
@@ -321,7 +321,7 @@ const addDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         let dest = new Destination_1.default({
             title,
             destImage,
-            destgId: destgId,
+            destId: destId,
         });
         dest = yield dest.save();
         if (!dest) {
@@ -351,6 +351,19 @@ const getDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getDest = getDest;
+const getDestById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        let data = yield Destination_1.default.findOne({ destId: id });
+        if (data) {
+            return res.send(data);
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: "internal error" });
+    }
+});
+exports.getDestById = getDestById;
 const updateDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const { title } = req.body;
@@ -363,7 +376,7 @@ const updateDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 destImage.push(...uploadedFiles);
             }
         }
-        const dest = yield Blogs_1.default.findByIdAndUpdate(id, {
+        const dest = yield Blogs_1.default.findOneAndUpdate({ destId: id }, {
             title,
             destImage,
         }, { new: true });

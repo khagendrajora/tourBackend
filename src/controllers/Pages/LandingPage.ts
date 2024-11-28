@@ -286,7 +286,8 @@ export const deleteBlogs = async (req: Request, res: Response) => {
 export const addDest = async (req: Request, res: Response) => {
   const { title } = req.body;
   const customId = customAlphabet("1234567890", 4);
-  const destgId = customId();
+  const destId = customId();
+
   try {
     let destImage: string[] = [];
     if (req.files) {
@@ -298,7 +299,7 @@ export const addDest = async (req: Request, res: Response) => {
     let dest = new Destination({
       title,
       destImage,
-      destgId: destgId,
+      destId: destId,
     });
     dest = await dest.save();
     if (!dest) {
@@ -323,6 +324,17 @@ export const getDest = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "internal error" });
   }
 };
+export const getDestById = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    let data = await Destination.findOne({ destId: id });
+    if (data) {
+      return res.send(data);
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};
 
 export const updateDest = async (req: Request, res: Response) => {
   const id = req.params.id;
@@ -337,8 +349,8 @@ export const updateDest = async (req: Request, res: Response) => {
         destImage.push(...uploadedFiles);
       }
     }
-    const dest = await Blogs.findByIdAndUpdate(
-      id,
+    const dest = await Blogs.findOneAndUpdate(
+      { destId: id },
       {
         title,
         destImage,

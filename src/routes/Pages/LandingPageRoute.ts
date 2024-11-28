@@ -11,6 +11,7 @@ import {
   getBlogs,
   getBlogsById,
   getDest,
+  getDestById,
   getHero,
   getHotDeals,
   getHotDealsById,
@@ -68,6 +69,7 @@ router.post(
 );
 
 router.get("/getDest", getDest);
+router.get("/getdestbyid/:id", getDestById);
 
 router.put(
   "/updateDest/:id",
