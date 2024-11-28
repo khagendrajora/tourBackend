@@ -13,6 +13,7 @@ import {
   getDest,
   getHero,
   getHotDeals,
+  getHotDealsById,
   updateBlogs,
   updateDest,
   updateHero,
@@ -38,6 +39,7 @@ router.delete("/deletehero/:id", deleteHero);
 router.post("/addhotdeals", addHotDeals);
 
 router.get("/getaboutus", getHotDeals);
+router.get("getdealsbyid/:id", getHotDealsById);
 
 router.put("/updateaboutus/:id", updateHotdeals);
 

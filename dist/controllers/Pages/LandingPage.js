@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteDest = exports.updateDest = exports.getDest = exports.addDest = exports.deleteBlogs = exports.updateBlogs = exports.getBlogsById = exports.getBlogs = exports.addBlogs = exports.deleteHotDeals = exports.updateHotdeals = exports.getHotDeals = exports.addHotDeals = exports.deleteHero = exports.updateHero = exports.getHero = exports.addHero = void 0;
+exports.deleteDest = exports.updateDest = exports.getDest = exports.addDest = exports.deleteBlogs = exports.updateBlogs = exports.getBlogsById = exports.getBlogs = exports.addBlogs = exports.deleteHotDeals = exports.updateHotdeals = exports.getHotDealsById = exports.getHotDeals = exports.addHotDeals = exports.deleteHero = exports.updateHero = exports.getHero = exports.addHero = void 0;
 const Hero_1 = __importDefault(require("../../models/Pages/LandingPage/Hero"));
 const AboutUs_1 = __importDefault(require("../../models/Pages/LandingPage/AboutUs"));
 const Blogs_1 = __importDefault(require("../../models/Pages/LandingPage/Blogs"));
@@ -141,6 +141,22 @@ const getHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.getHotDeals = getHotDeals;
+const getHotDealsById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        let data = yield AboutUs_1.default.findById(id);
+        if (!data) {
+            return res.status(404).json({ error: "failed" });
+        }
+        else {
+            return res.send(data);
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: "internal error" });
+    }
+});
+exports.getHotDealsById = getHotDealsById;
 const updateHotdeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     let { startingPrice, sourceAddress, destAddress, vehicle, travelName } = req.body;
