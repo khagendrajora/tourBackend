@@ -13,7 +13,7 @@ router.put("/updatehero/:id", fileUpload_1.default.fields([{ name: "heroImage", 
 router.delete("/deletehero/:id", LandingPage_1.deleteHero);
 router.post("/addhotdeals", LandingPage_1.addHotDeals);
 router.get("/getaboutus", LandingPage_1.getHotDeals);
-router.get("getdealsbyid/:id", LandingPage_1.getHotDealsById);
+router.get("/getdealsbyid/:id", LandingPage_1.getHotDealsById);
 router.put("/updateaboutus/:id", LandingPage_1.updateHotdeals);
 router.delete("/deleteaboutus/:id", LandingPage_1.deleteHotDeals);
 router.post("/addblogs", fileUpload_1.default.fields([{ name: "blogsImage", maxCount: 10 }]), LandingPage_1.addBlogs);
