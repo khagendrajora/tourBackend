@@ -9,6 +9,7 @@ import {
   deleteHero,
   deleteHotDeals,
   getBlogs,
+  getBlogsById,
   getDest,
   getHero,
   getHotDeals,
@@ -49,6 +50,7 @@ router.post(
 );
 
 router.get("/getblogs", getBlogs);
+router.get("/getblogbyid/:id", getBlogsById);
 
 router.put(
   "/updateblogs/:id",

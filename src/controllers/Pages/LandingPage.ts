@@ -208,6 +208,18 @@ export const getBlogs = async (req: Request, res: Response) => {
   }
 };
 
+export const getBlogsById = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    const data = await Blogs.findOne({ blogId: id });
+    if (data) {
+      return res.send(data);
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};
+
 export const updateBlogs = async (req: Request, res: Response) => {
   const id = req.params.id;
   const { title, desc } = req.body;

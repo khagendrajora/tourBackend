@@ -17,6 +17,7 @@ router.put("/updateaboutus/:id", LandingPage_1.updateHotdeals);
 router.delete("/deleteaboutus/:id", LandingPage_1.deleteHotDeals);
 router.post("/addblogs", fileUpload_1.default.fields([{ name: "blogs_image", maxCount: 10 }]), LandingPage_1.addBlogs);
 router.get("/getblogs", LandingPage_1.getBlogs);
+router.get("/getblogbyid/:id", LandingPage_1.getBlogsById);
 router.put("/updateblogs/:id", fileUpload_1.default.fields([{ name: "blogs_image", maxCount: 10 }]), LandingPage_1.updateBlogs);
 router.delete("/deleteblog/:id", LandingPage_1.deleteBlogs);
 router.post("/addDest", fileUpload_1.default.fields([{ name: "dest_image", maxCount: 10 }]), LandingPage_1.addDest);
