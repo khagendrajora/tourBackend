@@ -12,7 +12,7 @@ const logger = (0, winston_1.createLogger)({
         new winston_1.transports.Console({
             format: consoleLogFormat,
         }),
-        new winston_1.transports.File({ filename: "appLogger.log" }),
+        new winston_1.transports.File({ filename: "app.log" }),
     ],
 });
 exports.default = logger;
