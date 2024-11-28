@@ -254,7 +254,7 @@ const updateBlogs = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 blogsImage.push(...uploadedFiles);
             }
         }
-        const blogs = yield Blogs_1.default.findByIdAndUpdate(id, {
+        const blogs = yield Blogs_1.default.findOneAndUpdate({ blogId: id }, {
             title,
             desc,
             blogsImage,

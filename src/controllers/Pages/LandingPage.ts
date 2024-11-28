@@ -233,8 +233,8 @@ export const updateBlogs = async (req: Request, res: Response) => {
         blogsImage.push(...uploadedFiles);
       }
     }
-    const blogs = await Blogs.findByIdAndUpdate(
-      id,
+    const blogs = await Blogs.findOneAndUpdate(
+      { blogId: id },
       {
         title,
         desc,
