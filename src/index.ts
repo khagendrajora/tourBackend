@@ -25,7 +25,7 @@ app.use(cookieParser());
 app.use(cors());
 app.use(useragent.express());
 
-const morganFormat = ":method :url :status :response-time ms :ip :device";
+const morganFormat = ":method :url :status :response-time ms";
 
 app.use(
   morgan(morganFormat, {

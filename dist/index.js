@@ -28,7 +28,7 @@ exports.app.use(express_1.default.json());
 exports.app.use((0, cookie_parser_1.default)());
 exports.app.use((0, cors_1.default)());
 exports.app.use(express_useragent_1.default.express());
-const morganFormat = ":method :url :status :response-time ms :ip :device";
+const morganFormat = ":method :url :status :response-time ms";
 exports.app.use((0, morgan_1.default)(morganFormat, {
     stream: {
         write: (message) => {
