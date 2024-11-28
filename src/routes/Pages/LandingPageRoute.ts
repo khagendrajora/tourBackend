@@ -24,13 +24,13 @@ const router = express.Router();
 
 router.post(
   "/addhero",
-  upload.fields([{ name: "hero_image", maxCount: 10 }]),
+  upload.fields([{ name: "heroImage", maxCount: 10 }]),
   addHero
 );
 router.get("/gethero", getHero);
 router.put(
   "/updatehero/:id",
-  upload.fields([{ name: "hero_image", maxCount: 10 }]),
+  upload.fields([{ name: "heroImage", maxCount: 10 }]),
   updateHero
 );
 router.delete("/deletehero/:id", deleteHero);
@@ -45,7 +45,7 @@ router.delete("/deleteaboutus/:id", deleteHotDeals);
 
 router.post(
   "/addblogs",
-  upload.fields([{ name: "blogs_image", maxCount: 10 }]),
+  upload.fields([{ name: "blogsImage", maxCount: 10 }]),
   addBlogs
 );
 
@@ -54,14 +54,14 @@ router.get("/getblogbyid/:id", getBlogsById);
 
 router.put(
   "/updateblogs/:id",
-  upload.fields([{ name: "blogs_image", maxCount: 10 }]),
+  upload.fields([{ name: "blogsImage", maxCount: 10 }]),
   updateBlogs
 );
 
 router.delete("/deleteblog/:id", deleteBlogs);
 router.post(
   "/addDest",
-  upload.fields([{ name: "dest_image", maxCount: 10 }]),
+  upload.fields([{ name: "destImage", maxCount: 10 }]),
   addDest
 );
 
@@ -69,7 +69,7 @@ router.get("/getDest", getDest);
 
 router.put(
   "/updateDest/:id",
-  upload.fields([{ name: "dest_image", maxCount: 10 }]),
+  upload.fields([{ name: "destImage", maxCount: 10 }]),
   updateDest
 );
 router.delete("/deletedest/:id", deleteDest);
