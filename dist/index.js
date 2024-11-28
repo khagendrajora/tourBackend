@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.app = void 0;
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const logger_1 = __importDefault(require("./logger"));
+const morgan_1 = __importDefault(require("morgan"));
 dotenv_1.default.config();
 require("./db/database");
 const userRoute_1 = __importDefault(require("./routes/userRoute"));
@@ -24,6 +26,20 @@ exports.app = (0, express_1.default)();
 exports.app.use(express_1.default.json());
 exports.app.use((0, cookie_parser_1.default)());
 exports.app.use((0, cors_1.default)());
+const morganFormat = ":method :url :status :response-time ms";
+exports.app.use((0, morgan_1.default)(morganFormat, {
+    stream: {
+        write: (message) => {
+            const logObject = {
+                method: message.split(" ")[0],
+                url: message.split(" ")[1],
+                status: message.split(" ")[2],
+                responseTime: message.split(" ")[3],
+            };
+            logger_1.default.info(JSON.stringify(logObject));
+        },
+    },
+}));
 exports.app.use("/public/uploads", express_1.default.static("public/uploads"));
 exports.app.use("/api", UserRoute_1.default);
 exports.app.use("/api", LandingPageRoute_1.default);
