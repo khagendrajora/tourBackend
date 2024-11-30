@@ -22,4 +22,5 @@ router.get("/getproductcategory", categoryController_1.getProductCategory);
 router.get("/productcategorydetail/:id", categoryController_1.getProductCategoryDetails);
 router.put("/updateProductcategory/:id", categoryController_1.updateProductCategory);
 router.put("/addproductsubcategory/:id", categoryController_1.addProductSubCategory);
+router.delete("/deleteproductcategory/:id", categoryController_1.deleteProductCategory);
 exports.default = router;

@@ -331,3 +331,18 @@ export const addProductSubCategory = async (req: Request, res: Response) => {
     return res.status(500).json({ error: error });
   }
 };
+
+export const deleteProductCategory = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    ProductCategory.findByIdAndDelete(id).then((data) => {
+      if (!data) {
+        return res.status(404).json({ error: "Failed to delete" });
+      } else {
+        return res.status(200).json({ message: "Successfully Deleted" });
+      }
+    });
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};

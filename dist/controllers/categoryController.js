@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addProductSubCategory = exports.updateProductCategory = exports.getProductCategoryDetails = exports.getProductCategory = exports.addProductCategory = exports.deleteSubCategory = exports.addSubCategory = exports.deleteCategory = exports.updateCategory = exports.getCategoryDetails = exports.getCategory = exports.addCategory = void 0;
+exports.deleteProductCategory = exports.addProductSubCategory = exports.updateProductCategory = exports.getProductCategoryDetails = exports.getProductCategory = exports.addProductCategory = exports.deleteSubCategory = exports.addSubCategory = exports.deleteCategory = exports.updateCategory = exports.getCategoryDetails = exports.getCategory = exports.addCategory = void 0;
 const category_1 = __importDefault(require("../models/Category/category"));
 const subCategory_1 = __importDefault(require("../models/subCategory"));
 const productCategory_1 = __importDefault(require("../models/Category/productCategory"));
@@ -347,3 +347,20 @@ const addProductSubCategory = (req, res) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.addProductSubCategory = addProductSubCategory;
+const deleteProductCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        productCategory_1.default.findByIdAndDelete(id).then((data) => {
+            if (!data) {
+                return res.status(404).json({ error: "Failed to delete" });
+            }
+            else {
+                return res.status(200).json({ message: "Successfully Deleted" });
+            }
+        });
+    }
+    catch (error) {
+        return res.status(500).json({ error: "internal error" });
+    }
+});
+exports.deleteProductCategory = deleteProductCategory;

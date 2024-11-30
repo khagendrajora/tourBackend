@@ -5,6 +5,7 @@ import {
   addProductSubCategory,
   addSubCategory,
   deleteCategory,
+  deleteProductCategory,
   deleteSubCategory,
   getCategory,
   getCategoryDetails,
@@ -43,5 +44,6 @@ router.get("/getproductcategory", getProductCategory);
 router.get("/productcategorydetail/:id", getProductCategoryDetails);
 router.put("/updateProductcategory/:id", updateProductCategory);
 router.put("/addproductsubcategory/:id", addProductSubCategory);
+router.delete("/deleteproductcategory/:id", deleteProductCategory);
 
 export default router;
