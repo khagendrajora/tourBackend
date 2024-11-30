@@ -335,9 +335,12 @@ exports.updateProductCategory = updateProductCategory;
 const addProductSubCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     let { subCategory } = req.body;
-    subCategory = subCategory.toLowerCase().trim();
+    if (!Array.isArray(subCategory)) {
+        return res.status(400).json({ error: "Data must be an array format" });
+    }
     try {
-        const data = yield productCategory_1.default.findOneAndUpdate({ categoryId: id }, { $push: { subCategory: subCategory } }, { new: true });
+        const newSubCategory = subCategory.map((item) => item.toLowerCase().trim());
+        const data = yield productCategory_1.default.findOneAndUpdate({ categoryId: id }, { $push: { subCategory: { $each: newSubCategory } } }, { new: true });
         if (data) {
             return res.status(200).json({ message: "Sub Category Added" });
         }
