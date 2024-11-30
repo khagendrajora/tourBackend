@@ -89,7 +89,7 @@ export const tourDetails = async (req: Request, res: Response) => {
   const id = req.params.id;
 
   try {
-    const data = await Tour.findById(id);
+    const data = await Tour.findOne({ tourId: id });
     if (!data) {
       return res.status(404).json({ error: "No Data found" });
     } else {
@@ -238,7 +238,7 @@ export const trekDetails = async (req: Request, res: Response) => {
   const id = req.params.id;
 
   try {
-    const trek = await Trekking.findById(id);
+    const trek = await Trekking.findOne({ trekId: id });
     if (!trek) {
       return res.status(404).json({ error: "Failed to get Tour" });
     } else {

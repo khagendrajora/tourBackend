@@ -92,7 +92,7 @@ exports.getTourByBusinessId = getTourByBusinessId;
 const tourDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        const data = yield tour_1.default.findById(id);
+        const data = yield tour_1.default.findOne({ tourId: id });
         if (!data) {
             return res.status(404).json({ error: "No Data found" });
         }
@@ -220,7 +220,7 @@ exports.getTrekByBusinessId = getTrekByBusinessId;
 const trekDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        const trek = yield trekking_1.default.findById(id);
+        const trek = yield trekking_1.default.findOne({ trekId: id });
         if (!trek) {
             return res.status(404).json({ error: "Failed to get Tour" });
         }
