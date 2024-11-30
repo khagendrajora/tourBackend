@@ -9,7 +9,7 @@ const fileUpload_1 = __importDefault(require("../middleware/fileUpload"));
 const router = express_1.default.Router();
 router.post("/addtour", fileUpload_1.default.fields([{ name: "tourImages", maxCount: 1000 }]), productController_1.addTour);
 router.get("/gettour", productController_1.getTour);
-router.get("/gettourdetails/:businessid", productController_1.tourDetails);
+router.get("/gettourdetails/:id", productController_1.tourDetails);
 router.get("/gettour/:businessid", productController_1.getTourByBusinessId);
 router.post("/addtrek", fileUpload_1.default.fields([{ name: "trekImages", maxCount: 1000 }]), productController_1.addTrek);
 router.get("/gettrek", productController_1.getTrek);

@@ -28,7 +28,7 @@ router.post(
 );
 
 router.get("/gettour", getTour);
-router.get("/gettourdetails/:businessid", tourDetails);
+router.get("/gettourdetails/:id", tourDetails);
 
 router.get("/gettour/:businessid", getTourByBusinessId);
 
