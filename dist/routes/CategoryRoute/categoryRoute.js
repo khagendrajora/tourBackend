@@ -1,0 +1,25 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const categoryController_1 = require("../../controllers/categoryController");
+const Validation_1 = require("../../validation/Validation");
+const router = express_1.default.Router();
+router.post("/addcategory", Validation_1.addCategoryData, Validation_1.validation, categoryController_1.addCategory);
+router.get("/getcategory", categoryController_1.getCategory);
+router.delete("/deletecategory/:id", categoryController_1.deleteCategory);
+router.get("/categorydetail/:id", categoryController_1.getCategoryDetails);
+router.put("/updatecategory/:id", categoryController_1.updateCategory);
+router.put("/addsubcategory/:id", categoryController_1.addSubCategory);
+// router.get("/getsubcategory", getSubCategory);
+// router.get("/subcategorydetails/:id", subcategoryDetails);
+router.delete("/deletesubcategory/:id", categoryController_1.deleteSubCategory);
+// router.put("/updatesubcategory/:id", updateSubcategory);
+router.post("/addproductcategory", Validation_1.addCategoryData, Validation_1.validation, categoryController_1.addProductCategory);
+router.get("/getproductcategory", categoryController_1.getProductCategory);
+router.get("/productcategorydetail/:id", categoryController_1.getProductCategoryDetails);
+router.put("/updateProductcategory/:id", categoryController_1.updateProductCategory);
+router.put("/addproductsubcategory/:id", categoryController_1.addProductSubCategory);
+exports.default = router;

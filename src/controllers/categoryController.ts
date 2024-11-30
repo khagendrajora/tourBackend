@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
-import Category from "../models/category";
+import Category from "../models/Category/category";
 import SubCategory from "../models/subCategory";
+import ProductCategory from "../models/Category/productCategory";
 const { customAlphabet } = require("nanoid");
 
 export const addCategory = async (req: Request, res: Response) => {
-  const { categoryName, desc, subCategory } = req.body;
-  // categoryName = categoryName.toLowerCase().trim();
+  let { categoryName, desc, subCategory } = req.body;
+  categoryName = categoryName.toLowerCase().trim();
   const customId = customAlphabet("1234567890", 4);
   let categoryId = customId();
   categoryId = "C" + categoryId;
@@ -65,8 +66,8 @@ export const getCategoryDetails = async (req: Request, res: Response) => {
 
 export const updateCategory = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const { categoryName, desc, subCategory } = req.body;
-  // categoryName = categoryName.toLowerCase().trim();
+  let { categoryName, desc, subCategory } = req.body;
+  categoryName = categoryName.toLowerCase().trim();
 
   try {
     const updatedData: { [key: string]: any } = {
@@ -118,10 +119,8 @@ export const deleteCategory = async (req: Request, res: Response) => {
 
 export const addSubCategory = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const { subCategory } = req.body;
-
-  // subCategory = subCategory.trim();
-
+  let { subCategory } = req.body;
+  subCategory = subCategory.toLowerCase().trim();
   try {
     const data = await Category.findOneAndUpdate(
       { categoryId: id },
@@ -211,3 +210,124 @@ export const deleteSubCategory = async (req: Request, res: Response) => {
 //     return res.status(500).json({ error: error });
 //   }
 // };
+
+export const addProductCategory = async (req: Request, res: Response) => {
+  let { categoryName, desc, subCategory } = req.body;
+  categoryName = categoryName.toLowerCase().trim();
+  const customId = customAlphabet("1234567890", 4);
+  let categoryId = customId();
+  categoryId = "PC" + categoryId;
+  try {
+    let category = new ProductCategory({
+      categoryName,
+      desc,
+      subCategory,
+      categoryId: categoryId,
+    });
+
+    ProductCategory.findOne({ categoryName }).then(async (data) => {
+      if (data) {
+        return res.status(400).json({ error: "Category already Exist" });
+      } else {
+        category = await category.save();
+        if (!category) {
+          return res.status(409).json({ error: "Failed T0 Add" });
+        } else {
+          return res.send(category);
+        }
+      }
+    });
+  } catch (error: any) {
+    res.status(500).json({ error: error });
+  }
+};
+
+export const getProductCategory = async (req: Request, res: Response) => {
+  try {
+    let category = await ProductCategory.find();
+    if (category.length > 0) {
+      return res.send(category);
+    } else {
+      return res.status(400).json({ error: "Not Found" });
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};
+
+export const getProductCategoryDetails = async (
+  req: Request,
+  res: Response
+) => {
+  const id = req.params.id;
+  try {
+    let categoryDetails = await ProductCategory.findOne({ categoryId: id });
+    if (!categoryDetails) {
+      return res
+        .status(404)
+        .json({ error: "Failed to fetch category Details" });
+    } else {
+      return res.send(categoryDetails);
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};
+
+export const updateProductCategory = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  let { categoryName, desc, subCategory } = req.body;
+  categoryName = categoryName.toLowerCase().trim();
+
+  try {
+    const updatedData: { [key: string]: any } = {
+      categoryName,
+      desc,
+      subCategory,
+    };
+
+    if (subCategory !== undefined) {
+      if (Array.isArray(subCategory) && subCategory.length === 0) {
+        updatedData.subCategory = [];
+      } else {
+        updatedData.subCategory = subCategory;
+      }
+    } else {
+      updatedData.subCategory = [];
+    }
+    const category = await ProductCategory.findOneAndUpdate(
+      { categoryId: id },
+      updatedData,
+      { new: true }
+    );
+    if (!category) {
+      return res.status(400).json({
+        error: "Failed to Update",
+      });
+    } else {
+      return res.status(200).json({ message: "Successfully Updated" });
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};
+
+export const addProductSubCategory = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  let { subCategory } = req.body;
+  subCategory = subCategory.toLowerCase().trim();
+  try {
+    const data = await ProductCategory.findOneAndUpdate(
+      { categoryId: id },
+      { $push: { subCategory: subCategory } },
+      { new: true }
+    );
+    if (data) {
+      return res.status(200).json({ message: "Sub Category Added" });
+    } else {
+      return res.status(404).json({ error: "Failed TO add" });
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: error });
+  }
+};

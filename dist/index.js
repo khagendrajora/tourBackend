@@ -12,7 +12,7 @@ const express_useragent_1 = __importDefault(require("express-useragent"));
 dotenv_1.default.config();
 require("./db/database");
 const userRoute_1 = __importDefault(require("./routes/userRoute"));
-const categoryRoute_1 = __importDefault(require("./routes/categoryRoute"));
+const categoryRoute_1 = __importDefault(require("./routes/CategoryRoute/categoryRoute"));
 const businessRoute_1 = __importDefault(require("./routes/businessRoute"));
 const productRoute_1 = __importDefault(require("./routes/productRoute"));
 const propertyRoute_1 = __importDefault(require("./routes/propertyRoute"));

@@ -6,7 +6,7 @@ import useragent from "express-useragent";
 dotenv.config();
 import "./db/database";
 import userRoute from "./routes/userRoute";
-import categoryRoute from "./routes/categoryRoute";
+import categoryRoute from "./routes/CategoryRoute/categoryRoute";
 import businessRoute from "./routes/businessRoute";
 import productRoute from "./routes/productRoute";
 import propertyRoute from "./routes/propertyRoute";
