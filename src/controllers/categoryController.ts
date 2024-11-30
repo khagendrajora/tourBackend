@@ -120,11 +120,16 @@ export const deleteCategory = async (req: Request, res: Response) => {
 export const addSubCategory = async (req: Request, res: Response) => {
   const id = req.params.id;
   let { subCategory } = req.body;
-  subCategory = subCategory.toLowerCase().trim();
+
+  if (!Array.isArray(subCategory)) {
+    return res.status(400).json({ error: "Data must be an array format" });
+  }
+
   try {
+    const newSubCategory = subCategory.map((item) => item.toLowerCase().trim());
     const data = await Category.findOneAndUpdate(
       { categoryId: id },
-      { $push: { subCategory: subCategory } },
+      { $push: { subCategory: { $each: newSubCategory } } },
       { new: true }
     );
     if (data) {
