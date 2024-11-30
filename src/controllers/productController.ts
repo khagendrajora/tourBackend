@@ -4,7 +4,7 @@ import Trekking from "../models/Product/trekking";
 import Vehicle from "../models/Product/vehicle";
 const { customAlphabet } = require("nanoid");
 
-import ReservedDate from "../models/Reservations/ReservedDated";
+// import ReservedDate from "../models/Reservations/ReservedDated";
 
 export const addTour = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);
@@ -124,8 +124,8 @@ export const updateTour = async (req: Request, res: Response) => {
         tourImages.push(...uploadedFiles);
       }
     }
-    const data = await Tour.findByIdAndUpdate(
-      id,
+    const data = await Tour.findOneAndUpdate(
+      { tourId: id },
       {
         businessId,
         prodCategory,
@@ -273,8 +273,8 @@ export const updateTrek = async (req: Request, res: Response) => {
         trekImages.push(...uploadedFiles);
       }
     }
-    const data = await Trekking.findByIdAndUpdate(
-      id,
+    const data = await Trekking.findOneAndUpdate(
+      { trekId: id },
       {
         businessId,
         prodCategory,

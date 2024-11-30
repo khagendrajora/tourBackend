@@ -17,6 +17,7 @@ const tour_1 = __importDefault(require("../models/Product/tour"));
 const trekking_1 = __importDefault(require("../models/Product/trekking"));
 const vehicle_1 = __importDefault(require("../models/Product/vehicle"));
 const { customAlphabet } = require("nanoid");
+// import ReservedDate from "../models/Reservations/ReservedDated";
 const addTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
     let tourId = customId();
@@ -117,7 +118,7 @@ const updateTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 tourImages.push(...uploadedFiles);
             }
         }
-        const data = yield tour_1.default.findByIdAndUpdate(id, {
+        const data = yield tour_1.default.findOneAndUpdate({ tourId: id }, {
             businessId,
             prodCategory,
             prodsubCategory,
@@ -245,7 +246,7 @@ const updateTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 trekImages.push(...uploadedFiles);
             }
         }
-        const data = yield trekking_1.default.findByIdAndUpdate(id, {
+        const data = yield trekking_1.default.findOneAndUpdate({ trekId: id }, {
             businessId,
             prodCategory,
             prodsubCategory,
