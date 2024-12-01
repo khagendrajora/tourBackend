@@ -32,6 +32,9 @@ export const addTour = async (req: Request, res: Response) => {
         tourImages = files["tourImages"].map((file) => file.path);
       }
     }
+    if (!itinerary) {
+      return res.status(400).json({ error: "Itinerary is required" });
+    }
     let tour = new Tour({
       tourId: tourId,
       businessId,
@@ -181,6 +184,9 @@ export const addTrek = async (req: Request, res: Response) => {
       }
     }
 
+    if (!itinerary) {
+      return res.status(400).json({ error: "Itinerary is required" });
+    }
     let trek = new Trekking({
       businessId,
       prodCategory,

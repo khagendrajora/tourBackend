@@ -31,6 +31,9 @@ const addTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 tourImages = files["tourImages"].map((file) => file.path);
             }
         }
+        if (!itinerary) {
+            return res.status(400).json({ error: "Itinerary is required" });
+        }
         let tour = new tour_1.default({
             tourId: tourId,
             businessId,
@@ -158,6 +161,9 @@ const addTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             if (files["trekImages"]) {
                 trekImages = files["trekImages"].map((file) => file.path);
             }
+        }
+        if (!itinerary) {
+            return res.status(400).json({ error: "Itinerary is required" });
         }
         let trek = new trekking_1.default({
             businessId,
