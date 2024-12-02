@@ -32,11 +32,6 @@ const TourReservation = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    vehicleImage: [
-        {
-            type: String,
-        },
-    ],
     end: {
         type: String,
         required: true,
