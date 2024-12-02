@@ -24,7 +24,7 @@ const TourReservation = new mongoose.Schema(
       type: Date,
     },
     tourId: {
-      type: Number,
+      type: String,
       required: true,
     },
     name: {
