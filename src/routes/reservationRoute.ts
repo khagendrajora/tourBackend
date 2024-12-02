@@ -13,6 +13,7 @@ import {
   getAllRevDates,
   getReservedDates,
 } from "../controllers/Reservation/resrvedDated";
+import { tourRev } from "../controllers/Reservation/TourReservation/tourRev";
 const router = express.Router();
 
 router.post("/addRev/:id", vehReservation);
@@ -27,5 +28,7 @@ router.put("/updateRevbybid/:id", updateReservationByBid);
 router.get("/getalldates", getAllRevDates);
 router.get("/getallreservations", getAllReservations);
 router.get("/getrevbyvehid/:id", getRevByVehicleId);
+
+router.post("/tourrev/:id", tourRev);
 
 export default router;
