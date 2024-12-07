@@ -21,7 +21,7 @@ const adminUser_1 = __importDefault(require("../models/adminUser"));
 const token_1 = __importDefault(require("../models/token"));
 const uuid_1 = require("uuid");
 const setEmail_1 = require("../utils/setEmail");
-const userModel_1 = __importDefault(require("../models/Client/userModel"));
+const userModel_1 = __importDefault(require("../models/User/userModel"));
 const { customAlphabet } = require("nanoid");
 const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);

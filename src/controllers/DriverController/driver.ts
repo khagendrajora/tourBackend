@@ -8,7 +8,7 @@ import bcryptjs from "bcryptjs";
 // import jwt from "jsonwebtoken";
 import Business from "../../models/business";
 import AdminUser from "../../models/adminUser";
-import ClientUser from "../../models/Client/userModel";
+import ClientUser from "../../models/User/userModel";
 
 export const addDriver = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);

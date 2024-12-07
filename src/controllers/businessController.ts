@@ -7,7 +7,7 @@ import AdminUser from "../models/adminUser";
 import Token from "../models/token";
 import { v4 as uuid } from "uuid";
 import { sendEmail } from "../utils/setEmail";
-import ClientUser from "../models/Client/userModel";
+import ClientUser from "../models/User/userModel";
 const { customAlphabet } = require("nanoid");
 
 export const addBusiness = async (req: Request, res: Response) => {

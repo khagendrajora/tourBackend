@@ -12,25 +12,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProductCategory = exports.addProductSubCategory = exports.updateProductCategory = exports.getProductCategoryDetails = exports.getProductCategory = exports.addProductCategory = exports.deleteSubCategory = exports.addSubCategory = exports.deleteCategory = exports.updateCategory = exports.getCategoryDetails = exports.getCategory = exports.addCategory = void 0;
-const category_1 = __importDefault(require("../models/Category/category"));
+exports.deleteVehicleCategory = exports.addVehicleSubCategory = exports.updateVehicleCategory = exports.getVehicleCategoryDetails = exports.getVehicleCategory = exports.addVehicleCategory = exports.deleteTourCategory = exports.addTourSubCategory = exports.updateTourCategory = exports.getTourCategoryDetails = exports.getTourCategory = exports.addTourCategory = exports.deleteTrekCategory = exports.addTrekSubCategory = exports.updateTrekCategory = exports.getTrekCategoryDetails = exports.getTrekCategory = exports.addTrekCategory = exports.deleteSubCategory = exports.addSubCategory = exports.deleteBusinessCategory = exports.updateBusinessCategory = exports.getBusinessCategoryDetails = exports.getBusinessCategory = exports.addBusinessCategory = void 0;
+const businessCategory_1 = __importDefault(require("../models/Category/businessCategory"));
 const subCategory_1 = __importDefault(require("../models/subCategory"));
-const productCategory_1 = __importDefault(require("../models/Category/productCategory"));
+const tourCategory_1 = __importDefault(require("../models/Category/tourCategory"));
+const tourCategory_2 = __importDefault(require("../models/Category/tourCategory"));
+const vehicleCategory_1 = __importDefault(require("../models/Category/vehicleCategory"));
 const { customAlphabet } = require("nanoid");
-const addCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const addBusinessCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let { categoryName, desc, subCategory } = req.body;
     categoryName = categoryName.toLowerCase().trim();
     const customId = customAlphabet("1234567890", 4);
     let categoryId = customId();
-    categoryId = "C" + categoryId;
+    categoryId = "BC" + categoryId;
     try {
-        let category = new category_1.default({
+        let category = new businessCategory_1.default({
             categoryName,
             desc,
             subCategory,
             categoryId: categoryId,
         });
-        category_1.default.findOne({ categoryName }).then((data) => __awaiter(void 0, void 0, void 0, function* () {
+        businessCategory_1.default.findOne({ categoryName }).then((data) => __awaiter(void 0, void 0, void 0, function* () {
             if (data) {
                 return res.status(400).json({ error: "Category already Exist" });
             }
@@ -49,10 +51,10 @@ const addCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         res.status(500).json({ error: error });
     }
 });
-exports.addCategory = addCategory;
-const getCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.addBusinessCategory = addBusinessCategory;
+const getBusinessCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let category = yield category_1.default.find();
+        let category = yield businessCategory_1.default.find();
         if (category.length > 0) {
             return res.send(category);
         }
@@ -64,11 +66,11 @@ const getCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         return res.status(500).json({ error: "internal error" });
     }
 });
-exports.getCategory = getCategory;
-const getCategoryDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getBusinessCategory = getBusinessCategory;
+const getBusinessCategoryDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        let categoryDetails = yield category_1.default.findOne({ categoryId: id });
+        let categoryDetails = yield businessCategory_1.default.findOne({ categoryId: id });
         if (!categoryDetails) {
             return res
                 .status(404)
@@ -82,8 +84,8 @@ const getCategoryDetails = (req, res) => __awaiter(void 0, void 0, void 0, funct
         return res.status(500).json({ error: "internal error" });
     }
 });
-exports.getCategoryDetails = getCategoryDetails;
-const updateCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getBusinessCategoryDetails = getBusinessCategoryDetails;
+const updateBusinessCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     let { categoryName, desc, subCategory } = req.body;
     categoryName = categoryName.toLowerCase().trim();
@@ -104,7 +106,7 @@ const updateCategory = (req, res) => __awaiter(void 0, void 0, void 0, function*
         else {
             updatedData.subCategory = [];
         }
-        const category = yield category_1.default.findOneAndUpdate({ categoryId: id }, updatedData, { new: true });
+        const category = yield businessCategory_1.default.findOneAndUpdate({ categoryId: id }, updatedData, { new: true });
         if (!category) {
             return res.status(400).json({
                 error: "Failed to Update",
@@ -118,11 +120,11 @@ const updateCategory = (req, res) => __awaiter(void 0, void 0, void 0, function*
         return res.status(500).json({ error: "internal error" });
     }
 });
-exports.updateCategory = updateCategory;
-const deleteCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.updateBusinessCategory = updateBusinessCategory;
+const deleteBusinessCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        category_1.default.findByIdAndDelete(id).then((data) => {
+        businessCategory_1.default.findByIdAndDelete(id).then((data) => {
             if (!data) {
                 return res.status(404).json({ error: "Failed to delete" });
             }
@@ -135,7 +137,7 @@ const deleteCategory = (req, res) => __awaiter(void 0, void 0, void 0, function*
         return res.status(500).json({ error: "internal error" });
     }
 });
-exports.deleteCategory = deleteCategory;
+exports.deleteBusinessCategory = deleteBusinessCategory;
 const addSubCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     let { subCategory } = req.body;
@@ -144,7 +146,7 @@ const addSubCategory = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
     try {
         const newSubCategory = subCategory.map((item) => item.toLowerCase().trim());
-        const data = yield category_1.default.findOneAndUpdate({ categoryId: id }, { $push: { subCategory: { $each: newSubCategory } } }, { new: true });
+        const data = yield businessCategory_1.default.findOneAndUpdate({ categoryId: id }, { $push: { subCategory: { $each: newSubCategory } } }, { new: true });
         if (data) {
             return res.status(200).json({ message: "Sub Category Added" });
         }
@@ -230,20 +232,20 @@ exports.deleteSubCategory = deleteSubCategory;
 //     return res.status(500).json({ error: error });
 //   }
 // };
-const addProductCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const addTrekCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let { categoryName, desc, subCategory } = req.body;
     categoryName = categoryName.toLowerCase().trim();
     const customId = customAlphabet("1234567890", 4);
     let categoryId = customId();
-    categoryId = "PC" + categoryId;
+    categoryId = "TrC" + categoryId;
     try {
-        let category = new productCategory_1.default({
+        let category = new tourCategory_1.default({
             categoryName,
             desc,
             subCategory,
             categoryId: categoryId,
         });
-        productCategory_1.default.findOne({ categoryName }).then((data) => __awaiter(void 0, void 0, void 0, function* () {
+        tourCategory_1.default.findOne({ categoryName }).then((data) => __awaiter(void 0, void 0, void 0, function* () {
             if (data) {
                 return res.status(400).json({ error: "Category already Exist" });
             }
@@ -262,10 +264,10 @@ const addProductCategory = (req, res) => __awaiter(void 0, void 0, void 0, funct
         res.status(500).json({ error: error });
     }
 });
-exports.addProductCategory = addProductCategory;
-const getProductCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.addTrekCategory = addTrekCategory;
+const getTrekCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let category = yield productCategory_1.default.find();
+        let category = yield tourCategory_1.default.find();
         if (category.length > 0) {
             return res.send(category);
         }
@@ -277,11 +279,11 @@ const getProductCategory = (req, res) => __awaiter(void 0, void 0, void 0, funct
         return res.status(500).json({ error: "internal error" });
     }
 });
-exports.getProductCategory = getProductCategory;
-const getProductCategoryDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getTrekCategory = getTrekCategory;
+const getTrekCategoryDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        let categoryDetails = yield productCategory_1.default.findOne({ categoryId: id });
+        let categoryDetails = yield tourCategory_1.default.findOne({ categoryId: id });
         if (!categoryDetails) {
             return res
                 .status(404)
@@ -295,8 +297,8 @@ const getProductCategoryDetails = (req, res) => __awaiter(void 0, void 0, void 0
         return res.status(500).json({ error: "internal error" });
     }
 });
-exports.getProductCategoryDetails = getProductCategoryDetails;
-const updateProductCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getTrekCategoryDetails = getTrekCategoryDetails;
+const updateTrekCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     let { categoryName, desc, subCategory } = req.body;
     categoryName = categoryName.toLowerCase().trim();
@@ -317,7 +319,7 @@ const updateProductCategory = (req, res) => __awaiter(void 0, void 0, void 0, fu
         else {
             updatedData.subCategory = [];
         }
-        const category = yield productCategory_1.default.findOneAndUpdate({ categoryId: id }, updatedData, { new: true });
+        const category = yield tourCategory_1.default.findOneAndUpdate({ categoryId: id }, updatedData, { new: true });
         if (!category) {
             return res.status(400).json({
                 error: "Failed to Update",
@@ -331,8 +333,8 @@ const updateProductCategory = (req, res) => __awaiter(void 0, void 0, void 0, fu
         return res.status(500).json({ error: "internal error" });
     }
 });
-exports.updateProductCategory = updateProductCategory;
-const addProductSubCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.updateTrekCategory = updateTrekCategory;
+const addTrekSubCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     let { subCategory } = req.body;
     if (!Array.isArray(subCategory)) {
@@ -340,7 +342,7 @@ const addProductSubCategory = (req, res) => __awaiter(void 0, void 0, void 0, fu
     }
     try {
         const newSubCategory = subCategory.map((item) => item.toLowerCase().trim());
-        const data = yield productCategory_1.default.findOneAndUpdate({ categoryId: id }, { $push: { subCategory: { $each: newSubCategory } } }, { new: true });
+        const data = yield tourCategory_1.default.findOneAndUpdate({ categoryId: id }, { $push: { subCategory: { $each: newSubCategory } } }, { new: true });
         if (data) {
             return res.status(200).json({ message: "Sub Category Added" });
         }
@@ -352,11 +354,11 @@ const addProductSubCategory = (req, res) => __awaiter(void 0, void 0, void 0, fu
         return res.status(500).json({ error: error });
     }
 });
-exports.addProductSubCategory = addProductSubCategory;
-const deleteProductCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.addTrekSubCategory = addTrekSubCategory;
+const deleteTrekCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        productCategory_1.default.findByIdAndDelete(id).then((data) => {
+        tourCategory_1.default.findByIdAndDelete(id).then((data) => {
             if (!data) {
                 return res.status(404).json({ error: "Failed to delete" });
             }
@@ -369,4 +371,284 @@ const deleteProductCategory = (req, res) => __awaiter(void 0, void 0, void 0, fu
         return res.status(500).json({ error: "internal error" });
     }
 });
-exports.deleteProductCategory = deleteProductCategory;
+exports.deleteTrekCategory = deleteTrekCategory;
+const addTourCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let { categoryName, desc, subCategory } = req.body;
+    categoryName = categoryName.toLowerCase().trim();
+    const customId = customAlphabet("1234567890", 4);
+    let categoryId = customId();
+    categoryId = "TuC" + categoryId;
+    try {
+        let category = new tourCategory_2.default({
+            categoryName,
+            desc,
+            subCategory,
+            categoryId: categoryId,
+        });
+        tourCategory_2.default.findOne({ categoryName }).then((data) => __awaiter(void 0, void 0, void 0, function* () {
+            if (data) {
+                return res.status(400).json({ error: "Category already Exist" });
+            }
+            else {
+                category = yield category.save();
+                if (!category) {
+                    return res.status(409).json({ error: "Failed T0 Add" });
+                }
+                else {
+                    return res.send(category);
+                }
+            }
+        }));
+    }
+    catch (error) {
+        res.status(500).json({ error: error });
+    }
+});
+exports.addTourCategory = addTourCategory;
+const getTourCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        let category = yield tourCategory_2.default.find();
+        if (category.length > 0) {
+            return res.send(category);
+        }
+        else {
+            return res.status(400).json({ error: "Not Found" });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: "internal error" });
+    }
+});
+exports.getTourCategory = getTourCategory;
+const getTourCategoryDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        let categoryDetails = yield tourCategory_2.default.findOne({ categoryId: id });
+        if (!categoryDetails) {
+            return res
+                .status(404)
+                .json({ error: "Failed to fetch category Details" });
+        }
+        else {
+            return res.send(categoryDetails);
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: "internal error" });
+    }
+});
+exports.getTourCategoryDetails = getTourCategoryDetails;
+const updateTourCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    let { categoryName, desc, subCategory } = req.body;
+    categoryName = categoryName.toLowerCase().trim();
+    try {
+        const updatedData = {
+            categoryName,
+            desc,
+            subCategory,
+        };
+        if (subCategory !== undefined) {
+            if (Array.isArray(subCategory) && subCategory.length === 0) {
+                updatedData.subCategory = [];
+            }
+            else {
+                updatedData.subCategory = subCategory;
+            }
+        }
+        else {
+            updatedData.subCategory = [];
+        }
+        const category = yield tourCategory_2.default.findOneAndUpdate({ categoryId: id }, updatedData, { new: true });
+        if (!category) {
+            return res.status(400).json({
+                error: "Failed to Update",
+            });
+        }
+        else {
+            return res.status(200).json({ message: "Successfully Updated" });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: "internal error" });
+    }
+});
+exports.updateTourCategory = updateTourCategory;
+const addTourSubCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    let { subCategory } = req.body;
+    if (!Array.isArray(subCategory)) {
+        return res.status(400).json({ error: "Data must be an array format" });
+    }
+    try {
+        const newSubCategory = subCategory.map((item) => item.toLowerCase().trim());
+        const data = yield tourCategory_2.default.findOneAndUpdate({ categoryId: id }, { $push: { subCategory: { $each: newSubCategory } } }, { new: true });
+        if (data) {
+            return res.status(200).json({ message: "Sub Category Added" });
+        }
+        else {
+            return res.status(404).json({ error: "Failed TO add" });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: error });
+    }
+});
+exports.addTourSubCategory = addTourSubCategory;
+const deleteTourCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        tourCategory_2.default.findByIdAndDelete(id).then((data) => {
+            if (!data) {
+                return res.status(404).json({ error: "Failed to delete" });
+            }
+            else {
+                return res.status(200).json({ message: "Successfully Deleted" });
+            }
+        });
+    }
+    catch (error) {
+        return res.status(500).json({ error: "internal error" });
+    }
+});
+exports.deleteTourCategory = deleteTourCategory;
+const addVehicleCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let { categoryName, desc, subCategory } = req.body;
+    categoryName = categoryName.toLowerCase().trim();
+    const customId = customAlphabet("1234567890", 4);
+    let categoryId = customId();
+    categoryId = "VC" + categoryId;
+    try {
+        let category = new vehicleCategory_1.default({
+            categoryName,
+            desc,
+            subCategory,
+            categoryId: categoryId,
+        });
+        vehicleCategory_1.default.findOne({ categoryName }).then((data) => __awaiter(void 0, void 0, void 0, function* () {
+            if (data) {
+                return res.status(400).json({ error: "Category already Exist" });
+            }
+            else {
+                category = yield category.save();
+                if (!category) {
+                    return res.status(409).json({ error: "Failed T0 Add" });
+                }
+                else {
+                    return res.send(category);
+                }
+            }
+        }));
+    }
+    catch (error) {
+        res.status(500).json({ error: error });
+    }
+});
+exports.addVehicleCategory = addVehicleCategory;
+const getVehicleCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        let category = yield vehicleCategory_1.default.find();
+        if (category.length > 0) {
+            return res.send(category);
+        }
+        else {
+            return res.status(400).json({ error: "Not Found" });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: "internal error" });
+    }
+});
+exports.getVehicleCategory = getVehicleCategory;
+const getVehicleCategoryDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        let categoryDetails = yield vehicleCategory_1.default.findOne({ categoryId: id });
+        if (!categoryDetails) {
+            return res
+                .status(404)
+                .json({ error: "Failed to fetch category Details" });
+        }
+        else {
+            return res.send(categoryDetails);
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: "internal error" });
+    }
+});
+exports.getVehicleCategoryDetails = getVehicleCategoryDetails;
+const updateVehicleCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    let { categoryName, desc, subCategory } = req.body;
+    categoryName = categoryName.toLowerCase().trim();
+    try {
+        const updatedData = {
+            categoryName,
+            desc,
+            subCategory,
+        };
+        if (subCategory !== undefined) {
+            if (Array.isArray(subCategory) && subCategory.length === 0) {
+                updatedData.subCategory = [];
+            }
+            else {
+                updatedData.subCategory = subCategory;
+            }
+        }
+        else {
+            updatedData.subCategory = [];
+        }
+        const category = yield vehicleCategory_1.default.findOneAndUpdate({ categoryId: id }, updatedData, { new: true });
+        if (!category) {
+            return res.status(400).json({
+                error: "Failed to Update",
+            });
+        }
+        else {
+            return res.status(200).json({ message: "Successfully Updated" });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: "internal error" });
+    }
+});
+exports.updateVehicleCategory = updateVehicleCategory;
+const addVehicleSubCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    let { subCategory } = req.body;
+    if (!Array.isArray(subCategory)) {
+        return res.status(400).json({ error: "Data must be an array format" });
+    }
+    try {
+        const newSubCategory = subCategory.map((item) => item.toLowerCase().trim());
+        const data = yield vehicleCategory_1.default.findOneAndUpdate({ categoryId: id }, { $push: { subCategory: { $each: newSubCategory } } }, { new: true });
+        if (data) {
+            return res.status(200).json({ message: "Sub Category Added" });
+        }
+        else {
+            return res.status(404).json({ error: "Failed TO add" });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: error });
+    }
+});
+exports.addVehicleSubCategory = addVehicleSubCategory;
+const deleteVehicleCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        vehicleCategory_1.default.findByIdAndDelete(id).then((data) => {
+            if (!data) {
+                return res.status(404).json({ error: "Failed to delete" });
+            }
+            else {
+                return res.status(200).json({ message: "Successfully Deleted" });
+            }
+        });
+    }
+    catch (error) {
+        return res.status(500).json({ error: "internal error" });
+    }
+});
+exports.deleteVehicleCategory = deleteVehicleCategory;

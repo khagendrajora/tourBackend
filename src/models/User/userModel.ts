@@ -7,7 +7,7 @@ export interface IUser extends Document {
   userPwd: string;
   userRole: string;
   isVerified: boolean;
-  userImage?: string;
+  // userImage?: string;
   userId: string;
 }
 
@@ -29,9 +29,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    userImage: {
-      type: String,
-    },
+    // userImage: {
+    //   type: String,
+    // },
     userRole: {
       type: String,
       default: "0",
@@ -44,4 +44,4 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model<IUser>("ClientUser", userSchema);
+export default mongoose.model<IUser>("User", userSchema);

@@ -1,4 +1,4 @@
-import ClientUser from "../../models/Client/userModel";
+import User from "../../models/User/userModel";
 import { Request, Response } from "express";
 import bcryptjs from "bcryptjs";
 import Token from "../../models/token";
@@ -11,7 +11,7 @@ import Driver from "../../models/Drivers/Driver";
 import Business from "../../models/business";
 import AdminUser from "../../models/adminUser";
 
-export const addNewClient = async (req: Request, res: Response) => {
+export const addNewUser = async (req: Request, res: Response) => {
   const { userName, userEmail, userPwd } = req.body;
   const customId = customAlphabet("1234567890", 4);
   let userId = customId();
@@ -29,7 +29,7 @@ export const addNewClient = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Password is reqired" });
     }
 
-    const email = await ClientUser.findOne({ userEmail });
+    const email = await User.findOne({ userEmail });
     if (email) {
       return res.status(400).json({ error: "Email already registered" });
     }
@@ -50,7 +50,7 @@ export const addNewClient = async (req: Request, res: Response) => {
 
     const salt = await bcryptjs.genSalt(5);
     let hashedPassword = await bcryptjs.hash(userPwd, salt);
-    let clientUser = new ClientUser({
+    let clientUser = new User({
       userName,
       userEmail,
       userPwd: hashedPassword,
@@ -100,7 +100,7 @@ export const verifyUserEmail = async (req: Request, res: Response) => {
     if (!data) {
       return res.status(404).json({ error: "Token Expired" });
     }
-    const userId = await ClientUser.findOne({ _id: data.userId });
+    const userId = await User.findOne({ _id: data.userId });
     if (!userId) {
       return res.status(404).json({ error: "Token and Email not matched" });
     }
@@ -155,9 +155,9 @@ export const verifyUserEmail = async (req: Request, res: Response) => {
 //   }
 // };
 
-export const getClients = async (req: Request, res: Response) => {
+export const getUsers = async (req: Request, res: Response) => {
   try {
-    await ClientUser.find().then((data) => {
+    await User.find().then((data) => {
       if (data.length > 0) {
         return res.send(data);
       } else {
@@ -169,10 +169,10 @@ export const getClients = async (req: Request, res: Response) => {
   }
 };
 
-export const getClientById = async (req: Request, res: Response) => {
+export const getUserstById = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
-    const client = await ClientUser.findById(id);
+    const client = await User.findById(id);
     if (!client) {
       return res.status(200).json({ error: "Failed to get the Profile" });
     } else {
@@ -187,7 +187,7 @@ export const changePwd = async (req: Request, res: Response) => {
   const id = req.params.id;
   const { newPwd, userPwd } = req.body;
   try {
-    const userData = await ClientUser.findById(id);
+    const userData = await User.findById(id);
     if (!userData) {
       return res.status(400).json({ error: "Failed" });
     }
@@ -197,7 +197,7 @@ export const changePwd = async (req: Request, res: Response) => {
     }
     const salt = await bcryptjs.genSalt(5);
     let hashedPwd = await bcryptjs.hash(newPwd, salt);
-    const newData = await ClientUser.findByIdAndUpdate(
+    const newData = await User.findByIdAndUpdate(
       id,
       {
         userPwd: hashedPwd,
@@ -231,7 +231,7 @@ export const updateProfileById = async (req: Request, res: Response) => {
       userImage = null;
     }
 
-    const data = await ClientUser.findByIdAndUpdate(
+    const data = await User.findByIdAndUpdate(
       id,
       {
         userName,
@@ -250,10 +250,10 @@ export const updateProfileById = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteClient = async (req: Request, res: Response) => {
+export const deleteUser = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
-    const deleteClient = await ClientUser.findByIdAndDelete(id);
+    const deleteClient = await User.findByIdAndDelete(id);
     if (!deleteClient) {
       return res.status(404).json({ error: "Failed to delete" });
     }
@@ -266,7 +266,7 @@ export const deleteClient = async (req: Request, res: Response) => {
 export const forgetPwd = async (req: Request, res: Response) => {
   let userEmail = req.body.userEmail;
   try {
-    const data = await ClientUser.findOne({ userEmail });
+    const data = await User.findOne({ userEmail });
     if (!data) {
       return res.status(404).json({ error: "Email not found" });
     }
@@ -307,7 +307,7 @@ export const resetPwd = async (req: Request, res: Response) => {
     if (!data) {
       return res.status(404).json({ error: "Token not found" });
     }
-    const userId = await ClientUser.findOne({ _id: data.userId });
+    const userId = await User.findOne({ _id: data.userId });
     if (!userId) {
       return res.status(404).json({ error: "Token and Email not matched" });
     } else {

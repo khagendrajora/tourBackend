@@ -5,7 +5,7 @@ import morgan from "morgan";
 import useragent from "express-useragent";
 dotenv.config();
 import "./db/database";
-import userRoute from "./routes/userRoute";
+import userRoute from "./routes/adminRoute";
 import categoryRoute from "./routes/CategoryRoute/categoryRoute";
 import businessRoute from "./routes/businessRoute";
 import productRoute from "./routes/productRoute";
@@ -14,7 +14,7 @@ import LandingPageRoute from "./routes/Pages/LandingPageRoute";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import reservationRoute from "./routes/reservationRoute";
-import UserRoute from "./routes/ClientRoutes/UserRoute";
+import UserRoute from "./routes/UserRoutes/UserRoute";
 import DriverRoute from "./routes/driverRoutes/DriverRoute";
 import Login from "./routes/Login/Login";
 

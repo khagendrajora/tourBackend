@@ -22,7 +22,7 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 // import jwt from "jsonwebtoken";
 const business_1 = __importDefault(require("../../models/business"));
 const adminUser_1 = __importDefault(require("../../models/adminUser"));
-const userModel_1 = __importDefault(require("../../models/Client/userModel"));
+const userModel_1 = __importDefault(require("../../models/User/userModel"));
 const addDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const customId = customAlphabet("1234567890", 4);

@@ -1,49 +1,79 @@
 import express from "express";
 import {
-  addCategory,
-  addProductCategory,
-  addProductSubCategory,
+  addBusinessCategory,
   addSubCategory,
-  deleteCategory,
-  deleteProductCategory,
+  addTourCategory,
+  addTourSubCategory,
+  addTrekCategory,
+  addTrekSubCategory,
+  addVehicleCategory,
+  addVehicleSubCategory,
+  deleteBusinessCategory,
   deleteSubCategory,
-  getCategory,
-  getCategoryDetails,
-  getProductCategory,
-  getProductCategoryDetails,
-  // getSubCategory,
-  // subcategoryDetails,
-  updateCategory,
-  updateProductCategory,
-  // updateSubcategory,
+  deleteTourCategory,
+  deleteTrekCategory,
+  deleteVehicleCategory,
+  getBusinessCategory,
+  getBusinessCategoryDetails,
+  getTourCategory,
+  getTourCategoryDetails,
+  getTrekCategory,
+  getTrekCategoryDetails,
+  getVehicleCategory,
+  getVehicleCategoryDetails,
+  updateBusinessCategory,
+  updateTourCategory,
+  updateTrekCategory,
+  updateVehicleCategory,
 } from "../../controllers/categoryController";
 import { addCategoryData, validation } from "../../validation/Validation";
 
 const router = express.Router();
 
-router.post("/addcategory", addCategoryData, validation, addCategory);
-router.get("/getcategory", getCategory);
-router.delete("/deletecategory/:id", deleteCategory);
-router.get("/categorydetail/:id", getCategoryDetails);
-router.put("/updatecategory/:id", updateCategory);
-
-router.put("/addsubcategory/:id", addSubCategory);
-// router.get("/getsubcategory", getSubCategory);
-// router.get("/subcategorydetails/:id", subcategoryDetails);
-router.delete("/deletesubcategory/:id", deleteSubCategory);
-// router.put("/updatesubcategory/:id", updateSubcategory);
+router.post("/addbusinesscategory", addCategoryData, validation, addBusinessCategory);
+router.get("/getbusinesscategory", getBusinessCategory);
+router.delete("/deletebusinesscategory/:id", deleteBusinessCategory);
+router.get("/businesscategorydetail/:id", getBusinessCategoryDetails);
+router.put("/updatebusinesscategory/:id", updateBusinessCategory);
+router.put("/addbuinesssubcategory/:id", addSubCategory);
+router.delete("/deletebusinesssubcategory/:id", deleteSubCategory);
 
 router.post(
-  "/addproductcategory",
+  "/addtrekcategory",
   addCategoryData,
   validation,
-  addProductCategory
+  addTrekCategory
 );
+router.get("/gettrekcategory", getTrekCategory);
+router.get("/trektcategorydetail/:id", getTrekCategoryDetails);
+router.put("/updatetrekcategory/:id", updateTrekCategory);
+router.put("/addtreksubcategory/:id", addTrekSubCategory);
+router.delete("/deletetrekcategory/:id", deleteTrekCategory);
 
-router.get("/getproductcategory", getProductCategory);
-router.get("/productcategorydetail/:id", getProductCategoryDetails);
-router.put("/updateProductcategory/:id", updateProductCategory);
-router.put("/addproductsubcategory/:id", addProductSubCategory);
-router.delete("/deleteproductcategory/:id", deleteProductCategory);
+
+router.post(
+  "/addtourcategory",
+  addCategoryData,
+  validation,
+  addTourCategory
+);
+router.get("/gettourcategory", getTourCategory);
+router.get("/tourcategorydetail/:id", getTourCategoryDetails);
+router.put("/updatetourcategory/:id", updateTourCategory);
+router.put("/addtoursubcategory/:id", addTourSubCategory);
+router.delete("/deletetourcategory/:id", deleteTourCategory);
+
+
+router.post(
+  "/addtourcategory",
+  addCategoryData,
+  validation,
+  addVehicleCategory
+);
+router.get("/getvehiclecategory", getVehicleCategory);
+router.get("/vehiclecategorydetail/:id", getVehicleCategoryDetails);
+router.put("/updatevehiclecategory/:id", updateVehicleCategory);
+router.put("/addvehiclesubcategory/:id", addVehicleSubCategory);
+router.delete("/deletevehiclecategory/:id", deleteVehicleCategory);
 
 export default router;

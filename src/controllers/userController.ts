@@ -8,7 +8,7 @@ const { customAlphabet } = require("nanoid");
 import { v4 as uuid } from "uuid";
 import Driver from "../models/Drivers/Driver";
 import { sendEmail } from "../utils/setEmail";
-import ClientUser from "../models/Client/userModel";
+import ClientUser from "../models/User/userModel";
 
 export const addAdminUser = async (req: Request, res: Response) => {
   const { adminName, adminEmail, adminPwd } = req.body;

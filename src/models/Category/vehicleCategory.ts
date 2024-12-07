@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export interface IProductCategory extends Document {
+export interface VCategory extends Document {
   _id?: string;
   categoryName: string;
   desc?: string;
@@ -8,7 +8,7 @@ export interface IProductCategory extends Document {
   categoryId: string;
 }
 
-const productCategorySchema = new mongoose.Schema(
+const vehicleCategory = new mongoose.Schema(
   {
     categoryName: {
       type: String,
@@ -30,7 +30,4 @@ const productCategorySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model<IProductCategory>(
-  "ProductCategory",
-  productCategorySchema
-);
+export default mongoose.model<VCategory>("VehileCategory", vehicleCategory);

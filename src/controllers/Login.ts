@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import ClientUser from "../models/Client/userModel";
+import ClientUser from "../models/User/userModel";
 import bcryptjs from "bcryptjs";
 import Driver from "../models/Drivers/Driver";
 import Business from "../models/business";

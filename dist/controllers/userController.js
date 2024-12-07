@@ -22,7 +22,7 @@ const { customAlphabet } = require("nanoid");
 const uuid_1 = require("uuid");
 const Driver_1 = __importDefault(require("../models/Drivers/Driver"));
 const setEmail_1 = require("../utils/setEmail");
-const userModel_1 = __importDefault(require("../models/Client/userModel"));
+const userModel_1 = __importDefault(require("../models/User/userModel"));
 const addAdminUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { adminName, adminEmail, adminPwd } = req.body;
     const customId = customAlphabet("1234567890", 4);

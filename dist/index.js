@@ -11,7 +11,7 @@ const morgan_1 = __importDefault(require("morgan"));
 const express_useragent_1 = __importDefault(require("express-useragent"));
 dotenv_1.default.config();
 require("./db/database");
-const userRoute_1 = __importDefault(require("./routes/userRoute"));
+const adminRoute_1 = __importDefault(require("./routes/adminRoute"));
 const categoryRoute_1 = __importDefault(require("./routes/CategoryRoute/categoryRoute"));
 const businessRoute_1 = __importDefault(require("./routes/businessRoute"));
 const productRoute_1 = __importDefault(require("./routes/productRoute"));
@@ -20,7 +20,7 @@ const LandingPageRoute_1 = __importDefault(require("./routes/Pages/LandingPageRo
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const cors_1 = __importDefault(require("cors"));
 const reservationRoute_1 = __importDefault(require("./routes/reservationRoute"));
-const UserRoute_1 = __importDefault(require("./routes/ClientRoutes/UserRoute"));
+const UserRoute_1 = __importDefault(require("./routes/UserRoutes/UserRoute"));
 const DriverRoute_1 = __importDefault(require("./routes/driverRoutes/DriverRoute"));
 const Login_1 = __importDefault(require("./routes/Login/Login"));
 exports.app = (0, express_1.default)();
@@ -45,7 +45,7 @@ exports.app.use((0, morgan_1.default)(morganFormat, {
 exports.app.use("/public/uploads", express_1.default.static("public/uploads"));
 exports.app.use("/api", UserRoute_1.default);
 exports.app.use("/api", LandingPageRoute_1.default);
-exports.app.use("/api", userRoute_1.default);
+exports.app.use("/api", adminRoute_1.default);
 exports.app.use("/api", categoryRoute_1.default);
 exports.app.use("/api", businessRoute_1.default);
 exports.app.use("/api", productRoute_1.default);

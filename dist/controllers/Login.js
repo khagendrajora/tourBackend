@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.login = void 0;
-const userModel_1 = __importDefault(require("../models/Client/userModel"));
+const userModel_1 = __importDefault(require("../models/User/userModel"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const Driver_1 = __importDefault(require("../models/Drivers/Driver"));
 const business_1 = __importDefault(require("../models/business"));
