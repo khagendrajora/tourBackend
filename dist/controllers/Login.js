@@ -27,7 +27,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (clientEmail) {
             const isPassword = yield bcryptjs_1.default.compare(Pwd, clientEmail.userPwd);
             if (!isPassword) {
-                return res.status(400).json({ error: "Incorrect Password" });
+                return res.status(400).json({ error: "Credentials not matched" });
             }
             const data = { id: clientEmail._id };
             const authToken = jsonwebtoken_1.default.sign(data, process.env.JWTSECRET);
@@ -52,7 +52,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             if (businessEmail) {
                 const isPassword = yield bcryptjs_1.default.compare(Pwd, businessEmail.businessPwd);
                 if (!isPassword) {
-                    return res.status(400).json({ error: "Incorrect Password" });
+                    return res.status(400).json({ error: "Credentials not matched" });
                 }
                 const isActive = businessEmail.isActive;
                 if (!isActive) {
@@ -82,7 +82,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 if (driverEmail) {
                     const isPassword = yield bcryptjs_1.default.compare(Pwd, driverEmail.driverPwd);
                     if (!isPassword) {
-                        return res.status(400).json({ error: "Incorrect Password" });
+                        return res.status(400).json({ error: "Credentials not matched" });
                     }
                     const isVerified = driverEmail.isVerified;
                     if (!isVerified) {
@@ -106,7 +106,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                     });
                 }
                 else {
-                    return res.status(400).json({ error: "Email Not Found" });
+                    return res.status(400).json({ error: "Data not found" });
                 }
             }
         }

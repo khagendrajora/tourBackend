@@ -26,7 +26,7 @@ router.get("/tourcategorydetail/:id", categoryController_1.getTourCategoryDetail
 router.put("/updatetourcategory/:id", categoryController_1.updateTourCategory);
 router.put("/addtoursubcategory/:id", categoryController_1.addTourSubCategory);
 router.delete("/deletetourcategory/:id", categoryController_1.deleteTourCategory);
-router.post("/addtourcategory", Validation_1.addCategoryData, Validation_1.validation, categoryController_1.addVehicleCategory);
+router.post("/addvehcategory", Validation_1.addCategoryData, Validation_1.validation, categoryController_1.addVehicleCategory);
 router.get("/getvehiclecategory", categoryController_1.getVehicleCategory);
 router.get("/vehiclecategorydetail/:id", categoryController_1.getVehicleCategoryDetails);
 router.put("/updatevehiclecategory/:id", categoryController_1.updateVehicleCategory);

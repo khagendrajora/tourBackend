@@ -19,7 +19,7 @@ export interface IBusiness extends Document {
   businessSubCategory?: string;
 
   businessAddress: {
-    address: string;
+    street: string;
     country?: string;
     state?: string;
     city?: string;
@@ -72,7 +72,7 @@ const businessSchema = new mongoose.Schema(
       },
     },
     businessAddress: {
-      address: {
+      street: {
         type: String,
       },
       country: {

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import ClientUser from "../models/User/userModel";
+import User from "../models/User/userModel";
 import bcryptjs from "bcryptjs";
 import Driver from "../models/Drivers/Driver";
 import Business from "../models/business";
@@ -8,13 +8,13 @@ import jwt from "jsonwebtoken";
 export const login = async (req: Request, res: Response) => {
   const { email, Pwd } = req.body;
   try {
-    const clientEmail = await ClientUser.findOne({
+    const clientEmail = await User.findOne({
       userEmail: email,
     });
     if (clientEmail) {
       const isPassword = await bcryptjs.compare(Pwd, clientEmail.userPwd);
       if (!isPassword) {
-        return res.status(400).json({ error: "Incorrect Password" });
+        return res.status(400).json({ error: "Credentials not matched" });
       }
 
       const data = { id: clientEmail._id };
@@ -42,7 +42,7 @@ export const login = async (req: Request, res: Response) => {
           businessEmail.businessPwd
         );
         if (!isPassword) {
-          return res.status(400).json({ error: "Incorrect Password" });
+          return res.status(400).json({ error: "Credentials not matched" });
         }
 
         const isActive = businessEmail.isActive;
@@ -73,7 +73,7 @@ export const login = async (req: Request, res: Response) => {
         if (driverEmail) {
           const isPassword = await bcryptjs.compare(Pwd, driverEmail.driverPwd);
           if (!isPassword) {
-            return res.status(400).json({ error: "Incorrect Password" });
+            return res.status(400).json({ error: "Credentials not matched" });
           }
           const isVerified = driverEmail.isVerified;
           if (!isVerified) {
@@ -96,7 +96,7 @@ export const login = async (req: Request, res: Response) => {
             vehicleId: driverEmail.vehicleId,
           });
         } else {
-          return res.status(400).json({ error: "Email Not Found" });
+          return res.status(400).json({ error: "Data not found" });
         }
       }
     }

@@ -65,7 +65,7 @@ router.delete("/deletetourcategory/:id", deleteTourCategory);
 
 
 router.post(
-  "/addtourcategory",
+  "/addvehcategory",
   addCategoryData,
   validation,
   addVehicleCategory

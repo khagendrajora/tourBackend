@@ -36,7 +36,7 @@ const businessSchema = new mongoose_1.default.Schema({
         },
     },
     businessAddress: {
-        address: {
+        street: {
             type: String,
         },
         country: {
