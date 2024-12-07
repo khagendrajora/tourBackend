@@ -28,7 +28,7 @@ const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     let bId = customId();
     bId = "B" + bId;
     const { registrationNumber } = req.body.businessRegistration;
-    const { address } = req.body.businessAddress;
+    const { street } = req.body.businessAddress;
     const { businessName, businessCategory, primaryEmail, primaryPhone, businessPwd, } = req.body;
     try {
         if (businessPwd == "") {
@@ -73,7 +73,7 @@ const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 registrationNumber,
             },
             businessAddress: {
-                address,
+                street,
             },
             primaryEmail,
             primaryPhone,
@@ -246,7 +246,7 @@ const updateBusinessProfile = (req, res) => __awaiter(void 0, void 0, void 0, fu
             businessCategory: req.body.businessCategory,
             businessSubCategory: req.body.businessSubCategory,
             businessAddress: {
-                address: req.body.businessAddress.address,
+                street: req.body.businessAddress.street,
                 country: req.body.businessAddress.country,
                 state: req.body.businessAddress.state,
                 city: req.body.businessAddress.city,

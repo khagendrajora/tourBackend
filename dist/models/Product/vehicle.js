@@ -17,6 +17,10 @@ const VehSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    businessName: {
+        type: String,
+        required: true
+    },
     vehCategory: {
         type: String,
         required: true,
