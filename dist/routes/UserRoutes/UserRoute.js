@@ -14,6 +14,6 @@ router.get("/getusers", userController_1.getUsers);
 // router.post("/clientlogin", clientLogin);
 router.get("/getusersbyid/:id", userController_1.getUserstById);
 router.delete("/deleteuser/:id", userController_1.deleteUser);
-router.post("/forgetuserpwd", userController_1.forgetPwd);
+// router.post("/forgetuserpwd", forgetPwd);
 router.put("/resetuserpwd/:token", userController_1.resetPwd);
 exports.default = router;

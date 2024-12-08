@@ -3,7 +3,6 @@ import {
   addNewUser,
   changePwd,
   deleteUser,
-  forgetPwd,
   getUsers,
   getUserstById,
   resetPwd,
@@ -11,13 +10,9 @@ import {
   verifyUserEmail,
 } from "../../controllers/User/userController";
 
-
 const router = express.Router();
 
-router.post(
-  "/adduser",
-  addNewUser
-);
+router.post("/adduser", addNewUser);
 router.put(
   "/updateuser/:id",
 
@@ -30,7 +25,7 @@ router.get("/getusers", getUsers);
 // router.post("/clientlogin", clientLogin);
 router.get("/getusersbyid/:id", getUserstById);
 router.delete("/deleteuser/:id", deleteUser);
-router.post("/forgetuserpwd", forgetPwd);
+// router.post("/forgetuserpwd", forgetPwd);
 router.put("/resetuserpwd/:token", resetPwd);
 
 export default router;

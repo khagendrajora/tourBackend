@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateDriver = exports.deleteDriver = exports.getDriverById = exports.getDriverByVehId = exports.getDriverByBId = exports.getDrivers = exports.updateDriverStatus = exports.verifyDriverEmail = exports.addDriver = void 0;
+exports.resetPwd = exports.updateDriver = exports.deleteDriver = exports.getDriverById = exports.getDriverByVehId = exports.getDriverByBId = exports.getDrivers = exports.updateDriverStatus = exports.verifyDriverEmail = exports.addDriver = void 0;
 const Driver_1 = __importDefault(require("../../models/Drivers/Driver"));
 const token_1 = __importDefault(require("../../models/token"));
 const uuid_1 = require("uuid");
@@ -312,3 +312,29 @@ const updateDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.updateDriver = updateDriver;
+const resetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = req.params.token;
+    const newPwd = req.body.driverPwd;
+    try {
+        const data = yield token_1.default.findOne({ token });
+        if (!data) {
+            return res.status(404).json({ error: "Token not found" });
+        }
+        const driverId = yield Driver_1.default.findOne({ _id: data.userId });
+        if (!driverId) {
+            return res.status(404).json({ error: "Token and Email not matched" });
+        }
+        else {
+            const salt = yield bcryptjs_1.default.genSalt(5);
+            let hashedPwd = yield bcryptjs_1.default.hash(newPwd, salt);
+            driverId.driverPwd = hashedPwd;
+            driverId.save();
+            yield token_1.default.deleteOne({ _id: data._id });
+            return res.status(201).json({ message: "Reset Successful" });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.resetPwd = resetPwd;

@@ -16,4 +16,5 @@ router.get("/getdriverbybid/:id", driver_1.getDriverByBId);
 router.put("/updatedriverstatus/:id", driver_1.updateDriverStatus);
 router.delete("/deletedriver/:id", driver_1.deleteDriver);
 router.put("/updatedriver/:id", driver_1.updateDriver);
+router.put("/resetdriverpwd/:token", driver_1.resetPwd);
 exports.default = router;

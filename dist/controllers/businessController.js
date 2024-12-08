@@ -317,35 +317,92 @@ const businessSignOut = (req, res) => __awaiter(void 0, void 0, void 0, function
 });
 exports.businessSignOut = businessSignOut;
 const forgetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let primaryEmail = req.body.primaryEmail;
+    let email = req.body.email;
     try {
-        const data = yield business_1.default.findOne({ primaryEmail });
-        if (!data) {
-            return res.status(404).json({ error: "Email not found" });
-        }
-        let token = new token_1.default({
-            token: (0, uuid_1.v4)(),
-            userId: data._id,
+        const businessEmail = yield business_1.default.findOne({
+            primaryEmail: email,
         });
-        token = yield token.save();
-        if (!token) {
-            return res.status(400).json({ error: "Token not generated" });
-        }
-        const url = `${process.env.FRONTEND_URL}/resetbusinesspwd/${token.token}`;
-        const api = `${process.env.Backend_URL}`;
-        (0, setEmail_1.sendEmail)({
-            from: "beta.toursewa@gmail.com",
-            to: data.primaryEmail,
-            subject: "Password Reset Link",
-            text: `Reset password USing link below\n\n
+        if (businessEmail) {
+            let token = new token_1.default({
+                token: (0, uuid_1.v4)(),
+                userId: businessEmail._id,
+            });
+            token = yield token.save();
+            if (!token) {
+                return res.status(400).json({ error: "Token not generated" });
+            }
+            const url = `${process.env.FRONTEND_URL}/resetbusinesspwd/${token.token}`;
+            const api = `${process.env.Backend_URL}`;
+            (0, setEmail_1.sendEmail)({
+                from: "beta.toursewa@gmail.com",
+                to: businessEmail.primaryEmail,
+                subject: "Password Reset Link",
+                text: `Reset password USing link below\n\n
     ${api}/resetbusinesspwd/${token.token}
     `,
-            html: `<h1>Click to Reset Password</h1>
+                html: `<h1>Click to Reset Password</h1>
     <a href='${url}'>Click here Reset</a>`,
-        });
-        return res
-            .status(200)
-            .json({ message: "Password reset link sent to your email" });
+            });
+            return res
+                .status(200)
+                .json({ message: "Password reset link sent to your email" });
+        }
+        else {
+            const data = yield userModel_1.default.findOne({ userEmail: email });
+            if (data) {
+                let token = new token_1.default({
+                    token: (0, uuid_1.v4)(),
+                    userId: data._id,
+                });
+                token = yield token.save();
+                if (!token) {
+                    return res.status(400).json({ error: "Token not generated" });
+                }
+                const url = `${process.env.FRONTEND_URL}/resetuserpwd/${token.token}`;
+                const api = `${process.env.Backend_URL}`;
+                (0, setEmail_1.sendEmail)({
+                    from: "beta.toursewa@gmail.com",
+                    to: data.userEmail,
+                    subject: "Password Reset Link",
+                    text: `Reset password Using link below\n\n
+      ${api}/resetuserpwd/${token.token}
+      `,
+                    html: `<h1>Click to Reset Password</h1>
+      <a href='${url}'>Click here Reset</a>`,
+                });
+                return res
+                    .status(200)
+                    .json({ message: "Password reset link sent to your email" });
+            }
+            else {
+                const driver = yield Driver_1.default.findOne({ driverEmail: email });
+                if (driver) {
+                    let token = new token_1.default({
+                        token: (0, uuid_1.v4)(),
+                        userId: driver._id,
+                    });
+                    token = yield token.save();
+                    if (!token) {
+                        return res.status(400).json({ error: "Token not generated" });
+                    }
+                    const url = `${process.env.FRONTEND_URL}/resetdriverpwd/${token.token}`;
+                    const api = `${process.env.Backend_URL}`;
+                    (0, setEmail_1.sendEmail)({
+                        from: "beta.toursewa@gmail.com",
+                        to: driver.driverEmail,
+                        subject: "Password Reset Link",
+                        text: `Reset password USing link below\n\n
+    ${api}/resetdriverpwd/${token.token}
+    `,
+                        html: `<h1>Click to Reset Password</h1>
+    <a href='${url}'>Click here Reset</a>`,
+                    });
+                    return res
+                        .status(200)
+                        .json({ message: "Password reset link sent to your email" });
+                }
+            }
+        }
     }
     catch (error) {
         return res.status(500).json({ error: error.message });

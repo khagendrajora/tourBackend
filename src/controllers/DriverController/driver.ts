@@ -317,3 +317,29 @@ export const updateDriver = async (req: Request, res: Response) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+export const resetPwd = async (req: Request, res: Response) => {
+  const token = req.params.token;
+  const newPwd = req.body.driverPwd;
+  try {
+    const data = await Token.findOne({ token });
+    if (!data) {
+      return res.status(404).json({ error: "Token not found" });
+    }
+    const driverId = await Driver.findOne({ _id: data.userId });
+    if (!driverId) {
+      return res.status(404).json({ error: "Token and Email not matched" });
+    } else {
+      const salt = await bcryptjs.genSalt(5);
+      let hashedPwd = await bcryptjs.hash(newPwd, salt);
+      driverId.driverPwd = hashedPwd;
+      driverId.save();
+
+      await Token.deleteOne({ _id: data._id });
+
+      return res.status(201).json({ message: "Reset Successful" });
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};

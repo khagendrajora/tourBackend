@@ -6,6 +6,7 @@ import {
   getDriverByBId,
   getDriverById,
   getDrivers,
+  resetPwd,
   updateDriver,
   updateDriverStatus,
   verifyDriverEmail,
@@ -29,5 +30,6 @@ router.get("/getdriverbybid/:id", getDriverByBId);
 router.put("/updatedriverstatus/:id", updateDriverStatus);
 router.delete("/deletedriver/:id", deleteDriver);
 router.put("/updatedriver/:id", updateDriver);
+router.put("/resetdriverpwd/:token", resetPwd);
 
 export default router;

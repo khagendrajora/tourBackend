@@ -35,7 +35,7 @@ router.put(
 router.delete("/deletebusiness/:id", deleteBusiness);
 router.post("/businesssignout", businessSignOut);
 
-router.post("/forgetbusinesspwd", forgetPwd);
+router.post("/forgetpwd", forgetPwd);
 router.put("/resetbusinesspwd/:token", resetPwd);
 
 export default router;

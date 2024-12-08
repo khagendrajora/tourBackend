@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getMyReservations = exports.resetPwd = exports.forgetPwd = exports.deleteUser = exports.updateProfileById = exports.changePwd = exports.getUserstById = exports.getUsers = exports.verifyUserEmail = exports.addNewUser = void 0;
+exports.getMyReservations = exports.resetPwd = exports.deleteUser = exports.updateProfileById = exports.changePwd = exports.getUserstById = exports.getUsers = exports.verifyUserEmail = exports.addNewUser = void 0;
 const userModel_1 = __importDefault(require("../../models/User/userModel"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const token_1 = __importDefault(require("../../models/token"));
@@ -273,42 +273,40 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.deleteUser = deleteUser;
-const forgetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let userEmail = req.body.userEmail;
-    try {
-        const data = yield userModel_1.default.findOne({ userEmail });
-        if (!data) {
-            return res.status(404).json({ error: "Email not found" });
-        }
-        let token = new token_1.default({
-            token: (0, uuidv4_1.uuid)(),
-            userId: data._id,
-        });
-        token = yield token.save();
-        if (!token) {
-            return res.status(400).json({ error: "Token not generated" });
-        }
-        const url = `${process.env.FRONTEND_URL}/resetuserpwd/${token.token}`;
-        const api = `${process.env.Backend_URL}`;
-        (0, setEmail_1.sendEmail)({
-            from: "beta.toursewa@gmail.com",
-            to: data.userEmail,
-            subject: "Password Reset Link",
-            text: `Reset password Using link below\n\n
-      ${api}/resetuserpwd/${token.token}
-      `,
-            html: `<h1>Click to Reset Password</h1>
-      <a href='${url}'>Click here Reset</a>`,
-        });
-        return res
-            .status(200)
-            .json({ message: "Password reset link sent to your email" });
-    }
-    catch (error) {
-        return res.status(500).json({ error: error.message });
-    }
-});
-exports.forgetPwd = forgetPwd;
+// export const forgetPwd = async (req: Request, res: Response) => {
+//   let userEmail = req.body.userEmail;
+//   try {
+//     const data = await User.findOne({ userEmail });
+//     if (!data) {
+//       return res.status(404).json({ error: "Email not found" });
+//     }
+//     let token = new Token({
+//       token: uuid(),
+//       userId: data._id,
+//     });
+//     token = await token.save();
+//     if (!token) {
+//       return res.status(400).json({ error: "Token not generated" });
+//     }
+//     const url = `${process.env.FRONTEND_URL}/resetuserpwd/${token.token}`;
+//     const api = `${process.env.Backend_URL}`;
+//     sendEmail({
+//       from: "beta.toursewa@gmail.com",
+//       to: data.userEmail,
+//       subject: "Password Reset Link",
+//       text: `Reset password Using link below\n\n
+//       ${api}/resetuserpwd/${token.token}
+//       `,
+//       html: `<h1>Click to Reset Password</h1>
+//       <a href='${url}'>Click here Reset</a>`,
+//     });
+//     return res
+//       .status(200)
+//       .json({ message: "Password reset link sent to your email" });
+//   } catch (error: any) {
+//     return res.status(500).json({ error: error.message });
+//   }
+// };
 const resetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.params.token;
     const newPwd = req.body.userPwd;
