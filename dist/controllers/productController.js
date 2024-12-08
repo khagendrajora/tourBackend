@@ -284,7 +284,7 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const customId = customAlphabet("1234567890", 4);
     let vehId = customId();
     vehId = "V" + vehId;
-    const { businessId, vehCategory, vehSubCategory, services, amenities, vehCondition, madeYear, vehNumber, capacity, name, operationDates, manufacturer, model, VIN, } = req.body;
+    const { businessId, vehCategory, vehSubCategory, services, amenities, vehCondition, madeYear, vehNumber, businessName, capacity, name, operationDates, manufacturer, model, VIN, } = req.body;
     try {
         let vehImages = [];
         if (req.files) {
@@ -315,6 +315,7 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             vehCondition,
             madeYear,
             vehNumber,
+            businessName,
             capacity,
             name,
             operationDates,

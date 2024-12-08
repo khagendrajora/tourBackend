@@ -19,7 +19,7 @@ const VehSchema = new mongoose_1.default.Schema({
     },
     businessName: {
         type: String,
-        required: true
+        required: true,
     },
     vehCategory: {
         type: String,

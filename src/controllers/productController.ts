@@ -323,7 +323,7 @@ export const addVehicle = async (req: Request, res: Response) => {
     vehCondition,
     madeYear,
     vehNumber,
-
+    businessName,
     capacity,
     name,
     operationDates,
@@ -363,7 +363,7 @@ export const addVehicle = async (req: Request, res: Response) => {
       vehCondition,
       madeYear,
       vehNumber,
-
+      businessName,
       capacity,
       name,
       operationDates,

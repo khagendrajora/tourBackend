@@ -7,7 +7,7 @@ enum ICondition {
 export interface IVeh extends Document {
   _id?: string;
   businessId: string;
-  businessName:string;
+  businessName: string;
   vehCategory: string;
   vehSubCategory: string;
   services: string[];
@@ -34,9 +34,9 @@ const VehSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  businessName:{
-type:String,
-required:true
+  businessName: {
+    type: String,
+    required: true,
   },
   vehCategory: {
     type: String,
