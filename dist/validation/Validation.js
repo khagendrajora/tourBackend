@@ -17,7 +17,7 @@ exports.addBusinessData = [
     (0, express_validator_1.check)("businessRegistration[registrationNumber]", "Invalid Tax Registration")
         .trim()
         .notEmpty(),
-    (0, express_validator_1.check)("businessAddress[address]", "Provide Address").trim().notEmpty(),
+    (0, express_validator_1.check)("businessAddress[street]", "Provide Address").trim().notEmpty(),
     (0, express_validator_1.check)("primaryEmail", "Email is required")
         .trim()
         .notEmpty()
