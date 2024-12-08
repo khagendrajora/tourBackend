@@ -29,6 +29,10 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             if (!isPassword) {
                 return res.status(400).json({ error: "Credentials not matched" });
             }
+            const isVerified = clientEmail.isVerified;
+            if (!isVerified) {
+                return res.status(400).json({ error: "Email not Verified" });
+            }
             const data = { id: clientEmail._id };
             const authToken = jsonwebtoken_1.default.sign(data, process.env.JWTSECRET);
             res.cookie("authToken", authToken, {
@@ -53,6 +57,10 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 const isPassword = yield bcryptjs_1.default.compare(Pwd, businessEmail.businessPwd);
                 if (!isPassword) {
                     return res.status(400).json({ error: "Credentials not matched" });
+                }
+                const isVerified = businessEmail.isVerified;
+                if (!isVerified) {
+                    return res.status(400).json({ error: "Email not Verified" });
                 }
                 const isActive = businessEmail.isActive;
                 if (!isActive) {

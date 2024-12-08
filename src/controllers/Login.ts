@@ -16,6 +16,11 @@ export const login = async (req: Request, res: Response) => {
       if (!isPassword) {
         return res.status(400).json({ error: "Credentials not matched" });
       }
+      const isVerified = clientEmail.isVerified;
+
+      if (!isVerified) {
+        return res.status(400).json({ error: "Email not Verified" });
+      }
 
       const data = { id: clientEmail._id };
       const authToken = jwt.sign(data, process.env.JWTSECRET as string);
@@ -43,6 +48,12 @@ export const login = async (req: Request, res: Response) => {
         );
         if (!isPassword) {
           return res.status(400).json({ error: "Credentials not matched" });
+        }
+
+        const isVerified = businessEmail.isVerified;
+
+        if (!isVerified) {
+          return res.status(400).json({ error: "Email not Verified" });
         }
 
         const isActive = businessEmail.isActive;
