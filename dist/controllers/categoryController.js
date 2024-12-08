@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteVehicleCategory = exports.addVehicleSubCategory = exports.updateVehicleCategory = exports.getVehicleCategoryDetails = exports.getVehicleCategory = exports.addVehicleCategory = exports.deleteTourCategory = exports.addTourSubCategory = exports.updateTourCategory = exports.getTourCategoryDetails = exports.getTourCategory = exports.addTourCategory = exports.deleteTrekCategory = exports.addTrekSubCategory = exports.updateTrekCategory = exports.getTrekCategoryDetails = exports.getTrekCategory = exports.addTrekCategory = exports.deleteSubCategory = exports.addSubCategory = exports.deleteBusinessCategory = exports.updateBusinessCategory = exports.getBusinessCategoryDetails = exports.getBusinessCategory = exports.addBusinessCategory = void 0;
 const businessCategory_1 = __importDefault(require("../models/Category/businessCategory"));
 const subCategory_1 = __importDefault(require("../models/subCategory"));
+const trekCategory_1 = __importDefault(require("../models/Category/trekCategory"));
 const tourCategory_1 = __importDefault(require("../models/Category/tourCategory"));
-const tourCategory_2 = __importDefault(require("../models/Category/tourCategory"));
 const vehicleCategory_1 = __importDefault(require("../models/Category/vehicleCategory"));
 const { customAlphabet } = require("nanoid");
 const addBusinessCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -239,13 +239,13 @@ const addTrekCategory = (req, res) => __awaiter(void 0, void 0, void 0, function
     let categoryId = customId();
     categoryId = "TrC" + categoryId;
     try {
-        let category = new tourCategory_1.default({
+        let category = new trekCategory_1.default({
             categoryName,
             desc,
             subCategory,
             categoryId: categoryId,
         });
-        tourCategory_1.default.findOne({ categoryName }).then((data) => __awaiter(void 0, void 0, void 0, function* () {
+        trekCategory_1.default.findOne({ categoryName }).then((data) => __awaiter(void 0, void 0, void 0, function* () {
             if (data) {
                 return res.status(400).json({ error: "Category already Exist" });
             }
@@ -267,7 +267,7 @@ const addTrekCategory = (req, res) => __awaiter(void 0, void 0, void 0, function
 exports.addTrekCategory = addTrekCategory;
 const getTrekCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let category = yield tourCategory_1.default.find();
+        let category = yield trekCategory_1.default.find();
         if (category.length > 0) {
             return res.send(category);
         }
@@ -283,7 +283,7 @@ exports.getTrekCategory = getTrekCategory;
 const getTrekCategoryDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        let categoryDetails = yield tourCategory_1.default.findOne({ categoryId: id });
+        let categoryDetails = yield trekCategory_1.default.findOne({ categoryId: id });
         if (!categoryDetails) {
             return res
                 .status(404)
@@ -319,7 +319,7 @@ const updateTrekCategory = (req, res) => __awaiter(void 0, void 0, void 0, funct
         else {
             updatedData.subCategory = [];
         }
-        const category = yield tourCategory_1.default.findOneAndUpdate({ categoryId: id }, updatedData, { new: true });
+        const category = yield trekCategory_1.default.findOneAndUpdate({ categoryId: id }, updatedData, { new: true });
         if (!category) {
             return res.status(400).json({
                 error: "Failed to Update",
@@ -342,7 +342,7 @@ const addTrekSubCategory = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
     try {
         const newSubCategory = subCategory.map((item) => item.toLowerCase().trim());
-        const data = yield tourCategory_1.default.findOneAndUpdate({ categoryId: id }, { $push: { subCategory: { $each: newSubCategory } } }, { new: true });
+        const data = yield trekCategory_1.default.findOneAndUpdate({ categoryId: id }, { $push: { subCategory: { $each: newSubCategory } } }, { new: true });
         if (data) {
             return res.status(200).json({ message: "Sub Category Added" });
         }
@@ -358,7 +358,7 @@ exports.addTrekSubCategory = addTrekSubCategory;
 const deleteTrekCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        tourCategory_1.default.findByIdAndDelete(id).then((data) => {
+        trekCategory_1.default.findByIdAndDelete(id).then((data) => {
             if (!data) {
                 return res.status(404).json({ error: "Failed to delete" });
             }
@@ -379,13 +379,13 @@ const addTourCategory = (req, res) => __awaiter(void 0, void 0, void 0, function
     let categoryId = customId();
     categoryId = "TuC" + categoryId;
     try {
-        let category = new tourCategory_2.default({
+        let category = new tourCategory_1.default({
             categoryName,
             desc,
             subCategory,
             categoryId: categoryId,
         });
-        tourCategory_2.default.findOne({ categoryName }).then((data) => __awaiter(void 0, void 0, void 0, function* () {
+        tourCategory_1.default.findOne({ categoryName }).then((data) => __awaiter(void 0, void 0, void 0, function* () {
             if (data) {
                 return res.status(400).json({ error: "Category already Exist" });
             }
@@ -407,7 +407,7 @@ const addTourCategory = (req, res) => __awaiter(void 0, void 0, void 0, function
 exports.addTourCategory = addTourCategory;
 const getTourCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let category = yield tourCategory_2.default.find();
+        let category = yield tourCategory_1.default.find();
         if (category.length > 0) {
             return res.send(category);
         }
@@ -423,7 +423,7 @@ exports.getTourCategory = getTourCategory;
 const getTourCategoryDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        let categoryDetails = yield tourCategory_2.default.findOne({ categoryId: id });
+        let categoryDetails = yield tourCategory_1.default.findOne({ categoryId: id });
         if (!categoryDetails) {
             return res
                 .status(404)
@@ -459,7 +459,7 @@ const updateTourCategory = (req, res) => __awaiter(void 0, void 0, void 0, funct
         else {
             updatedData.subCategory = [];
         }
-        const category = yield tourCategory_2.default.findOneAndUpdate({ categoryId: id }, updatedData, { new: true });
+        const category = yield tourCategory_1.default.findOneAndUpdate({ categoryId: id }, updatedData, { new: true });
         if (!category) {
             return res.status(400).json({
                 error: "Failed to Update",
@@ -482,7 +482,7 @@ const addTourSubCategory = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
     try {
         const newSubCategory = subCategory.map((item) => item.toLowerCase().trim());
-        const data = yield tourCategory_2.default.findOneAndUpdate({ categoryId: id }, { $push: { subCategory: { $each: newSubCategory } } }, { new: true });
+        const data = yield tourCategory_1.default.findOneAndUpdate({ categoryId: id }, { $push: { subCategory: { $each: newSubCategory } } }, { new: true });
         if (data) {
             return res.status(200).json({ message: "Sub Category Added" });
         }
@@ -498,7 +498,7 @@ exports.addTourSubCategory = addTourSubCategory;
 const deleteTourCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        tourCategory_2.default.findByIdAndDelete(id).then((data) => {
+        tourCategory_1.default.findByIdAndDelete(id).then((data) => {
             if (!data) {
                 return res.status(404).json({ error: "Failed to delete" });
             }

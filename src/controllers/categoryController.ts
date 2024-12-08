@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import BusinessCategory from "../models/Category/businessCategory";
 import SubCategory from "../models/subCategory";
-import TrekCategory from "../models/Category/tourCategory";
+import TrekCategory from "../models/Category/trekCategory";
 import TourCategory from "../models/Category/tourCategory"
 import VehileCategory from '../models/Category/vehicleCategory'
 const { customAlphabet } = require("nanoid");
