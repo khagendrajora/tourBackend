@@ -32,13 +32,16 @@ const morganFormat = ":method :url :status :response-time ms";
 exports.app.use((0, morgan_1.default)(morganFormat, {
     stream: {
         write: (message) => {
-            const logObject = {
-                method: message.split(" ")[0],
-                url: message.split(" ")[1],
-                status: message.split(" ")[2],
-                responseTime: message.split(" ")[3],
-            };
-            logger_1.default.info(JSON.stringify(logObject));
+            const [method, url, status, responseTime] = message.split("");
+            if (["PUT", "POST", "DELETE"].includes(method)) {
+                const logObject = {
+                    method,
+                    url,
+                    status,
+                    responseTime,
+                };
+                logger_1.default.info(JSON.stringify(logObject));
+            }
         },
     },
 }));

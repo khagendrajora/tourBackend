@@ -16,7 +16,7 @@ router.get("/getadmin", getAdmin);
 router.put("/businessapprove/:id", businessApprove);
 // router.post("/adminsignout", adminSignOut);
 router.post("/adminlogin", adminlogin);
-router.post("/forgetpwd", forgetPass);
+router.post("/forgetadminpwd", forgetPass);
 router.put("/resetpwd/:token", resetPass);
 
 export default router;

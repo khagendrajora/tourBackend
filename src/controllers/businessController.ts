@@ -324,7 +324,7 @@ export const businessSignOut = async (req: Request, res: Response) => {
 };
 
 export const forgetPwd = async (req: Request, res: Response) => {
-  let email = req.body.email;
+  const email = req.body.email;
   try {
     const businessEmail = await Business.findOne({
       primaryEmail: email,

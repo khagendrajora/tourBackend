@@ -31,13 +31,16 @@ app.use(
   morgan(morganFormat, {
     stream: {
       write: (message: any) => {
-        const logObject = {
-          method: message.split(" ")[0],
-          url: message.split(" ")[1],
-          status: message.split(" ")[2],
-          responseTime: message.split(" ")[3],
-        };
-        logger.info(JSON.stringify(logObject));
+        const [method, url, status, responseTime] = message.split("");
+        if (["PUT", "POST", "DELETE"].includes(method)) {
+          const logObject = {
+            method,
+            url,
+            status,
+            responseTime,
+          };
+          logger.info(JSON.stringify(logObject));
+        }
       },
     },
   })

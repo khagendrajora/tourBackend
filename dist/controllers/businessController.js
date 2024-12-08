@@ -317,7 +317,7 @@ const businessSignOut = (req, res) => __awaiter(void 0, void 0, void 0, function
 });
 exports.businessSignOut = businessSignOut;
 const forgetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let email = req.body.email;
+    const email = req.body.email;
     try {
         const businessEmail = yield business_1.default.findOne({
             primaryEmail: email,

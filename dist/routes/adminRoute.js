@@ -12,6 +12,6 @@ router.get("/getadmin", userController_1.getAdmin);
 router.put("/businessapprove/:id", userController_1.businessApprove);
 // router.post("/adminsignout", adminSignOut);
 router.post("/adminlogin", userController_1.adminlogin);
-router.post("/forgetpwd", userController_1.forgetPass);
+router.post("/forgetadminpwd", userController_1.forgetPass);
 router.put("/resetpwd/:token", userController_1.resetPass);
 exports.default = router;
