@@ -25,7 +25,14 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const customId = customAlphabet("1234567890", 4);
     let bookingId = customId();
     bookingId = "R" + bookingId;
-    const { bookingName, age, email, phone, sourceAddress, destinationAddress, bookingDate, address, bookedBy, bookedByName, numberOfPassengers, } = req.body;
+    const { bookingName, age, email, phone, sourceAddress, destinationAddress, startDate, endDate, address, bookedBy, bookedByName, numberOfPassengers, } = req.body;
+    let bookingDate = [];
+    const newStartDate = new Date(startDate);
+    const newEndDate = new Date(endDate);
+    while (newStartDate <= newEndDate) {
+        bookingDate.push(newStartDate.toISOString().split("T")[0]);
+        newStartDate.setDate(newStartDate.getDate() + 1);
+    }
     try {
         const vehData = yield vehicle_1.default.findOne({ vehId: id });
         if (!vehData) {
@@ -48,7 +55,8 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
             destinationAddress,
             email,
             phone,
-            bookingDate,
+            startDate,
+            endDate,
             address,
             bookingName,
             numberOfPassengers,

@@ -88,11 +88,12 @@ const VehicleReservation = new mongoose_1.default.Schema({
         type: String,
         rwquired: true,
     },
-    bookingDate: [
-        {
-            type: Date,
-        },
-    ],
+    startDate: {
+        type: Date,
+    },
+    endDate: {
+        type: Date,
+    },
     status: {
         type: String,
         enum: Object.values(IStatus),

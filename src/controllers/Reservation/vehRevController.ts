@@ -19,13 +19,21 @@ export const vehReservation = async (req: Request, res: Response) => {
     phone,
     sourceAddress,
     destinationAddress,
-    bookingDate,
+    startDate,
+    endDate,
     address,
     bookedBy,
     bookedByName,
     numberOfPassengers,
   } = req.body;
+  let bookingDate: string[] = [];
+  const newStartDate = new Date(startDate);
+  const newEndDate = new Date(endDate);
 
+  while (newStartDate <= newEndDate) {
+    bookingDate.push(newStartDate.toISOString().split("T")[0]);
+    newStartDate.setDate(newStartDate.getDate() + 1);
+  }
   try {
     const vehData = await Vehicle.findOne({ vehId: id });
     if (!vehData) {
@@ -36,7 +44,6 @@ export const vehReservation = async (req: Request, res: Response) => {
     let vehRev = new VehicleReservation({
       vehicleId: id,
       vehicleType: vehData.vehCategory,
-
       vehicleNumber: vehData.vehNumber,
       capacity: vehData.capacity,
       vehicleName: vehData.name,
@@ -50,7 +57,8 @@ export const vehReservation = async (req: Request, res: Response) => {
       destinationAddress,
       email,
       phone,
-      bookingDate,
+      startDate,
+      endDate,
       address,
       bookingName,
       numberOfPassengers,

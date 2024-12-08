@@ -22,7 +22,8 @@ export interface IVRev extends Document {
   phone: string;
   sourceAddress: string;
   destinationAddress: string;
-  bookingDate?: Date[];
+  startDate?: Date;
+  endDate?: Date;
   address: string;
   bookingName: string;
   status: IStatus;
@@ -113,11 +114,13 @@ const VehicleReservation = new mongoose.Schema(
       type: String,
       rwquired: true,
     },
-    bookingDate: [
-      {
-        type: Date,
-      },
-    ],
+    startDate: {
+      type: Date,
+    },
+    endDate: {
+      type: Date,
+    },
+
     status: {
       type: String,
       enum: Object.values(IStatus),
