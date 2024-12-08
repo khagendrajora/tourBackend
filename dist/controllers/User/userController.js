@@ -25,19 +25,11 @@ const Driver_1 = __importDefault(require("../../models/Drivers/Driver"));
 const business_1 = __importDefault(require("../../models/business"));
 const adminUser_1 = __importDefault(require("../../models/adminUser"));
 const addNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     const { userName, userEmail, userPwd } = req.body;
     const customId = customAlphabet("1234567890", 4);
     let userId = customId();
     userId = "U" + userId;
     try {
-        let userImage = undefined;
-        if (req.files) {
-            const files = req.files;
-            if (files["userImage"]) {
-                userImage = (_a = files["userImage"][0]) === null || _a === void 0 ? void 0 : _a.path;
-            }
-        }
         if (userPwd == "") {
             return res.status(400).json({ error: "Password is reqired" });
         }
@@ -63,7 +55,6 @@ const addNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             userName,
             userEmail,
             userPwd: hashedPassword,
-            userImage,
             userId: userId,
         });
         clientUser = yield clientUser.save();

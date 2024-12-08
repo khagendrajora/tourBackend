@@ -17,14 +17,6 @@ export const addNewUser = async (req: Request, res: Response) => {
   let userId = customId();
   userId = "U" + userId;
   try {
-    let userImage: string | undefined = undefined;
-    if (req.files) {
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-
-      if (files["userImage"]) {
-        userImage = files["userImage"][0]?.path;
-      }
-    }
     if (userPwd == "") {
       return res.status(400).json({ error: "Password is reqired" });
     }
@@ -54,7 +46,6 @@ export const addNewUser = async (req: Request, res: Response) => {
       userName,
       userEmail,
       userPwd: hashedPassword,
-      userImage,
       userId: userId,
     });
     clientUser = await clientUser.save();
