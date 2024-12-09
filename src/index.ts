@@ -17,6 +17,7 @@ import reservationRoute from "./routes/reservationRoute";
 import UserRoute from "./routes/UserRoutes/UserRoute";
 import DriverRoute from "./routes/driverRoutes/DriverRoute";
 import Login from "./routes/Login/Login";
+import LocationRoute from "./routes/LocationRoute/LocationRoute";
 
 export const app: Express = express();
 app.use(express.json());
@@ -57,6 +58,7 @@ app.use("/api", propertyRoute);
 app.use("/api", reservationRoute);
 app.use("/api", DriverRoute);
 app.use("/api", Login);
+app.use("/api", LocationRoute);
 
 const port = 3000;
 
