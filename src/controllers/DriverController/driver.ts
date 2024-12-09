@@ -329,6 +329,11 @@ export const resetPwd = async (req: Request, res: Response) => {
     const driverId = await Driver.findOne({ _id: data.userId });
     if (!driverId) {
       return res.status(404).json({ error: "Token and Email not matched" });
+    }
+    const isOldPwd = await bcryptjs.compare(newPwd, driverId.driverPwd);
+
+    if (isOldPwd) {
+      return res.status(400).json({ error: "Password Previously Used" });
     } else {
       const salt = await bcryptjs.genSalt(5);
       let hashedPwd = await bcryptjs.hash(newPwd, salt);

@@ -301,6 +301,10 @@ export const resetPwd = async (req: Request, res: Response) => {
     const userId = await User.findOne({ _id: data.userId });
     if (!userId) {
       return res.status(404).json({ error: "Token and Email not matched" });
+    }
+    const isOldPwd = await bcryptjs.compare(newPwd, userId.userPwd);
+    if (isOldPwd) {
+      return res.status(400).json({ error: "Password Previously Used" });
     } else {
       const salt = await bcryptjs.genSalt(5);
       let hashedPwd = await bcryptjs.hash(newPwd, salt);

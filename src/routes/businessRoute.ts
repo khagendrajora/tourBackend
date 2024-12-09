@@ -13,6 +13,7 @@ import {
 } from "../controllers/businessController";
 import upload from "../middleware/fileUpload";
 import { addBusinessData, validation } from "../validation/Validation";
+import { verifyAndResetPwd } from "../controllers/userController";
 
 const router = express.Router();
 
@@ -37,5 +38,7 @@ router.post("/businesssignout", businessSignOut);
 
 router.post("/forgetpwd", forgetPwd);
 router.put("/resetbusinesspwd/:token", resetPwd);
+
+router.put("/resetandverify/:token", verifyAndResetPwd);
 
 export default router;

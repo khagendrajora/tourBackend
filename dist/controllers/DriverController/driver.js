@@ -324,6 +324,10 @@ const resetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!driverId) {
             return res.status(404).json({ error: "Token and Email not matched" });
         }
+        const isOldPwd = yield bcryptjs_1.default.compare(newPwd, driverId.driverPwd);
+        if (isOldPwd) {
+            return res.status(400).json({ error: "Password Previously Used" });
+        }
         else {
             const salt = yield bcryptjs_1.default.genSalt(5);
             let hashedPwd = yield bcryptjs_1.default.hash(newPwd, salt);

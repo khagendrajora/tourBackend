@@ -8,7 +8,7 @@ const { customAlphabet } = require("nanoid");
 import { v4 as uuid } from "uuid";
 import Driver from "../models/Drivers/Driver";
 import { sendEmail } from "../utils/setEmail";
-import ClientUser from "../models/User/userModel";
+import User from "../models/User/userModel";
 
 export const addAdminUser = async (req: Request, res: Response) => {
   const { adminName, adminEmail, adminPwd } = req.body;
@@ -25,7 +25,7 @@ export const addAdminUser = async (req: Request, res: Response) => {
       adminId: adminId,
     });
 
-    const email = await ClientUser.findOne({ userEmail: adminEmail });
+    const email = await User.findOne({ userEmail: adminEmail });
     if (email) {
       return res.status(400).json({ error: "Email already registered" });
     }
@@ -226,6 +226,12 @@ export const resetPass = async (req: Request, res: Response) => {
     const userId = await AdminUser.findOne({ _id: data.userId });
     if (!userId) {
       return res.status(404).json({ error: "Token and Email not matched" });
+    }
+
+    const isOldPwd = await bcryptjs.compare(newPwd, userId.adminPwd);
+
+    if (isOldPwd) {
+      return res.status(400).json({ error: "Password Previously Used" });
     } else {
       const salt = await bcryptjs.genSalt(5);
       let hashedPwd = await bcryptjs.hash(newPwd, salt);
@@ -235,6 +241,162 @@ export const resetPass = async (req: Request, res: Response) => {
       await Token.deleteOne({ _id: data._id });
 
       return res.status(201).json({ message: "Successfully Reset" });
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const addBusinessByAdmin = async (req: Request, res: Response) => {
+  const customId = customAlphabet("1234567890", 4);
+  let bId = customId();
+  bId = "B" + bId;
+  const { registrationNumber } = req.body.businessRegistration;
+  const { street } = req.body.businessAddress;
+  const {
+    businessName,
+    businessCategory,
+    primaryEmail,
+    primaryPhone,
+    businessPwd,
+  } = req.body;
+
+  try {
+    if (businessPwd == "") {
+      return res.status(400).json({ error: "Password is reqired" });
+    }
+    const tax = await Business.findOne({
+      "businessRegistration.registrationNumber": registrationNumber,
+    });
+    if (tax) {
+      return res
+        .status(400)
+        .json({ error: "Registration Number is already Used" });
+    }
+
+    const email = await Business.findOne({ primaryEmail });
+    if (email) {
+      return res.status(400).json({ error: "Email already registered" });
+    }
+
+    const userEmail = await User.findOne({ userEmail: primaryEmail });
+    if (userEmail) {
+      return res.status(400).json({ error: "Email already registered" });
+    }
+    const driverEmail = await Driver.findOne({ driverEmail: primaryEmail });
+    if (driverEmail) {
+      return res.status(400).json({ error: "Email already registered" });
+    }
+
+    const adminEmail = await AdminUser.findOne({ adminEmail: primaryEmail });
+    if (adminEmail) {
+      return res.status(400).json({ error: "Email already registered" });
+    }
+
+    const phone = await Business.findOne({ primaryPhone });
+    if (phone) {
+      return res
+        .status(400)
+        .json({ error: "Phone Number already registered " });
+    }
+
+    const salt = await bcryptjs.genSalt(5);
+    let hashedPassword = await bcryptjs.hash(businessPwd, salt);
+    let business = new Business({
+      businessName,
+      businessCategory,
+      businessRegistration: {
+        registrationNumber,
+      },
+      businessAddress: {
+        street,
+      },
+      primaryEmail,
+      primaryPhone,
+      bId: bId,
+      businessPwd: hashedPassword,
+    });
+    business = await business.save();
+
+    if (!business) {
+      hashedPassword = "";
+      return res.status(400).json({ error: "Failed to save the business" });
+    }
+    let token = new Token({
+      token: uuid(),
+      userId: business._id,
+    });
+    token = await token.save();
+    if (!token) {
+      return res.status(400).json({ error: "Token not generated" });
+    }
+    const url = `${process.env.FRONTEND_URL}/resetandverify/${token.token}`;
+    const api = `${process.env.Backend_URL}`;
+
+    sendEmail({
+      from: "beta.toursewa@gmail.com",
+      to: business.primaryEmail,
+      subject: "Account Verification Link",
+      text: `Verify your Business Email to Login\n\n
+      ${api}/resetandverify/${token.token}`,
+      html: `<h1>Reset Password to Verify</h1> 
+      <a href='${url}'>Click here To verify</a>`,
+    });
+
+    hashedPassword = "";
+
+    return res
+      .status(200)
+      .json({ message: "Verifying link has been sent to Email " });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const verifyAndResetPwd = async (req: Request, res: Response) => {
+  const token = req.params.token;
+  const newPwd = req.body.businessPwd;
+  try {
+    const data = await Token.findOne({ token });
+    if (!data) {
+      return res.status(404).json({ error: "Token Expired" });
+    }
+    const businessId = await Business.findOne({ _id: data.userId });
+    if (!businessId) {
+      return res.status(404).json({ error: "Token and Email not matched" });
+    }
+    if (businessId.isVerified) {
+      return res.status(400).json({ error: "Email Already verified" });
+    }
+
+    const isOldPwd = await bcryptjs.compare(newPwd, businessId.businessPwd);
+    if (isOldPwd) {
+      return res.status(400).json({ error: "Password Previously Used" });
+    } else {
+      const salt = await bcryptjs.genSalt(5);
+      let hashedPwd = await bcryptjs.hash(newPwd, salt);
+      businessId.businessPwd = hashedPwd;
+      businessId.save();
+
+      await Token.deleteOne({ _id: data._id });
+      businessId.isVerified = true;
+      businessId.save().then((business) => {
+        if (!business) {
+          return res.status(400).json({ error: "Failed to Verify" });
+        } else {
+          sendEmail({
+            from: "beta.toursewa@gmail.com",
+            to: "khagijora2074@gmail.com",
+            subject: "New Business Registered",
+            html: `<h2>A new business with business Id ${businessId.bId} has been registered</h2>
+          <a href='${process.env.FRONTEND_URL}/businessapprove/${businessId.bId}'>Click to verify and activate the business account</a>
+          `,
+          });
+        }
+      });
+      return res
+        .status(200)
+        .json({ message: "Email Verified and New Password is set" });
     }
   } catch (error: any) {
     return res.status(500).json({ error: error.message });

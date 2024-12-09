@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPass = exports.forgetPass = exports.businessApprove = exports.getAdmin = exports.adminlogin = exports.addAdminUser = void 0;
+exports.verifyAndResetPwd = exports.addBusinessByAdmin = exports.resetPass = exports.forgetPass = exports.businessApprove = exports.getAdmin = exports.adminlogin = exports.addAdminUser = void 0;
 const adminUser_1 = __importDefault(require("../models/adminUser"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const business_1 = __importDefault(require("../models/business"));
@@ -234,6 +234,10 @@ const resetPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!userId) {
             return res.status(404).json({ error: "Token and Email not matched" });
         }
+        const isOldPwd = yield bcryptjs_1.default.compare(newPwd, userId.adminPwd);
+        if (isOldPwd) {
+            return res.status(400).json({ error: "Password Previously Used" });
+        }
         else {
             const salt = yield bcryptjs_1.default.genSalt(5);
             let hashedPwd = yield bcryptjs_1.default.hash(newPwd, salt);
@@ -248,3 +252,145 @@ const resetPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.resetPass = resetPass;
+const addBusinessByAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const customId = customAlphabet("1234567890", 4);
+    let bId = customId();
+    bId = "B" + bId;
+    const { registrationNumber } = req.body.businessRegistration;
+    const { street } = req.body.businessAddress;
+    const { businessName, businessCategory, primaryEmail, primaryPhone, businessPwd, } = req.body;
+    try {
+        if (businessPwd == "") {
+            return res.status(400).json({ error: "Password is reqired" });
+        }
+        const tax = yield business_1.default.findOne({
+            "businessRegistration.registrationNumber": registrationNumber,
+        });
+        if (tax) {
+            return res
+                .status(400)
+                .json({ error: "Registration Number is already Used" });
+        }
+        const email = yield business_1.default.findOne({ primaryEmail });
+        if (email) {
+            return res.status(400).json({ error: "Email already registered" });
+        }
+        const userEmail = yield userModel_1.default.findOne({ userEmail: primaryEmail });
+        if (userEmail) {
+            return res.status(400).json({ error: "Email already registered" });
+        }
+        const driverEmail = yield Driver_1.default.findOne({ driverEmail: primaryEmail });
+        if (driverEmail) {
+            return res.status(400).json({ error: "Email already registered" });
+        }
+        const adminEmail = yield adminUser_1.default.findOne({ adminEmail: primaryEmail });
+        if (adminEmail) {
+            return res.status(400).json({ error: "Email already registered" });
+        }
+        const phone = yield business_1.default.findOne({ primaryPhone });
+        if (phone) {
+            return res
+                .status(400)
+                .json({ error: "Phone Number already registered " });
+        }
+        const salt = yield bcryptjs_1.default.genSalt(5);
+        let hashedPassword = yield bcryptjs_1.default.hash(businessPwd, salt);
+        let business = new business_1.default({
+            businessName,
+            businessCategory,
+            businessRegistration: {
+                registrationNumber,
+            },
+            businessAddress: {
+                street,
+            },
+            primaryEmail,
+            primaryPhone,
+            bId: bId,
+            businessPwd: hashedPassword,
+        });
+        business = yield business.save();
+        if (!business) {
+            hashedPassword = "";
+            return res.status(400).json({ error: "Failed to save the business" });
+        }
+        let token = new token_1.default({
+            token: (0, uuid_1.v4)(),
+            userId: business._id,
+        });
+        token = yield token.save();
+        if (!token) {
+            return res.status(400).json({ error: "Token not generated" });
+        }
+        const url = `${process.env.FRONTEND_URL}/resetandverify/${token.token}`;
+        const api = `${process.env.Backend_URL}`;
+        (0, setEmail_1.sendEmail)({
+            from: "beta.toursewa@gmail.com",
+            to: business.primaryEmail,
+            subject: "Account Verification Link",
+            text: `Verify your Business Email to Login\n\n
+      ${api}/resetandverify/${token.token}`,
+            html: `<h1>Reset Password to Verify</h1> 
+      <a href='${url}'>Click here To verify</a>`,
+        });
+        hashedPassword = "";
+        return res
+            .status(200)
+            .json({ message: "Verifying link has been sent to Email " });
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.addBusinessByAdmin = addBusinessByAdmin;
+const verifyAndResetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = req.params.token;
+    const newPwd = req.body.businessPwd;
+    try {
+        const data = yield token_1.default.findOne({ token });
+        if (!data) {
+            return res.status(404).json({ error: "Token Expired" });
+        }
+        const businessId = yield business_1.default.findOne({ _id: data.userId });
+        if (!businessId) {
+            return res.status(404).json({ error: "Token and Email not matched" });
+        }
+        if (businessId.isVerified) {
+            return res.status(400).json({ error: "Email Already verified" });
+        }
+        const isOldPwd = yield bcryptjs_1.default.compare(newPwd, businessId.businessPwd);
+        if (isOldPwd) {
+            return res.status(400).json({ error: "Password Previously Used" });
+        }
+        else {
+            const salt = yield bcryptjs_1.default.genSalt(5);
+            let hashedPwd = yield bcryptjs_1.default.hash(newPwd, salt);
+            businessId.businessPwd = hashedPwd;
+            businessId.save();
+            yield token_1.default.deleteOne({ _id: data._id });
+            businessId.isVerified = true;
+            businessId.save().then((business) => {
+                if (!business) {
+                    return res.status(400).json({ error: "Failed to Verify" });
+                }
+                else {
+                    (0, setEmail_1.sendEmail)({
+                        from: "beta.toursewa@gmail.com",
+                        to: "khagijora2074@gmail.com",
+                        subject: "New Business Registered",
+                        html: `<h2>A new business with business Id ${businessId.bId} has been registered</h2>
+          <a href='${process.env.FRONTEND_URL}/businessapprove/${businessId.bId}'>Click to verify and activate the business account</a>
+          `,
+                    });
+                }
+            });
+            return res
+                .status(200)
+                .json({ message: "Email Verified and New Password is set" });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.verifyAndResetPwd = verifyAndResetPwd;
