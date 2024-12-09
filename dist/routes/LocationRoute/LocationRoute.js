@@ -9,6 +9,6 @@ const router = express_1.default.Router();
 router.post("/addlocation", location_1.addLocation);
 router.get("/getlocation", location_1.getLocation);
 router.get("/getlocationdetails/:id", location_1.getLocationDetails);
-router.put("/updatelocation", location_1.updateLocation);
+router.put("/updatelocation/:id", location_1.updateLocation);
 router.delete("/deletelocation", location_1.deleteLocation);
 exports.default = router;
