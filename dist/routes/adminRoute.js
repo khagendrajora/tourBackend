@@ -14,4 +14,5 @@ router.put("/businessapprove/:id", userController_1.businessApprove);
 router.post("/adminlogin", userController_1.adminlogin);
 router.post("/forgetadminpwd", userController_1.forgetPass);
 router.put("/resetpwd/:token", userController_1.resetPass);
+router.post("/addbusinessbyadmin", userController_1.addBusinessByAdmin);
 exports.default = router;

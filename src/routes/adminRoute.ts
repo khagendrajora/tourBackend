@@ -1,6 +1,7 @@
 import express from "express";
 import {
   addAdminUser,
+  addBusinessByAdmin,
   adminlogin,
   // adminSignOut,
   businessApprove,
@@ -18,5 +19,6 @@ router.put("/businessapprove/:id", businessApprove);
 router.post("/adminlogin", adminlogin);
 router.post("/forgetadminpwd", forgetPass);
 router.put("/resetpwd/:token", resetPass);
+router.post("/addbusinessbyadmin", addBusinessByAdmin);
 
 export default router;
