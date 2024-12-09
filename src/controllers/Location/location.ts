@@ -55,7 +55,7 @@ export const getLocationDetails = async (req: Request, res: Response) => {
 export const updateLocation = async (req: Request, res: Response) => {
   const id = req.params.id;
   let { country, municipality, state, locationName } = req.body;
-  const fullLocation = `${country}, ${municipality}, ${state}, ${locationName}`;
+  const fullLocation = `${country} ${state} ${municipality} ${locationName}`;
 
   try {
     const location = await Location.findByIdAndUpdate(

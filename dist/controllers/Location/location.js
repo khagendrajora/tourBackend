@@ -74,7 +74,7 @@ exports.getLocationDetails = getLocationDetails;
 const updateLocation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     let { country, municipality, state, locationName } = req.body;
-    const fullLocation = `${country}, ${municipality}, ${state}, ${locationName}`;
+    const fullLocation = `${country} ${state} ${municipality} ${locationName}`;
     try {
         const location = yield location_1.default.findByIdAndUpdate(id, { country, municipality, state, locationName, fullLocation }, { new: true });
         if (!location) {
