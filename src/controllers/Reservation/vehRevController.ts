@@ -5,6 +5,8 @@ import ReservedDate from "../../models/Reservations/ReservedDated";
 const { customAlphabet } = require("nanoid");
 import { sendEmail } from "../../utils/setEmail";
 import Business from "../../models/business";
+import VeVehRevLogs from "../../models/LogModel/VehRevLogs";
+import VehRevLogs from "../../models/LogModel/VehRevLogs";
 
 export const vehReservation = async (req: Request, res: Response) => {
   const id = req.params.id;
@@ -160,7 +162,7 @@ export const updateReservationStatusByBid = async (
   res: Response
 ) => {
   const id = req.params.id;
-  const { status, bookingId, email } = req.body;
+  const { status, bookingId, email, updatedBy } = req.body;
   try {
     const data = await VehicleReservation.findByIdAndUpdate(
       id,
@@ -173,12 +175,14 @@ export const updateReservationStatusByBid = async (
       return res.status(400).json({ error: "Failed to Update" });
     }
 
-    // const revDate = await ReservedDate.findOneAndDelete({
-    //   bookingId: bookingId,
-    // });
-    // if (!revDate) {
-    //   return res.status(400).json({ error: "failed to Update" });
-    // }
+    let vehLogs = new VehRevLogs({
+      updatedBy: updatedBy,
+      status: status,
+      bookingId: bookingId,
+      time: new Date(),
+    });
+    vehLogs = await vehLogs.save();
+
     sendEmail({
       from: "beta.toursewa@gmail.com",
       to: email,
@@ -221,7 +225,7 @@ export const getRevByVehicleId = async (req: Request, res: Response) => {
 
 export const updateReservationByBid = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const { status, email } = req.body;
+  const { status, email, updatedBy } = req.body;
   try {
     const data = await VehicleReservation.findOneAndUpdate(
       { bookingId: id },
@@ -237,6 +241,13 @@ export const updateReservationByBid = async (req: Request, res: Response) => {
       if (!revDate) {
         return res.status(400).json({ error: "Failed" });
       }
+      let vehLogs = new VehRevLogs({
+        updatedBy: updatedBy,
+        status: status,
+        bookingId: id,
+        time: new Date(),
+      });
+      vehLogs = await vehLogs.save();
       sendEmail({
         from: "beta.toursewa@gmail.com",
         to: email,

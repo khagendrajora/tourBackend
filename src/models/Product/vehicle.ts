@@ -26,94 +26,97 @@ export interface IVeh extends Document {
   vehId: string;
 }
 
-const VehSchema = new mongoose.Schema({
-  businessId: {
-    type: String,
-  },
-  vehId: {
-    type: String,
-    required: true,
-  },
-  businessName: {
-    type: String,
-    required: true,
-  },
-  baseLocation: {
-    type: String,
-    required: true,
-  },
-  vehCategory: {
-    type: String,
-    required: true,
-  },
-  vehSubCategory: {
-    type: String,
-    required: true,
-  },
-  services: [
-    {
+const VehSchema = new mongoose.Schema(
+  {
+    businessId: {
+      type: String,
+    },
+    vehId: {
       type: String,
       required: true,
     },
-  ],
-
-  amenities: [
-    {
+    businessName: {
       type: String,
       required: true,
     },
-  ],
-  // quantity: {
-  //   type: Number,
-  //   required: true,
-  // },
+    baseLocation: {
+      type: String,
+      required: true,
+    },
+    vehCategory: {
+      type: String,
+      required: true,
+    },
+    vehSubCategory: {
+      type: String,
+      required: true,
+    },
+    services: [
+      {
+        type: String,
+        required: true,
+      },
+    ],
 
-  capacity: {
-    type: String,
-    required: true,
-  },
-  vehCondition: {
-    type: String,
-    enum: Object.values(ICondition),
-    required: true,
-  },
-  vehNumber: {
-    type: String,
-    required: true,
-  },
-  name: {
-    type: String,
-    required: true,
-  },
+    amenities: [
+      {
+        type: String,
+        required: true,
+      },
+    ],
+    // quantity: {
+    //   type: Number,
+    //   required: true,
+    // },
 
-  operationDates: [
-    {
+    capacity: {
+      type: String,
+      required: true,
+    },
+    vehCondition: {
+      type: String,
+      enum: Object.values(ICondition),
+      required: true,
+    },
+    vehNumber: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+
+    operationDates: [
+      {
+        type: Date,
+      },
+    ],
+    manufacturer: {
+      type: String,
+      required: true,
+    },
+
+    model: {
+      type: String,
+      required: true,
+    },
+
+    VIN: {
+      type: String,
+      required: true,
+    },
+    madeYear: {
       type: Date,
+      required: true,
     },
-  ],
-  manufacturer: {
-    type: String,
-    required: true,
+    vehImages: [
+      {
+        type: String,
+      },
+    ],
   },
-
-  model: {
-    type: String,
-    required: true,
-  },
-
-  VIN: {
-    type: String,
-    required: true,
-  },
-  madeYear: {
-    type: Date,
-    required: true,
-  },
-  vehImages: [
-    {
-      type: String,
-    },
-  ],
-});
+  { timestamps: true }
+);
 
 export default mongoose.model<IVeh>("Vehicle", VehSchema);

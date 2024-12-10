@@ -92,5 +92,5 @@ const VehSchema = new mongoose_1.default.Schema({
             type: String,
         },
     ],
-});
+}, { timestamps: true });
 exports.default = mongoose_1.default.model("Vehicle", VehSchema);

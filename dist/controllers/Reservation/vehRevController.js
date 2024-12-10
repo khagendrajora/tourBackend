@@ -19,6 +19,7 @@ const ReservedDated_1 = __importDefault(require("../../models/Reservations/Reser
 const { customAlphabet } = require("nanoid");
 const setEmail_1 = require("../../utils/setEmail");
 const business_1 = __importDefault(require("../../models/business"));
+const VehRevLogs_1 = __importDefault(require("../../models/LogModel/VehRevLogs"));
 const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const id = req.params.id;
@@ -152,7 +153,7 @@ const updateReservationStatusByClient = (req, res) => __awaiter(void 0, void 0, 
 exports.updateReservationStatusByClient = updateReservationStatusByClient;
 const updateReservationStatusByBid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { status, bookingId, email } = req.body;
+    const { status, bookingId, email, updatedBy } = req.body;
     try {
         const data = yield vehReserv_1.default.findByIdAndUpdate(id, {
             status: status,
@@ -160,12 +161,13 @@ const updateReservationStatusByBid = (req, res) => __awaiter(void 0, void 0, voi
         if (!data) {
             return res.status(400).json({ error: "Failed to Update" });
         }
-        // const revDate = await ReservedDate.findOneAndDelete({
-        //   bookingId: bookingId,
-        // });
-        // if (!revDate) {
-        //   return res.status(400).json({ error: "failed to Update" });
-        // }
+        let vehLogs = new VehRevLogs_1.default({
+            updatedBy: updatedBy,
+            status: status,
+            bookingId: bookingId,
+            time: new Date(),
+        });
+        vehLogs = yield vehLogs.save();
         (0, setEmail_1.sendEmail)({
             from: "beta.toursewa@gmail.com",
             to: email,
@@ -213,7 +215,7 @@ const getRevByVehicleId = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.getRevByVehicleId = getRevByVehicleId;
 const updateReservationByBid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { status, email } = req.body;
+    const { status, email, updatedBy } = req.body;
     try {
         const data = yield vehReserv_1.default.findOneAndUpdate({ bookingId: id }, { status: status }, { new: true });
         if (!data) {
@@ -226,6 +228,13 @@ const updateReservationByBid = (req, res) => __awaiter(void 0, void 0, void 0, f
             if (!revDate) {
                 return res.status(400).json({ error: "Failed" });
             }
+            let vehLogs = new VehRevLogs_1.default({
+                updatedBy: updatedBy,
+                status: status,
+                bookingId: id,
+                time: new Date(),
+            });
+            vehLogs = yield vehLogs.save();
             (0, setEmail_1.sendEmail)({
                 from: "beta.toursewa@gmail.com",
                 to: email,
