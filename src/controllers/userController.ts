@@ -376,10 +376,10 @@ export const verifyAndResetPwd = async (req: Request, res: Response) => {
       const salt = await bcryptjs.genSalt(5);
       let hashedPwd = await bcryptjs.hash(newPwd, salt);
       businessId.businessPwd = hashedPwd;
-      businessId.save();
+      businessId.isVerified = true;
 
       await Token.deleteOne({ _id: data._id });
-      businessId.isVerified = true;
+
       businessId.save().then((business) => {
         if (!business) {
           return res.status(400).json({ error: "Failed to Verify" });

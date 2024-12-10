@@ -366,9 +366,8 @@ const verifyAndResetPwd = (req, res) => __awaiter(void 0, void 0, void 0, functi
             const salt = yield bcryptjs_1.default.genSalt(5);
             let hashedPwd = yield bcryptjs_1.default.hash(newPwd, salt);
             businessId.businessPwd = hashedPwd;
-            businessId.save();
-            yield token_1.default.deleteOne({ _id: data._id });
             businessId.isVerified = true;
+            yield token_1.default.deleteOne({ _id: data._id });
             businessId.save().then((business) => {
                 if (!business) {
                     return res.status(400).json({ error: "Failed to Verify" });

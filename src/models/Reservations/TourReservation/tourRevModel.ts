@@ -1,5 +1,12 @@
 import mongoose from "mongoose";
 
+export enum IStatus {
+  Approved = "Approved",
+  Canceled = "Canceled",
+  completed = "Completed",
+  Pending = "Pending",
+}
+
 export interface ITuRev extends Document {
   _id?: string;
   bookingId: string;
@@ -9,9 +16,10 @@ export interface ITuRev extends Document {
   email?: string;
   phone: string;
   from: Date;
-  end: Date;
+  // end: Date;
   createdAt?: Date;
   isApproved: boolean;
+  status: IStatus;
 }
 
 const TourReservation = new mongoose.Schema(

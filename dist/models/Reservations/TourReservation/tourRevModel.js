@@ -3,7 +3,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.IStatus = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
+var IStatus;
+(function (IStatus) {
+    IStatus["Approved"] = "Approved";
+    IStatus["Canceled"] = "Canceled";
+    IStatus["completed"] = "Completed";
+    IStatus["Pending"] = "Pending";
+})(IStatus || (exports.IStatus = IStatus = {}));
 const TourReservation = new mongoose_1.default.Schema({
     bookingId: {
         type: String,
