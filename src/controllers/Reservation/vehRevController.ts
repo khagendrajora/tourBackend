@@ -145,6 +145,14 @@ export const updateReservationStatusByClient = async (
     if (!revDate) {
       return res.status(400).json({ error: "failed to Update" });
     }
+
+    let vehLogs = new VehRevLogs({
+      updatedBy: email,
+      status: status,
+      bookingId: bookingId,
+      time: new Date(),
+    });
+    vehLogs = await vehLogs.save();
     sendEmail({
       from: "beta.toursewa@gmail.com",
       to: email,

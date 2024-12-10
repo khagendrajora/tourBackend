@@ -138,6 +138,13 @@ const updateReservationStatusByClient = (req, res) => __awaiter(void 0, void 0, 
         if (!revDate) {
             return res.status(400).json({ error: "failed to Update" });
         }
+        let vehLogs = new VehRevLogs_1.default({
+            updatedBy: email,
+            status: status,
+            bookingId: bookingId,
+            time: new Date(),
+        });
+        vehLogs = yield vehLogs.save();
         (0, setEmail_1.sendEmail)({
             from: "beta.toursewa@gmail.com",
             to: email,
