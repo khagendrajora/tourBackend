@@ -1,11 +1,10 @@
 import express from "express";
 import {
   addCountry,
-  addCountryState,
+  // addCountryState,
   addLocation,
   addMunicipality,
-  addState,
-  addStateMunicipality,
+  // addStateMunicipality,
   deleteCountry,
   deleteLocation,
   deleteMunicipality,
@@ -29,16 +28,16 @@ router.delete("/deletelocation", deleteLocation);
 router.post("/addcountry", addCountry);
 router.get("/getcountry", getCountry);
 router.delete("/deletecountry/:id", deleteCountry);
-router.put("/addcountrystate/:id", addCountryState);
+// router.put("/addcountrystate/:id", addCountryState);
 
-router.post("/addstate", addState);
+// router.post("/addstate", addState);
 router.get("/getstate", getState);
 router.delete("/deletestate/:id", deleteState);
-router.put("/addstatemunicipality/:id", addStateMunicipality);
+// router.put("/addstatemunicipality/:id", addStateMunicipality);
 
 router.post("/addmunicipality", addMunicipality);
 router.get("/getmunicipality", getMunicipality);
 router.delete("/deletemunicipality/:id", deleteMunicipality);
-router.put("/addstatemunicipality/:id", addStateMunicipality);
+// router.put("/addstatemunicipality/:id", addStateMunicipality);
 
 export default router;

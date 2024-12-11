@@ -12,27 +12,37 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteLocation = exports.updateLocation = exports.getLocationDetails = exports.getLocation = exports.addLocation = exports.addStateMunicipality = exports.addCountryState = exports.deleteMunicipality = exports.getMunicipality = exports.addMunicipality = exports.deleteState = exports.getState = exports.addState = exports.deleteCountry = exports.getCountry = exports.addCountry = void 0;
+exports.deleteLocation = exports.updateLocation = exports.getLocationDetails = exports.getLocation = exports.addLocation = exports.deleteMunicipality = exports.getMunicipality = exports.addMunicipality = exports.deleteState = exports.getState = exports.addState = exports.deleteCountry = exports.getCountry = exports.addCountry = void 0;
 const location_1 = __importDefault(require("../../models/Locations/location"));
 const country_1 = __importDefault(require("../../models/Locations/country"));
 const municipality_1 = __importDefault(require("../../models/Locations/municipality"));
 const state_1 = __importDefault(require("../../models/Locations/state"));
 const addCountry = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let { country, state } = req.body;
+    let { country } = req.body;
     country = country.toLowerCase();
     try {
+        // const newState = state.map((item) => item.toLowerCase().trim());
         const check = yield country_1.default.findOne({ country });
         if (check) {
             return res.status(400).json({ error: "Country Name already Exist" });
         }
         let location = new country_1.default({
             country,
-            state,
         });
         location = yield location.save();
         if (!location) {
             return res.status(409).json({ error: "Failed to add" });
         }
+        // if (state) {
+        //   let statedata = new State({
+        //     country,
+        //     state,
+        //   });
+        //   statedata = await statedata.save();
+        //   if (!statedata) {
+        //     return res.status(400).json({ error: "Failed to add state" });
+        //   }
+        // }
         return res.status(200).json({ message: "Added" });
     }
     catch (error) {
@@ -73,16 +83,26 @@ const deleteCountry = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 });
 exports.deleteCountry = deleteCountry;
 const addState = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let { state, municipality } = req.body;
+    let { country, state } = req.body;
     state = state.toLowerCase();
+    country = country.toLowerCase();
     try {
-        const check = yield state_1.default.findOne({ state });
-        if (check) {
-            return res.status(400).json({ error: "State Name already Exist" });
+        const checkCountry = yield state_1.default.findOne({ country });
+        if (checkCountry) {
+            const checkState = yield checkCountry.state.includes(state);
+            if (checkState) {
+                return res.status(400).json({ error: "State Name already Exist" });
+            }
         }
+        // const check = checkCountry.state && checkCountry.state.includes(state);
+        // if (check) {
+        //   return res.status(400).json({ error: "State Name already Exist" });
+        // }
+        // checkCountry.state?.push(state);
+        // await checkCountry.save();
         let location = new state_1.default({
+            country,
             state,
-            municipality,
         });
         location = yield location.save();
         if (!location) {
@@ -128,16 +148,29 @@ const deleteState = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.deleteState = deleteState;
 const addMunicipality = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let { municipality, locations } = req.body;
+    let { state, municipality, country } = req.body;
+    state = state.toLowerCase();
     municipality = municipality.toLowerCase();
+    country = country.toLowerCase();
     try {
-        const check = yield municipality_1.default.findOne({ municipality });
-        if (check) {
-            return res.status(400).json({ error: "Municipality Name already Exist" });
+        const checkState = yield municipality_1.default.findOne({ state });
+        if (checkState) {
+            const checkMunicipality = yield checkState.municipality.includes(municipality);
+            if (checkMunicipality) {
+                return res.status(200).json({ error: "Municipality Already Exist" });
+            }
         }
+        // const check =
+        //   checkState.municipality && checkState.municipality.includes(municipality);
+        // // const check = await Municipality.findOne({ municipality });
+        // if (check) {
+        //   return res.status(400).json({ error: "Municipality Name already Exist" });
+        // }
+        // checkState.municipality?.push(newMunicipality);
         let location = new municipality_1.default({
+            state,
             municipality,
-            locations,
+            country,
         });
         location = yield location.save();
         if (!location) {
@@ -203,48 +236,76 @@ exports.deleteMunicipality = deleteMunicipality;
 //     res.status(500).json({ error: error });
 //   }
 // };
-const addCountryState = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = req.params.id;
-    let { state } = req.body;
-    if (!Array.isArray(state)) {
-        return res.status(400).json({ error: "Data must be an array format" });
-    }
-    try {
-        const newState = state.map((item) => item.toLowerCase().trim());
-        const data = yield country_1.default.findOneAndUpdate({ _id: id }, { $push: { state: { $each: newState } } }, { new: true });
-        if (data) {
-            return res.status(200).json({ message: "State Added" });
-        }
-        else {
-            return res.status(404).json({ error: "Failed" });
-        }
-    }
-    catch (error) {
-        return res.status(500).json({ error: error });
-    }
-});
-exports.addCountryState = addCountryState;
-const addStateMunicipality = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = req.params.id;
-    let { municipality } = req.body;
-    if (!Array.isArray(municipality)) {
-        return res.status(400).json({ error: "Data must be an array format" });
-    }
-    try {
-        const newMunicipality = municipality.map((item) => item.toLowerCase().trim());
-        const data = yield country_1.default.findOneAndUpdate({ _id: id }, { $push: { municipality: { $each: newMunicipality } } }, { new: true });
-        if (data) {
-            return res.status(200).json({ message: "Municipality Added" });
-        }
-        else {
-            return res.status(404).json({ error: "Failed" });
-        }
-    }
-    catch (error) {
-        return res.status(500).json({ error: error });
-    }
-});
-exports.addStateMunicipality = addStateMunicipality;
+// export const addCountryState = async (req: Request, res: Response) => {
+//   const id = req.params.id;
+//   let { state } = req.body;
+//   if (!Array.isArray(state)) {
+//     return res.status(400).json({ error: "Data must be an array format" });
+//   }
+//   try {
+//     const newState = state.map((item) => item.toLowerCase().trim());
+//     const checkCountry = await Country.findById(id);
+//     if (!checkCountry) {
+//       return res.status(200).json({ error: "Country Not Found" });
+//     }
+//     const stateCheck = newState.some((item) =>
+//       checkCountry.state?.includes(item)
+//     );
+//     if (stateCheck) {
+//       return res.status(200).json({ error: "State Already Exist" });
+//     }
+//     const data = await Country.findOneAndUpdate(
+//       { _id: id },
+//       { $push: { state: { $each: newState } } },
+//       { new: true }
+//     );
+//     // const inState = await State.findOne({ checkCountry });
+//     // if (inState) {
+//     //   const newData = await State.findOneAndUpdate({ checkCountry }, state);
+//     // }
+//     if (data) {
+//       return res.status(200).json({ message: "State Added" });
+//     } else {
+//       return res.status(404).json({ error: "Failed" });
+//     }
+//   } catch (error: any) {
+//     return res.status(500).json({ error: error });
+//   }
+// };
+// export const addStateMunicipality = async (req: Request, res: Response) => {
+//   const id = req.params.id;
+//   let { municipality } = req.body;
+//   if (!Array.isArray(municipality)) {
+//     return res.status(400).json({ error: "Data must be an array format" });
+//   }
+//   try {
+//     const newMunicipality = municipality.map((item) =>
+//       item.toLowerCase().trim()
+//     );
+//     const checkState = await State.findById(id);
+//     if (!checkState) {
+//       return res.status(200).json({ error: "State Not Found" });
+//     }
+//     const municipalityCheck = newMunicipality.some((item) =>
+//       checkState.state?.includes(item)
+//     );
+//     if (municipalityCheck) {
+//       return res.status(200).json({ error: "municipality Already Exist" });
+//     }
+//     const data = await State.findOneAndUpdate(
+//       { _id: id },
+//       { $push: { municipality: { $each: newMunicipality } } },
+//       { new: true }
+//     );
+//     if (data) {
+//       return res.status(200).json({ message: "Municipality Added" });
+//     } else {
+//       return res.status(404).json({ error: "Failed" });
+//     }
+//   } catch (error: any) {
+//     return res.status(500).json({ error: error });
+//   }
+// };
 const addLocation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { country, municipality, state, locationName } = req.body;
     let fullLocation = `${country} ${state} ${municipality} ${locationName}`;

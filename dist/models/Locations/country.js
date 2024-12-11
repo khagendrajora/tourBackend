@@ -9,10 +9,5 @@ const countrySchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    state: [
-        {
-            type: String,
-        },
-    ],
 }, { timestamps: true });
 exports.default = mongoose_1.default.model("Country", countrySchema);

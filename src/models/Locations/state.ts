@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 export interface IState extends Document {
   _id?: string;
   state: string;
-  municipality?: string;
+  municipality?: string[];
 }
 
 const stateSchema = new mongoose.Schema(
@@ -12,11 +12,10 @@ const stateSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    municipality: [
-      {
-        type: String,
-      },
-    ],
+    country: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

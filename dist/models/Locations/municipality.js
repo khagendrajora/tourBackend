@@ -9,10 +9,13 @@ const municipalitySchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    // locations: [
-    //   {
-    //     type: String,
-    //   },
-    // ],
+    state: {
+        type: String,
+        required: true,
+    },
+    country: {
+        type: String,
+        required: true,
+    },
 }, { timestamps: true });
 exports.default = mongoose_1.default.model("Municipality", municipalitySchema);
