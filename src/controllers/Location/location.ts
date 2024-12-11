@@ -1,9 +1,236 @@
 import { Request, Response } from "express";
 import Location from "../../models/Locations/location";
+import Country from "../../models/Locations/country";
+import Municipality from "../../models/Locations/municipality";
+import State from "../../models/Locations/state";
+
+export const addCountry = async (req: Request, res: Response) => {
+  let { country, state } = req.body;
+  country = country.toLowerCase();
+  try {
+    const check = await Country.findOne({ country });
+    if (check) {
+      return res.status(400).json({ error: "Country Name already Exist" });
+    }
+    let location = new Country({
+      country,
+      state,
+    });
+    location = await location.save();
+    if (!location) {
+      return res.status(409).json({ error: "Failed to add" });
+    }
+    return res.status(200).json({ message: "Added" });
+  } catch (error: any) {
+    res.status(500).json({ error: error });
+  }
+};
+
+export const getCountry = async (req: Request, res: Response) => {
+  try {
+    let location = await Country.find();
+    if (location.length > 0) {
+      return res.send(location);
+    } else {
+      return res.status(400).json({ error: "Not Found" });
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};
+
+export const deleteCountry = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    Country.findByIdAndDelete(id).then((data) => {
+      if (!data) {
+        return res.status(404).json({ error: "Failed" });
+      } else {
+        return res.status(200).json({ message: "Successfully Deleted" });
+      }
+    });
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};
+
+export const addState = async (req: Request, res: Response) => {
+  let { state, municipality } = req.body;
+  state = state.toLowerCase();
+  try {
+    const check = await State.findOne({ state });
+    if (check) {
+      return res.status(400).json({ error: "State Name already Exist" });
+    }
+    let location = new State({
+      state,
+      municipality,
+    });
+    location = await location.save();
+    if (!location) {
+      return res.status(409).json({ error: "Failed to add" });
+    }
+    return res.status(200).json({ message: "Added" });
+  } catch (error: any) {
+    res.status(500).json({ error: error });
+  }
+};
+
+export const getState = async (req: Request, res: Response) => {
+  try {
+    let location = await State.find();
+    if (location.length > 0) {
+      return res.send(location);
+    } else {
+      return res.status(400).json({ error: "Not Found" });
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};
+
+export const deleteState = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    State.findByIdAndDelete(id).then((data) => {
+      if (!data) {
+        return res.status(404).json({ error: "Failed" });
+      } else {
+        return res.status(200).json({ message: "Successfully Deleted" });
+      }
+    });
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};
+
+export const addMunicipality = async (req: Request, res: Response) => {
+  let { municipality, locations } = req.body;
+  municipality = municipality.toLowerCase();
+  try {
+    const check = await Municipality.findOne({ municipality });
+    if (check) {
+      return res.status(400).json({ error: "Municipality Name already Exist" });
+    }
+    let location = new Municipality({
+      municipality,
+      locations,
+    });
+    location = await location.save();
+    if (!location) {
+      return res.status(409).json({ error: "Failed to add" });
+    }
+    return res.status(200).json({ message: "Added" });
+  } catch (error: any) {
+    res.status(500).json({ error: error });
+  }
+};
+export const getMunicipality = async (req: Request, res: Response) => {
+  try {
+    let location = await Municipality.find();
+    if (location.length > 0) {
+      return res.send(location);
+    } else {
+      return res.status(400).json({ error: "Not Found" });
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};
+
+export const deleteMunicipality = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    Location.findByIdAndDelete(id).then((data) => {
+      if (!data) {
+        return res.status(404).json({ error: "Failed" });
+      } else {
+        return res.status(200).json({ message: "Successfully Deleted" });
+      }
+    });
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};
+
+// export const addMunicipality = async (req: Request, res: Response) => {
+//   let { municipality, locations } = req.body;
+//   municipality = municipality.toLowerCase();
+//   try {
+//     const check = await Location.findOne({ municipality });
+//     if (check) {
+//       return res.status(400).json({ error: "Municipality Name already Exist" });
+//     }
+//     let location = new Municipality({
+//       municipality,
+//       locations,
+//     });
+//     location = await location.save();
+//     if (!location) {
+//       return res.status(409).json({ error: "Failed to add" });
+//     }
+//     return res.status(200).json({ message: "Added" });
+//   } catch (error: any) {
+//     res.status(500).json({ error: error });
+//   }
+// };
+
+export const addCountryState = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  let { state } = req.body;
+
+  if (!Array.isArray(state)) {
+    return res.status(400).json({ error: "Data must be an array format" });
+  }
+  try {
+    const newState = state.map((item) => item.toLowerCase().trim());
+    const data = await Country.findOneAndUpdate(
+      { _id: id },
+      { $push: { state: { $each: newState } } },
+      { new: true }
+    );
+
+    if (data) {
+      return res.status(200).json({ message: "State Added" });
+    } else {
+      return res.status(404).json({ error: "Failed" });
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: error });
+  }
+};
+
+export const addStateMunicipality = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  let { municipality } = req.body;
+
+  if (!Array.isArray(municipality)) {
+    return res.status(400).json({ error: "Data must be an array format" });
+  }
+  try {
+    const newMunicipality = municipality.map((item) =>
+      item.toLowerCase().trim()
+    );
+    const data = await Country.findOneAndUpdate(
+      { _id: id },
+      { $push: { municipality: { $each: newMunicipality } } },
+      { new: true }
+    );
+
+    if (data) {
+      return res.status(200).json({ message: "Municipality Added" });
+    } else {
+      return res.status(404).json({ error: "Failed" });
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: error });
+  }
+};
 
 export const addLocation = async (req: Request, res: Response) => {
   const { country, municipality, state, locationName } = req.body;
-  const fullLocation = `${country}, ${municipality}, ${state}, ${locationName}`;
+  let fullLocation = `${country} ${state} ${municipality} ${locationName}`;
+  fullLocation = fullLocation.toLowerCase();
   try {
     const check = await Location.findOne({ fullLocation });
     if (check) {
@@ -38,6 +265,7 @@ export const getLocation = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "internal error" });
   }
 };
+
 export const getLocationDetails = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
@@ -55,9 +283,13 @@ export const getLocationDetails = async (req: Request, res: Response) => {
 export const updateLocation = async (req: Request, res: Response) => {
   const id = req.params.id;
   let { country, municipality, state, locationName } = req.body;
-  const fullLocation = `${country} ${state} ${municipality} ${locationName}`;
-
+  let fullLocation = `${country} ${state} ${municipality} ${locationName}`;
+  fullLocation = fullLocation.toLowerCase();
   try {
+    const check = await Location.findOne({ fullLocation });
+    if (check) {
+      return res.status(400).json({ error: "Location already Exist" });
+    }
     const location = await Location.findByIdAndUpdate(
       id,
       { country, municipality, state, locationName, fullLocation },
