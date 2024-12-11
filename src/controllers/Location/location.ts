@@ -112,18 +112,13 @@ export const addMunicipality = async (req: Request, res: Response) => {
   municipality = municipality.toLowerCase();
   country = country.toLowerCase();
   try {
-    const checkState = await Municipality.findOne({
+    const checkMunicipality = await Municipality.findOne({
       country,
       state,
       municipality,
     });
-    if (checkState) {
-      const checkMunicipality = await checkState.municipality.includes(
-        municipality
-      );
-      if (checkMunicipality) {
-        return res.status(200).json({ error: "Municipality Already Exist" });
-      }
+    if (checkMunicipality) {
+      return res.status(200).json({ error: "Municipality Already Exist" });
     }
     let location = new Municipality({
       state,

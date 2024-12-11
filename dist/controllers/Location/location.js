@@ -133,16 +133,13 @@ const addMunicipality = (req, res) => __awaiter(void 0, void 0, void 0, function
     municipality = municipality.toLowerCase();
     country = country.toLowerCase();
     try {
-        const checkState = yield municipality_1.default.findOne({
+        const checkMunicipality = yield municipality_1.default.findOne({
             country,
             state,
             municipality,
         });
-        if (checkState) {
-            const checkMunicipality = yield checkState.municipality.includes(municipality);
-            if (checkMunicipality) {
-                return res.status(200).json({ error: "Municipality Already Exist" });
-            }
+        if (checkMunicipality) {
+            return res.status(200).json({ error: "Municipality Already Exist" });
         }
         let location = new municipality_1.default({
             state,
