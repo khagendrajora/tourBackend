@@ -12,27 +12,27 @@ var IStatus;
     IStatus["completed"] = "Completed";
     IStatus["Pending"] = "Pending";
 })(IStatus || (exports.IStatus = IStatus = {}));
-const TourReservation = new mongoose_1.default.Schema({
+const TrekReservation = new mongoose_1.default.Schema({
     bookingId: {
-        type: String,
-        required: true,
-    },
-    businessId: {
         type: String,
         required: true,
     },
     createdAt: {
         type: Date,
     },
-    tourId: {
+    businessId: {
         type: String,
         required: true,
     },
-    tourName: {
+    trekId: {
         type: String,
         required: true,
     },
-    passengerName: {
+    trekName: {
+        type: String,
+        required: true,
+    },
+    PassengerName: {
         type: String,
         required: true,
     },
@@ -61,4 +61,4 @@ const TourReservation = new mongoose_1.default.Schema({
         default: false,
     },
 }, { timestamps: true });
-exports.default = mongoose_1.default.model("TourReservation", TourReservation);
+exports.default = mongoose_1.default.model("TrekReservation", TrekReservation);

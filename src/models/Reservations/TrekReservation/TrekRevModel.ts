@@ -7,44 +7,44 @@ export enum IStatus {
   Pending = "Pending",
 }
 
-export interface ITuRev extends Document {
+export interface ITrRev extends Document {
   _id?: string;
   bookingId: string;
-  tourId: string;
-  tourName: string;
-  passengerName: string;
+  trekId: string;
+  trekName: string;
+  PassengerName: string;
+  businessId: string;
   tickets: number;
   email?: string;
   phone: string;
   from: Date;
   createdAt?: Date;
   isApproved: boolean;
-  businessId: string;
   status: IStatus;
 }
 
-const TourReservation = new mongoose.Schema(
+const TrekReservation = new mongoose.Schema(
   {
     bookingId: {
-      type: String,
-      required: true,
-    },
-    businessId: {
       type: String,
       required: true,
     },
     createdAt: {
       type: Date,
     },
-    tourId: {
+    businessId: {
       type: String,
       required: true,
     },
-    tourName: {
+    trekId: {
       type: String,
       required: true,
     },
-    passengerName: {
+    trekName: {
+      type: String,
+      required: true,
+    },
+    PassengerName: {
       type: String,
       required: true,
     },
@@ -78,4 +78,4 @@ const TourReservation = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model<ITuRev>("TourReservation", TourReservation);
+export default mongoose.model<ITrRev>("TrekReservation", TrekReservation);

@@ -12,35 +12,35 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTourRevByBid = exports.getTourRevByUser = exports.getTourRev = exports.tourRev = void 0;
-const tourRevModel_1 = __importDefault(require("../../../models/Reservations/TourReservation/tourRevModel"));
+exports.getTrekRevByBid = exports.getTrekRevByUser = exports.getTrekRev = exports.trekRev = void 0;
+const TrekRevModel_1 = __importDefault(require("../../../models/Reservations/TrekReservation/TrekRevModel"));
 const setEmail_1 = require("../../../utils/setEmail");
 const { customAlphabet } = require("nanoid");
-const tour_1 = __importDefault(require("../../../models/Product/tour"));
-const tourRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const trekking_1 = __importDefault(require("../../../models/Product/trekking"));
+const trekRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const customId = customAlphabet("1234567890", 4);
     let bookingId = customId();
-    bookingId = "TuR" + bookingId;
+    bookingId = "TrR" + bookingId;
     const { passengerName, tickets, email, phone, from } = req.body;
     try {
-        const tourData = yield tour_1.default.findOne({ tourId: id });
-        if (!tourData) {
-            return res.status(401).json({ error: "Tour Unavailable" });
+        const trekData = yield trekking_1.default.findOne({ trekId: id });
+        if (!trekData) {
+            return res.status(401).json({ error: "Trek Unavailable" });
         }
         // const businessdata = await Business.findOne({ bId: vehData.businessId });
-        let tourRev = new tourRevModel_1.default({
+        let trekRev = new TrekRevModel_1.default({
             passengerName,
             tickets,
             email,
             phone,
             from,
-            businessId: tourData.businessId,
+            businessId: trekData.businessId,
             bookingId: bookingId,
-            tourId: id,
+            trekId: id,
         });
-        tourRev = yield tourRev.save();
-        if (!tourRev) {
+        trekRev = yield trekRev.save();
+        if (!trekRev) {
             return res.status(400).json({ error: "Booking failed" });
         }
         (0, setEmail_1.sendEmail)({
@@ -61,10 +61,10 @@ const tourRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.status(500).json({ error: error.message });
     }
 });
-exports.tourRev = tourRev;
-const getTourRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.trekRev = trekRev;
+const getTrekRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const data = yield tourRevModel_1.default.find();
+        const data = yield TrekRevModel_1.default.find();
         if (data.length > 0) {
             return res.send();
         }
@@ -76,11 +76,11 @@ const getTourRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         return res.status(500).json({ error: error.message });
     }
 });
-exports.getTourRev = getTourRev;
-const getTourRevByUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getTrekRev = getTrekRev;
+const getTrekRevByUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        const data = yield tourRevModel_1.default.find({ bookedBy: id });
+        const data = yield TrekRevModel_1.default.find({ bookedBy: id });
         if (data.length > 0) {
             return res.send(data);
         }
@@ -92,11 +92,11 @@ const getTourRevByUser = (req, res) => __awaiter(void 0, void 0, void 0, functio
         return res.status(500).json({ error: error.message });
     }
 });
-exports.getTourRevByUser = getTourRevByUser;
-const getTourRevByBid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getTrekRevByUser = getTrekRevByUser;
+const getTrekRevByBid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        const data = yield tourRevModel_1.default.find({ businessId: id });
+        const data = yield TrekRevModel_1.default.find({ businessId: id });
         if (data.length === 0) {
             return res.json({ message: "No Bookings Found" });
         }
@@ -108,4 +108,4 @@ const getTourRevByBid = (req, res) => __awaiter(void 0, void 0, void 0, function
         return res.status(500).json({ error: error.message });
     }
 });
-exports.getTourRevByBid = getTourRevByBid;
+exports.getTrekRevByBid = getTrekRevByBid;

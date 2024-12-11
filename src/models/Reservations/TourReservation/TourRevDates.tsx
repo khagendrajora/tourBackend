@@ -10,7 +10,7 @@ export interface IRDates extends Document {
 
 const revDates = new mongoose.Schema(
   {
-    vehicleId: {
+    tourId: {
       type: String,
       required: true,
     },

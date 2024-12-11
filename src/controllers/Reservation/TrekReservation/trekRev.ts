@@ -1,37 +1,35 @@
-import TourReservation from "../../../models/Reservations/TourReservation/tourRevModel";
 import TrekReservation from "../../../models/Reservations/TrekReservation/TrekRevModel";
 import { Request, Response } from "express";
 import { sendEmail } from "../../../utils/setEmail";
 const { customAlphabet } = require("nanoid");
-import Tour from "../../../models/Product/tour";
 import Trekking from "../../../models/Product/trekking";
 
-export const tourRev = async (req: Request, res: Response) => {
+export const trekRev = async (req: Request, res: Response) => {
   const id = req.params.id;
   const customId = customAlphabet("1234567890", 4);
   let bookingId = customId();
-  bookingId = "TuR" + bookingId;
+  bookingId = "TrR" + bookingId;
 
   const { passengerName, tickets, email, phone, from } = req.body;
   try {
-    const tourData = await Tour.findOne({ tourId: id });
-    if (!tourData) {
-      return res.status(401).json({ error: "Tour Unavailable" });
+    const trekData = await Trekking.findOne({ trekId: id });
+    if (!trekData) {
+      return res.status(401).json({ error: "Trek Unavailable" });
     }
     // const businessdata = await Business.findOne({ bId: vehData.businessId });
 
-    let tourRev = new TourReservation({
+    let trekRev = new TrekReservation({
       passengerName,
       tickets,
       email,
       phone,
       from,
-      businessId: tourData.businessId,
+      businessId: trekData.businessId,
       bookingId: bookingId,
-      tourId: id,
+      trekId: id,
     });
-    tourRev = await tourRev.save();
-    if (!tourRev) {
+    trekRev = await trekRev.save();
+    if (!trekRev) {
       return res.status(400).json({ error: "Booking failed" });
     }
 
@@ -53,9 +51,9 @@ export const tourRev = async (req: Request, res: Response) => {
   }
 };
 
-export const getTourRev = async (req: Request, res: Response) => {
+export const getTrekRev = async (req: Request, res: Response) => {
   try {
-    const data = await TourReservation.find();
+    const data = await TrekReservation.find();
     if (data.length > 0) {
       return res.send();
     } else {
@@ -66,10 +64,10 @@ export const getTourRev = async (req: Request, res: Response) => {
   }
 };
 
-export const getTourRevByUser = async (req: Request, res: Response) => {
+export const getTrekRevByUser = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
-    const data = await TourReservation.find({ bookedBy: id });
+    const data = await TrekReservation.find({ bookedBy: id });
     if (data.length > 0) {
       return res.send(data);
     } else {
@@ -79,10 +77,10 @@ export const getTourRevByUser = async (req: Request, res: Response) => {
     return res.status(500).json({ error: error.message });
   }
 };
-export const getTourRevByBid = async (req: Request, res: Response) => {
+export const getTrekRevByBid = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
-    const data = await TourReservation.find({ businessId: id });
+    const data = await TrekReservation.find({ businessId: id });
     if (data.length === 0) {
       return res.json({ message: "No Bookings Found" });
     } else {
@@ -92,5 +90,3 @@ export const getTourRevByBid = async (req: Request, res: Response) => {
     return res.status(500).json({ error: error.message });
   }
 };
-
-
