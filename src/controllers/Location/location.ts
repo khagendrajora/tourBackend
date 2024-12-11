@@ -8,7 +8,6 @@ export const addCountry = async (req: Request, res: Response) => {
   let { country } = req.body;
   country = country.toLowerCase();
   try {
-    // const newState = state.map((item) => item.toLowerCase().trim());
     const check = await Country.findOne({ country });
     if (check) {
       return res.status(400).json({ error: "Country Name already Exist" });
@@ -20,16 +19,6 @@ export const addCountry = async (req: Request, res: Response) => {
     if (!location) {
       return res.status(409).json({ error: "Failed to add" });
     }
-    // if (state) {
-    //   let statedata = new State({
-    //     country,
-    //     state,
-    //   });
-    //   statedata = await statedata.save();
-    //   if (!statedata) {
-    //     return res.status(400).json({ error: "Failed to add state" });
-    //   }
-    // }
     return res.status(200).json({ message: "Added" });
   } catch (error: any) {
     res.status(500).json({ error: error });
@@ -69,20 +58,11 @@ export const addState = async (req: Request, res: Response) => {
   state = state.toLowerCase();
   country = country.toLowerCase();
   try {
-    const checkCountry = await State.findOne({ country });
+    const checkCountry = await State.findOne({ country, state });
     if (checkCountry) {
-      const checkState = await checkCountry.state.includes(state);
-      if (checkState) {
-        return res.status(400).json({ error: "State Name already Exist" });
-      }
+      return res.status(400).json({ error: "State Name already Exist" });
     }
 
-    // const check = checkCountry.state && checkCountry.state.includes(state);
-    // if (check) {
-    //   return res.status(400).json({ error: "State Name already Exist" });
-    // }
-    // checkCountry.state?.push(state);
-    // await checkCountry.save();
     let location = new State({
       country,
       state,

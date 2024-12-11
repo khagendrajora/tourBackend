@@ -4,6 +4,7 @@ import {
   // addCountryState,
   addLocation,
   addMunicipality,
+  addState,
   // addStateMunicipality,
   deleteCountry,
   deleteLocation,
@@ -30,7 +31,7 @@ router.get("/getcountry", getCountry);
 router.delete("/deletecountry/:id", deleteCountry);
 // router.put("/addcountrystate/:id", addCountryState);
 
-// router.post("/addstate", addState);
+router.post("/addstate", addState);
 router.get("/getstate", getState);
 router.delete("/deletestate/:id", deleteState);
 // router.put("/addstatemunicipality/:id", addStateMunicipality);

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 export interface IState extends Document {
   _id?: string;
   state: string;
-  municipality?: string[];
+  country: string;
 }
 
 const stateSchema = new mongoose.Schema(

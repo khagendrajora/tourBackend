@@ -21,7 +21,6 @@ const addCountry = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     let { country } = req.body;
     country = country.toLowerCase();
     try {
-        // const newState = state.map((item) => item.toLowerCase().trim());
         const check = yield country_1.default.findOne({ country });
         if (check) {
             return res.status(400).json({ error: "Country Name already Exist" });
@@ -33,16 +32,6 @@ const addCountry = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (!location) {
             return res.status(409).json({ error: "Failed to add" });
         }
-        // if (state) {
-        //   let statedata = new State({
-        //     country,
-        //     state,
-        //   });
-        //   statedata = await statedata.save();
-        //   if (!statedata) {
-        //     return res.status(400).json({ error: "Failed to add state" });
-        //   }
-        // }
         return res.status(200).json({ message: "Added" });
     }
     catch (error) {
@@ -87,19 +76,10 @@ const addState = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     state = state.toLowerCase();
     country = country.toLowerCase();
     try {
-        const checkCountry = yield state_1.default.findOne({ country });
+        const checkCountry = yield state_1.default.findOne({ country, state });
         if (checkCountry) {
-            const checkState = yield checkCountry.state.includes(state);
-            if (checkState) {
-                return res.status(400).json({ error: "State Name already Exist" });
-            }
+            return res.status(400).json({ error: "State Name already Exist" });
         }
-        // const check = checkCountry.state && checkCountry.state.includes(state);
-        // if (check) {
-        //   return res.status(400).json({ error: "State Name already Exist" });
-        // }
-        // checkCountry.state?.push(state);
-        // await checkCountry.save();
         let location = new state_1.default({
             country,
             state,

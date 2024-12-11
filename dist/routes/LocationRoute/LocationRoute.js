@@ -15,7 +15,7 @@ router.post("/addcountry", location_1.addCountry);
 router.get("/getcountry", location_1.getCountry);
 router.delete("/deletecountry/:id", location_1.deleteCountry);
 // router.put("/addcountrystate/:id", addCountryState);
-// router.post("/addstate", addState);
+router.post("/addstate", location_1.addState);
 router.get("/getstate", location_1.getState);
 router.delete("/deletestate/:id", location_1.deleteState);
 // router.put("/addstatemunicipality/:id", addStateMunicipality);
