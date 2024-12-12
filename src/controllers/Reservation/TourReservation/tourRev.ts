@@ -1,10 +1,9 @@
 import TourReservation from "../../../models/Reservations/TourReservation/tourRevModel";
-import TrekReservation from "../../../models/Reservations/TrekReservation/TrekRevModel";
 import { Request, Response } from "express";
 import { sendEmail } from "../../../utils/setEmail";
 const { customAlphabet } = require("nanoid");
 import Tour from "../../../models/Product/tour";
-import Trekking from "../../../models/Product/trekking";
+import TourRevLog from "../../../models/LogModel/TourRevLog";
 
 export const tourRev = async (req: Request, res: Response) => {
   const id = req.params.id;
@@ -93,4 +92,81 @@ export const getTourRevByBid = async (req: Request, res: Response) => {
   }
 };
 
+export const updateTourRevStatusByClient = async (
+  req: Request,
+  res: Response
+) => {
+  const id = req.params.id;
+  const { status, bookingId, email } = req.body;
+  try {
+    const data = await TourReservation.findByIdAndUpdate(
+      id,
+      {
+        status: status,
+      },
+      { new: true }
+    );
+    if (!data) {
+      return res.status(400).json({ error: "Failed to Update" });
+    }
 
+    // const revDate = await ReservedDate.findOneAndDelete({
+    //   bookingId: bookingId,
+    // });
+    // if (!revDate) {
+    //   return res.status(400).json({ error: "failed to Update" });
+    // }
+
+    let vehLogs = new TourRevLog({
+      updatedBy: email,
+      status: status,
+      bookingId: bookingId,
+      time: new Date(),
+    });
+    vehLogs = await vehLogs.save();
+    sendEmail({
+      from: "beta.toursewa@gmail.com",
+      to: email,
+      subject: "Booking Status",
+      html: `<h2>Your Booking with booking id ${bookingId} has been ${status}</h2>`,
+    });
+    return res.status(200).json({ message: status });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const updateTourRevStatusByBid = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const { status, bookingId, email, updatedBy } = req.body;
+  try {
+    const data = await TourReservation.findByIdAndUpdate(
+      id,
+      {
+        status: status,
+      },
+      { new: true }
+    );
+    if (!data) {
+      return res.status(400).json({ error: "Failed to Update" });
+    }
+
+    let vehLogs = new TourRevLog({
+      updatedBy: updatedBy,
+      status: status,
+      bookingId: bookingId,
+      time: new Date(),
+    });
+    vehLogs = await vehLogs.save();
+
+    sendEmail({
+      from: "beta.toursewa@gmail.com",
+      to: email,
+      subject: "Booking Status",
+      html: `<h2>Your Booking with booking id ${bookingId} has been ${status}</h2>`,
+    });
+    return res.status(200).json({ message: status });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};

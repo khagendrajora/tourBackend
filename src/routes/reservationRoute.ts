@@ -18,12 +18,16 @@ import {
   getTourRevByBid,
   getTourRevByUser,
   tourRev,
+  updateTourRevStatusByBid,
+  updateTourRevStatusByClient,
 } from "../controllers/Reservation/TourReservation/tourRev";
 import {
   getTrekRev,
   getTrekRevByBid,
   getTrekRevByUser,
   trekRev,
+  updateTrekRevStatusByBid,
+  updateTrekRevStatusByClient,
 } from "../controllers/Reservation/TrekReservation/trekRev";
 const router = express.Router();
 
@@ -42,10 +46,14 @@ router.post("/tourrev/:id", tourRev);
 router.get("/gettourrev", getTourRev);
 router.get("/gettourrevbyuserid/:id", getTourRevByUser);
 router.get("/gettourrevbybid/:id", getTourRevByBid);
+router.put("/updatetourRevStatusbyclient/:id", updateTourRevStatusByClient);
+router.put("/updatetourRevStatusbybid/:id", updateTourRevStatusByBid);
 
 router.post("/trekrev/:id", trekRev);
 router.get("/gettrekrev", getTrekRev);
 router.get("/gettrekrevbyuserid/:id", getTrekRevByUser);
 router.get("/gettrekrevbybid/:id", getTrekRevByBid);
+router.put("/updatetrekRevStatusbyclient/:id", updateTrekRevStatusByClient);
+router.put("/updatetrekRevStatusbybid/:id", updateTrekRevStatusByBid);
 
 export default router;

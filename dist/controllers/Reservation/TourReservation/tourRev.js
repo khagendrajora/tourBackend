@@ -12,11 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTourRevByBid = exports.getTourRevByUser = exports.getTourRev = exports.tourRev = void 0;
+exports.updateTourRevStatusByBid = exports.updateTourRevStatusByClient = exports.getTourRevByBid = exports.getTourRevByUser = exports.getTourRev = exports.tourRev = void 0;
 const tourRevModel_1 = __importDefault(require("../../../models/Reservations/TourReservation/tourRevModel"));
 const setEmail_1 = require("../../../utils/setEmail");
 const { customAlphabet } = require("nanoid");
 const tour_1 = __importDefault(require("../../../models/Product/tour"));
+const TourRevLog_1 = __importDefault(require("../../../models/LogModel/TourRevLog"));
 const tourRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const customId = customAlphabet("1234567890", 4);
@@ -109,3 +110,69 @@ const getTourRevByBid = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.getTourRevByBid = getTourRevByBid;
+const updateTourRevStatusByClient = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const { status, bookingId, email } = req.body;
+    try {
+        const data = yield tourRevModel_1.default.findByIdAndUpdate(id, {
+            status: status,
+        }, { new: true });
+        if (!data) {
+            return res.status(400).json({ error: "Failed to Update" });
+        }
+        // const revDate = await ReservedDate.findOneAndDelete({
+        //   bookingId: bookingId,
+        // });
+        // if (!revDate) {
+        //   return res.status(400).json({ error: "failed to Update" });
+        // }
+        let vehLogs = new TourRevLog_1.default({
+            updatedBy: email,
+            status: status,
+            bookingId: bookingId,
+            time: new Date(),
+        });
+        vehLogs = yield vehLogs.save();
+        (0, setEmail_1.sendEmail)({
+            from: "beta.toursewa@gmail.com",
+            to: email,
+            subject: "Booking Status",
+            html: `<h2>Your Booking with booking id ${bookingId} has been ${status}</h2>`,
+        });
+        return res.status(200).json({ message: status });
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.updateTourRevStatusByClient = updateTourRevStatusByClient;
+const updateTourRevStatusByBid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const { status, bookingId, email, updatedBy } = req.body;
+    try {
+        const data = yield tourRevModel_1.default.findByIdAndUpdate(id, {
+            status: status,
+        }, { new: true });
+        if (!data) {
+            return res.status(400).json({ error: "Failed to Update" });
+        }
+        let vehLogs = new TourRevLog_1.default({
+            updatedBy: updatedBy,
+            status: status,
+            bookingId: bookingId,
+            time: new Date(),
+        });
+        vehLogs = yield vehLogs.save();
+        (0, setEmail_1.sendEmail)({
+            from: "beta.toursewa@gmail.com",
+            to: email,
+            subject: "Booking Status",
+            html: `<h2>Your Booking with booking id ${bookingId} has been ${status}</h2>`,
+        });
+        return res.status(200).json({ message: status });
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.updateTourRevStatusByBid = updateTourRevStatusByBid;

@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { sendEmail } from "../../../utils/setEmail";
 const { customAlphabet } = require("nanoid");
 import Trekking from "../../../models/Product/trekking";
+import TrekRevLog from "../../../models/LogModel/TrekRevLog";
 
 export const trekRev = async (req: Request, res: Response) => {
   const id = req.params.id;
@@ -86,6 +87,85 @@ export const getTrekRevByBid = async (req: Request, res: Response) => {
     } else {
       return res.send(data);
     }
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const updateTrekRevStatusByClient = async (
+  req: Request,
+  res: Response
+) => {
+  const id = req.params.id;
+  const { status, bookingId, email } = req.body;
+  try {
+    const data = await TrekReservation.findByIdAndUpdate(
+      id,
+      {
+        status: status,
+      },
+      { new: true }
+    );
+    if (!data) {
+      return res.status(400).json({ error: "Failed to Update" });
+    }
+
+    // const revDate = await ReservedDate.findOneAndDelete({
+    //   bookingId: bookingId,
+    // });
+    // if (!revDate) {
+    //   return res.status(400).json({ error: "failed to Update" });
+    // }
+
+    let Logs = new TrekRevLog({
+      updatedBy: email,
+      status: status,
+      bookingId: bookingId,
+      time: new Date(),
+    });
+    Logs = await Logs.save();
+    sendEmail({
+      from: "beta.toursewa@gmail.com",
+      to: email,
+      subject: "Booking Status",
+      html: `<h2>Your Booking with booking id ${bookingId} has been ${status}</h2>`,
+    });
+    return res.status(200).json({ message: status });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const updateTrekRevStatusByBid = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const { status, bookingId, email, updatedBy } = req.body;
+  try {
+    const data = await TrekReservation.findByIdAndUpdate(
+      id,
+      {
+        status: status,
+      },
+      { new: true }
+    );
+    if (!data) {
+      return res.status(400).json({ error: "Failed to Update" });
+    }
+
+    let Logs = new TrekRevLog({
+      updatedBy: updatedBy,
+      status: status,
+      bookingId: bookingId,
+      time: new Date(),
+    });
+    Logs = await Logs.save();
+
+    sendEmail({
+      from: "beta.toursewa@gmail.com",
+      to: email,
+      subject: "Booking Status",
+      html: `<h2>Your Booking with booking id ${bookingId} has been ${status}</h2>`,
+    });
+    return res.status(200).json({ message: status });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }
