@@ -246,7 +246,7 @@ export const trekDetails = async (req: Request, res: Response) => {
   try {
     const trek = await Trekking.findOne({ trekId: id });
     if (!trek) {
-      return res.status(404).json({ error: "Failed to get Tour" });
+      return res.status(404).json({ error: "Failed to get Trek" });
     } else {
       return res.send(trek);
     }

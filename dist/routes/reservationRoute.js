@@ -25,7 +25,7 @@ router.get("/gettourrevbyuserid/:id", tourRev_1.getTourRevByUser);
 router.get("/gettourrevbybid/:id", tourRev_1.getTourRevByBid);
 router.put("/updatetourRevStatusbyclient/:id", tourRev_1.updateTourRevStatusByClient);
 router.put("/updatetourRevStatusbybid/:id", tourRev_1.updateTourRevStatusByBid);
-router.post("/trekrev/:id", trekRev_1.trekRev);
+router.post("/addtrekrev/:id", trekRev_1.trekRev);
 router.get("/gettrekrev", trekRev_1.getTrekRev);
 router.get("/gettrekrevbyuserid/:id", trekRev_1.getTrekRevByUser);
 router.get("/gettrekrevbybid/:id", trekRev_1.getTrekRevByBid);

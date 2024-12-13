@@ -2,6 +2,7 @@ import TrekReservation from "../../../models/Reservations/TrekReservation/TrekRe
 import { Request, Response } from "express";
 import { sendEmail } from "../../../utils/setEmail";
 const { customAlphabet } = require("nanoid");
+import User from "../../../models/User/userModel";
 import Trekking from "../../../models/Product/trekking";
 import TrekRevLog from "../../../models/LogModel/TrekRevLog";
 
@@ -11,20 +12,25 @@ export const trekRev = async (req: Request, res: Response) => {
   let bookingId = customId();
   bookingId = "TrR" + bookingId;
 
-  const { passengerName, tickets, email, phone, from } = req.body;
+  const { passengerName, tickets, email, phone, date, bookedBy } = req.body;
   try {
     const trekData = await Trekking.findOne({ trekId: id });
     if (!trekData) {
       return res.status(401).json({ error: "Trek Unavailable" });
     }
+    const userData = await User.findOne({ _id: bookedBy });
+    if (!userData) {
+      return res.status(401).json({ error: "User Not found" });
+    }
     // const businessdata = await Business.findOne({ bId: vehData.businessId });
 
     let trekRev = new TrekReservation({
+      bookedBy: userData.userId,
       passengerName,
       tickets,
       email,
       phone,
-      from,
+      date,
       businessId: trekData.businessId,
       bookingId: bookingId,
       trekId: id,

@@ -229,7 +229,7 @@ const trekDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     try {
         const trek = yield trekking_1.default.findOne({ trekId: id });
         if (!trek) {
-            return res.status(404).json({ error: "Failed to get Tour" });
+            return res.status(404).json({ error: "Failed to get Trek" });
         }
         else {
             return res.send(trek);

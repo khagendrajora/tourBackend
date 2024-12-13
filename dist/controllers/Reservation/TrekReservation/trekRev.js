@@ -16,6 +16,7 @@ exports.updateTrekRevStatusByBid = exports.updateTrekRevStatusByClient = exports
 const TrekRevModel_1 = __importDefault(require("../../../models/Reservations/TrekReservation/TrekRevModel"));
 const setEmail_1 = require("../../../utils/setEmail");
 const { customAlphabet } = require("nanoid");
+const userModel_1 = __importDefault(require("../../../models/User/userModel"));
 const trekking_1 = __importDefault(require("../../../models/Product/trekking"));
 const TrekRevLog_1 = __importDefault(require("../../../models/LogModel/TrekRevLog"));
 const trekRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -23,19 +24,24 @@ const trekRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
     let bookingId = customId();
     bookingId = "TrR" + bookingId;
-    const { passengerName, tickets, email, phone, from } = req.body;
+    const { passengerName, tickets, email, phone, date, bookedBy } = req.body;
     try {
         const trekData = yield trekking_1.default.findOne({ trekId: id });
         if (!trekData) {
             return res.status(401).json({ error: "Trek Unavailable" });
         }
+        const userData = yield userModel_1.default.findOne({ _id: bookedBy });
+        if (!userData) {
+            return res.status(401).json({ error: "User Not found" });
+        }
         // const businessdata = await Business.findOne({ bId: vehData.businessId });
         let trekRev = new TrekRevModel_1.default({
+            bookedBy: userData.userId,
             passengerName,
             tickets,
             email,
             phone,
-            from,
+            date,
             businessId: trekData.businessId,
             bookingId: bookingId,
             trekId: id,

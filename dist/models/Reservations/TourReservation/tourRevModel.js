@@ -17,6 +17,9 @@ const TourReservation = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    bookedBy: {
+        type: String,
+    },
     businessId: {
         type: String,
         required: true,
@@ -44,7 +47,7 @@ const TourReservation = new mongoose_1.default.Schema({
         required: true,
         type: String,
     },
-    from: {
+    date: {
         type: Date,
         required: true,
     },

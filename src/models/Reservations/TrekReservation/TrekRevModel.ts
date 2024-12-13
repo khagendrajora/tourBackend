@@ -15,9 +15,10 @@ export interface ITrRev extends Document {
   PassengerName: string;
   businessId: string;
   tickets: number;
+  bookedBy: string;
   email?: string;
   phone: string;
-  from: Date;
+  date: Date;
   createdAt?: Date;
   isApproved: boolean;
   status: IStatus;
@@ -56,7 +57,7 @@ const TrekReservation = new mongoose.Schema(
       required: true,
       type: String,
     },
-    from: {
+    date: {
       type: Date,
       required: true,
     },
@@ -72,6 +73,9 @@ const TrekReservation = new mongoose.Schema(
     isApproved: {
       type: Boolean,
       default: false,
+    },
+    bookedBy: {
+      type: String,
     },
   },
 

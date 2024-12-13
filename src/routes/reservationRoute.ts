@@ -49,7 +49,7 @@ router.get("/gettourrevbybid/:id", getTourRevByBid);
 router.put("/updatetourRevStatusbyclient/:id", updateTourRevStatusByClient);
 router.put("/updatetourRevStatusbybid/:id", updateTourRevStatusByBid);
 
-router.post("/trekrev/:id", trekRev);
+router.post("/addtrekrev/:id", trekRev);
 router.get("/gettrekrev", getTrekRev);
 router.get("/gettrekrevbyuserid/:id", getTrekRevByUser);
 router.get("/gettrekrevbybid/:id", getTrekRevByBid);

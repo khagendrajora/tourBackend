@@ -44,7 +44,7 @@ const TrekReservation = new mongoose_1.default.Schema({
         required: true,
         type: String,
     },
-    from: {
+    date: {
         type: Date,
         required: true,
     },
@@ -59,6 +59,9 @@ const TrekReservation = new mongoose_1.default.Schema({
     isApproved: {
         type: Boolean,
         default: false,
+    },
+    bookedBy: {
+        type: String,
     },
 }, { timestamps: true });
 exports.default = mongoose_1.default.model("TrekReservation", TrekReservation);
