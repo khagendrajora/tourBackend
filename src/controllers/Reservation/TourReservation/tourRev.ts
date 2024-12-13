@@ -4,6 +4,7 @@ import { sendEmail } from "../../../utils/setEmail";
 const { customAlphabet } = require("nanoid");
 import Tour from "../../../models/Product/tour";
 import TourRevLog from "../../../models/LogModel/TourRevLog";
+import User from "../../../models/User/userModel";
 
 export const tourRev = async (req: Request, res: Response) => {
   const id = req.params.id;
@@ -11,23 +12,31 @@ export const tourRev = async (req: Request, res: Response) => {
   let bookingId = customId();
   bookingId = "TuR" + bookingId;
 
-  const { passengerName, tickets, email, phone, from } = req.body;
+  const { passengerName, tickets, email, phone, date, bookedBy } = req.body;
   try {
     const tourData = await Tour.findOne({ tourId: id });
     if (!tourData) {
       return res.status(401).json({ error: "Tour Unavailable" });
     }
+
+    const userData = await User.findOne({ _id: bookedBy });
+    if (!userData) {
+      return res.status(401).json({ error: "User Not found" });
+    }
+
     // const businessdata = await Business.findOne({ bId: vehData.businessId });
 
     let tourRev = new TourReservation({
+      bookedBy: userData.userId,
       passengerName,
       tickets,
       email,
       phone,
-      from,
+      date,
       businessId: tourData.businessId,
       bookingId: bookingId,
       tourId: id,
+      tourName: tourData.name,
     });
     tourRev = await tourRev.save();
     if (!tourRev) {

@@ -18,27 +18,34 @@ const setEmail_1 = require("../../../utils/setEmail");
 const { customAlphabet } = require("nanoid");
 const tour_1 = __importDefault(require("../../../models/Product/tour"));
 const TourRevLog_1 = __importDefault(require("../../../models/LogModel/TourRevLog"));
+const userModel_1 = __importDefault(require("../../../models/User/userModel"));
 const tourRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const customId = customAlphabet("1234567890", 4);
     let bookingId = customId();
     bookingId = "TuR" + bookingId;
-    const { passengerName, tickets, email, phone, from } = req.body;
+    const { passengerName, tickets, email, phone, date, bookedBy } = req.body;
     try {
         const tourData = yield tour_1.default.findOne({ tourId: id });
         if (!tourData) {
             return res.status(401).json({ error: "Tour Unavailable" });
         }
+        const userData = yield userModel_1.default.findOne({ _id: bookedBy });
+        if (!userData) {
+            return res.status(401).json({ error: "User Not found" });
+        }
         // const businessdata = await Business.findOne({ bId: vehData.businessId });
         let tourRev = new tourRevModel_1.default({
+            bookedBy: userData.userId,
             passengerName,
             tickets,
             email,
             phone,
-            from,
+            date,
             businessId: tourData.businessId,
             bookingId: bookingId,
             tourId: id,
+            tourName: tourData.name,
         });
         tourRev = yield tourRev.save();
         if (!tourRev) {

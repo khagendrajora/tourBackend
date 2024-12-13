@@ -42,7 +42,7 @@ router.get("/getalldates", getAllRevDates);
 router.get("/getallreservations", getAllReservations);
 router.get("/getrevbyvehid/:id", getRevByVehicleId);
 
-router.post("/tourrev/:id", tourRev);
+router.post("/addtourrev/:id", tourRev);
 router.get("/gettourrev", getTourRev);
 router.get("/gettourrevbyuserid/:id", getTourRevByUser);
 router.get("/gettourrevbybid/:id", getTourRevByBid);

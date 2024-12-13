@@ -13,6 +13,7 @@ export interface ITuRev extends Document {
   tourId: string;
   tourName: string;
   passengerName: string;
+  bookedBy: string;
   tickets: number;
   email?: string;
   phone: string;
