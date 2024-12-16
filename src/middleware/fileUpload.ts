@@ -25,7 +25,7 @@ const storage = diskStorage({
 
 const imageFilter = (req: Request, file: any, cb: any) => {
   if (
-    !file.originalname.match(/\.(jpg|png|jpeg|webp|gif|JPG|PNG|JPEG|xlsx)$/)
+    !file.originalname.match(/\.(jpg|png|jpeg|webp|gif|JPG|PNG|JPEG|xlsx|csv)$/)
   ) {
     return cb(
       new Error("Only jpg|png|jpeg|webp|gif|JPG|PNG|JPEG are supported")
