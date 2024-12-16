@@ -3,6 +3,7 @@ import Location from "../../models/Locations/location";
 import Country from "../../models/Locations/country";
 import Municipality from "../../models/Locations/municipality";
 import State from "../../models/Locations/state";
+import csv from "csvtojson";
 
 export const addCountry = async (req: Request, res: Response) => {
   let { country } = req.body;
@@ -258,6 +259,18 @@ export const deleteLocation = async (req: Request, res: Response) => {
 
 export const importUData = async (req: Request, res: Response) => {
   try {
+    if (!req.file) {
+      return res.status(400).send({
+        status: 400,
+        success: false,
+        msg: "No file uploaded",
+      });
+    }
+    const response = await csv()
+      .fromFile(req.file.path)
+      .then((response) => {
+        console.log(response);
+      });
     res.send({ status: 200, success: true, msg: "Running" });
   } catch (error: any) {
     res.send({ status: 400, sucess: false, msg: error.message });

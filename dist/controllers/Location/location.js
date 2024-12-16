@@ -17,6 +17,7 @@ const location_1 = __importDefault(require("../../models/Locations/location"));
 const country_1 = __importDefault(require("../../models/Locations/country"));
 const municipality_1 = __importDefault(require("../../models/Locations/municipality"));
 const state_1 = __importDefault(require("../../models/Locations/state"));
+const csvtojson_1 = __importDefault(require("csvtojson"));
 const addCountry = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let { country } = req.body;
     country = country.toLowerCase();
@@ -289,6 +290,18 @@ const deleteLocation = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.deleteLocation = deleteLocation;
 const importUData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        if (!req.file) {
+            return res.status(400).send({
+                status: 400,
+                success: false,
+                msg: "No file uploaded",
+            });
+        }
+        const response = yield (0, csvtojson_1.default)()
+            .fromFile(req.file.path)
+            .then((response) => {
+            console.log(response);
+        });
         res.send({ status: 200, success: true, msg: "Running" });
     }
     catch (error) {
