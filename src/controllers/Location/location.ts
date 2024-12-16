@@ -270,7 +270,7 @@ export const importUData = async (req: Request, res: Response) => {
 
     console.log(response);
 
-    res.send({ status: 200, success: true, msg: "Running" });
+    res.send({ status: 200, success: true, msg: "Running", data: response });
   } catch (error: any) {
     res.send({ status: 400, sucess: false, msg: error.message });
   }

@@ -299,7 +299,7 @@ const importUData = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
         const response = yield (0, csvtojson_1.default)().fromFile(req.file.path);
         console.log(response);
-        res.send({ status: 200, success: true, msg: "Running" });
+        res.send({ status: 200, success: true, msg: "Running", data: response });
     }
     catch (error) {
         res.send({ status: 400, sucess: false, msg: error.message });
