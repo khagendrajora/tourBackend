@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.importUData = exports.deleteLocation = exports.updateLocation = exports.getLocationDetails = exports.getLocation = exports.addLocation = exports.deleteMunicipality = exports.getMunicipality = exports.addMunicipality = exports.deleteState = exports.getState = exports.addState = exports.deleteCountry = exports.getCountry = exports.addCountry = void 0;
+exports.importprov1 = exports.importprov2 = exports.importkarnali = exports.importsudur = exports.importLumbini = exports.importGandaki = exports.deleteLocation = exports.updateLocation = exports.getLocationDetails = exports.getLocation = exports.addLocation = exports.deleteMunicipality = exports.getMunicipality = exports.addMunicipality = exports.deleteState = exports.getState = exports.addState = exports.deleteCountry = exports.getCountry = exports.addCountry = void 0;
 const location_1 = __importDefault(require("../../models/Locations/location"));
 const country_1 = __importDefault(require("../../models/Locations/country"));
 const municipality_1 = __importDefault(require("../../models/Locations/municipality"));
@@ -311,7 +311,7 @@ exports.deleteLocation = deleteLocation;
 //     res.send({ status: 400, sucess: false, msg: error.message });
 //   }
 // };
-const importUData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const importGandaki = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         if (!req.file) {
             return res.status(400).send({
@@ -323,7 +323,7 @@ const importUData = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         // let data: [] = [];
         const response = yield (0, csvtojson_1.default)().fromFile(req.file.path);
         const newData = response.map((row) => ({
-            state: "Bagmati Province",
+            state: "Gandaki Province",
             district: row.district,
         }));
         yield Districts_1.default.insertMany(newData);
@@ -334,4 +334,124 @@ const importUData = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         res.send({ status: 400, sucess: false, msg: error.message });
     }
 });
-exports.importUData = importUData;
+exports.importGandaki = importGandaki;
+const importLumbini = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        if (!req.file) {
+            return res.status(400).send({
+                status: 400,
+                success: false,
+                msg: "No file uploaded",
+            });
+        }
+        // let data: [] = [];
+        const response = yield (0, csvtojson_1.default)().fromFile(req.file.path);
+        const newData = response.map((row) => ({
+            state: "Lumbini Province",
+            district: row.district,
+        }));
+        yield Districts_1.default.insertMany(newData);
+        // await fs.unlink(filePath);
+        res.send({ status: 200, success: true, msg: "Running", data: response });
+    }
+    catch (error) {
+        res.send({ status: 400, sucess: false, msg: error.message });
+    }
+});
+exports.importLumbini = importLumbini;
+const importsudur = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        if (!req.file) {
+            return res.status(400).send({
+                status: 400,
+                success: false,
+                msg: "No file uploaded",
+            });
+        }
+        // let data: [] = [];
+        const response = yield (0, csvtojson_1.default)().fromFile(req.file.path);
+        const newData = response.map((row) => ({
+            state: "Sudurpashchim Province",
+            district: row.district,
+        }));
+        yield Districts_1.default.insertMany(newData);
+        // await fs.unlink(filePath);
+        res.send({ status: 200, success: true, msg: "Running", data: response });
+    }
+    catch (error) {
+        res.send({ status: 400, sucess: false, msg: error.message });
+    }
+});
+exports.importsudur = importsudur;
+const importkarnali = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        if (!req.file) {
+            return res.status(400).send({
+                status: 400,
+                success: false,
+                msg: "No file uploaded",
+            });
+        }
+        // let data: [] = [];
+        const response = yield (0, csvtojson_1.default)().fromFile(req.file.path);
+        const newData = response.map((row) => ({
+            state: "Karnali Province",
+            district: row.district,
+        }));
+        yield Districts_1.default.insertMany(newData);
+        // await fs.unlink(filePath);
+        res.send({ status: 200, success: true, msg: "Running", data: response });
+    }
+    catch (error) {
+        res.send({ status: 400, sucess: false, msg: error.message });
+    }
+});
+exports.importkarnali = importkarnali;
+const importprov2 = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        if (!req.file) {
+            return res.status(400).send({
+                status: 400,
+                success: false,
+                msg: "No file uploaded",
+            });
+        }
+        // let data: [] = [];
+        const response = yield (0, csvtojson_1.default)().fromFile(req.file.path);
+        const newData = response.map((row) => ({
+            state: "province 2",
+            district: row.district,
+        }));
+        yield Districts_1.default.insertMany(newData);
+        // await fs.unlink(filePath);
+        res.send({ status: 200, success: true, msg: "Running", data: response });
+    }
+    catch (error) {
+        res.send({ status: 400, sucess: false, msg: error.message });
+    }
+});
+exports.importprov2 = importprov2;
+const importprov1 = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        if (!req.file) {
+            return res.status(400).send({
+                status: 400,
+                success: false,
+                msg: "No file uploaded",
+            });
+        }
+        // let data: [] = [];
+        const response = yield (0, csvtojson_1.default)().fromFile(req.file.path);
+        const newData = response.map((row) => ({
+            state: "province 1",
+            district: row.district,
+        }));
+        yield Districts_1.default.insertMany(newData);
+        // await fs.unlink(filePath);
+        res.send({ status: 200, success: true, msg: "Running", data: response });
+    }
+    catch (error) {
+        res.send({ status: 400, sucess: false, msg: error.message });
+    }
+});
+exports.importprov1 = importprov1;

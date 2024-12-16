@@ -285,7 +285,7 @@ export const deleteLocation = async (req: Request, res: Response) => {
 //   }
 // };
 
-export const importUData = async (req: Request, res: Response) => {
+export const importGandaki = async (req: Request, res: Response) => {
   try {
     if (!req.file) {
       return res.status(400).send({
@@ -298,7 +298,139 @@ export const importUData = async (req: Request, res: Response) => {
     const response = await csv().fromFile(req.file.path);
 
     const newData = response.map((row: any) => ({
-      state: "Bagmati Province",
+      state: "Gandaki Province",
+      district: row.district,
+    }));
+
+    await District.insertMany(newData);
+
+    // await fs.unlink(filePath);
+
+    res.send({ status: 200, success: true, msg: "Running", data: response });
+  } catch (error: any) {
+    res.send({ status: 400, sucess: false, msg: error.message });
+  }
+};
+export const importLumbini = async (req: Request, res: Response) => {
+  try {
+    if (!req.file) {
+      return res.status(400).send({
+        status: 400,
+        success: false,
+        msg: "No file uploaded",
+      });
+    }
+    // let data: [] = [];
+    const response = await csv().fromFile(req.file.path);
+
+    const newData = response.map((row: any) => ({
+      state: "Lumbini Province",
+      district: row.district,
+    }));
+
+    await District.insertMany(newData);
+
+    // await fs.unlink(filePath);
+
+    res.send({ status: 200, success: true, msg: "Running", data: response });
+  } catch (error: any) {
+    res.send({ status: 400, sucess: false, msg: error.message });
+  }
+};
+
+export const importsudur = async (req: Request, res: Response) => {
+  try {
+    if (!req.file) {
+      return res.status(400).send({
+        status: 400,
+        success: false,
+        msg: "No file uploaded",
+      });
+    }
+    // let data: [] = [];
+    const response = await csv().fromFile(req.file.path);
+
+    const newData = response.map((row: any) => ({
+      state: "Sudurpashchim Province",
+      district: row.district,
+    }));
+
+    await District.insertMany(newData);
+
+    // await fs.unlink(filePath);
+
+    res.send({ status: 200, success: true, msg: "Running", data: response });
+  } catch (error: any) {
+    res.send({ status: 400, sucess: false, msg: error.message });
+  }
+};
+
+export const importkarnali = async (req: Request, res: Response) => {
+  try {
+    if (!req.file) {
+      return res.status(400).send({
+        status: 400,
+        success: false,
+        msg: "No file uploaded",
+      });
+    }
+    // let data: [] = [];
+    const response = await csv().fromFile(req.file.path);
+
+    const newData = response.map((row: any) => ({
+      state: "Karnali Province",
+      district: row.district,
+    }));
+
+    await District.insertMany(newData);
+
+    // await fs.unlink(filePath);
+
+    res.send({ status: 200, success: true, msg: "Running", data: response });
+  } catch (error: any) {
+    res.send({ status: 400, sucess: false, msg: error.message });
+  }
+};
+export const importprov2 = async (req: Request, res: Response) => {
+  try {
+    if (!req.file) {
+      return res.status(400).send({
+        status: 400,
+        success: false,
+        msg: "No file uploaded",
+      });
+    }
+    // let data: [] = [];
+    const response = await csv().fromFile(req.file.path);
+
+    const newData = response.map((row: any) => ({
+      state: "province 2",
+      district: row.district,
+    }));
+
+    await District.insertMany(newData);
+
+    // await fs.unlink(filePath);
+
+    res.send({ status: 200, success: true, msg: "Running", data: response });
+  } catch (error: any) {
+    res.send({ status: 400, sucess: false, msg: error.message });
+  }
+};
+export const importprov1 = async (req: Request, res: Response) => {
+  try {
+    if (!req.file) {
+      return res.status(400).send({
+        status: 400,
+        success: false,
+        msg: "No file uploaded",
+      });
+    }
+    // let data: [] = [];
+    const response = await csv().fromFile(req.file.path);
+
+    const newData = response.map((row: any) => ({
+      state: "province 1",
       district: row.district,
     }));
 
