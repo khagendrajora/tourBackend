@@ -297,11 +297,8 @@ const importUData = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 msg: "No file uploaded",
             });
         }
-        const response = yield (0, csvtojson_1.default)()
-            .fromFile(req.file.path)
-            .then((response) => {
-            console.log(response);
-        });
+        const response = yield (0, csvtojson_1.default)().fromFile(req.file.path);
+        console.log(response);
         res.send({ status: 200, success: true, msg: "Running" });
     }
     catch (error) {

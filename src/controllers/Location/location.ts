@@ -266,11 +266,10 @@ export const importUData = async (req: Request, res: Response) => {
         msg: "No file uploaded",
       });
     }
-    const response = await csv()
-      .fromFile(req.file.path)
-      .then((response) => {
-        console.log(response);
-      });
+    const response = await csv().fromFile(req.file.path);
+
+    console.log(response);
+
     res.send({ status: 200, success: true, msg: "Running" });
   } catch (error: any) {
     res.send({ status: 400, sucess: false, msg: error.message });
