@@ -47,7 +47,7 @@ const storage = (0, multer_1.diskStorage)({
     },
 });
 const imageFilter = (req, file, cb) => {
-    if (!file.originalname.match(/\.(jpg|png|jpeg|webp|gif|JPG|PNG|JPEG)$/)) {
+    if (!file.originalname.match(/\.(jpg|png|jpeg|webp|gif|JPG|PNG|JPEG|xlsx)$/)) {
         return cb(new Error("Only jpg|png|jpeg|webp|gif|JPG|PNG|JPEG are supported"));
     }
     else {
