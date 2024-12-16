@@ -17,6 +17,7 @@ const location_1 = __importDefault(require("../../models/Locations/location"));
 const country_1 = __importDefault(require("../../models/Locations/country"));
 const municipality_1 = __importDefault(require("../../models/Locations/municipality"));
 const state_1 = __importDefault(require("../../models/Locations/state"));
+const Districts_1 = __importDefault(require("../../models/Locations/Districts"));
 const csvtojson_1 = __importDefault(require("csvtojson"));
 const addCountry = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let { country } = req.body;
@@ -288,6 +289,28 @@ const deleteLocation = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.deleteLocation = deleteLocation;
+// export const importUData = async (req: Request, res: Response) => {
+//   try {
+//     if (!req.file) {
+//       return res.status(400).send({
+//         status: 400,
+//         success: false,
+//         msg: "No file uploaded",
+//       });
+//     }
+//     // let data: [] = [];
+//     const response = await csv().fromFile(req.file.path);
+//     const newData = response.map((row: any) => ({
+//       country: "Nepal",
+//       state: row.state,
+//     }));
+//     await State.insertMany(newData);
+//     // await fs.unlink(filePath);
+//     res.send({ status: 200, success: true, msg: "Running", data: response });
+//   } catch (error: any) {
+//     res.send({ status: 400, sucess: false, msg: error.message });
+//   }
+// };
 const importUData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         if (!req.file) {
@@ -300,10 +323,10 @@ const importUData = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         // let data: [] = [];
         const response = yield (0, csvtojson_1.default)().fromFile(req.file.path);
         const newData = response.map((row) => ({
-            country: "Nepal",
-            state: row.state,
+            state: "Bagmati Province",
+            district: row.district,
         }));
-        yield state_1.default.insertMany(newData);
+        yield Districts_1.default.insertMany(newData);
         // await fs.unlink(filePath);
         res.send({ status: 200, success: true, msg: "Running", data: response });
     }

@@ -3,6 +3,7 @@ import Location from "../../models/Locations/location";
 import Country from "../../models/Locations/country";
 import Municipality from "../../models/Locations/municipality";
 import State from "../../models/Locations/state";
+import District from "../../models/Locations/Districts";
 import csv from "csvtojson";
 
 export const addCountry = async (req: Request, res: Response) => {
@@ -257,6 +258,33 @@ export const deleteLocation = async (req: Request, res: Response) => {
   }
 };
 
+// export const importUData = async (req: Request, res: Response) => {
+//   try {
+//     if (!req.file) {
+//       return res.status(400).send({
+//         status: 400,
+//         success: false,
+//         msg: "No file uploaded",
+//       });
+//     }
+//     // let data: [] = [];
+//     const response = await csv().fromFile(req.file.path);
+
+//     const newData = response.map((row: any) => ({
+//       country: "Nepal",
+//       state: row.state,
+//     }));
+
+//     await State.insertMany(newData);
+
+//     // await fs.unlink(filePath);
+
+//     res.send({ status: 200, success: true, msg: "Running", data: response });
+//   } catch (error: any) {
+//     res.send({ status: 400, sucess: false, msg: error.message });
+//   }
+// };
+
 export const importUData = async (req: Request, res: Response) => {
   try {
     if (!req.file) {
@@ -270,11 +298,11 @@ export const importUData = async (req: Request, res: Response) => {
     const response = await csv().fromFile(req.file.path);
 
     const newData = response.map((row: any) => ({
-      country: "Nepal",
-      state: row.state,
+      state: "Bagmati Province",
+      district: row.district,
     }));
 
-    await State.insertMany(newData);
+    await District.insertMany(newData);
 
     // await fs.unlink(filePath);
 
