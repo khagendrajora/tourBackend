@@ -255,3 +255,11 @@ export const deleteLocation = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "internal error" });
   }
 };
+
+export const importUData = async (req: Request, res: Response) => {
+  try {
+    res.send({ status: 200, success: true, msg: "Running" });
+  } catch (error: any) {
+    res.send({ status: 400, sucess: false, msg: error.message });
+  }
+};

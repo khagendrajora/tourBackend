@@ -15,8 +15,10 @@ import {
   getLocationDetails,
   getMunicipality,
   getState,
+  importUData,
   updateLocation,
 } from "../../controllers/Location/location";
+import upload from "../../middleware/fileUpload";
 
 const router = express.Router();
 
@@ -39,6 +41,7 @@ router.delete("/deletestate/:id", deleteState);
 router.post("/addmunicipality", addMunicipality);
 router.get("/getmunicipality", getMunicipality);
 router.delete("/deletemunicipality/:id", deleteMunicipality);
+router.post("/importdata", upload.single("file"), importUData);
 // router.put("/addstatemunicipality/:id", addStateMunicipality);
 
 export default router;

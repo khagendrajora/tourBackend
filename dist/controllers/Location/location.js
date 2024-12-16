@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteLocation = exports.updateLocation = exports.getLocationDetails = exports.getLocation = exports.addLocation = exports.deleteMunicipality = exports.getMunicipality = exports.addMunicipality = exports.deleteState = exports.getState = exports.addState = exports.deleteCountry = exports.getCountry = exports.addCountry = void 0;
+exports.importUData = exports.deleteLocation = exports.updateLocation = exports.getLocationDetails = exports.getLocation = exports.addLocation = exports.deleteMunicipality = exports.getMunicipality = exports.addMunicipality = exports.deleteState = exports.getState = exports.addState = exports.deleteCountry = exports.getCountry = exports.addCountry = void 0;
 const location_1 = __importDefault(require("../../models/Locations/location"));
 const country_1 = __importDefault(require("../../models/Locations/country"));
 const municipality_1 = __importDefault(require("../../models/Locations/municipality"));
@@ -287,3 +287,12 @@ const deleteLocation = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.deleteLocation = deleteLocation;
+const importUData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        res.send({ status: 200, success: true, msg: "Running" });
+    }
+    catch (error) {
+        res.send({ status: 400, sucess: false, msg: error.message });
+    }
+});
+exports.importUData = importUData;
