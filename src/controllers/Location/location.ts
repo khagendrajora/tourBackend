@@ -266,9 +266,17 @@ export const importUData = async (req: Request, res: Response) => {
         msg: "No file uploaded",
       });
     }
+    // let data: [] = [];
     const response = await csv().fromFile(req.file.path);
 
-    console.log(response);
+    const newData = response.map((row: any) => ({
+      country: "Nepal",
+      state: row.state,
+    }));
+
+    await State.insertMany(newData);
+
+    // await fs.unlink(filePath);
 
     res.send({ status: 200, success: true, msg: "Running", data: response });
   } catch (error: any) {

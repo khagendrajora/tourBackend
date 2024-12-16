@@ -297,8 +297,14 @@ const importUData = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 msg: "No file uploaded",
             });
         }
+        // let data: [] = [];
         const response = yield (0, csvtojson_1.default)().fromFile(req.file.path);
-        console.log(response);
+        const newData = response.map((row) => ({
+            country: "Nepal",
+            state: row.state,
+        }));
+        yield state_1.default.insertMany(newData);
+        // await fs.unlink(filePath);
         res.send({ status: 200, success: true, msg: "Running", data: response });
     }
     catch (error) {
