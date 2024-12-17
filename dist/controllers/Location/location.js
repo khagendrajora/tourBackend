@@ -12,12 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteLocation = exports.updateLocation = exports.getLocationDetails = exports.getLocation = exports.addLocation = exports.deleteMunicipality = exports.getMunicipality = exports.addMunicipality = exports.deleteDistrict = exports.getDistrict = exports.addDistrict = exports.deleteState = exports.getState = exports.addState = exports.deleteCountry = exports.getCountry = exports.addCountry = void 0;
+exports.importBhaktapur = exports.importLalitpur = exports.importUData = exports.deleteLocation = exports.updateLocation = exports.getLocationDetails = exports.getLocation = exports.addLocation = exports.deleteMunicipality = exports.getMunicipality = exports.addMunicipality = exports.deleteDistrict = exports.getDistrict = exports.addDistrict = exports.deleteState = exports.getState = exports.addState = exports.deleteCountry = exports.getCountry = exports.addCountry = void 0;
 const location_1 = __importDefault(require("../../models/Locations/location"));
 const country_1 = __importDefault(require("../../models/Locations/country"));
 const municipality_1 = __importDefault(require("../../models/Locations/municipality"));
 const state_1 = __importDefault(require("../../models/Locations/state"));
 const Districts_1 = __importDefault(require("../../models/Locations/Districts"));
+const csvtojson_1 = __importDefault(require("csvtojson"));
 const addCountry = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let { country } = req.body;
     country = country.toLowerCase();
@@ -354,28 +355,81 @@ const deleteLocation = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.deleteLocation = deleteLocation;
-// export const importUData = async (req: Request, res: Response) => {
-//   try {
-//     if (!req.file) {
-//       return res.status(400).send({
-//         status: 400,
-//         success: false,
-//         msg: "No file uploaded",
-//       });
-//     }
-//     // let data: [] = [];
-//     const response = await csv().fromFile(req.file.path);
-//     const newData = response.map((row: any) => ({
-//       country: "Nepal",
-//       state: row.state,
-//     }));
-//     await State.insertMany(newData);
-//     // await fs.unlink(filePath);
-//     res.send({ status: 200, success: true, msg: "Running", data: response });
-//   } catch (error: any) {
-//     res.send({ status: 400, sucess: false, msg: error.message });
-//   }
-// };
+const importUData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        if (!req.file) {
+            return res.status(400).send({
+                status: 400,
+                success: false,
+                msg: "No file uploaded",
+            });
+        }
+        // let data: [] = [];
+        const response = yield (0, csvtojson_1.default)().fromFile(req.file.path);
+        const newData = response.map((row) => ({
+            state: "Bagmati Province",
+            district: "Kathmandu",
+            municipality: row.municipality,
+        }));
+        yield municipality_1.default.insertMany(newData);
+        // await fs.unlink(filePath);
+        res.send({ status: 200, success: true, msg: "Running", data: response });
+    }
+    catch (error) {
+        res.send({ status: 400, sucess: false, msg: error.message });
+    }
+});
+exports.importUData = importUData;
+const importLalitpur = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        if (!req.file) {
+            return res.status(400).send({
+                status: 400,
+                success: false,
+                msg: "No file uploaded",
+            });
+        }
+        // let data: [] = [];
+        const response = yield (0, csvtojson_1.default)().fromFile(req.file.path);
+        const newData = response.map((row) => ({
+            state: "Bagmati Province",
+            district: "Lalitpur",
+            municipality: row.municipality,
+        }));
+        yield municipality_1.default.insertMany(newData);
+        // await fs.unlink(filePath);
+        res.send({ status: 200, success: true, msg: "Running", data: response });
+    }
+    catch (error) {
+        res.send({ status: 400, sucess: false, msg: error.message });
+    }
+});
+exports.importLalitpur = importLalitpur;
+const importBhaktapur = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        if (!req.file) {
+            return res.status(400).send({
+                status: 400,
+                success: false,
+                msg: "No file uploaded",
+            });
+        }
+        // let data: [] = [];
+        const response = yield (0, csvtojson_1.default)().fromFile(req.file.path);
+        const newData = response.map((row) => ({
+            state: "Bagmati Province",
+            district: "Bhaktapur District",
+            municipality: row.municipality,
+        }));
+        yield municipality_1.default.insertMany(newData);
+        // await fs.unlink(filePath);
+        res.send({ status: 200, success: true, msg: "Running", data: response });
+    }
+    catch (error) {
+        res.send({ status: 400, sucess: false, msg: error.message });
+    }
+});
+exports.importBhaktapur = importBhaktapur;
 // export const importGandaki = async (req: Request, res: Response) => {
 //   try {
 //     if (!req.file) {

@@ -321,32 +321,89 @@ export const deleteLocation = async (req: Request, res: Response) => {
   }
 };
 
-// export const importUData = async (req: Request, res: Response) => {
-//   try {
-//     if (!req.file) {
-//       return res.status(400).send({
-//         status: 400,
-//         success: false,
-//         msg: "No file uploaded",
-//       });
-//     }
-//     // let data: [] = [];
-//     const response = await csv().fromFile(req.file.path);
+export const importUData = async (req: Request, res: Response) => {
+  try {
+    if (!req.file) {
+      return res.status(400).send({
+        status: 400,
+        success: false,
+        msg: "No file uploaded",
+      });
+    }
+    // let data: [] = [];
+    const response = await csv().fromFile(req.file.path);
 
-//     const newData = response.map((row: any) => ({
-//       country: "Nepal",
-//       state: row.state,
-//     }));
+    const newData = response.map((row: any) => ({
+      state: "Bagmati Province",
+      district: "Kathmandu",
+      municipality: row.municipality,
+    }));
 
-//     await State.insertMany(newData);
+    await Municipality.insertMany(newData);
 
-//     // await fs.unlink(filePath);
+    // await fs.unlink(filePath);
 
-//     res.send({ status: 200, success: true, msg: "Running", data: response });
-//   } catch (error: any) {
-//     res.send({ status: 400, sucess: false, msg: error.message });
-//   }
-// };
+    res.send({ status: 200, success: true, msg: "Running", data: response });
+  } catch (error: any) {
+    res.send({ status: 400, sucess: false, msg: error.message });
+  }
+};
+
+export const importLalitpur = async (req: Request, res: Response) => {
+  try {
+    if (!req.file) {
+      return res.status(400).send({
+        status: 400,
+        success: false,
+        msg: "No file uploaded",
+      });
+    }
+    // let data: [] = [];
+    const response = await csv().fromFile(req.file.path);
+
+    const newData = response.map((row: any) => ({
+      state: "Bagmati Province",
+      district: "Lalitpur",
+      municipality: row.municipality,
+    }));
+
+    await Municipality.insertMany(newData);
+
+    // await fs.unlink(filePath);
+
+    res.send({ status: 200, success: true, msg: "Running", data: response });
+  } catch (error: any) {
+    res.send({ status: 400, sucess: false, msg: error.message });
+  }
+};
+
+export const importBhaktapur = async (req: Request, res: Response) => {
+  try {
+    if (!req.file) {
+      return res.status(400).send({
+        status: 400,
+        success: false,
+        msg: "No file uploaded",
+      });
+    }
+    // let data: [] = [];
+    const response = await csv().fromFile(req.file.path);
+
+    const newData = response.map((row: any) => ({
+      state: "Bagmati Province",
+      district: "Bhaktapur District",
+      municipality: row.municipality,
+    }));
+
+    await Municipality.insertMany(newData);
+
+    // await fs.unlink(filePath);
+
+    res.send({ status: 200, success: true, msg: "Running", data: response });
+  } catch (error: any) {
+    res.send({ status: 400, sucess: false, msg: error.message });
+  }
+};
 
 // export const importGandaki = async (req: Request, res: Response) => {
 //   try {

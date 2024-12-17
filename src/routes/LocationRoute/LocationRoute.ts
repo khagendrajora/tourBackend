@@ -18,6 +18,9 @@ import {
   getLocationDetails,
   getMunicipality,
   getState,
+  importBhaktapur,
+  importLalitpur,
+  importUData,
   // importGandaki,
   // importkarnali,
   // importLumbini,
@@ -51,9 +54,9 @@ router.delete("/deletedistrict/:id", deleteDistrict);
 router.post("/addmunicipality", addMunicipality);
 router.get("/getmunicipality", getMunicipality);
 router.delete("/deletemunicipality/:id", deleteMunicipality);
-// router.post("/importsudur", upload.single("file"), importsudur);
-// router.post("/importlumbini", upload.single("file"), importLumbini);
-// router.post("/importgandaki", upload.single("file"), importGandaki);
+router.post("/importkathmandu", upload.single("file"), importUData);
+router.post("/importlalitpur", upload.single("file"), importLalitpur);
+router.post("/importBhaktapur", upload.single("file"), importBhaktapur);
 // router.post("/import1", upload.single("file"), importprov1);
 // router.post("/import2", upload.single("file"), importprov2);
 // router.post("/importkarnali", upload.single("file"), importkarnali);
