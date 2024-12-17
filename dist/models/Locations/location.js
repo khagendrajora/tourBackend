@@ -13,6 +13,10 @@ const locationSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    district: {
+        required: true,
+        type: String,
+    },
     municipality: {
         type: String,
         required: true,

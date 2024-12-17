@@ -4,8 +4,10 @@ export interface ILocation extends Document {
   _id?: string;
   country: string;
   state: string;
+  district: string;
   municipality: string;
   locationName: string;
+  geo: string;
   fullLocation: string;
 }
 
@@ -18,6 +20,10 @@ const locationSchema = new mongoose.Schema(
     state: {
       type: String,
       required: true,
+    },
+    district: {
+      required: true,
+      type: String,
     },
     municipality: {
       type: String,
