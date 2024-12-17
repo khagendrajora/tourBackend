@@ -56,17 +56,17 @@ export const deleteCountry = async (req: Request, res: Response) => {
 };
 
 export const addState = async (req: Request, res: Response) => {
-  let { country, state } = req.body;
+  let { state } = req.body;
   state = state.toLowerCase();
-  country = country.toLowerCase();
+  // country = country.toLowerCase();
   try {
-    const checkCountry = await State.findOne({ country, state });
-    if (checkCountry) {
+    const checkState = await State.findOne({ state });
+    if (checkState) {
       return res.status(400).json({ error: "State Name already Exist" });
     }
 
     let location = new State({
-      country,
+      // country,
       state,
     });
     location = await location.save();

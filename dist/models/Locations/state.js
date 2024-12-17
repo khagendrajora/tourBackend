@@ -9,9 +9,9 @@ const stateSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    country: {
-        type: String,
-        required: true,
-    },
+    // country: {
+    //   type: String,
+    //   required: true,
+    // },
 }, { timestamps: true });
 exports.default = mongoose_1.default.model("State", stateSchema);

@@ -73,16 +73,16 @@ const deleteCountry = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 });
 exports.deleteCountry = deleteCountry;
 const addState = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let { country, state } = req.body;
+    let { state } = req.body;
     state = state.toLowerCase();
-    country = country.toLowerCase();
+    // country = country.toLowerCase();
     try {
-        const checkCountry = yield state_1.default.findOne({ country, state });
-        if (checkCountry) {
+        const checkState = yield state_1.default.findOne({ state });
+        if (checkState) {
             return res.status(400).json({ error: "State Name already Exist" });
         }
         let location = new state_1.default({
-            country,
+            // country,
             state,
         });
         location = yield location.save();
