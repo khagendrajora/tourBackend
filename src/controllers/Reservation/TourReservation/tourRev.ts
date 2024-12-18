@@ -19,7 +19,7 @@ export const tourRev = async (req: Request, res: Response) => {
       return res.status(401).json({ error: "Tour Unavailable" });
     }
 
-    const userData = await User.findById({ _id: bookedBy });
+    const userData = await User.findById({ bookedBy });
     if (!userData) {
       return res.status(401).json({ error: "User Not found" });
     }
