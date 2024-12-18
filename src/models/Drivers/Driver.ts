@@ -12,6 +12,7 @@ export interface IDriver extends Document {
   driverId: string;
   vehicleId: string;
   //   bookingId: string;
+  vehicleName: string;
   businessId: string;
   driverName: string;
   driverAge: number;
@@ -26,6 +27,10 @@ export interface IDriver extends Document {
 const driverSchema = new mongoose.Schema(
   {
     vehicleId: {
+      type: String,
+      required: true,
+    },
+    vehicleName: {
       type: String,
       required: true,
     },

@@ -17,6 +17,10 @@ const driverSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    vehicleName: {
+        type: String,
+        required: true,
+    },
     driverPwd: {
         type: String,
         required: true,

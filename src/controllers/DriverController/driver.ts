@@ -16,6 +16,7 @@ export const addDriver = async (req: Request, res: Response) => {
   driverId = "D" + driverId;
   const {
     driverName,
+    vehicleName,
     driverAge,
     driverPhone,
     driverEmail,
@@ -62,6 +63,7 @@ export const addDriver = async (req: Request, res: Response) => {
     let newDriver = new Driver({
       driverId: driverId,
       vehicleId: vehicleId,
+      vehicleName: vehicleName,
       businessId: businessId,
       driverEmail: driverEmail,
       driverName: driverName,

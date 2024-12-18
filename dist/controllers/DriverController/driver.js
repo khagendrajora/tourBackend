@@ -28,7 +28,7 @@ const addDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
     let driverId = customId();
     driverId = "D" + driverId;
-    const { driverName, driverAge, driverPhone, driverEmail, vehicleId, businessId, driverPwd, } = req.body;
+    const { driverName, vehicleName, driverAge, driverPhone, driverEmail, vehicleId, businessId, driverPwd, } = req.body;
     try {
         let driverImage = undefined;
         if (req.files) {
@@ -62,6 +62,7 @@ const addDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         let newDriver = new Driver_1.default({
             driverId: driverId,
             vehicleId: vehicleId,
+            vehicleName: vehicleName,
             businessId: businessId,
             driverEmail: driverEmail,
             driverName: driverName,
