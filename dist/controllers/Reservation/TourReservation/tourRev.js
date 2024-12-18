@@ -30,7 +30,7 @@ const tourRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!tourData) {
             return res.status(401).json({ error: "Tour Unavailable" });
         }
-        const userData = yield userModel_1.default.findById(bookedBy);
+        const userData = yield userModel_1.default.findOne({ userId: bookedBy });
         if (!userData) {
             return res.status(401).json({ error: "User Not found" });
         }
