@@ -29,7 +29,7 @@ const TrekReservation = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    PassengerName: {
+    passengerName: {
         type: String,
         required: true,
     },

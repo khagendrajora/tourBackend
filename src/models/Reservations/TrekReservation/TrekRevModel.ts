@@ -12,7 +12,7 @@ export interface ITrRev extends Document {
   bookingId: string;
   trekId: string;
   trekName: string;
-  PassengerName: string;
+  passengerName: string;
   businessId: string;
   tickets: number;
   bookedBy: string;
@@ -43,7 +43,7 @@ const TrekReservation = new mongoose.Schema(
       type: String,
       required: true,
     },
-    PassengerName: {
+    passengerName: {
       type: String,
       required: true,
     },
