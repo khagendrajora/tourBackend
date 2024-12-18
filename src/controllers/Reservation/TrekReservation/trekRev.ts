@@ -33,6 +33,7 @@ export const trekRev = async (req: Request, res: Response) => {
       date,
       businessId: trekData.businessId,
       bookingId: bookingId,
+      trekName: trekData.name,
       trekId: id,
     });
     trekRev = await trekRev.save();

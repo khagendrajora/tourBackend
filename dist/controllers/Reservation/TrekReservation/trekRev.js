@@ -44,6 +44,7 @@ const trekRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             date,
             businessId: trekData.businessId,
             bookingId: bookingId,
+            trekName: trekData.name,
             trekId: id,
         });
         trekRev = yield trekRev.save();

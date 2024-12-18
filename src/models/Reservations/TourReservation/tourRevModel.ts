@@ -37,9 +37,7 @@ const TourReservation = new mongoose.Schema(
       type: String,
       required: true,
     },
-    createdAt: {
-      type: Date,
-    },
+
     tourId: {
       type: String,
       required: true,
@@ -65,10 +63,12 @@ const TourReservation = new mongoose.Schema(
       required: true,
     },
 
-    // end: {
-    //   type: String,
-    //   required: true,
-    // },
+    status: {
+      type: String,
+      enum: Object.values(IStatus),
+      required: true,
+      default: IStatus.Pending,
+    },
     phone: {
       type: String,
       required: true,

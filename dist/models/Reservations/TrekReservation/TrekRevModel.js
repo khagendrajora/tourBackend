@@ -17,9 +17,6 @@ const TrekReservation = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    createdAt: {
-        type: Date,
-    },
     businessId: {
         type: String,
         required: true,
@@ -59,6 +56,12 @@ const TrekReservation = new mongoose_1.default.Schema({
     isApproved: {
         type: Boolean,
         default: false,
+    },
+    status: {
+        type: String,
+        enum: Object.values(IStatus),
+        required: true,
+        default: IStatus.Pending,
     },
     bookedBy: {
         type: String,
