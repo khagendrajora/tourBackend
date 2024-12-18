@@ -18,21 +18,21 @@ export const trekRev = async (req: Request, res: Response) => {
     if (!trekData) {
       return res.status(401).json({ error: "Trek Unavailable" });
     }
-    const userData = await User.findOne({ _id: bookedBy });
+    const userData = await User.findOne({ userId: bookedBy });
     if (!userData) {
       return res.status(401).json({ error: "User Not found" });
     }
     // const businessdata = await Business.findOne({ bId: vehData.businessId });
 
     let trekRev = new TrekReservation({
-      bookedBy: userData.userId,
+      bookedBy,
       passengerName,
       tickets,
       email,
       phone,
       date,
       businessId: trekData.businessId,
-      bookingId: bookingId,
+      bookingId,
       trekName: trekData.name,
       trekId: id,
     });

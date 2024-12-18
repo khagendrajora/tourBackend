@@ -30,20 +30,20 @@ const trekRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!trekData) {
             return res.status(401).json({ error: "Trek Unavailable" });
         }
-        const userData = yield userModel_1.default.findOne({ _id: bookedBy });
+        const userData = yield userModel_1.default.findOne({ userId: bookedBy });
         if (!userData) {
             return res.status(401).json({ error: "User Not found" });
         }
         // const businessdata = await Business.findOne({ bId: vehData.businessId });
         let trekRev = new TrekRevModel_1.default({
-            bookedBy: userData.userId,
+            bookedBy,
             passengerName,
             tickets,
             email,
             phone,
             date,
             businessId: trekData.businessId,
-            bookingId: bookingId,
+            bookingId,
             trekName: trekData.name,
             trekId: id,
         });
