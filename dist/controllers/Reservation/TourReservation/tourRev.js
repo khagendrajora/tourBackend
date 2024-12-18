@@ -43,7 +43,7 @@ const tourRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             phone,
             date,
             businessId: tourData.businessId,
-            bookingId: bookingId,
+            bookingId,
             tourId: id,
             tourName: tourData.name,
         });

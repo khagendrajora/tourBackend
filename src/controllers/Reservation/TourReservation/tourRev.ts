@@ -34,7 +34,7 @@ export const tourRev = async (req: Request, res: Response) => {
       phone,
       date,
       businessId: tourData.businessId,
-      bookingId: bookingId,
+      bookingId,
       tourId: id,
       tourName: tourData.name,
     });
