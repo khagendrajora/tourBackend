@@ -23,12 +23,13 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const business_1 = __importDefault(require("../../models/business"));
 const adminUser_1 = __importDefault(require("../../models/adminUser"));
 const userModel_1 = __importDefault(require("../../models/User/userModel"));
+const vehicle_1 = __importDefault(require("../../models/Product/vehicle"));
 const addDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const customId = customAlphabet("1234567890", 4);
     let driverId = customId();
     driverId = "D" + driverId;
-    const { driverName, vehicleName, driverAge, driverPhone, driverEmail, vehicleId, businessId, driverPwd, } = req.body;
+    const { driverName, driverAge, driverPhone, driverEmail, vehicleId, businessId, driverPwd, } = req.body;
     try {
         let driverImage = undefined;
         if (req.files) {
@@ -57,12 +58,16 @@ const addDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (adminEmail) {
             return res.status(400).json({ error: "Email already registered" });
         }
+        const vehicleName = yield vehicle_1.default.findOne({ vehId: vehicleId });
+        if (driverNumber) {
+            return res.status(400).json({ error: "Phone Number is already used " });
+        }
         const salt = yield bcryptjs_1.default.genSalt(5);
         let hashedPassword = yield bcryptjs_1.default.hash(driverPwd, salt);
         let newDriver = new Driver_1.default({
             driverId: driverId,
             vehicleId: vehicleId,
-            vehicleName: vehicleName,
+            vehicleName: vehicleName === null || vehicleName === void 0 ? void 0 : vehicleName.name,
             businessId: businessId,
             driverEmail: driverEmail,
             driverName: driverName,
@@ -83,14 +88,14 @@ const addDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!token) {
             return res.status(400).json({ error: "Token not generated" });
         }
-        const url = `${process.env.FRONTEND_URL}/verifydriveremail/${token.token}`;
+        const url = `${process.env.FRONTEND_URL}/resetandverifyemail/${token.token}`;
         const api = `${process.env.Backend_URL}`;
         (0, setEmail_1.sendEmail)({
             from: "beta.toursewa@gmail.com",
             to: driverEmail,
             subject: "Account Verification Link",
             text: `Verify your Driver Email to Login\n\n
-${api}/verifydriveremail/${token.token}`,
+${api}/resetandverifyemail/${token.token}`,
             html: `<h1>Click to Verify Email</h1> 
     <a href='${url}'>Click here To verify</a>`,
         });
@@ -103,6 +108,7 @@ ${api}/verifydriveremail/${token.token}`,
 exports.addDriver = addDriver;
 const verifyDriverEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.params.token;
+    const newPwd = req.body.driverPwd;
     try {
         const data = yield token_1.default.findOne({ token });
         if (!data) {
@@ -115,21 +121,42 @@ const verifyDriverEmail = (req, res) => __awaiter(void 0, void 0, void 0, functi
         if (driverId.isVerified) {
             return res.status(400).json({ error: "Email Already verified" });
         }
-        driverId.isVerified = true;
-        driverId.save().then((driver) => {
-            if (!driver) {
-                return res.status(400).json({ error: "Failed to Verify" });
-            }
-            else {
-                (0, setEmail_1.sendEmail)({
-                    from: "beta.toursewa@gmail.com",
-                    to: driverId.driverEmail,
-                    subject: "Email Verified",
-                    html: `<h2>Your Email with business ID ${driverId.businessId} for vehicle ${driverId.vehicleId} has been verified</h2>`,
-                });
-                return res.status(200).json({ message: "Email Verified" });
-            }
-        });
+        const isOldPwd = yield bcryptjs_1.default.compare(newPwd, driverId.driverPwd);
+        if (isOldPwd) {
+            return res.status(400).json({ error: "Password Previously Used" });
+        }
+        else {
+            const salt = yield bcryptjs_1.default.genSalt(5);
+            let hashedPwd = yield bcryptjs_1.default.hash(newPwd, salt);
+            driverId.driverPwd = hashedPwd;
+            driverId.isVerified = true;
+            const businessEmail = yield business_1.default.findOne({
+                bId: driverId.businessId,
+            });
+            yield token_1.default.deleteOne({ _id: data._id });
+            driverId.save().then((driver) => {
+                if (!driver) {
+                    return res.status(400).json({ error: "Failed to Verify" });
+                }
+                else {
+                    (0, setEmail_1.sendEmail)({
+                        from: "beta.toursewa@gmail.com",
+                        to: driverId.driverEmail,
+                        subject: "Email Verified",
+                        html: `<h2>Your Email with business ID ${driverId.businessId} for vehicle ${driverId.vehicleId} has been verified</h2>`,
+                    });
+                    (0, setEmail_1.sendEmail)({
+                        from: "beta.toursewa@gmail.com",
+                        to: businessEmail === null || businessEmail === void 0 ? void 0 : businessEmail.primaryEmail,
+                        subject: "New Driver Registered",
+                        html: `<h2>New Driver with driver ID ${driverId.driverId} for vehicle ${driverId.vehicleName} is Registered</h2>`,
+                    });
+                }
+            });
+            return res
+                .status(200)
+                .json({ message: "Email Verified and New Password is set" });
+        }
     }
     catch (error) {
         return res.status(500).json({ error: error.message });

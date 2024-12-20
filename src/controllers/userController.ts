@@ -9,7 +9,6 @@ import { v4 as uuid } from "uuid";
 import Driver from "../models/Drivers/Driver";
 import { sendEmail } from "../utils/setEmail";
 import User from "../models/User/userModel";
-import adminUser from "../models/adminUser";
 
 export const addAdminUser = async (req: Request, res: Response) => {
   const { adminName, adminEmail, adminPwd } = req.body;

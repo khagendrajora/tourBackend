@@ -21,7 +21,7 @@ router.post(
   addDriver
 );
 
-router.put("/verifydriveremail/:token", verifyDriverEmail);
+// router.put("/verifydriveremail/:token", verifyDriverEmail);
 // router.post("/driverlogin", driverLogin);
 router.get("/getdrivers", getDrivers);
 router.get("/getdrivers/:id", getDriverById);
@@ -31,5 +31,6 @@ router.put("/updatedriverstatus/:id", updateDriverStatus);
 router.delete("/deletedriver/:id", deleteDriver);
 router.put("/updatedriver/:id", updateDriver);
 router.put("/resetdriverpwd/:token", resetPwd);
+router.put("/resetandverifyemail/:token", verifyDriverEmail);
 
 export default router;

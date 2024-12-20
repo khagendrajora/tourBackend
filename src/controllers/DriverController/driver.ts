@@ -9,6 +9,7 @@ import bcryptjs from "bcryptjs";
 import Business from "../../models/business";
 import AdminUser from "../../models/adminUser";
 import ClientUser from "../../models/User/userModel";
+import vehicle from "../../models/Product/vehicle";
 
 export const addDriver = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);
@@ -16,7 +17,6 @@ export const addDriver = async (req: Request, res: Response) => {
   driverId = "D" + driverId;
   const {
     driverName,
-    vehicleName,
     driverAge,
     driverPhone,
     driverEmail,
@@ -57,13 +57,18 @@ export const addDriver = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Email already registered" });
     }
 
+    const vehicleName = await vehicle.findOne({ vehId: vehicleId });
+    if (driverNumber) {
+      return res.status(400).json({ error: "Phone Number is already used " });
+    }
+
     const salt = await bcryptjs.genSalt(5);
     let hashedPassword = await bcryptjs.hash(driverPwd, salt);
 
     let newDriver = new Driver({
       driverId: driverId,
       vehicleId: vehicleId,
-      vehicleName: vehicleName,
+      vehicleName: vehicleName?.name,
       businessId: businessId,
       driverEmail: driverEmail,
       driverName: driverName,
@@ -85,14 +90,14 @@ export const addDriver = async (req: Request, res: Response) => {
     if (!token) {
       return res.status(400).json({ error: "Token not generated" });
     }
-    const url = `${process.env.FRONTEND_URL}/verifydriveremail/${token.token}`;
+    const url = `${process.env.FRONTEND_URL}/resetandverifyemail/${token.token}`;
     const api = `${process.env.Backend_URL}`;
     sendEmail({
       from: "beta.toursewa@gmail.com",
       to: driverEmail,
       subject: "Account Verification Link",
       text: `Verify your Driver Email to Login\n\n
-${api}/verifydriveremail/${token.token}`,
+${api}/resetandverifyemail/${token.token}`,
       html: `<h1>Click to Verify Email</h1> 
     <a href='${url}'>Click here To verify</a>`,
     });
@@ -104,6 +109,7 @@ ${api}/verifydriveremail/${token.token}`,
 
 export const verifyDriverEmail = async (req: Request, res: Response) => {
   const token = req.params.token;
+  const newPwd = req.body.driverPwd;
   try {
     const data = await Token.findOne({ token });
     if (!data) {
@@ -116,20 +122,41 @@ export const verifyDriverEmail = async (req: Request, res: Response) => {
     if (driverId.isVerified) {
       return res.status(400).json({ error: "Email Already verified" });
     }
-    driverId.isVerified = true;
-    driverId.save().then((driver) => {
-      if (!driver) {
-        return res.status(400).json({ error: "Failed to Verify" });
-      } else {
-        sendEmail({
-          from: "beta.toursewa@gmail.com",
-          to: driverId.driverEmail,
-          subject: "Email Verified",
-          html: `<h2>Your Email with business ID ${driverId.businessId} for vehicle ${driverId.vehicleId} has been verified</h2>`,
-        });
-        return res.status(200).json({ message: "Email Verified" });
-      }
-    });
+
+    const isOldPwd = await bcryptjs.compare(newPwd, driverId.driverPwd);
+    if (isOldPwd) {
+      return res.status(400).json({ error: "Password Previously Used" });
+    } else {
+      const salt = await bcryptjs.genSalt(5);
+      let hashedPwd = await bcryptjs.hash(newPwd, salt);
+      driverId.driverPwd = hashedPwd;
+      driverId.isVerified = true;
+      const businessEmail = await Business.findOne({
+        bId: driverId.businessId,
+      });
+      await Token.deleteOne({ _id: data._id });
+      driverId.save().then((driver) => {
+        if (!driver) {
+          return res.status(400).json({ error: "Failed to Verify" });
+        } else {
+          sendEmail({
+            from: "beta.toursewa@gmail.com",
+            to: driverId.driverEmail,
+            subject: "Email Verified",
+            html: `<h2>Your Email with business ID ${driverId.businessId} for vehicle ${driverId.vehicleId} has been verified</h2>`,
+          });
+          sendEmail({
+            from: "beta.toursewa@gmail.com",
+            to: businessEmail?.primaryEmail,
+            subject: "New Driver Registered",
+            html: `<h2>New Driver with driver ID ${driverId.driverId} for vehicle ${driverId.vehicleName} is Registered</h2>`,
+          });
+        }
+      });
+      return res
+        .status(200)
+        .json({ message: "Email Verified and New Password is set" });
+    }
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }
