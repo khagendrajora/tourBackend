@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyAndResetPwd = exports.addBusinessByAdmin = exports.resetPass = exports.forgetPass = exports.businessApprove = exports.getAdmin = exports.adminlogin = exports.addAdminUser = void 0;
+exports.deleteAdmin = exports.verifyAndResetPwd = exports.addBusinessByAdmin = exports.resetPass = exports.forgetPass = exports.businessApprove = exports.getAdmin = exports.adminlogin = exports.addAdminUser = void 0;
 const adminUser_1 = __importDefault(require("../models/adminUser"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const business_1 = __importDefault(require("../models/business"));
@@ -393,3 +393,17 @@ const verifyAndResetPwd = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.verifyAndResetPwd = verifyAndResetPwd;
+const deleteAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        const deleteAdmin = yield adminUser_1.default.findByIdAndDelete(id);
+        if (!deleteAdmin) {
+            return res.status(404).json({ error: "Failed to delete" });
+        }
+        return res.status(200).json({ message: "Successfully Deleted" });
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.deleteAdmin = deleteAdmin;

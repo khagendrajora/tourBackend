@@ -15,4 +15,5 @@ router.post("/adminlogin", userController_1.adminlogin);
 router.post("/forgetadminpwd", userController_1.forgetPass);
 router.put("/resetpwd/:token", userController_1.resetPass);
 router.post("/addbusinessbyadmin", userController_1.addBusinessByAdmin);
+router.delete("/deleteadmin/:id", userController_1.deleteAdmin);
 exports.default = router;

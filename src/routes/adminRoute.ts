@@ -5,6 +5,7 @@ import {
   adminlogin,
   // adminSignOut,
   businessApprove,
+  deleteAdmin,
   forgetPass,
   getAdmin,
   resetPass,
@@ -20,5 +21,6 @@ router.post("/adminlogin", adminlogin);
 router.post("/forgetadminpwd", forgetPass);
 router.put("/resetpwd/:token", resetPass);
 router.post("/addbusinessbyadmin", addBusinessByAdmin);
+router.delete("/deleteadmin/:id", deleteAdmin);
 
 export default router;

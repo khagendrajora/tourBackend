@@ -9,6 +9,7 @@ import { v4 as uuid } from "uuid";
 import Driver from "../models/Drivers/Driver";
 import { sendEmail } from "../utils/setEmail";
 import User from "../models/User/userModel";
+import adminUser from "../models/adminUser";
 
 export const addAdminUser = async (req: Request, res: Response) => {
   const { adminName, adminEmail, adminPwd } = req.body;
@@ -398,6 +399,20 @@ export const verifyAndResetPwd = async (req: Request, res: Response) => {
         .status(200)
         .json({ message: "Email Verified and New Password is set" });
     }
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const deleteAdmin = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    const deleteAdmin = await AdminUser.findByIdAndDelete(id);
+    if (!deleteAdmin) {
+      return res.status(404).json({ error: "Failed to delete" });
+    }
+
+    return res.status(200).json({ message: "Successfully Deleted" });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }
