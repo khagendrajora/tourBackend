@@ -16,7 +16,8 @@ export const addBusinessData = [
   check("businessRegistration[registrationNumber]", "Invalid Tax Registration")
     .trim()
     .notEmpty(),
-  check("businessAddress[street]", "Provide Address").trim().notEmpty(),
+  check("businessAddress[country]", "Provide Country Name").trim().notEmpty(),
+  check("businessAddress[state]", "Provide State Name").trim().notEmpty(),
   check("primaryEmail", "Email is required")
     .trim()
     .notEmpty()
