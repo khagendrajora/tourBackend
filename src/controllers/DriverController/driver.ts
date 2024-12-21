@@ -302,14 +302,8 @@ export const deleteDriver = async (req: Request, res: Response) => {
 
 export const updateDriver = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const {
-    driverName,
-    driverAge,
-    driverPhone,
-    driverEmail,
-    vehicleId,
-    businessId,
-  } = req.body;
+  const { driverName, driverAge, driverPhone, driverEmail, vehicleId } =
+    req.body;
   try {
     let driverImage: string | undefined = undefined;
 
@@ -327,7 +321,6 @@ export const updateDriver = async (req: Request, res: Response) => {
         driverPhone,
         driverEmail,
         vehicleId,
-        businessId,
         driverImage,
       },
       { new: true }

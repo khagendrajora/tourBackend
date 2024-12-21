@@ -257,7 +257,7 @@ const addBusinessByAdmin = (req, res) => __awaiter(void 0, void 0, void 0, funct
     let bId = customId();
     bId = "B" + bId;
     const { registrationNumber } = req.body.businessRegistration;
-    const { street } = req.body.businessAddress;
+    const { country, state } = req.body.businessAddress;
     const { businessName, businessCategory, primaryEmail, primaryPhone, businessPwd, } = req.body;
     try {
         if (businessPwd == "") {
@@ -302,7 +302,8 @@ const addBusinessByAdmin = (req, res) => __awaiter(void 0, void 0, void 0, funct
                 registrationNumber,
             },
             businessAddress: {
-                street,
+                country,
+                state,
             },
             primaryEmail,
             primaryPhone,

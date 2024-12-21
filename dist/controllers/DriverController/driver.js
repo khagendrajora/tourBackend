@@ -305,7 +305,7 @@ exports.deleteDriver = deleteDriver;
 const updateDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const id = req.params.id;
-    const { driverName, driverAge, driverPhone, driverEmail, vehicleId, businessId, } = req.body;
+    const { driverName, driverAge, driverPhone, driverEmail, vehicleId } = req.body;
     try {
         let driverImage = undefined;
         if (req.files) {
@@ -320,7 +320,6 @@ const updateDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             driverPhone,
             driverEmail,
             vehicleId,
-            businessId,
             driverImage,
         }, { new: true });
         if (!data) {

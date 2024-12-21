@@ -15,7 +15,7 @@ export const addBusiness = async (req: Request, res: Response) => {
   let bId = customId();
   bId = "B" + bId;
   const { registrationNumber } = req.body.businessRegistration;
-  const { street } = req.body.businessAddress;
+  const { country, state } = req.body.businessAddress;
   const {
     businessName,
     businessCategory,
@@ -72,7 +72,8 @@ export const addBusiness = async (req: Request, res: Response) => {
         registrationNumber,
       },
       businessAddress: {
-        street,
+        country,
+        state,
       },
       primaryEmail,
       primaryPhone,
