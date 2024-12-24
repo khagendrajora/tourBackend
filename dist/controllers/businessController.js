@@ -243,22 +243,22 @@ const updateBusinessProfile = (req, res) => __awaiter(void 0, void 0, void 0, fu
             }
         }
         const data = yield business_1.default.findByIdAndUpdate(id, {
-            businessName: req.body.businessName,
-            businessCategory: req.body.businessCategory,
+            // businessName: req.body.businessName,
+            // businessCategory: req.body.businessCategory,
             businessSubCategory: req.body.businessSubCategory,
             businessAddress: {
                 street: req.body.businessAddress.street,
-                country: req.body.businessAddress.country,
-                state: req.body.businessAddress.state,
+                // country: req.body.businessAddress.country,
+                // state: req.body.businessAddress.state,
                 city: req.body.businessAddress.city,
             },
-            primaryEmail: req.body.primaryEmail,
+            // primaryEmail: req.body.primaryEmail,
             website: req.body.website,
             contactName: req.body.contactName,
             primaryPhone: req.body.primaryPhone,
             businessRegistration: {
                 authority: req.body.businessRegistration.authority,
-                registrationNumber: req.body.businessRegistration.registrationNumber,
+                // registrationNumber: req.body.businessRegistration.registrationNumber,
                 registrationOn: req.body.businessRegistration.registrationOn,
                 expiresOn: req.body.businessRegistration.expiresOn,
             },
