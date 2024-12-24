@@ -65,7 +65,7 @@ export const getTrekRev = async (req: Request, res: Response) => {
     if (data.length > 0) {
       return res.send();
     } else {
-      return res.json({ message: "NO Reservations Present" });
+      return res.json({ message: "NO Trek Reservations " });
     }
   } catch (error: any) {
     return res.status(500).json({ error: error.message });

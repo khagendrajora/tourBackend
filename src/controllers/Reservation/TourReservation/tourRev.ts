@@ -67,7 +67,7 @@ export const getTourRev = async (req: Request, res: Response) => {
     if (data.length > 0) {
       return res.send();
     } else {
-      return res.json({ message: "NO Reservations Present" });
+      return res.json({ message: "NO Tour Reservations" });
     }
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
@@ -87,6 +87,7 @@ export const getTourRevByUser = async (req: Request, res: Response) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
 export const getTourRevByBid = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {

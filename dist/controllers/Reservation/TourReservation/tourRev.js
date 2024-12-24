@@ -77,7 +77,7 @@ const getTourRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             return res.send();
         }
         else {
-            return res.json({ message: "NO Reservations Present" });
+            return res.json({ message: "NO Tour Reservations" });
         }
     }
     catch (error) {

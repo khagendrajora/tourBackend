@@ -263,7 +263,7 @@ const getAllReservations = (req, res) => __awaiter(void 0, void 0, void 0, funct
             return res.send(data);
         }
         else {
-            return res.status(400).json({ error: "Not Found" });
+            return res.status(400).json({ error: "No Vehicle Revservatrions " });
         }
     }
     catch (error) {

@@ -275,7 +275,7 @@ export const getAllReservations = async (req: Request, res: Response) => {
     if (data.length > 0) {
       return res.send(data);
     } else {
-      return res.status(400).json({ error: "Not Found" });
+      return res.status(400).json({ error: "No Vehicle Revservatrions " });
     }
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
