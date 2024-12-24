@@ -65,7 +65,7 @@ export const getTourRev = async (req: Request, res: Response) => {
   try {
     const data = await TourReservation.find();
     if (data.length > 0) {
-      return res.send();
+      return res.send(data);
     } else {
       return res.json({ message: "NO Tour Reservations" });
     }

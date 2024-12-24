@@ -63,7 +63,7 @@ export const getTrekRev = async (req: Request, res: Response) => {
   try {
     const data = await TrekReservation.find();
     if (data.length > 0) {
-      return res.send();
+      return res.send(data);
     } else {
       return res.json({ message: "NO Trek Reservations " });
     }

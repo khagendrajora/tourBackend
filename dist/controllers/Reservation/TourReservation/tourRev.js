@@ -74,7 +74,7 @@ const getTourRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const data = yield tourRevModel_1.default.find();
         if (data.length > 0) {
-            return res.send();
+            return res.send(data);
         }
         else {
             return res.json({ message: "NO Tour Reservations" });

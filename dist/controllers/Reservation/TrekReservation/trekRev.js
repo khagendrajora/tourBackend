@@ -74,7 +74,7 @@ const getTrekRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const data = yield TrekRevModel_1.default.find();
         if (data.length > 0) {
-            return res.send();
+            return res.send(data);
         }
         else {
             return res.json({ message: "NO Trek Reservations " });
