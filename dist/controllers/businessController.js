@@ -162,10 +162,9 @@ const verifyEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             <img src='https://tourbackend-rdtk.onrender.com/public/uploads/logo.png' className="" />
           </div>
           <div style="text-align: left;">
-            <h1 style="font-size: 10px; font-weight: bold; margin-bottom: 16px;">A new business with business Id ${businessId.bId} has been registered</h1>
+            <h1 style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">A new business with business Id ${businessId.bId} has been registered</h1>
             <p style="font-size: 14px; margin-bottom: 20px;">
-              To cointinue on Toursewa with your account, please verify that
-              this is your email address.
+              Please verify and activate the account from the admin side or activate directly from here.
             </p>
             <a href='${process.env.FRONTEND_URL}/businessapprove/${businessId.bId}' style="display: inline-block; background-color: #e6310b; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-size: 14px;">Verify and activate the account</a>
             <p style="font-size: 12px; color: #888; margin-top: 20px;">
