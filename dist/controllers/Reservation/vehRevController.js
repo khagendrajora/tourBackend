@@ -89,7 +89,22 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
                     from: "beta.toursewa@gmail.com",
                     to: email,
                     subject: "Booking Confirmation",
-                    html: `<h2>Your booking has been successfully Created with Booking Id ${bookingId} </h2>`,
+                    html: `
+          <div style="font-family: Arial, sans-serif; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div style="width: 75%; max-width: 600px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+          <div style="text-align: left; margin-bottom: 20px;">
+            <img src='https://tourbackend-rdtk.onrender.com/public/uploads/logo.png' className="" />
+          </div>
+          <div style="text-align: left;">
+            <h1 style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">Booking Status</h1>
+            <p style="font-size: 14px; margin-bottom: 20px;">
+              Your booking stauts on toursewa is given below.
+            </p>
+            <p style="display: inline-block; background-color: #e6310b; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-size: 14px;">Your booking has been successfully Created with Booking Id ${bookingId}</p>
+
+          </div>
+        </div>
+      </div> `,
                 });
                 (0, setEmail_1.sendEmail)({
                     from: "beta.toursewa@gmail.com",
@@ -149,7 +164,21 @@ const updateReservationStatusByClient = (req, res) => __awaiter(void 0, void 0, 
             from: "beta.toursewa@gmail.com",
             to: email,
             subject: "Booking Status",
-            html: `<h2>Your Booking with booking id ${bookingId} has been ${status}</h2>`,
+            html: `<div style="font-family: Arial, sans-serif; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div style="width: 75%; max-width: 600px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+          <div style="text-align: left; margin-bottom: 20px;">
+            <img src='https://tourbackend-rdtk.onrender.com/public/uploads/logo.png' className="" />
+          </div>
+          <div style="text-align: left;">
+            <h1 style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">Booking Status</h1>
+            <p style="font-size: 14px; margin-bottom: 20px;">
+              Your booking stauts on toursewa is given below.
+            </p>
+            <p style="display: inline-block; background-color: #e6310b; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-size: 14px;">Your Booking  ${bookingId} has been updated to ${status}</p>
+
+          </div>
+        </div>
+      </div> `,
         });
         return res.status(200).json({ message: status });
     }
@@ -179,7 +208,21 @@ const updateReservationStatusByBid = (req, res) => __awaiter(void 0, void 0, voi
             from: "beta.toursewa@gmail.com",
             to: email,
             subject: "Booking Status",
-            html: `<h2>Your Booking with booking id ${bookingId} has been ${status}</h2>`,
+            html: `<div style="font-family: Arial, sans-serif; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div style="width: 75%; max-width: 600px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+          <div style="text-align: left; margin-bottom: 20px;">
+            <img src='https://tourbackend-rdtk.onrender.com/public/uploads/logo.png' className="" />
+          </div>
+          <div style="text-align: left;">
+            <h1 style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">Booking Status</h1>
+            <p style="font-size: 14px; margin-bottom: 20px;">
+              Your booking stauts on toursewa is given below.
+            </p>
+            <p style="display: inline-block; background-color: #e6310b; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-size: 14px;">Your Booking  ${bookingId} has been updated to ${status}</p>
+
+          </div>
+        </div>
+      </div> `,
         });
         return res.status(200).json({ message: status });
     }
@@ -246,7 +289,21 @@ const updateReservationByBid = (req, res) => __awaiter(void 0, void 0, void 0, f
                 from: "beta.toursewa@gmail.com",
                 to: email,
                 subject: "Booking Status",
-                html: `<h2>Your Booking with booking id ${id} has been ${status}</h2>`,
+                html: `<div style="font-family: Arial, sans-serif; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div style="width: 75%; max-width: 600px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+          <div style="text-align: left; margin-bottom: 20px;">
+            <img src='https://tourbackend-rdtk.onrender.com/public/uploads/logo.png' className="" />
+          </div>
+          <div style="text-align: left;">
+            <h1 style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">Booking Status</h1>
+            <p style="font-size: 14px; margin-bottom: 20px;">
+              Your booking stauts on toursewa is given below.
+            </p>
+            <p style="display: inline-block; background-color: #e6310b; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-size: 14px;">Your Booking  ${id} has been updated to ${status}</p>
+
+          </div>
+        </div>
+      </div> `,
             });
             return res.status(200).json({ message: status });
         }

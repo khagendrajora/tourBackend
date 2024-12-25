@@ -146,7 +146,21 @@ export const businessApprove = async (req: Request, res: Response) => {
       from: "beta.toursewa@gmail.com",
       to: business.primaryEmail,
       subject: "Business Account Status ",
-      html: `<h2>Your business account with business Id ${id} has been made ${status}</h2>`,
+      html: `<div style="font-family: Arial, sans-serif; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div style="width: 75%; max-width: 600px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+          <div style="text-align: left; margin-bottom: 20px;">
+            <img src='https://tourbackend-rdtk.onrender.com/public/uploads/logo.png' className="" />
+          </div>
+          <div style="text-align: left;">
+            <h1 style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">Your Business Account Status</h1>
+            <p style="font-size: 14px; margin-bottom: 20px;">
+              The status  of your Business account on toursewa is given below.
+            </p>
+            <p style="display: inline-block;   text-decoration: none;   font-size: 14px;">Your business account with business Id ${id} has been made ${status}</p>
+          
+          </div>
+        </div>
+      </div>`,
     });
 
     return res.status(200).json({
@@ -204,8 +218,24 @@ export const forgetPass = async (req: Request, res: Response) => {
       text: `Reset password USing link below\n\n
     http://${api}/resetpwd/${token.token}
     `,
-      html: `<h1>Click to Reset Password</h1>
-    <a href='${url}'>Click here Reset</a>`,
+      html: `<div style="font-family: Arial, sans-serif; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div style="width: 75%; max-width: 600px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+          <div style="text-align: left; margin-bottom: 20px;">
+            <img src='https://tourbackend-rdtk.onrender.com/public/uploads/logo.png' className="" />
+          </div>
+          <div style="text-align: left;">
+            <h1 style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">Reset Your Password</h1>
+            <p style="font-size: 14px; margin-bottom: 20px;">
+              Incase you forget your account password you can reset it here.
+            </p>
+            <a href='${url}' style="display: inline-block; background-color: #e6310b; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-size: 14px;">Click to Reset</a>
+            <p style="font-size: 12px; color: #888; margin-top: 20px;">
+              This link will expire in 24 hours
+            </p>
+          </div>
+        </div>
+      </div>
+    `,
     });
     return res
       .status(200)
@@ -340,8 +370,25 @@ export const addBusinessByAdmin = async (req: Request, res: Response) => {
       subject: "Account Verification Link",
       text: `Verify your Business Email to Login\n\n
       ${api}/resetandverify/${token.token}`,
-      html: `<h1>Reset Password to Verify</h1> 
-      <a href='${url}'>Click here To verify</a>`,
+      html: `<div style="font-family: Arial, sans-serif; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div style="width: 75%; max-width: 600px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+          <div style="text-align: left; margin-bottom: 20px;">
+            <img src='https://tourbackend-rdtk.onrender.com/public/uploads/logo.png' className="" />
+          </div>
+          <div style="text-align: left;">
+            <h1 style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">Verify your Email address</h1>
+            <p style="font-size: 14px; margin-bottom: 20px;">
+              To cointinue on Toursewa with your account, please verify that
+              this is your email address.
+            </p>
+            <a href='${url}' style="display: inline-block; background-color: #e6310b; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-size: 14px;">Click to verify</a>
+            <p style="font-size: 12px; color: #888; margin-top: 20px;">
+              This link will expire in 24 hours
+            </p>
+          </div>
+        </div>
+      </div>
+    `,
     });
 
     hashedPassword = "";
@@ -389,8 +436,23 @@ export const verifyAndResetPwd = async (req: Request, res: Response) => {
             from: "beta.toursewa@gmail.com",
             to: "khagijora2074@gmail.com",
             subject: "New Business Registered",
-            html: `<h2>A new business with business Id ${businessId.bId} has been registered</h2>
-          <a href='${process.env.FRONTEND_URL}/businessapprove/${businessId.bId}'>Click to verify and activate the business account</a>
+            html: `<div style="font-family: Arial, sans-serif; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div style="width: 75%; max-width: 600px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+          <div style="text-align: left; margin-bottom: 20px;">
+            <img src='https://tourbackend-rdtk.onrender.com/public/uploads/logo.png' className="" />
+          </div>
+          <div style="text-align: left;">
+            <h1 style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">New Business Account Registered</h1>
+            <p style="font-size: 14px; margin-bottom: 20px;">
+             A new business with business Id ${businessId.bId} has been registered. You can verify and activate the account directly here.
+            </p>
+            <a href='${process.env.FRONTEND_URL}/businessapprove/${businessId.bId}' style="display: inline-block; background-color: #e6310b; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-size: 14px;">Activate Account</a>
+            <p style="font-size: 12px; color: #888; margin-top: 20px;">
+              This link will expire in 24 hours
+            </p>
+          </div>
+        </div>
+      </div>
           `,
           });
         }
