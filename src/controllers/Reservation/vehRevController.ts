@@ -5,7 +5,6 @@ import ReservedDate from "../../models/Reservations/ReservedDated";
 const { customAlphabet } = require("nanoid");
 import { sendEmail } from "../../utils/setEmail";
 import Business from "../../models/business";
-import VeVehRevLogs from "../../models/LogModel/VehRevLogs";
 import VehRevLogs from "../../models/LogModel/VehRevLogs";
 
 export const vehReservation = async (req: Request, res: Response) => {
@@ -133,8 +132,8 @@ export const vehReservation = async (req: Request, res: Response) => {
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
           <strong>Start Date - End Date:</strong> ${
-            startDate.toISOString().split("T")[0]
-          } - ${endDate.toISOString().split("T")[0]}
+            newStartDate.toISOString().split("T")[0]
+          } - ${newEndDate.toISOString().split("T")[0]}
         </td>
       </tr>
     </table>
