@@ -56,44 +56,44 @@ const tourRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             to: email,
             subject: "Booking Confirmation",
             html: `
-    <div style="width: 100%; max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.5;">
-      <div style="text-align: center; margin-bottom: 20px;">
-        <img src="https://tourbackend-rdtk.onrender.com/public/uploads/logo.png" alt="Logo" style="max-width: 100px;">
-      </div>
-    <div style="display: flex; flex-direction: column; gap: 16px;">
-      <h1 style="font-weight: bold; font-size: 1.25rem; text-align: center; margin: 0;">Booking Status</h1>
-      <p style="font-size: 0.875rem; text-align: center; margin: 0;">Your booking status on Toursewa is given below.</p>
-      <table style="width: 100%; border-collapse: collapse; border: 1px solid #D1D5DB; border-radius: 8px; background-color: #F9FAFB; padding: 20px;">
-        <tr style="background-color: #F3F4F6;">
-          <td style="font-size: 0.875rem; font-weight: bold; padding: 12px 8px; text-align: left; width: 40%;">Status:</td>
-          <td style="font-size: 0.875rem; color: #DC2626; padding: 12px 8px; text-align: left; width: 60%;">Pending</td>
-        </tr>
-        <tr>
-          <td style="font-size: 0.875rem; font-weight: bold; padding: 12px 8px; text-align: left;">BookingID:</td>
-          <td style="font-size: 0.875rem; padding: 12px 8px; text-align: left;">${bookingId}</td>
-        </tr>
-        <tr style="background-color: #F3F4F6;">
-          <td style="font-size: 0.875rem; font-weight: bold; padding: 12px 8px; text-align: left;">Tour Name:</td>
-          <td style="font-size: 0.875rem; color: #64748B; padding: 12px 8px; text-align: left;">${tourData.name}</td>
-        </tr>
-        <tr>
-          <td style="font-size: 0.875rem; font-weight: bold; padding: 12px 8px; text-align: left;">Passenger Name:</td>
-          <td style="font-size: 0.875rem; color: #64748B; padding: 12px 8px; text-align: left;">${passengerName}</td>
-        </tr>
-        <tr style="background-color: #F3F4F6;">
-          <td style="font-size: 0.875rem; font-weight: bold; padding: 12px 8px; text-align: left;">Number of Passengers:</td>
-          <td style="font-size: 0.875rem; color: #64748B; padding: 12px 8px; text-align: left;">${tickets}</td>
-        </tr>
-        <tr>
-          <td style="font-size: 0.875rem; font-weight: bold; padding: 12px 8px; text-align: left;">Start Date:</td>
-          <td style="font-size: 0.875rem; color: #64748B; padding: 12px 8px; text-align: left;">${date}</td>
-        </tr>
-      </table>
+   <div style="width: 100%; max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.5;">
+    <div style="text-align: center; margin-bottom: 20px;">
+      <img src="https://tourbackend-rdtk.onrender.com/public/uploads/logo.png" alt="Logo" style="max-width: 100px;">
     </div>
+    <h1 style="font-size: 18px; font-weight: bold; text-align: left;">Booking Status</h1>
+    <p style="font-size: 14px; text-align: left;">Your booking status on Toursewa is given below.</p>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+      <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Status:</strong> <span style="color: #DC2626;">Pending</span>
+        </td>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>BookingID:</strong> ${bookingId}
+        </td>
+      </tr>
+    </table>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+      <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Tour Name:</strong> ${tourData.name}
+        </td>
+     
+      </tr>
+      <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Passenger Name:</strong> ${passengerName}
+        </td>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Number of Passengers:</strong> ${tickets}
+        </td>
+      </tr>
+      <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Date:</strong> ${date}
+        </td>
+      </tr>
+    </table>
   </div>
-
-
-
      `,
         });
         // sendEmail({
@@ -183,44 +183,44 @@ const updateTourRevStatusByClient = (req, res) => __awaiter(void 0, void 0, void
             from: "beta.toursewa@gmail.com",
             to: email,
             subject: "Booking Status",
-            html: `<div style="display: flex; flex-direction: column; width: 100%; align-items: center; justify-content: center; max-width: 90%;">
-  <div style="display: flex; flex-direction: column; width: 75%; gap: 20px;">
-    <div style="display: flex; align-items: flex-start; justify-content: flex-start;">
-      <img src="https://tourbackend-rdtk.onrender.com/public/uploads/logo.png" alt="Logo" style="max-width: 200px;" />
+            html: `<div style="width: 100%; max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.5;">
+    <div style="text-align: center; margin-bottom: 20px;">
+      <img src="https://tourbackend-rdtk.onrender.com/public/uploads/logo.png" alt="Logo" style="max-width: 100px;">
     </div>
-    <div style="display: flex; flex-direction: column; gap: 16px;">
-      <h1 style="font-weight: bold; font-size: 1.25rem; text-align: center;">Booking Status</h1>
-      <p style="font-size: 0.875rem; text-align: center;">Your booking status on toursewa is given below.</p>
-      <table style="width: 100%; border-collapse: collapse; border: 1px solid #D1D5DB; border-radius: 8px; background-color: #F9FAFB; padding: 20px;">
-        <tr style="background-color: #F3F4F6;">
-          <td style="font-size: 0.875rem; font-weight: bold; padding: 12px 8px; text-align: left; width: 40%;">Status:</td>
-          <td style="font-size: 0.875rem; color: #DC2626; padding: 12px 8px; text-align: left; width: 60%;">${status}</td>
-        </tr>
-        <tr>
-          <td style="font-size: 0.875rem; font-weight: bold; padding: 12px 8px; text-align: left;">BookingID:</td>
-          <td style="font-size: 0.875rem; padding: 12px 8px; text-align: left;">${bookingId}</td>
-        </tr>
-        <tr style="background-color: #F3F4F6;">
-          <td style="font-size: 0.875rem; font-weight: bold; padding: 12px 8px; text-align: left;">Tour Name:</td>
-          <td style="font-size: 0.875rem; color: #64748B; padding: 12px 8px; text-align: left;">${data.tourName}</td>
-        </tr>
-        <tr>
-          <td style="font-size: 0.875rem; font-weight: bold; padding: 12px 8px; text-align: left;">Passenger Name:</td>
-          <td style="font-size: 0.875rem; color: #64748B; padding: 12px 8px; text-align: left;">${data.passengerName}</td>
-        </tr>
-        <tr style="background-color: #F3F4F6;">
-          <td style="font-size: 0.875rem; font-weight: bold; padding: 12px 8px; text-align: left;">Number of Passengers:</td>
-          <td style="font-size: 0.875rem; color: #64748B; padding: 12px 8px; text-align: left;">${data.tickets}</td>
-        </tr>
-        <tr>
-          <td style="font-size: 0.875rem; font-weight: bold; padding: 12px 8px; text-align: left;">Start Date:</td>
-          <td style="font-size: 0.875rem; color: #64748B; padding: 12px 8px; text-align: left;">${data.date}</td>
-        </tr>
-      </table>
-    </div>
+    <h1 style="font-size: 18px; font-weight: bold; text-align: left;">Booking Status</h1>
+    <p style="font-size: 14px; text-align: left;">Your booking status on Toursewa is given below.</p>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+      <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Status:</strong> <span style="color: #DC2626;">${status}</span>
+        </td>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>BookingID:</strong> ${bookingId}
+        </td>
+      </tr>
+    </table>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+      <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Tour Name:</strong> ${data.tourName}
+        </td>
+     
+      </tr>
+      <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Passenger Name:</strong> ${data.passengerName}
+        </td>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Number of Passengers:</strong> ${data.tickets}
+        </td>
+      </tr>
+      <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Date:</strong> ${data.date}
+        </td>
+      </tr>
+    </table>
   </div>
-</div>
-
      `,
         });
         return res.status(200).json({ message: status });
@@ -251,44 +251,44 @@ const updateTourRevStatusByBid = (req, res) => __awaiter(void 0, void 0, void 0,
             from: "beta.toursewa@gmail.com",
             to: email,
             subject: "Booking Status",
-            html: `<div style="display: flex; flex-direction: column; width: 100%; align-items: center; justify-content: center; max-width: 90%;">
-  <div style="display: flex; flex-direction: column; width: 75%; gap: 20px;">
-    <div style="display: flex; align-items: flex-start; justify-content: flex-start;">
-      <img src="https://tourbackend-rdtk.onrender.com/public/uploads/logo.png" alt="Logo" style="max-width: 200px;" />
+            html: `<div style="width: 100%; max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.5;">
+    <div style="text-align: center; margin-bottom: 20px;">
+      <img src="https://tourbackend-rdtk.onrender.com/public/uploads/logo.png" alt="Logo" style="max-width: 100px;">
     </div>
-    <div style="display: flex; flex-direction: column; gap: 16px;">
-      <h1 style="font-weight: bold; font-size: 1.25rem; text-align: center;">Booking Status</h1>
-      <p style="font-size: 0.875rem; text-align: center;">Your booking status on toursewa is given below.</p>
-      <table style="width: 100%; border-collapse: collapse; border: 1px solid #D1D5DB; border-radius: 8px; background-color: #F9FAFB; padding: 20px;">
-        <tr style="background-color: #F3F4F6;">
-          <td style="font-size: 0.875rem; font-weight: bold; padding: 12px 8px; text-align: left; width: 40%;">Status:</td>
-          <td style="font-size: 0.875rem; color: #DC2626; padding: 12px 8px; text-align: left; width: 60%;">${status}</td>
-        </tr>
-        <tr>
-          <td style="font-size: 0.875rem; font-weight: bold; padding: 12px 8px; text-align: left;">BookingID:</td>
-          <td style="font-size: 0.875rem; padding: 12px 8px; text-align: left;">${bookingId}</td>
-        </tr>
-        <tr style="background-color: #F3F4F6;">
-          <td style="font-size: 0.875rem; font-weight: bold; padding: 12px 8px; text-align: left;">Tour Name:</td>
-          <td style="font-size: 0.875rem; color: #64748B; padding: 12px 8px; text-align: left;">${data.tourName}</td>
-        </tr>
-        <tr>
-          <td style="font-size: 0.875rem; font-weight: bold; padding: 12px 8px; text-align: left;">Passenger Name:</td>
-          <td style="font-size: 0.875rem; color: #64748B; padding: 12px 8px; text-align: left;">${data.passengerName}</td>
-        </tr>
-        <tr style="background-color: #F3F4F6;">
-          <td style="font-size: 0.875rem; font-weight: bold; padding: 12px 8px; text-align: left;">Number of Passengers:</td>
-          <td style="font-size: 0.875rem; color: #64748B; padding: 12px 8px; text-align: left;">${data.tickets}</td>
-        </tr>
-        <tr>
-          <td style="font-size: 0.875rem; font-weight: bold; padding: 12px 8px; text-align: left;">Start Date:</td>
-          <td style="font-size: 0.875rem; color: #64748B; padding: 12px 8px; text-align: left;">${data.date}</td>
-        </tr>
-      </table>
-    </div>
+    <h1 style="font-size: 18px; font-weight: bold; text-align: left;">Booking Status</h1>
+    <p style="font-size: 14px; text-align: left;">Your booking status on Toursewa is given below.</p>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+      <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Status:</strong> <span style="color: #DC2626;">Pending</span>
+        </td>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>BookingID:</strong> ${bookingId}
+        </td>
+      </tr>
+    </table>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+      <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Tour Name:</strong> ${data.tourName}
+        </td>
+     
+      </tr>
+      <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Passenger Name:</strong> ${data.passengerName}
+        </td>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Number of Passengers:</strong> ${data.tickets}
+        </td>
+      </tr>
+      <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Date:</strong> ${data.date}
+        </td>
+      </tr>
+    </table>
   </div>
-</div>
-
     `,
         });
         return res.status(200).json({ message: status });
