@@ -48,11 +48,10 @@ export const tourRev = async (req: Request, res: Response) => {
       to: email,
       subject: "Booking Confirmation",
       html: `
-    <div style="display: flex; flex-direction: column; width: 100%; align-items: center; justify-content: center; max-width: 90%; font-family: Arial, sans-serif;">
-  <div style="display: flex; flex-direction: column; width: 75%; gap: 20px;">
-    <div style="display: flex; align-items: flex-start; justify-content: flex-start;">
-      <img src="https://tourbackend-rdtk.onrender.com/public/uploads/logo.png" alt="Logo" style="max-width: 200px;" />
-    </div>
+    <div style="width: 100%; max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.5;">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <img src="https://tourbackend-rdtk.onrender.com/public/uploads/logo.png" alt="Logo" style="max-width: 100px;">
+      </div>
     <div style="display: flex; flex-direction: column; gap: 16px;">
       <h1 style="font-weight: bold; font-size: 1.25rem; text-align: center; margin: 0;">Booking Status</h1>
       <p style="font-size: 0.875rem; text-align: center; margin: 0;">Your booking status on Toursewa is given below.</p>
@@ -84,7 +83,7 @@ export const tourRev = async (req: Request, res: Response) => {
       </table>
     </div>
   </div>
-</div>
+
 
 
      `,
