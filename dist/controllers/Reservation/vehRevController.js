@@ -90,61 +90,51 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
                     to: email,
                     subject: "Booking Confirmation",
                     html: `
-          <div style="display: flex; flex-direction: column; width: 100%; align-items: center; justify-content: center; max-width: 90%;">
-      <div style="display: flex; flex-direction: column; width: 75%; gap: 20px;">
-        <div style="display: flex; align-items: flex-start; justify-content: flex-start;">
-          <img src="https://tourbackend-rdtk.onrender.com/public/uploads/logo.png" alt="Logo" />
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 16px;">
-          <h1 style="font-weight: bold; font-size: 1.25rem;">Booking Status</h1>
-          <p>Your booking status on toursewa is given below.</p>
-          <div style="border: 1px solid #D1D5DB; border-radius: 8px; background-color: #F9FAFB; display: flex; flex-direction: column; padding: 20px; gap: 20px;">
-            <div style="display: flex; gap: 32px;">
-              <p style="font-size: 0.875rem;">
-                <span style="font-weight: bold;">Status:</span> <span style="color: #DC2626;">Pending</span>
-              </p>
-              <p style="font-size: 0.875rem;">
-                <span style="font-weight: bold;">BookingID:</span> ${bookingId}
-              </p>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 20px;">
-              <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-                <div style="display: flex; flex-direction: column;">
-                  <h1 style="font-weight: 600;">Vehicle:</h1>
-                  <h1 style="font-size: 0.875rem; color: #64748B;">${vehData.name}</h1>
-                </div>
-                <div style="display: flex; flex-direction: column;">
-                  <h1 style="font-weight: 600;">Vehicle Number:</h1>
-                  <h1 style="font-size: 0.875rem; color: #64748B;">${vehData.vehNumber}</h1>
-                </div>
-              </div>
-              <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-                <div style="display: flex; flex-direction: column;">
-                  <h1 style="font-weight: 600;">Passenger Name:</h1>
-                  <h1 style="font-size: 0.875rem; color: #64748B;">${bookingName}</h1>
-                </div>
-                <div style="display: flex; flex-direction: column;">
-                  <h1 style="font-weight: 600;">Number of passengers:</h1>
-                  <h1 style="font-size: 0.875rem; color: #64748B;">${numberOfPassengers}</h1>
-                </div>
-              </div>
-              <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-                <div style="display: flex; flex-direction: column;">
-                  <h1 style="font-weight: 600;">From - To:</h1>
-                  <h1 style="font-size: 0.875rem; color: #64748B;">${sourceAddress} - ${destinationAddress}</h1>
-                </div>
-              </div>
-              <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-                <div style="display: flex; flex-direction: column;">
-                  <h1 style="font-weight: 600;">Start Date - End Date:</h1>
-                  <h1 style="font-size: 0.875rem; color: #64748B;">${startDate} - ${endDate}</h1>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>`,
+           <div style="width: 100%; max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; line-height: 1.5;">
+    <div style="text-align: center; margin-bottom: 20px;">
+      <img src="https://tourbackend-rdtk.onrender.com/public/uploads/logo.png" alt="Logo" style="max-width: 100px;">
+    </div>
+    <h1 style="font-size: 18px; font-weight: bold; text-align: left;">Booking Status</h1>
+    <p style="font-size: 14px; text-align: left;">Your booking status on Toursewa is given below.</p>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+      <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Status:</strong> <span style="color: #DC2626;">Pending</span>
+        </td>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>BookingID:</strong> ${bookingId}
+        </td>
+      </tr>
+    </table>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+      <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Vehicle:</strong> ${vehData.name}
+        </td>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Vehicle Number:</strong> ${vehData.vehNumber}
+        </td>
+      </tr>
+      <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Passenger Name:</strong> ${bookingName}
+        </td>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Number of Passengers:</strong> ${numberOfPassengers}
+        </td>
+      </tr>
+      <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>From - To:</strong> ${sourceAddress} - ${destinationAddress}
+        </td>
+      </tr>
+      <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Start Date - End Date:</strong> ${startDate} - ${endDate}
+        </td>
+      </tr>
+    </table>
+  </div>`,
                 });
                 (0, setEmail_1.sendEmail)({
                     from: "beta.toursewa@gmail.com",
