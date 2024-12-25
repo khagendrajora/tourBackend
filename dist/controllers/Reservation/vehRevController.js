@@ -130,7 +130,7 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
       </tr>
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Start Date - End Date:</strong> ${startDate} - ${endDate}
+          <strong>Start Date - End Date:</strong> ${startDate.toISOString().split("T")[0]} - ${endDate.toISOString().split("T")[0]}
         </td>
       </tr>
     </table>
