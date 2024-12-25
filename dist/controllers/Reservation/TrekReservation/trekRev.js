@@ -55,14 +55,14 @@ const trekRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             from: "beta.toursewa@gmail.com",
             to: email,
             subject: "Booking Confirmation",
-            html: ` <div style="display: flex; flex-direction: column; width: 100%; align-items: center; justify-content: center; max-width: 90%;">
+            html: ` <div style="display: flex; flex-direction: column; width: 100%; align-items: center; justify-content: center; max-width: 90%; font-family: Arial, sans-serif;">
   <div style="display: flex; flex-direction: column; width: 75%; gap: 20px;">
     <div style="display: flex; align-items: flex-start; justify-content: flex-start;">
       <img src="https://tourbackend-rdtk.onrender.com/public/uploads/logo.png" alt="Logo" style="max-width: 200px;" />
     </div>
     <div style="display: flex; flex-direction: column; gap: 16px;">
-      <h1 style="font-weight: bold; font-size: 1.25rem; text-align: center;">Booking Status</h1>
-      <p style="font-size: 0.875rem; text-align: center;">Your booking status on toursewa is given below.</p>
+      <h1 style="font-weight: bold; font-size: 1.25rem; text-align: center; margin: 0;">Booking Status</h1>
+      <p style="font-size: 0.875rem; text-align: center; margin: 0;">Your booking status on Toursewa is given below.</p>
       <table style="width: 100%; border-collapse: collapse; border: 1px solid #D1D5DB; border-radius: 8px; background-color: #F9FAFB; padding: 20px;">
         <tr style="background-color: #F3F4F6;">
           <td style="font-size: 0.875rem; font-weight: bold; padding: 12px 8px; text-align: left; width: 40%;">Status:</td>
@@ -92,6 +92,7 @@ const trekRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     </div>
   </div>
 </div>
+
 `,
         });
         // sendEmail({
