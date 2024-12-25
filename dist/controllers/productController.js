@@ -227,7 +227,7 @@ exports.getTrekByBusinessId = getTrekByBusinessId;
 const trekDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        const trek = yield trekking_1.default.findOne({ _id: id });
+        const trek = yield trekking_1.default.findOne({ trekId: id });
         if (!trek) {
             return res.status(404).json({ error: "Failed to get Trek" });
         }
