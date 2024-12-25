@@ -103,8 +103,25 @@ export const addBusiness = async (req: Request, res: Response) => {
       subject: "Account Verification Link",
       text: `Verify your Business Email to Login\n\n
 ${api}/verifybusinessemail/${token.token}`,
-      html: `<h1>Click to Verify Email</h1> 
-      <a href='${url}'>Click here To verify</a>`,
+      html: `<div className="flex flex-col w-full items-center justify-center sm:w-11/12">
+        <div className="flex flex-col w-3/4 gap-5">
+          <div className="flex items-start  justify-start ">
+            <img src="/logo.png" className="" />
+          </div>
+          <div className="flex flex-col gap-4">
+            <h1 className="font-bold text-xl">Verify your Email address</h1>
+            <p>
+              To cointinue on Toursewa with your account, please verify that
+              this is your email address.
+            </p>
+            <a href='${url}' className="bg-button text-white w-fit p-2 cursor-pointer rounded-md">Click here To verify</a>
+            <p className="text-xs text-slate-400 mt-14">
+              This link will expire in 24 hours
+            </p>
+          </div>
+        </div>
+      </div> 
+      `,
     });
 
     hashedPassword = "";
