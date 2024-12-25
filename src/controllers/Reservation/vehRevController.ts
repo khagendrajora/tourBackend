@@ -86,6 +86,9 @@ export const vehReservation = async (req: Request, res: Response) => {
         //   { new: true }
         // );
 
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+
         sendEmail({
           from: "beta.toursewa@gmail.com",
           to: email,
@@ -132,8 +135,8 @@ export const vehReservation = async (req: Request, res: Response) => {
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
           <strong>Start Date - End Date:</strong> ${
-            newStartDate.toISOString().split("T")[0]
-          } - ${newEndDate.toISOString().split("T")[0]}
+            start.toISOString().split("T")[0]
+          } - ${end.toISOString().split("T")[0]}
         </td>
       </tr>
     </table>
@@ -203,60 +206,46 @@ export const updateReservationStatusByClient = async (
       from: "beta.toursewa@gmail.com",
       to: email,
       subject: "Booking Status",
-      html: `<div style="display: flex; flex-direction: column; width: 100%; align-items: center; justify-content: center; max-width: 90%;">
-      <div style="display: flex; flex-direction: column; width: 75%; gap: 20px;">
-        <div style="display: flex; align-items: flex-start; justify-content: flex-start;">
-          <img src="https://tourbackend-rdtk.onrender.com/public/uploads/logo.png" alt="Logo" />
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 16px;">
-          <h1 style="font-weight: bold; font-size: 1.25rem;">Booking Status</h1>
-          <p>Your booking status on toursewa is given below.</p>
-          <div style="border: 1px solid #D1D5DB; border-radius: 8px; background-color: #F9FAFB; display: flex; flex-direction: column; padding: 20px; gap: 20px;">
-            <div style="display: flex; gap: 32px;">
-              <p style="font-size: 0.875rem;">
-                <span style="font-weight: bold;">Status:</span> <span style="color: #DC2626;">${status}</span>
-              </p>
-              <p style="font-size: 0.875rem;">
-                <span style="font-weight: bold;">BookingID:</span> ${bookingId}
-              </p>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 20px;">
-              <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-                <div style="display: flex; flex-direction: column;">
-                  <h1 style="font-weight: 600;">Vehicle:</h1>
-                  <h1 style="font-size: 0.875rem; color: #64748B;">${data.vehicleName}</h1>
-                </div>
-                <div style="display: flex; flex-direction: column;">
-                  <h1 style="font-weight: 600;">Vehicle Number:</h1>
-                  <h1 style="font-size: 0.875rem; color: #64748B;">${data.vehicleNumber}</h1>
-                </div>
-              </div>
-              <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-                <div style="display: flex; flex-direction: column;">
-                  <h1 style="font-weight: 600;">Passenger Name:</h1>
-                  <h1 style="font-size: 0.875rem; color: #64748B;">${data.bookingName}</h1>
-                </div>
-                <div style="display: flex; flex-direction: column;">
-                  <h1 style="font-weight: 600;">Number of passengers:</h1>
-                  <h1 style="font-size: 0.875rem; color: #64748B;">${data.numberOfPassengers}</h1>
-                </div>
-              </div>
-              <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-                <div style="display: flex; flex-direction: column;">
-                  <h1 style="font-weight: 600;">From - To:</h1>
-                  <h1 style="font-size: 0.875rem; color: #64748B;">${data.sourceAddress} - ${data.destinationAddress}</h1>
-                </div>
-              </div>
-              <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-                <div style="display: flex; flex-direction: column;">
-                  <h1 style="font-weight: 600;">Start Date - End Date:</h1>
-                  <h1 style="font-size: 0.875rem; color: #64748B;">${data.startDate} - ${data.endDate}</h1>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      html: ` <div style="max-width: 600px; margin: auto; font-family: Arial, sans-serif;">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <img src="https://tourbackend-rdtk.onrender.com/public/uploads/logo.png" alt="Logo" style="max-width: 200px;" />
       </div>
+      <h1 style="font-size: 20px; font-weight: bold; text-align: center;">Booking Status</h1>
+      <p style="font-size: 14px; text-align: center;">Your booking status on toursewa is given below.</p>
+      <table style="width: 100%; border: 1px solid #D1D5DB; border-radius: 8px; background-color: #F9FAFB; padding: 20px;">
+        <tr>
+          <td style="font-size: 14px; font-weight: bold;">Status:</td>
+          <td style="font-size: 14px; color: #DC2626;">${status}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold;">BookingID:</td>
+          <td style="font-size: 14px;">${bookingId}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold;">Vehicle:</td>
+          <td style="font-size: 14px; color: #64748B;">${data.vehicleName}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold;">Vehicle Number:</td>
+          <td style="font-size: 14px; color: #64748B;">${data.vehicleNumber}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold;">Passenger Name:</td>
+          <td style="font-size: 14px; color: #64748B;">${data.bookingName}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold;">Number of Passengers:</td>
+          <td style="font-size: 14px; color: #64748B;">${data.numberOfPassengers}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold;">From - To:</td>
+          <td style="font-size: 14px; color: #64748B;">${data.sourceAddress} - ${data.destinationAddress}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold;">Start Date - End Date:</td>
+          <td style="font-size: 14px; color: #64748B;">${data.startDate} - ${data.endDate}</td>
+        </tr>
+      </table>
     </div>`,
     });
     return res.status(200).json({ message: status });
@@ -295,60 +284,46 @@ export const updateReservationStatusByBid = async (
       from: "beta.toursewa@gmail.com",
       to: email,
       subject: "Booking Status",
-      html: `<div style="display: flex; flex-direction: column; width: 100%; align-items: center; justify-content: center; max-width: 90%;">
-      <div style="display: flex; flex-direction: column; width: 75%; gap: 20px;">
-        <div style="display: flex; align-items: flex-start; justify-content: flex-start;">
-          <img src="https://tourbackend-rdtk.onrender.com/public/uploads/logo.png" alt="Logo" />
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 16px;">
-          <h1 style="font-weight: bold; font-size: 1.25rem;">Booking Status</h1>
-          <p>Your booking status on toursewa is given below.</p>
-          <div style="border: 1px solid #D1D5DB; border-radius: 8px; background-color: #F9FAFB; display: flex; flex-direction: column; padding: 20px; gap: 20px;">
-            <div style="display: flex; gap: 32px;">
-              <p style="font-size: 0.875rem;">
-                <span style="font-weight: bold;">Status:</span> <span style="color: #DC2626;">${status}</span>
-              </p>
-              <p style="font-size: 0.875rem;">
-                <span style="font-weight: bold;">BookingID:</span> ${bookingId}
-              </p>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 20px;">
-              <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-                <div style="display: flex; flex-direction: column;">
-                  <h1 style="font-weight: 600;">Vehicle:</h1>
-                  <h1 style="font-size: 0.875rem; color: #64748B;">${data.vehicleName}</h1>
-                </div>
-                <div style="display: flex; flex-direction: column;">
-                  <h1 style="font-weight: 600;">Vehicle Number:</h1>
-                  <h1 style="font-size: 0.875rem; color: #64748B;">${data.vehicleNumber}</h1>
-                </div>
-              </div>
-              <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-                <div style="display: flex; flex-direction: column;">
-                  <h1 style="font-weight: 600;">Passenger Name:</h1>
-                  <h1 style="font-size: 0.875rem; color: #64748B;">${data.bookingName}</h1>
-                </div>
-                <div style="display: flex; flex-direction: column;">
-                  <h1 style="font-weight: 600;">Number of passengers:</h1>
-                  <h1 style="font-size: 0.875rem; color: #64748B;">${data.numberOfPassengers}</h1>
-                </div>
-              </div>
-              <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-                <div style="display: flex; flex-direction: column;">
-                  <h1 style="font-weight: 600;">From - To:</h1>
-                  <h1 style="font-size: 0.875rem; color: #64748B;">${data.sourceAddress} - ${data.destinationAddress}</h1>
-                </div>
-              </div>
-              <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-                <div style="display: flex; flex-direction: column;">
-                  <h1 style="font-weight: 600;">Start Date - End Date:</h1>
-                  <h1 style="font-size: 0.875rem; color: #64748B;">${data.startDate} - ${data.endDate}</h1>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      html: ` <div style="max-width: 600px; margin: auto; font-family: Arial, sans-serif; color: #333;">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <img src="https://tourbackend-rdtk.onrender.com/public/uploads/logo.png" alt="Logo" style="max-width: 200px;" />
       </div>
+      <h1 style="font-size: 20px; font-weight: bold; text-align: center;">Booking Status</h1>
+      <p style="font-size: 14px; text-align: center; margin-bottom: 20px;">Your booking status on toursewa is given below.</p>
+      <table style="width: 100%; border: 1px solid #D1D5DB; border-radius: 8px; background-color: #F9FAFB; padding: 20px;">
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Status:</td>
+          <td style="font-size: 14px; color: #DC2626; padding: 8px 0;">${status}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">BookingID:</td>
+          <td style="font-size: 14px; padding: 8px 0;">${bookingId}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Vehicle:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${data.vehicleName}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Vehicle Number:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${data.vehicleNumber}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Passenger Name:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${data.bookingName}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Number of Passengers:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${data.numberOfPassengers}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">From - To:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${data.sourceAddress} - ${data.destinationAddress}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Start Date - End Date:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${data.startDate} - ${data.endDate}</td>
+        </tr>
+      </table>
     </div>`,
     });
     return res.status(200).json({ message: status });
@@ -414,61 +389,48 @@ export const updateReservationByBid = async (req: Request, res: Response) => {
         from: "beta.toursewa@gmail.com",
         to: email,
         subject: "Booking Status",
-        html: `<div style="display: flex; flex-direction: column; width: 100%; align-items: center; justify-content: center; max-width: 90%;">
-      <div style="display: flex; flex-direction: column; width: 75%; gap: 20px;">
-        <div style="display: flex; align-items: flex-start; justify-content: flex-start;">
-          <img src="https://tourbackend-rdtk.onrender.com/public/uploads/logo.png" alt="Logo" />
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 16px;">
-          <h1 style="font-weight: bold; font-size: 1.25rem;">Booking Status</h1>
-          <p>Your booking status on toursewa is given below.</p>
-          <div style="border: 1px solid #D1D5DB; border-radius: 8px; background-color: #F9FAFB; display: flex; flex-direction: column; padding: 20px; gap: 20px;">
-            <div style="display: flex; gap: 32px;">
-              <p style="font-size: 0.875rem;">
-                <span style="font-weight: bold;">Status:</span> <span style="color: #DC2626;">${status}</span>
-              </p>
-              <p style="font-size: 0.875rem;">
-                <span style="font-weight: bold;">BookingID:</span> ${id}
-              </p>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 20px;">
-              <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-                <div style="display: flex; flex-direction: column;">
-                  <h1 style="font-weight: 600;">Vehicle:</h1>
-                  <h1 style="font-size: 0.875rem; color: #64748B;">${data.vehicleName}</h1>
-                </div>
-                <div style="display: flex; flex-direction: column;">
-                  <h1 style="font-weight: 600;">Vehicle Number:</h1>
-                  <h1 style="font-size: 0.875rem; color: #64748B;">${data.vehicleNumber}</h1>
-                </div>
-              </div>
-              <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-                <div style="display: flex; flex-direction: column;">
-                  <h1 style="font-weight: 600;">Passenger Name:</h1>
-                  <h1 style="font-size: 0.875rem; color: #64748B;">${data.bookingName}</h1>
-                </div>
-                <div style="display: flex; flex-direction: column;">
-                  <h1 style="font-weight: 600;">Number of passengers:</h1>
-                  <h1 style="font-size: 0.875rem; color: #64748B;">${data.numberOfPassengers}</h1>
-                </div>
-              </div>
-              <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-                <div style="display: flex; flex-direction: column;">
-                  <h1 style="font-weight: 600;">From - To:</h1>
-                  <h1 style="font-size: 0.875rem; color: #64748B;">${data.sourceAddress} - ${data.destinationAddress}</h1>
-                </div>
-              </div>
-              <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-                <div style="display: flex; flex-direction: column;">
-                  <h1 style="font-weight: 600;">Start Date - End Date:</h1>
-                  <h1 style="font-size: 0.875rem; color: #64748B;">${data.startDate} - ${data.endDate}</h1>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>`,
+        html: `<div style="max-width: 600px; margin: auto; font-family: Arial, sans-serif; color: #333;">
+  <div style="text-align: center; margin-bottom: 20px;">
+    <img src="https://tourbackend-rdtk.onrender.com/public/uploads/logo.png" alt="Logo" style="max-width: 200px;" />
+  </div>
+  <h1 style="font-size: 20px; font-weight: bold; text-align: center;">Booking Status</h1>
+  <p style="font-size: 14px; text-align: center; margin-bottom: 20px;">Your booking status on toursewa is given below.</p>
+  <table style="width: 100%; border-collapse: collapse; border: 1px solid #D1D5DB; border-radius: 8px; background-color: #F9FAFB; padding: 20px;">
+    <tr style="background-color: #F3F4F6;">
+      <td style="font-size: 14px; font-weight: bold; padding: 12px 8px; text-align: left; width: 40%;">Status:</td>
+      <td style="font-size: 14px; color: #DC2626; padding: 12px 8px; text-align: left; width: 60%;">${status}</td>
+    </tr>
+    <tr>
+      <td style="font-size: 14px; font-weight: bold; padding: 12px 8px; text-align: left;">BookingID:</td>
+      <td style="font-size: 14px; padding: 12px 8px; text-align: left;">${id}</td>
+    </tr>
+    <tr style="background-color: #F3F4F6;">
+      <td style="font-size: 14px; font-weight: bold; padding: 12px 8px; text-align: left;">Vehicle:</td>
+      <td style="font-size: 14px; color: #64748B; padding: 12px 8px; text-align: left;">${data.vehicleName}</td>
+    </tr>
+    <tr>
+      <td style="font-size: 14px; font-weight: bold; padding: 12px 8px; text-align: left;">Vehicle Number:</td>
+      <td style="font-size: 14px; color: #64748B; padding: 12px 8px; text-align: left;">${data.vehicleNumber}</td>
+    </tr>
+    <tr style="background-color: #F3F4F6;">
+      <td style="font-size: 14px; font-weight: bold; padding: 12px 8px; text-align: left;">Passenger Name:</td>
+      <td style="font-size: 14px; color: #64748B; padding: 12px 8px; text-align: left;">${data.bookingName}</td>
+    </tr>
+    <tr>
+      <td style="font-size: 14px; font-weight: bold; padding: 12px 8px; text-align: left;">Number of Passengers:</td>
+      <td style="font-size: 14px; color: #64748B; padding: 12px 8px; text-align: left;">${data.numberOfPassengers}</td>
+    </tr>
+    <tr style="background-color: #F3F4F6;">
+      <td style="font-size: 14px; font-weight: bold; padding: 12px 8px; text-align: left;">From - To:</td>
+      <td style="font-size: 14px; color: #64748B; padding: 12px 8px; text-align: left;">${data.sourceAddress} - ${data.destinationAddress}</td>
+    </tr>
+    <tr>
+      <td style="font-size: 14px; font-weight: bold; padding: 12px 8px; text-align: left;">Start Date - End Date:</td>
+      <td style="font-size: 14px; color: #64748B; padding: 12px 8px; text-align: left;">${data.startDate} - ${data.endDate}</td>
+    </tr>
+  </table>
+</div>
+`,
       });
       return res.status(200).json({ message: status });
     }
