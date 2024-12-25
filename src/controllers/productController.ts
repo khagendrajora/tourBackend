@@ -244,7 +244,7 @@ export const trekDetails = async (req: Request, res: Response) => {
   const id = req.params.id;
 
   try {
-    const trek = await Trekking.findOne({ trekId: id });
+    const trek = await Trekking.findOne({ _id: id });
     if (!trek) {
       return res.status(404).json({ error: "Failed to get Trek" });
     } else {
