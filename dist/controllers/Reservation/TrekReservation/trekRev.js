@@ -260,7 +260,7 @@ const updateTrekRevStatusByBid = (req, res) => __awaiter(void 0, void 0, void 0,
     <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Status:</strong> <span style="color: #DC2626;">Pending</span>
+          <strong>Status:</strong> <span style="color: #DC2626;">${status}</span>
         </td>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
           <strong>BookingID:</strong> ${bookingId}
