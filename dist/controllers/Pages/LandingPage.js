@@ -12,9 +12,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteDest = exports.updateDest = exports.getDestById = exports.getDest = exports.addDest = exports.deleteBlogs = exports.updateBlogs = exports.getBlogsById = exports.getBlogs = exports.addBlogs = exports.deleteHotDeals = exports.updateHotdeals = exports.getHotDealsById = exports.getHotDeals = exports.addHotDeals = exports.deleteHero = exports.updateHero = exports.getHero = exports.addHero = void 0;
+exports.deleteDest = exports.updateDest = exports.getDestById = exports.getDest = exports.addDest = exports.deleteBlogs = exports.updateBlogs = exports.getBlogsById = exports.getBlogs = exports.addBlogs = exports.deleteHero = exports.updateHero = exports.getHero = exports.addHero = void 0;
 const Hero_1 = __importDefault(require("../../models/Pages/LandingPage/Hero"));
-const AboutUs_1 = __importDefault(require("../../models/Pages/LandingPage/AboutUs"));
 const Blogs_1 = __importDefault(require("../../models/Pages/LandingPage/Blogs"));
 const { customAlphabet } = require("nanoid");
 const Destination_1 = __importDefault(require("../../models/Pages/LandingPage/Destination"));
@@ -103,102 +102,6 @@ const deleteHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.deleteHero = deleteHero;
-const addHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { startingPrice, sourceAddress, destAddress, vehicle, travelName } = req.body;
-    try {
-        let data = new AboutUs_1.default({
-            startingPrice,
-            sourceAddress,
-            destAddress,
-            vehicle,
-            travelName,
-        });
-        data = yield data.save();
-        if (!data) {
-            return res.status(400).json({ error: "failed to save" });
-        }
-        else {
-            return res.status(200).json({ message: "Added" });
-        }
-    }
-    catch (error) {
-        return res.status(500).json({ error: error });
-    }
-});
-exports.addHotDeals = addHotDeals;
-const getHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        let data = yield AboutUs_1.default.find();
-        if (!data) {
-            return res.status(404).json({ error: "failed" });
-        }
-        else {
-            return res.send(data);
-        }
-    }
-    catch (error) {
-        return res.status(500).json({ error: "internal error" });
-    }
-});
-exports.getHotDeals = getHotDeals;
-const getHotDealsById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = req.params.id;
-    try {
-        let data = yield AboutUs_1.default.findById(id);
-        if (!data) {
-            return res.status(404).json({ error: "failed" });
-        }
-        else {
-            return res.send(data);
-        }
-    }
-    catch (error) {
-        return res.status(500).json({ error: "internal error" });
-    }
-});
-exports.getHotDealsById = getHotDealsById;
-const updateHotdeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = req.params.id;
-    let { startingPrice, sourceAddress, destAddress, vehicle, travelName } = req.body;
-    try {
-        const aboutUS = yield AboutUs_1.default.findByIdAndUpdate(id, {
-            startingPrice,
-            sourceAddress,
-            destAddress,
-            vehicle,
-            travelName,
-        }, { new: true });
-        if (!aboutUS) {
-            return res.status(400).json({
-                error: "Failed to Update",
-            });
-        }
-        else {
-            return res.status(200).json({ message: "Successfully Updated" });
-        }
-    }
-    catch (error) {
-        return res.status(500).json({ error: "internal error" });
-    }
-});
-exports.updateHotdeals = updateHotdeals;
-const deleteHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = req.params.id;
-    try {
-        AboutUs_1.default.findByIdAndDelete(id).then((data) => {
-            if (!data) {
-                return res.status(404).json({ error: "Failed to delete" });
-            }
-            else {
-                return res.status(200).json({ message: "Successfully Deleted" });
-            }
-        });
-    }
-    catch (error) {
-        return res.status(500).json({ error: "internal error" });
-    }
-});
-exports.deleteHotDeals = deleteHotDeals;
 const addBlogs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, desc } = req.body;
     const customId = customAlphabet("1234567890", 4);

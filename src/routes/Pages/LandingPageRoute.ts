@@ -3,22 +3,17 @@ import {
   addBlogs,
   addDest,
   addHero,
-  addHotDeals,
   deleteBlogs,
   deleteDest,
   deleteHero,
-  deleteHotDeals,
   getBlogs,
   getBlogsById,
   getDest,
   getDestById,
   getHero,
-  getHotDeals,
-  getHotDealsById,
   updateBlogs,
   updateDest,
   updateHero,
-  updateHotdeals,
 } from "../../controllers/Pages/LandingPage";
 import upload from "../../middleware/fileUpload";
 
@@ -36,15 +31,6 @@ router.put(
   updateHero
 );
 router.delete("/deletehero/:id", deleteHero);
-
-router.post("/addhotdeals", addHotDeals);
-
-router.get("/getaboutus", getHotDeals);
-router.get("/getdealsbyid/:id", getHotDealsById);
-
-router.put("/updateaboutus/:id", updateHotdeals);
-
-router.delete("/deleteaboutus/:id", deleteHotDeals);
 
 router.post(
   "/addblogs",

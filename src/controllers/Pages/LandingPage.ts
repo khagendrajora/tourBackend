@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import Hero from "../../models/Pages/LandingPage/Hero";
-import AboutUs from "../../models/Pages/LandingPage/AboutUs";
 import Blogs from "../../models/Pages/LandingPage/Blogs";
 const { customAlphabet } = require("nanoid");
 import Destination from "../../models/Pages/LandingPage/Destination";
@@ -77,97 +76,6 @@ export const deleteHero = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
     Hero.findByIdAndDelete(id).then((data) => {
-      if (!data) {
-        return res.status(404).json({ error: "Failed to delete" });
-      } else {
-        return res.status(200).json({ message: "Successfully Deleted" });
-      }
-    });
-  } catch (error: any) {
-    return res.status(500).json({ error: "internal error" });
-  }
-};
-
-export const addHotDeals = async (req: Request, res: Response) => {
-  const { startingPrice, sourceAddress, destAddress, vehicle, travelName } =
-    req.body;
-  try {
-    let data = new AboutUs({
-      startingPrice,
-      sourceAddress,
-      destAddress,
-      vehicle,
-      travelName,
-    });
-    data = await data.save();
-    if (!data) {
-      return res.status(400).json({ error: "failed to save" });
-    } else {
-      return res.status(200).json({ message: "Added" });
-    }
-  } catch (error: any) {
-    return res.status(500).json({ error: error });
-  }
-};
-
-export const getHotDeals = async (req: Request, res: Response) => {
-  try {
-    let data = await AboutUs.find();
-    if (!data) {
-      return res.status(404).json({ error: "failed" });
-    } else {
-      return res.send(data);
-    }
-  } catch (error: any) {
-    return res.status(500).json({ error: "internal error" });
-  }
-};
-export const getHotDealsById = async (req: Request, res: Response) => {
-  const id = req.params.id;
-  try {
-    let data = await AboutUs.findById(id);
-    if (!data) {
-      return res.status(404).json({ error: "failed" });
-    } else {
-      return res.send(data);
-    }
-  } catch (error: any) {
-    return res.status(500).json({ error: "internal error" });
-  }
-};
-
-export const updateHotdeals = async (req: Request, res: Response) => {
-  const id = req.params.id;
-  let { startingPrice, sourceAddress, destAddress, vehicle, travelName } =
-    req.body;
-  try {
-    const aboutUS = await AboutUs.findByIdAndUpdate(
-      id,
-      {
-        startingPrice,
-        sourceAddress,
-        destAddress,
-        vehicle,
-        travelName,
-      },
-      { new: true }
-    );
-    if (!aboutUS) {
-      return res.status(400).json({
-        error: "Failed to Update",
-      });
-    } else {
-      return res.status(200).json({ message: "Successfully Updated" });
-    }
-  } catch (error: any) {
-    return res.status(500).json({ error: "internal error" });
-  }
-};
-
-export const deleteHotDeals = async (req: Request, res: Response) => {
-  const id = req.params.id;
-  try {
-    AboutUs.findByIdAndDelete(id).then((data) => {
       if (!data) {
         return res.status(404).json({ error: "Failed to delete" });
       } else {
