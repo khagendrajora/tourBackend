@@ -372,7 +372,7 @@ exports.resetPwd = resetPwd;
 const getDriverVehicles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.vehicleId;
     try {
-        const data = yield vehicle_1.default.find({ vehicleId: id });
+        const data = yield vehicle_1.default.find({ vehId: id });
         if (!data) {
             return res.status(400).json({ error: "No vehicle found" });
         }

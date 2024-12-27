@@ -2,7 +2,6 @@ import express from "express";
 import {
   addDriver,
   deleteDriver,
-  // driverLogin,
   getDriverByBId,
   getDriverById,
   getDrivers,
