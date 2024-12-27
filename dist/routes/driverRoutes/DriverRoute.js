@@ -13,6 +13,7 @@ router.post("/adddriver", fileUpload_1.default.fields([{ name: "driverImage", ma
 router.get("/getdrivers", driver_1.getDrivers);
 router.get("/getdrivers/:id", driver_1.getDriverById);
 router.get("/getdriverbybid/:id", driver_1.getDriverByBId);
+router.get("/getdrivervehicle/:vehicleId", driver_1.getDriverVehicles);
 router.put("/updatedriverstatus/:id", driver_1.updateDriverStatus);
 router.delete("/deletedriver/:id", driver_1.deleteDriver);
 router.put("/updatedriver/:id", driver_1.updateDriver);

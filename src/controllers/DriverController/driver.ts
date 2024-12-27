@@ -370,3 +370,16 @@ export const resetPwd = async (req: Request, res: Response) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+export const getDriverVehicles = async (req: Request, res: Response) => {
+  const id = req.params.vehicleId;
+  try {
+    const data = await vehicle.find({ vehicleId: id });
+    if (!data) {
+      return res.status(400).json({ error: "No vehicle found" });
+    }
+    return res.send(data);
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};

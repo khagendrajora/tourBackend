@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPwd = exports.updateDriver = exports.deleteDriver = exports.getDriverById = exports.getDriverByVehId = exports.getDriverByBId = exports.getDrivers = exports.updateDriverStatus = exports.verifyDriverEmail = exports.addDriver = void 0;
+exports.getDriverVehicles = exports.resetPwd = exports.updateDriver = exports.deleteDriver = exports.getDriverById = exports.getDriverByVehId = exports.getDriverByBId = exports.getDrivers = exports.updateDriverStatus = exports.verifyDriverEmail = exports.addDriver = void 0;
 const Driver_1 = __importDefault(require("../../models/Drivers/Driver"));
 const token_1 = __importDefault(require("../../models/token"));
 const uuid_1 = require("uuid");
@@ -369,3 +369,17 @@ const resetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.resetPwd = resetPwd;
+const getDriverVehicles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.vehicleId;
+    try {
+        const data = yield vehicle_1.default.find({ vehicleId: id });
+        if (!data) {
+            return res.status(400).json({ error: "No vehicle found" });
+        }
+        return res.send(data);
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.getDriverVehicles = getDriverVehicles;

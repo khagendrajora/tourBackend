@@ -6,6 +6,7 @@ import {
   getDriverByBId,
   getDriverById,
   getDrivers,
+  getDriverVehicles,
   resetPwd,
   updateDriver,
   updateDriverStatus,
@@ -26,6 +27,7 @@ router.post(
 router.get("/getdrivers", getDrivers);
 router.get("/getdrivers/:id", getDriverById);
 router.get("/getdriverbybid/:id", getDriverByBId);
+router.get("/getdrivervehicle/:vehicleId", getDriverVehicles);
 
 router.put("/updatedriverstatus/:id", updateDriverStatus);
 router.delete("/deletedriver/:id", deleteDriver);
