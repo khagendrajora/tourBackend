@@ -113,14 +113,13 @@ export const updateHotdeals = async (req: Request, res: Response) => {
 export const deleteHotDeals = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
-    await HotDeals.findOneAndDelete({ vehicleId: id }).then((data) => {
-      if (!data) {
-        return res.status(404).json({ error: "Failed to delete" });
-      } else {
-        return res.status(200).json({ message: "Successfully Deleted" });
-      }
-    });
+    const deleteHotDeals = await HotDeals.findByIdAndDelete(id);
+    if (!deleteHotDeals) {
+      return res.status(404).json({ error: "Failed" });
+    }
+
+    return res.status(200).json({ message: "Successfully Removed" });
   } catch (error: any) {
-    return res.status(500).json({ error: "internal error" });
+    return res.status(500).json({ error: error.message });
   }
 };

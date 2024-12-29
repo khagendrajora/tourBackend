@@ -25,5 +25,5 @@ router.get("/gethotdeals", HotDealsCOntroller_1.getHotDeals);
 router.get("/gethodealbyid/:id", HotDealsCOntroller_1.getHotDealsById);
 router.get("/gethotdealbyvehid/:id", HotDealsCOntroller_1.getHotDealsByVehId);
 router.put("/updatehotdeal/:id", HotDealsCOntroller_1.updateHotdeals);
-router.delete("/hotdeal/:id", HotDealsCOntroller_1.deleteHotDeals);
+router.delete("/deletehotdeal/:id", HotDealsCOntroller_1.deleteHotDeals);
 exports.default = router;

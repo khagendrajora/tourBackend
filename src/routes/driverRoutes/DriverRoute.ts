@@ -47,6 +47,6 @@ router.get("/gethotdeals", getHotDeals);
 router.get("/gethodealbyid/:id", getHotDealsById);
 router.get("/gethotdealbyvehid/:id", getHotDealsByVehId);
 router.put("/updatehotdeal/:id", updateHotdeals);
-router.delete("/hotdeal/:id", deleteHotDeals);
+router.delete("/deletehotdeal/:id", deleteHotDeals);
 
 export default router;

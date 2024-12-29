@@ -131,17 +131,14 @@ exports.updateHotdeals = updateHotdeals;
 const deleteHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        yield HotDeals_1.default.findOneAndDelete({ vehicleId: id }).then((data) => {
-            if (!data) {
-                return res.status(404).json({ error: "Failed to delete" });
-            }
-            else {
-                return res.status(200).json({ message: "Successfully Deleted" });
-            }
-        });
+        const deleteHotDeals = yield HotDeals_1.default.findByIdAndDelete(id);
+        if (!deleteHotDeals) {
+            return res.status(404).json({ error: "Failed" });
+        }
+        return res.status(200).json({ message: "Successfully Removed" });
     }
     catch (error) {
-        return res.status(500).json({ error: "internal error" });
+        return res.status(500).json({ error: error.message });
     }
 });
 exports.deleteHotDeals = deleteHotDeals;
