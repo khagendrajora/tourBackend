@@ -2,10 +2,11 @@ import { Request, Response } from "express";
 import HotDeals from "../../models/HotDeals/HotDeals";
 const { customAlphabet } = require("nanoid");
 import vehicle from "../../models/Product/vehicle";
+import Driver from "../../models/Drivers/Driver";
 
 export const addHotDeals = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const { price, sourceAddress, destAddress, vehicle } = req.body;
+  const { price, sourceAddress, destAddress, driverId, vehicle } = req.body;
   const customId = customAlphabet("1234567890", 4);
   let hdID = customId();
   hdID = "hd" + hdID;
@@ -15,11 +16,21 @@ export const addHotDeals = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Vehicle Not found" });
     }
 
+    const driverData = await Driver.findOne({ driverId: driverId });
+    if (!driverData) {
+      return res.status(400).json({ error: "Driver Not found" });
+    }
+
     let data = new HotDeals({
       price,
       sourceAddress,
       destAddress,
-      vehicle: vehData.name,
+      vehicleName: vehData.name,
+      vehicleId: id,
+      businessId: vehData.businessId,
+      driverName: driverData.driverName,
+      driverPhone: driverData.driverPhone,
+      driverId,
       hdID,
     });
     data = await data.save();
