@@ -20,7 +20,7 @@ const Driver_1 = __importDefault(require("../../models/Drivers/Driver"));
 const business_1 = __importDefault(require("../../models/business"));
 const addHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { price, sourceAddress, destAddress, driverId, vehicle } = req.body;
+    const { price, sourceAddress, destAddress, driverId, date } = req.body;
     const customId = customAlphabet("1234567890", 4);
     let hdID = customId();
     hdID = "hd" + hdID;
@@ -41,6 +41,7 @@ const addHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             price,
             sourceAddress,
             destAddress,
+            date,
             businessName: businessData.businessName,
             vehicleName: vehData.name,
             vehicleId: id,

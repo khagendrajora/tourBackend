@@ -16,6 +16,7 @@ export interface IHotDeal extends Document {
   driverPhone: string;
   status: IHotDealStatus;
   price: number;
+  date: Date;
   sourceAddress: string;
   destAddress: string;
   hdID: string;
@@ -25,6 +26,10 @@ const hotDealsSchema = new mongoose.Schema(
   {
     vehicleId: {
       type: String,
+      required: true,
+    },
+    date: {
+      type: Date,
       required: true,
     },
     businessName: {
