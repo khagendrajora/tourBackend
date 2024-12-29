@@ -113,7 +113,7 @@ export const updateHotdeals = async (req: Request, res: Response) => {
 export const deleteHotDeals = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
-    HotDeals.findOneAndDelete({ vehicleId: id }).then((data) => {
+    await HotDeals.findOneAndDelete({ vehicleId: id }).then((data) => {
       if (!data) {
         return res.status(404).json({ error: "Failed to delete" });
       } else {

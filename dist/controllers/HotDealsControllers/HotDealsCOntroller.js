@@ -131,7 +131,7 @@ exports.updateHotdeals = updateHotdeals;
 const deleteHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        HotDeals_1.default.findOneAndDelete({ vehicleId: id }).then((data) => {
+        yield HotDeals_1.default.findOneAndDelete({ vehicleId: id }).then((data) => {
             if (!data) {
                 return res.status(404).json({ error: "Failed to delete" });
             }
