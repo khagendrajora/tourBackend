@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import HotDeals from "../../models/HotDeals/HotDeals";
 const { customAlphabet } = require("nanoid");
-import vehicle from "../../models/Product/vehicle";
+import Vehicle from "../../models/Product/vehicle";
 import Driver from "../../models/Drivers/Driver";
 
 export const addHotDeals = async (req: Request, res: Response) => {
@@ -11,7 +11,7 @@ export const addHotDeals = async (req: Request, res: Response) => {
   let hdID = customId();
   hdID = "hd" + hdID;
   try {
-    const vehData = await vehicle.findOne({ vehId: id });
+    const vehData = await Vehicle.findOne({ vehId: id });
     if (!vehData) {
       return res.status(400).json({ error: "Vehicle Not found" });
     }

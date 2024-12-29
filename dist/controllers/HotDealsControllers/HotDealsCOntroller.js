@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteHotDeals = exports.updateHotdeals = exports.getHotDealsById = exports.getHotDeals = exports.addHotDeals = void 0;
 const HotDeals_1 = __importDefault(require("../../models/HotDeals/HotDeals"));
 const { customAlphabet } = require("nanoid");
+const vehicle_1 = __importDefault(require("../../models/Product/vehicle"));
 const Driver_1 = __importDefault(require("../../models/Drivers/Driver"));
 const addHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
@@ -23,7 +24,7 @@ const addHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     let hdID = customId();
     hdID = "hd" + hdID;
     try {
-        const vehData = yield vehicle.findOne({ vehId: id });
+        const vehData = yield vehicle_1.default.findOne({ vehId: id });
         if (!vehData) {
             return res.status(400).json({ error: "Vehicle Not found" });
         }
