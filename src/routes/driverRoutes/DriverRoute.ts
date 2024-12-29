@@ -12,6 +12,13 @@ import {
   verifyDriverEmail,
 } from "../../controllers/DriverController/driver";
 import upload from "../../middleware/fileUpload";
+import {
+  addHotDeals,
+  deleteHotDeals,
+  getHotDeals,
+  getHotDealsById,
+  updateHotdeals,
+} from "../../controllers/HotDealsControllers/HotDealsCOntroller";
 
 const router = express.Router();
 
@@ -33,5 +40,11 @@ router.delete("/deletedriver/:id", deleteDriver);
 router.put("/updatedriver/:id", updateDriver);
 router.put("/resetdriverpwd/:token", resetPwd);
 router.put("/resetandverifyemail/:token", verifyDriverEmail);
+
+router.post("/addhotdeals/:id", addHotDeals);
+router.get("/gethotdeals", getHotDeals);
+router.get("/gethodealbyid/:id", getHotDealsById);
+router.put("/updatehotdeal/:id", updateHotdeals);
+router.delete("/hotdeal/:id", deleteHotDeals);
 
 export default router;

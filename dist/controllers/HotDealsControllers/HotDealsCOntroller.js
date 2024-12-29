@@ -14,14 +14,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteHotDeals = exports.updateHotdeals = exports.getHotDealsById = exports.getHotDeals = exports.addHotDeals = void 0;
 const HotDeals_1 = __importDefault(require("../../models/HotDeals/HotDeals"));
+const { customAlphabet } = require("nanoid");
 const addHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
     const { price, sourceAddress, destAddress, vehicle } = req.body;
+    const customId = customAlphabet("1234567890", 4);
+    let hdID = customId();
+    hdID = "hd" + hdID;
     try {
+        const vehData = yield vehicle.findOne({ vehId: id });
+        if (!vehData) {
+            return res.status(400).json({ error: "Vehicle Not found" });
+        }
         let data = new HotDeals_1.default({
             price,
             sourceAddress,
             destAddress,
-            vehicle,
+            vehicle: vehData.name,
+            hdID,
         });
         data = yield data.save();
         if (!data) {
@@ -54,7 +64,7 @@ exports.getHotDeals = getHotDeals;
 const getHotDealsById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        let data = yield HotDeals_1.default.findById(id);
+        let data = yield HotDeals_1.default.find({ hdID: id });
         if (!data) {
             return res.status(404).json({ error: "failed" });
         }
@@ -71,7 +81,7 @@ const updateHotdeals = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const id = req.params.id;
     let { price, sourceAddress, destAddress, vehicle } = req.body;
     try {
-        const aboutUS = yield HotDeals_1.default.findByIdAndUpdate(id, {
+        const aboutUS = yield HotDeals_1.default.findOneAndUpdate({ hdID: id }, {
             price,
             sourceAddress,
             destAddress,

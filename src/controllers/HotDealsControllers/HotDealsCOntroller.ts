@@ -1,14 +1,26 @@
 import { Request, Response } from "express";
 import HotDeals from "../../models/HotDeals/HotDeals";
+const { customAlphabet } = require("nanoid");
+import vehicle from "../../models/Product/vehicle";
 
 export const addHotDeals = async (req: Request, res: Response) => {
+  const id = req.params.id;
   const { price, sourceAddress, destAddress, vehicle } = req.body;
+  const customId = customAlphabet("1234567890", 4);
+  let hdID = customId();
+  hdID = "hd" + hdID;
   try {
+    const vehData = await vehicle.findOne({ vehId: id });
+    if (!vehData) {
+      return res.status(400).json({ error: "Vehicle Not found" });
+    }
+
     let data = new HotDeals({
       price,
       sourceAddress,
       destAddress,
-      vehicle,
+      vehicle: vehData.name,
+      hdID,
     });
     data = await data.save();
     if (!data) {
@@ -36,7 +48,7 @@ export const getHotDeals = async (req: Request, res: Response) => {
 export const getHotDealsById = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
-    let data = await HotDeals.findById(id);
+    let data = await HotDeals.find({ hdID: id });
     if (!data) {
       return res.status(404).json({ error: "failed" });
     } else {
@@ -51,8 +63,8 @@ export const updateHotdeals = async (req: Request, res: Response) => {
   const id = req.params.id;
   let { price, sourceAddress, destAddress, vehicle } = req.body;
   try {
-    const aboutUS = await HotDeals.findByIdAndUpdate(
-      id,
+    const aboutUS = await HotDeals.findOneAndUpdate(
+      { hdID: id },
       {
         price,
         sourceAddress,
