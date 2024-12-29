@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteHotDeals = exports.updateHotdeals = exports.getHotDealsById = exports.getHotDeals = exports.addHotDeals = void 0;
+exports.deleteHotDeals = exports.updateHotdeals = exports.getHotDealsByVehId = exports.getHotDealsById = exports.getHotDeals = exports.addHotDeals = void 0;
 const HotDeals_1 = __importDefault(require("../../models/HotDeals/HotDeals"));
 const { customAlphabet } = require("nanoid");
 const vehicle_1 = __importDefault(require("../../models/Product/vehicle"));
@@ -88,6 +88,22 @@ const getHotDealsById = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.getHotDealsById = getHotDealsById;
+const getHotDealsByVehId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        let data = yield HotDeals_1.default.find({ vehicleId: id });
+        if (!data) {
+            return res.status(404).json({ error: "failed to get hot deal data" });
+        }
+        else {
+            return res.send(data);
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: "internal error" });
+    }
+});
+exports.getHotDealsByVehId = getHotDealsByVehId;
 const updateHotdeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     let { price, sourceAddress, destAddress, vehicle } = req.body;
@@ -115,7 +131,7 @@ exports.updateHotdeals = updateHotdeals;
 const deleteHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        HotDeals_1.default.findByIdAndDelete(id).then((data) => {
+        HotDeals_1.default.findOneAndDelete({ vehicleId: id }).then((data) => {
             if (!data) {
                 return res.status(404).json({ error: "Failed to delete" });
             }

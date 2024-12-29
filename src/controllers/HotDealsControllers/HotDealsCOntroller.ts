@@ -70,6 +70,20 @@ export const getHotDealsById = async (req: Request, res: Response) => {
   }
 };
 
+export const getHotDealsByVehId = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    let data = await HotDeals.find({ vehicleId: id });
+    if (!data) {
+      return res.status(404).json({ error: "failed to get hot deal data" });
+    } else {
+      return res.send(data);
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};
+
 export const updateHotdeals = async (req: Request, res: Response) => {
   const id = req.params.id;
   let { price, sourceAddress, destAddress, vehicle } = req.body;
@@ -99,7 +113,7 @@ export const updateHotdeals = async (req: Request, res: Response) => {
 export const deleteHotDeals = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
-    HotDeals.findByIdAndDelete(id).then((data) => {
+    HotDeals.findOneAndDelete({ vehicleId: id }).then((data) => {
       if (!data) {
         return res.status(404).json({ error: "Failed to delete" });
       } else {
