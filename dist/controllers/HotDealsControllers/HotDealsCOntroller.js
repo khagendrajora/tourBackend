@@ -17,6 +17,7 @@ const HotDeals_1 = __importDefault(require("../../models/HotDeals/HotDeals"));
 const { customAlphabet } = require("nanoid");
 const vehicle_1 = __importDefault(require("../../models/Product/vehicle"));
 const Driver_1 = __importDefault(require("../../models/Drivers/Driver"));
+const business_1 = __importDefault(require("../../models/business"));
 const addHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const { price, sourceAddress, destAddress, driverId, vehicle } = req.body;
@@ -28,6 +29,10 @@ const addHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         if (!vehData) {
             return res.status(400).json({ error: "Vehicle Not found" });
         }
+        const businessData = yield business_1.default.findOne({ bId: vehData.businessId });
+        if (!businessData) {
+            return res.status(400).json({ error: "Business Not found" });
+        }
         const driverData = yield Driver_1.default.findOne({ driverId: driverId });
         if (!driverData) {
             return res.status(400).json({ error: "Driver Not found" });
@@ -36,6 +41,7 @@ const addHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             price,
             sourceAddress,
             destAddress,
+            businessName: businessData.businessName,
             vehicleName: vehData.name,
             vehicleId: id,
             businessId: vehData.businessId,

@@ -3,6 +3,7 @@ import HotDeals from "../../models/HotDeals/HotDeals";
 const { customAlphabet } = require("nanoid");
 import Vehicle from "../../models/Product/vehicle";
 import Driver from "../../models/Drivers/Driver";
+import Business from "../../models/business";
 
 export const addHotDeals = async (req: Request, res: Response) => {
   const id = req.params.id;
@@ -16,6 +17,10 @@ export const addHotDeals = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Vehicle Not found" });
     }
 
+    const businessData = await Business.findOne({ bId: vehData.businessId });
+    if (!businessData) {
+      return res.status(400).json({ error: "Business Not found" });
+    }
     const driverData = await Driver.findOne({ driverId: driverId });
     if (!driverData) {
       return res.status(400).json({ error: "Driver Not found" });
@@ -25,6 +30,7 @@ export const addHotDeals = async (req: Request, res: Response) => {
       price,
       sourceAddress,
       destAddress,
+      businessName: businessData.businessName,
       vehicleName: vehData.name,
       vehicleId: id,
       businessId: vehData.businessId,

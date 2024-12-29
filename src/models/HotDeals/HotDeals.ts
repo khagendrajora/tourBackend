@@ -10,6 +10,7 @@ export interface IHotDeal extends Document {
   driverId: string;
   vehicleId: string;
   vehicleName: string;
+  businessName: string;
   businessId: string;
   driverName: string;
   driverPhone: string;
@@ -23,6 +24,10 @@ export interface IHotDeal extends Document {
 const hotDealsSchema = new mongoose.Schema(
   {
     vehicleId: {
+      type: String,
+      required: true,
+    },
+    businessName: {
       type: String,
       required: true,
     },
