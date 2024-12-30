@@ -15,6 +15,18 @@ const hotDealsSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    sourceAddress: {
+        type: String,
+        required: true,
+    },
+    destAddress: {
+        type: String,
+        required: true,
+    },
+    price: {
+        type: Number,
+        required: true,
+    },
     date: {
         type: Date,
         required: true,
