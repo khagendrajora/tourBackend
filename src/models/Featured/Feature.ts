@@ -10,12 +10,17 @@ export interface IFeature extends Document {
   Id: string;
   name: string;
   businessName: string;
+  productId: string;
   status: FeatureStatus;
 }
 
 const featureSchema = new mongoose.Schema(
   {
     Id: {
+      type: String,
+      required: true,
+    },
+    productId: {
       type: String,
       required: true,
     },

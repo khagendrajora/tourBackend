@@ -520,12 +520,13 @@ const resetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.resetPwd = resetPwd;
 const featureRequest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { businessName, name } = req.body;
+    const { businessName, name, productId } = req.body;
     try {
         let data = new Feature_1.default({
             Id: id,
             businessName,
             name,
+            productId,
         });
         data = yield data.save();
         if (!data) {

@@ -525,12 +525,13 @@ export const resetPwd = async (req: Request, res: Response) => {
 
 export const featureRequest = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const { businessName, name } = req.body;
+  const { businessName, name, productId } = req.body;
   try {
     let data = new Feature({
       Id: id,
       businessName,
       name,
+      productId,
     });
     data = await data.save();
     if (!data) {
