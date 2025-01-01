@@ -50,10 +50,10 @@ const addDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (email) {
             return res.status(400).json({ error: "Email already registered" });
         }
-        const businessEmail = yield business_1.default.findOne({ primaryEmail: driverEmail });
-        if (!businessEmail) {
-            return res.status(400).json({ error: "Business Not Found" });
-        }
+        // const businessEmail = await Business.findOne({ primaryEmail: driverEmail });
+        // if (!businessEmail) {
+        //   return res.status(400).json({ error: "Business Not Found" });
+        // }
         const businessData = yield business_1.default.findOne({ bId: businessId });
         if (!businessData) {
             return res.status(400).json({ error: "Business Not Found" });

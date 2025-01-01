@@ -46,10 +46,10 @@ export const addDriver = async (req: Request, res: Response) => {
     if (email) {
       return res.status(400).json({ error: "Email already registered" });
     }
-    const businessEmail = await Business.findOne({ primaryEmail: driverEmail });
-    if (!businessEmail) {
-      return res.status(400).json({ error: "Business Not Found" });
-    }
+    // const businessEmail = await Business.findOne({ primaryEmail: driverEmail });
+    // if (!businessEmail) {
+    //   return res.status(400).json({ error: "Business Not Found" });
+    // }
 
     const businessData = await Business.findOne({ bId: businessId });
     if (!businessData) {
