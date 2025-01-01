@@ -51,17 +51,28 @@ const addDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return res.status(400).json({ error: "Email already registered" });
         }
         const businessEmail = yield business_1.default.findOne({ primaryEmail: driverEmail });
-        if (businessEmail) {
-            return res.status(400).json({ error: "Email already registered" });
+        if (!businessEmail) {
+            return res.status(400).json({ error: "Business Not Found" });
+        }
+        const businessData = yield business_1.default.findOne({ bId: businessId });
+        if (!businessData) {
+            return res.status(400).json({ error: "Business Not Found" });
+        }
+        const emailCheck = yield business_1.default.findOne({
+            primaryEmail: { $ne: businessData.primaryEmail },
+            $or: [{ primaryEmail: driverEmail }],
+        });
+        if (emailCheck) {
+            return res.status(400).json({ error: "Email already in use" });
         }
         const adminEmail = yield adminUser_1.default.findOne({ adminEmail: driverEmail });
         if (adminEmail) {
             return res.status(400).json({ error: "Email already registered" });
         }
         const vehicleName = yield vehicle_1.default.findOne({ vehId: vehicleId });
-        if (driverNumber) {
-            return res.status(400).json({ error: "Phone Number is already used " });
-        }
+        // if (driverNumber) {
+        //   return res.status(400).json({ error: "Phone Number is already used " });
+        // }
         const salt = yield bcryptjs_1.default.genSalt(5);
         let hashedPassword = yield bcryptjs_1.default.hash(driverPwd, salt);
         let newDriver = new Driver_1.default({
@@ -163,44 +174,6 @@ const verifyDriverEmail = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.verifyDriverEmail = verifyDriverEmail;
-// export const driverLogin = async (req: Request, res: Response) => {
-//   const { driverEmail, driverPwd } = req.body;
-//   try {
-//     const email = await Driver.findOne({
-//       driverEmail: driverEmail,
-//     });
-//     if (!email) {
-//       return res.status(404).json({
-//         error: "Email not found",
-//       });
-//     }
-//     const isPassword = await bcryptjs.compare(driverPwd, email.driverPwd);
-//     if (!isPassword) {
-//       return res.status(400).json({ error: "Incorrect Password" });
-//     }
-//     const isVerified = email.isVerified;
-//     if (!isVerified) {
-//       return res.status(400).json({ error: "Email not Verified" });
-//     }
-//     const data = { id: email._id };
-//     const authToken = jwt.sign(data, process.env.JWTSECRET as string);
-//     res.cookie("authToken", authToken, {
-//       httpOnly: true,
-//       sameSite: "strict",
-//       maxAge: 3600000,
-//     });
-//     return res.status(200).json({
-//       message: "Login succssfully",
-//       authToken: authToken,
-//       driver_id: email._id,
-//       driverId: email.driverId,
-//       driverEmail: email.driverEmail,
-//       driverName: email.driverName,
-//     });
-//   } catch (error: any) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
 const updateDriverStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const { status, driverEmail } = req.body;

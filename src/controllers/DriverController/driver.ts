@@ -46,10 +46,23 @@ export const addDriver = async (req: Request, res: Response) => {
     if (email) {
       return res.status(400).json({ error: "Email already registered" });
     }
-
     const businessEmail = await Business.findOne({ primaryEmail: driverEmail });
-    if (businessEmail) {
-      return res.status(400).json({ error: "Email already registered" });
+    if (!businessEmail) {
+      return res.status(400).json({ error: "Business Not Found" });
+    }
+
+    const businessData = await Business.findOne({ bId: businessId });
+    if (!businessData) {
+      return res.status(400).json({ error: "Business Not Found" });
+    }
+
+    const emailCheck = await Business.findOne({
+      primaryEmail: { $ne: businessData.primaryEmail },
+      $or: [{ primaryEmail: driverEmail }],
+    });
+
+    if (emailCheck) {
+      return res.status(400).json({ error: "Email already in use" });
     }
 
     const adminEmail = await AdminUser.findOne({ adminEmail: driverEmail });
@@ -58,9 +71,10 @@ export const addDriver = async (req: Request, res: Response) => {
     }
 
     const vehicleName = await vehicle.findOne({ vehId: vehicleId });
-    if (driverNumber) {
-      return res.status(400).json({ error: "Phone Number is already used " });
-    }
+
+    // if (driverNumber) {
+    //   return res.status(400).json({ error: "Phone Number is already used " });
+    // }
 
     const salt = await bcryptjs.genSalt(5);
     let hashedPassword = await bcryptjs.hash(driverPwd, salt);
@@ -161,48 +175,6 @@ export const verifyDriverEmail = async (req: Request, res: Response) => {
     return res.status(500).json({ error: error.message });
   }
 };
-
-// export const driverLogin = async (req: Request, res: Response) => {
-//   const { driverEmail, driverPwd } = req.body;
-//   try {
-//     const email = await Driver.findOne({
-//       driverEmail: driverEmail,
-//     });
-//     if (!email) {
-//       return res.status(404).json({
-//         error: "Email not found",
-//       });
-//     }
-//     const isPassword = await bcryptjs.compare(driverPwd, email.driverPwd);
-//     if (!isPassword) {
-//       return res.status(400).json({ error: "Incorrect Password" });
-//     }
-
-//     const isVerified = email.isVerified;
-
-//     if (!isVerified) {
-//       return res.status(400).json({ error: "Email not Verified" });
-//     }
-
-//     const data = { id: email._id };
-//     const authToken = jwt.sign(data, process.env.JWTSECRET as string);
-//     res.cookie("authToken", authToken, {
-//       httpOnly: true,
-//       sameSite: "strict",
-//       maxAge: 3600000,
-//     });
-//     return res.status(200).json({
-//       message: "Login succssfully",
-//       authToken: authToken,
-//       driver_id: email._id,
-//       driverId: email.driverId,
-//       driverEmail: email.driverEmail,
-//       driverName: email.driverName,
-//     });
-//   } catch (error: any) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
 
 export const updateDriverStatus = async (req: Request, res: Response) => {
   const id = req.params.id;
