@@ -8,6 +8,10 @@ const trekSchema = new mongoose_1.default.Schema({
     businessId: {
         type: String,
     },
+    isFeatured: {
+        type: Boolean,
+        default: false,
+    },
     trekId: {
         type: String,
         required: true,

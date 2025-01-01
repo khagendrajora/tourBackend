@@ -9,6 +9,9 @@ import { v4 as uuid } from "uuid";
 import Driver from "../models/Drivers/Driver";
 import { sendEmail } from "../utils/setEmail";
 import User from "../models/User/userModel";
+import Tour from "../models/Product/tour";
+import Trekking from "../models/Product/trekking";
+import Vehicle from "../models/Product/vehicle";
 
 export const addAdminUser = async (req: Request, res: Response) => {
   const { adminName, adminEmail, adminPwd } = req.body;
@@ -475,6 +478,63 @@ export const deleteAdmin = async (req: Request, res: Response) => {
     }
 
     return res.status(200).json({ message: "Successfully Deleted" });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const tourFeature = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    const tour = await Tour.findById(id);
+    if (!tour) {
+      return res.status(404).json({ error: "Tour not found" });
+    }
+    tour.isFeatured = !tour.isFeatured;
+    const updated = await tour.save();
+    if (!updated) {
+      return res.status(404).json({ error: "Failed" });
+    }
+
+    return res.status(200).json({ message: "Successfully Updated" });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const trekFeature = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    const tour = await Trekking.findById(id);
+    if (!tour) {
+      return res.status(404).json({ error: "Trek not found" });
+    }
+    tour.isFeatured = !tour.isFeatured;
+    const updated = await tour.save();
+    if (!updated) {
+      return res.status(404).json({ error: "Failed" });
+    }
+
+    return res.status(200).json({ message: "Successfully Updated" });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const vehFeature = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    const tour = await Vehicle.findById(id);
+    if (!tour) {
+      return res.status(404).json({ error: "Vehicle not found" });
+    }
+    tour.isFeatured = !tour.isFeatured;
+    const updated = await tour.save();
+    if (!updated) {
+      return res.status(404).json({ error: "Failed" });
+    }
+
+    return res.status(200).json({ message: "Successfully Updated" });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }

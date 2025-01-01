@@ -15,11 +15,16 @@ export interface ITrekking extends Document {
   operationDates?: Date[];
   trekImages?: string[];
   trekId: string;
+  isFeatured: boolean;
 }
 
 const trekSchema = new mongoose.Schema({
   businessId: {
     type: String,
+  },
+  isFeatured: {
+    type: Boolean,
+    default: false,
   },
   trekId: {
     type: String,

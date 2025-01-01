@@ -16,4 +16,7 @@ router.post("/forgetadminpwd", userController_1.forgetPass);
 router.put("/resetpwd/:token", userController_1.resetPass);
 router.post("/addbusinessbyadmin", userController_1.addBusinessByAdmin);
 router.delete("/deleteadmin/:id", userController_1.deleteAdmin);
+router.put("/featureveh/:id", userController_1.vehFeature);
+router.put("/featuretour/:id", userController_1.tourFeature);
+router.put("/featuretrek/:id", userController_1.trekFeature);
 exports.default = router;

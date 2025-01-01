@@ -13,6 +13,10 @@ const VehSchema = new mongoose_1.default.Schema({
     businessId: {
         type: String,
     },
+    isFeatured: {
+        type: Boolean,
+        default: false,
+    },
     vehId: {
         type: String,
         required: true,

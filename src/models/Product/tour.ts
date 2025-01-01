@@ -15,6 +15,7 @@ export interface ITour extends Document {
   phone: number;
   operationDates: Date[];
   tourImages?: string[];
+  isFeatured: boolean;
 }
 
 const tourSchema = new mongoose.Schema({
@@ -68,7 +69,10 @@ const tourSchema = new mongoose.Schema({
       required: true,
     },
   ],
-
+  isFeatured: {
+    type: Boolean,
+    default: false,
+  },
   tourImages: [
     {
       type: String,

@@ -9,6 +9,9 @@ import {
   forgetPass,
   getAdmin,
   resetPass,
+  tourFeature,
+  trekFeature,
+  vehFeature,
 } from "../controllers/userController";
 import { adminSignup, validation } from "../validation/Validation";
 const router = express.Router();
@@ -22,5 +25,9 @@ router.post("/forgetadminpwd", forgetPass);
 router.put("/resetpwd/:token", resetPass);
 router.post("/addbusinessbyadmin", addBusinessByAdmin);
 router.delete("/deleteadmin/:id", deleteAdmin);
+
+router.put("/featureveh/:id", vehFeature);
+router.put("/featuretour/:id", tourFeature);
+router.put("/featuretrek/:id", trekFeature);
 
 export default router;

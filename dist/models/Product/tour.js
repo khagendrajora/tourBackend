@@ -53,6 +53,10 @@ const tourSchema = new mongoose_1.default.Schema({
             required: true,
         },
     ],
+    isFeatured: {
+        type: Boolean,
+        default: false,
+    },
     tourImages: [
         {
             type: String,

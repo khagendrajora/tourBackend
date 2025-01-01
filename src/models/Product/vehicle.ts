@@ -9,6 +9,7 @@ export interface IVeh extends Document {
   businessId: string;
   businessName: string;
   vehCategory: string;
+  isFeatured: boolean;
   vehSubCategory: string;
   services: string[];
   amenities: string[];
@@ -30,6 +31,10 @@ const VehSchema = new mongoose.Schema(
   {
     businessId: {
       type: String,
+    },
+    isFeatured: {
+      type: Boolean,
+      default: false,
     },
     vehId: {
       type: String,
