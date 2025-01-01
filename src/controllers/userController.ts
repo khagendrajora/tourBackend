@@ -549,7 +549,7 @@ export const addFeature = async (req: Request, res: Response) => {
 export const deleteFeatureRequest = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
-    const deleteFeature = await Feature.findByIdAndDelete(id);
+    const deleteFeature = await Feature.findOneAndDelete({ Id: id });
     if (!deleteFeature) {
       return res.status(404).json({ error: "Failed to delete" });
     }

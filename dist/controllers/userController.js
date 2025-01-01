@@ -539,7 +539,7 @@ exports.addFeature = addFeature;
 const deleteFeatureRequest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        const deleteFeature = yield Feature_1.default.findByIdAndDelete(id);
+        const deleteFeature = yield Feature_1.default.findOneAndDelete({ Id: id });
         if (!deleteFeature) {
             return res.status(404).json({ error: "Failed to delete" });
         }
