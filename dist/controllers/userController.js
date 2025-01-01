@@ -516,6 +516,12 @@ const addFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 if (!updated) {
                     return res.status(404).json({ error: "Failed" });
                 }
+                const feature = yield Feature_1.default.findOneAndUpdate({ Id: id }, {
+                    status: "Accepted",
+                }, { new: true });
+                if (!feature) {
+                    return res.status(404).json({ error: "Failed" });
+                }
                 return res.status(200).json({ message: "Successfully Updated" });
             }
             else {
@@ -524,6 +530,12 @@ const addFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                     veh.isFeatured = !veh.isFeatured;
                     const updated = yield veh.save();
                     if (!updated) {
+                        return res.status(404).json({ error: "Failed" });
+                    }
+                    const feature = yield Feature_1.default.findOneAndUpdate({ Id: id }, {
+                        status: "Accepted",
+                    }, { new: true });
+                    if (!feature) {
                         return res.status(404).json({ error: "Failed" });
                     }
                     return res.status(200).json({ message: "Successfully Updated" });
