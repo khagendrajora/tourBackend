@@ -18,6 +18,7 @@ const Blogs_1 = __importDefault(require("../../models/Pages/LandingPage/Blogs"))
 const { customAlphabet } = require("nanoid");
 const Destination_1 = __importDefault(require("../../models/Pages/LandingPage/Destination"));
 const addHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { heading, description } = req.body;
     try {
         let heroImage = [];
         if (req.files) {
@@ -28,13 +29,15 @@ const addHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         let hero = new Hero_1.default({
             heroImage,
+            heading,
+            description,
         });
         hero = yield hero.save();
         if (!hero) {
-            return res.status(400).json({ error: "failed to save" });
+            return res.status(400).json({ error: "Failed" });
         }
         else {
-            return res.status(200).json({ message: "Added" });
+            return res.status(200).json({ message: "Saved" });
         }
     }
     catch (error) {
@@ -59,6 +62,7 @@ const getHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getHero = getHero;
 const updateHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
+    const { heading, description } = req.body;
     try {
         let heroImage = req.body.existingheroImage || [];
         if (req.files) {
@@ -70,6 +74,8 @@ const updateHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         }
         const hero = yield Hero_1.default.findByIdAndUpdate(id, {
             heroImage,
+            heading,
+            description,
         }, { new: true });
         if (!hero) {
             return res.status(400).json({

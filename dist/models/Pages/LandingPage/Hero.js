@@ -10,5 +10,11 @@ const heroSchema = new mongoose_1.default.Schema({
             type: String,
         },
     ],
+    heading: {
+        type: String,
+    },
+    description: {
+        type: String,
+    },
 });
 exports.default = mongoose_1.default.model("Hero", heroSchema);

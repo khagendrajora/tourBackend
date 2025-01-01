@@ -5,6 +5,7 @@ const { customAlphabet } = require("nanoid");
 import Destination from "../../models/Pages/LandingPage/Destination";
 
 export const addHero = async (req: Request, res: Response) => {
+  const { heading, description } = req.body;
   try {
     let heroImage: string[] = [];
     if (req.files) {
@@ -15,12 +16,14 @@ export const addHero = async (req: Request, res: Response) => {
     }
     let hero = new Hero({
       heroImage,
+      heading,
+      description,
     });
     hero = await hero.save();
     if (!hero) {
-      return res.status(400).json({ error: "failed to save" });
+      return res.status(400).json({ error: "Failed" });
     } else {
-      return res.status(200).json({ message: "Added" });
+      return res.status(200).json({ message: "Saved" });
     }
   } catch (error: any) {
     return res.status(500).json({ error: error });
@@ -42,6 +45,7 @@ export const getHero = async (req: Request, res: Response) => {
 
 export const updateHero = async (req: Request, res: Response) => {
   const id = req.params.id;
+  const { heading, description } = req.body;
 
   try {
     let heroImage: string[] = req.body.existingheroImage || [];
@@ -56,6 +60,8 @@ export const updateHero = async (req: Request, res: Response) => {
       id,
       {
         heroImage,
+        heading,
+        description,
       },
       { new: true }
     );
