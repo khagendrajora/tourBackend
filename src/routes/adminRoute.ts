@@ -2,16 +2,18 @@ import express from "express";
 import {
   addAdminUser,
   addBusinessByAdmin,
+  addFeature,
   adminlogin,
   // adminSignOut,
   businessApprove,
   deleteAdmin,
   forgetPass,
   getAdmin,
+  getFeature,
   resetPass,
-  tourFeature,
-  trekFeature,
-  vehFeature,
+  // tourFeature,
+  // trekFeature,
+  // vehFeature,
 } from "../controllers/userController";
 import { adminSignup, validation } from "../validation/Validation";
 const router = express.Router();
@@ -26,8 +28,11 @@ router.put("/resetpwd/:token", resetPass);
 router.post("/addbusinessbyadmin", addBusinessByAdmin);
 router.delete("/deleteadmin/:id", deleteAdmin);
 
-router.put("/featureveh/:id", vehFeature);
-router.put("/featuretour/:id", tourFeature);
-router.put("/featuretrek/:id", trekFeature);
+router.get("/getfeature", getFeature);
+router.put("/addfeature/:id", addFeature);
+
+// router.put("/featureveh/:id", vehFeature);
+// router.put("/featuretour/:id", tourFeature);
+// router.put("/featuretrek/:id", trekFeature);
 
 export default router;

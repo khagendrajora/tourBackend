@@ -12,6 +12,7 @@ import User from "../models/User/userModel";
 import Tour from "../models/Product/tour";
 import Trekking from "../models/Product/trekking";
 import Vehicle from "../models/Product/vehicle";
+import Feature from "../models/Featured/Feature";
 
 export const addAdminUser = async (req: Request, res: Response) => {
   const { adminName, adminEmail, adminPwd } = req.body;
@@ -483,59 +484,112 @@ export const deleteAdmin = async (req: Request, res: Response) => {
   }
 };
 
-export const tourFeature = async (req: Request, res: Response) => {
-  const id = req.params.id;
+export const getFeature = async (req: Request, res: Response) => {
   try {
-    const tour = await Tour.findById(id);
-    if (!tour) {
-      return res.status(404).json({ error: "Tour not found" });
-    }
-    tour.isFeatured = !tour.isFeatured;
-    const updated = await tour.save();
-    if (!updated) {
-      return res.status(404).json({ error: "Failed" });
-    }
-
-    return res.status(200).json({ message: "Successfully Updated" });
+    await Feature.find().then((data) => {
+      if (!data) {
+        return res.status(400).json({ error: "Failed to get Feature" });
+      } else {
+        return res.send(data);
+      }
+    });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }
 };
 
-export const trekFeature = async (req: Request, res: Response) => {
+export const addFeature = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
-    const tour = await Trekking.findById(id);
-    if (!tour) {
-      return res.status(404).json({ error: "Trek not found" });
-    }
-    tour.isFeatured = !tour.isFeatured;
-    const updated = await tour.save();
-    if (!updated) {
-      return res.status(404).json({ error: "Failed" });
-    }
+    const tour = await Tour.findOne({ _id: id });
+    if (tour) {
+      tour.isFeatured = !tour.isFeatured;
+      const updated = await tour.save();
+      if (!updated) {
+        return res.status(404).json({ error: "Failed" });
+      }
 
-    return res.status(200).json({ message: "Successfully Updated" });
+      return res.status(200).json({ message: "Successfully Updated" });
+    } else {
+      const trek = await Trekking.findOne({ _id: id });
+      if (trek) {
+        trek.isFeatured = !trek.isFeatured;
+        const updated = await trek.save();
+        if (!updated) {
+          return res.status(404).json({ error: "Failed" });
+        }
+
+        return res.status(200).json({ message: "Successfully Updated" });
+      } else {
+        const veh = await Vehicle.findOne({ _id: id });
+        if (veh) {
+          veh.isFeatured = !veh.isFeatured;
+          const updated = await veh.save();
+          if (!updated) {
+            return res.status(404).json({ error: "Failed" });
+          }
+          return res.status(200).json({ message: "Successfully Updated" });
+        }
+      }
+    }
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }
 };
 
-export const vehFeature = async (req: Request, res: Response) => {
-  const id = req.params.id;
-  try {
-    const tour = await Vehicle.findById(id);
-    if (!tour) {
-      return res.status(404).json({ error: "Vehicle not found" });
-    }
-    tour.isFeatured = !tour.isFeatured;
-    const updated = await tour.save();
-    if (!updated) {
-      return res.status(404).json({ error: "Failed" });
-    }
+// export const tourFeature = async (req: Request, res: Response) => {
+//   const id = req.params.id;
+//   try {
+//     const tour = await Tour.findById(id);
+//     if (!tour) {
+//       return res.status(404).json({ error: "Tour not found" });
+//     }
+//     tour.isFeatured = !tour.isFeatured;
+//     const updated = await tour.save();
+//     if (!updated) {
+//       return res.status(404).json({ error: "Failed" });
+//     }
 
-    return res.status(200).json({ message: "Successfully Updated" });
-  } catch (error: any) {
-    return res.status(500).json({ error: error.message });
-  }
-};
+//     return res.status(200).json({ message: "Successfully Updated" });
+//   } catch (error: any) {
+//     return res.status(500).json({ error: error.message });
+//   }
+// };
+
+// export const trekFeature = async (req: Request, res: Response) => {
+//   const id = req.params.id;
+//   try {
+//     const tour = await Trekking.findById(id);
+//     if (!tour) {
+//       return res.status(404).json({ error: "Trek not found" });
+//     }
+//     tour.isFeatured = !tour.isFeatured;
+//     const updated = await tour.save();
+//     if (!updated) {
+//       return res.status(404).json({ error: "Failed" });
+//     }
+
+//     return res.status(200).json({ message: "Successfully Updated" });
+//   } catch (error: any) {
+//     return res.status(500).json({ error: error.message });
+//   }
+// };
+
+// export const vehFeature = async (req: Request, res: Response) => {
+//   const id = req.params.id;
+//   try {
+//     const tour = await Vehicle.findById(id);
+//     if (!tour) {
+//       return res.status(404).json({ error: "Vehicle not found" });
+//     }
+//     tour.isFeatured = !tour.isFeatured;
+//     const updated = await tour.save();
+//     if (!updated) {
+//       return res.status(404).json({ error: "Failed" });
+//     }
+
+//     return res.status(200).json({ message: "Successfully Updated" });
+//   } catch (error: any) {
+//     return res.status(500).json({ error: error.message });
+//   }
+// };

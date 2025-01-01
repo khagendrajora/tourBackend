@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.vehFeature = exports.trekFeature = exports.tourFeature = exports.deleteAdmin = exports.verifyAndResetPwd = exports.addBusinessByAdmin = exports.resetPass = exports.forgetPass = exports.businessApprove = exports.getAdmin = exports.adminlogin = exports.addAdminUser = void 0;
+exports.addFeature = exports.getFeature = exports.deleteAdmin = exports.verifyAndResetPwd = exports.addBusinessByAdmin = exports.resetPass = exports.forgetPass = exports.businessApprove = exports.getAdmin = exports.adminlogin = exports.addAdminUser = void 0;
 const adminUser_1 = __importDefault(require("../models/adminUser"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const business_1 = __importDefault(require("../models/business"));
@@ -26,6 +26,7 @@ const userModel_1 = __importDefault(require("../models/User/userModel"));
 const tour_1 = __importDefault(require("../models/Product/tour"));
 const trekking_1 = __importDefault(require("../models/Product/trekking"));
 const vehicle_1 = __importDefault(require("../models/Product/vehicle"));
+const Feature_1 = __importDefault(require("../models/Featured/Feature"));
 const addAdminUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { adminName, adminEmail, adminPwd } = req.body;
     const customId = customAlphabet("1234567890", 4);
@@ -473,60 +474,110 @@ const deleteAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.deleteAdmin = deleteAdmin;
-const tourFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = req.params.id;
+const getFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const tour = yield tour_1.default.findById(id);
-        if (!tour) {
-            return res.status(404).json({ error: "Tour not found" });
-        }
-        tour.isFeatured = !tour.isFeatured;
-        const updated = yield tour.save();
-        if (!updated) {
-            return res.status(404).json({ error: "Failed" });
-        }
-        return res.status(200).json({ message: "Successfully Updated" });
+        yield Feature_1.default.find().then((data) => {
+            if (!data) {
+                return res.status(400).json({ error: "Failed to get Feature" });
+            }
+            else {
+                return res.send(data);
+            }
+        });
     }
     catch (error) {
         return res.status(500).json({ error: error.message });
     }
 });
-exports.tourFeature = tourFeature;
-const trekFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getFeature = getFeature;
+const addFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        const tour = yield trekking_1.default.findById(id);
-        if (!tour) {
-            return res.status(404).json({ error: "Trek not found" });
+        const tour = yield tour_1.default.findOne({ _id: id });
+        if (tour) {
+            tour.isFeatured = !tour.isFeatured;
+            const updated = yield tour.save();
+            if (!updated) {
+                return res.status(404).json({ error: "Failed" });
+            }
+            return res.status(200).json({ message: "Successfully Updated" });
         }
-        tour.isFeatured = !tour.isFeatured;
-        const updated = yield tour.save();
-        if (!updated) {
-            return res.status(404).json({ error: "Failed" });
+        else {
+            const trek = yield trekking_1.default.findOne({ _id: id });
+            if (trek) {
+                trek.isFeatured = !trek.isFeatured;
+                const updated = yield trek.save();
+                if (!updated) {
+                    return res.status(404).json({ error: "Failed" });
+                }
+                return res.status(200).json({ message: "Successfully Updated" });
+            }
+            else {
+                const veh = yield vehicle_1.default.findOne({ _id: id });
+                if (veh) {
+                    veh.isFeatured = !veh.isFeatured;
+                    const updated = yield veh.save();
+                    if (!updated) {
+                        return res.status(404).json({ error: "Failed" });
+                    }
+                    return res.status(200).json({ message: "Successfully Updated" });
+                }
+            }
         }
-        return res.status(200).json({ message: "Successfully Updated" });
     }
     catch (error) {
         return res.status(500).json({ error: error.message });
     }
 });
-exports.trekFeature = trekFeature;
-const vehFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = req.params.id;
-    try {
-        const tour = yield vehicle_1.default.findById(id);
-        if (!tour) {
-            return res.status(404).json({ error: "Vehicle not found" });
-        }
-        tour.isFeatured = !tour.isFeatured;
-        const updated = yield tour.save();
-        if (!updated) {
-            return res.status(404).json({ error: "Failed" });
-        }
-        return res.status(200).json({ message: "Successfully Updated" });
-    }
-    catch (error) {
-        return res.status(500).json({ error: error.message });
-    }
-});
-exports.vehFeature = vehFeature;
+exports.addFeature = addFeature;
+// export const tourFeature = async (req: Request, res: Response) => {
+//   const id = req.params.id;
+//   try {
+//     const tour = await Tour.findById(id);
+//     if (!tour) {
+//       return res.status(404).json({ error: "Tour not found" });
+//     }
+//     tour.isFeatured = !tour.isFeatured;
+//     const updated = await tour.save();
+//     if (!updated) {
+//       return res.status(404).json({ error: "Failed" });
+//     }
+//     return res.status(200).json({ message: "Successfully Updated" });
+//   } catch (error: any) {
+//     return res.status(500).json({ error: error.message });
+//   }
+// };
+// export const trekFeature = async (req: Request, res: Response) => {
+//   const id = req.params.id;
+//   try {
+//     const tour = await Trekking.findById(id);
+//     if (!tour) {
+//       return res.status(404).json({ error: "Trek not found" });
+//     }
+//     tour.isFeatured = !tour.isFeatured;
+//     const updated = await tour.save();
+//     if (!updated) {
+//       return res.status(404).json({ error: "Failed" });
+//     }
+//     return res.status(200).json({ message: "Successfully Updated" });
+//   } catch (error: any) {
+//     return res.status(500).json({ error: error.message });
+//   }
+// };
+// export const vehFeature = async (req: Request, res: Response) => {
+//   const id = req.params.id;
+//   try {
+//     const tour = await Vehicle.findById(id);
+//     if (!tour) {
+//       return res.status(404).json({ error: "Vehicle not found" });
+//     }
+//     tour.isFeatured = !tour.isFeatured;
+//     const updated = await tour.save();
+//     if (!updated) {
+//       return res.status(404).json({ error: "Failed" });
+//     }
+//     return res.status(200).json({ message: "Successfully Updated" });
+//   } catch (error: any) {
+//     return res.status(500).json({ error: error.message });
+//   }
+// };

@@ -5,6 +5,7 @@ import {
   businessProfile,
   businessSignOut,
   deleteBusiness,
+  featureRequest,
   forgetPwd,
   getBusiness,
   resetPwd,
@@ -40,5 +41,7 @@ router.post("/forgetpwd", forgetPwd);
 router.put("/resetbusinesspwd/:token", resetPwd);
 
 router.put("/resetandverify/:token", verifyAndResetPwd);
+
+router.post("/requestfeature/:id", featureRequest);
 
 export default router;

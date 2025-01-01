@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPwd = exports.forgetPwd = exports.businessSignOut = exports.deleteBusiness = exports.updateBusinessProfile = exports.getBusiness = exports.businessProfile = exports.verifyEmail = exports.addBusiness = void 0;
+exports.featureRequest = exports.resetPwd = exports.forgetPwd = exports.businessSignOut = exports.deleteBusiness = exports.updateBusinessProfile = exports.getBusiness = exports.businessProfile = exports.verifyEmail = exports.addBusiness = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const business_1 = __importDefault(require("../models/business"));
 // import jwt from "jsonwebtoken";
@@ -23,6 +23,7 @@ const uuid_1 = require("uuid");
 const setEmail_1 = require("../utils/setEmail");
 const userModel_1 = __importDefault(require("../models/User/userModel"));
 const { customAlphabet } = require("nanoid");
+const Feature_1 = __importDefault(require("../models/Featured/Feature"));
 const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
     let bId = customId();
@@ -517,3 +518,23 @@ const resetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.resetPwd = resetPwd;
+const featureRequest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const { businessName, name } = req.body;
+    try {
+        let data = new Feature_1.default({
+            Id: id,
+            businessName,
+            name,
+        });
+        data = yield data.save();
+        if (!data) {
+            return res.status(400).json({ error: "Request Failed" });
+        }
+        return res.status(200).json({ message: "Request Send" });
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.featureRequest = featureRequest;

@@ -23,4 +23,5 @@ router.post("/businesssignout", businessController_1.businessSignOut);
 router.post("/forgetpwd", businessController_1.forgetPwd);
 router.put("/resetbusinesspwd/:token", businessController_1.resetPwd);
 router.put("/resetandverify/:token", userController_1.verifyAndResetPwd);
+router.post("/requestfeature/:id", businessController_1.featureRequest);
 exports.default = router;

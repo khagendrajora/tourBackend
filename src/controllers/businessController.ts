@@ -9,6 +9,7 @@ import { v4 as uuid } from "uuid";
 import { sendEmail } from "../utils/setEmail";
 import User from "../models/User/userModel";
 const { customAlphabet } = require("nanoid");
+import Feature from "../models/Featured/Feature";
 
 export const addBusiness = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);
@@ -517,6 +518,26 @@ export const resetPwd = async (req: Request, res: Response) => {
 
       return res.status(201).json({ message: "Reset Successful" });
     }
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const featureRequest = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const { businessName, name } = req.body;
+  try {
+    let data = new Feature({
+      Id: id,
+      businessName,
+      name,
+    });
+    data = await data.save();
+    if (!data) {
+      return res.status(400).json({ error: "Request Failed" });
+    }
+
+    return res.status(200).json({ message: "Request Send" });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }
