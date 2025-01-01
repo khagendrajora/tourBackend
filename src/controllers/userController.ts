@@ -508,7 +508,16 @@ export const addFeature = async (req: Request, res: Response) => {
       if (!updated) {
         return res.status(404).json({ error: "Failed" });
       }
-
+      const feature = await Feature.findOneAndUpdate(
+        { Id: id },
+        {
+          status: "Accepted",
+        },
+        { new: true }
+      );
+      if (!feature) {
+        return res.status(404).json({ error: "Failed" });
+      }
       return res.status(200).json({ message: "Successfully Updated" });
     } else {
       const trek = await Trekking.findOne({ _id: id });
@@ -532,6 +541,75 @@ export const addFeature = async (req: Request, res: Response) => {
         }
       }
     }
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const deleteFeatureRequest = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    const deleteFeature = await Feature.findByIdAndDelete(id);
+    if (!deleteFeature) {
+      return res.status(404).json({ error: "Failed to delete" });
+    }
+
+    return res.status(200).json({ message: "Successfully Deleted" });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const removeFeatureProduct = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    const deleteFeature = await Feature.findOneAndDelete({ Id: id });
+    if (!deleteFeature) {
+      return res.status(404).json({ error: "Failed to delete" });
+    }
+
+    const tour = await Tour.findOne({ _id: id });
+    if (tour) {
+      tour.isFeatured = !tour.isFeatured;
+      const updated = await tour.save();
+      if (!updated) {
+        return res.status(404).json({ error: "Failed" });
+      }
+      // const feature = await Feature.findOneAndUpdate(
+      //   { Id: id },
+      //   {
+      //     status: "Accepted",
+      //   },
+      //   { new: true }
+      // );
+      // if (!feature) {
+      //   return res.status(404).json({ error: "Failed" });
+      // }
+      // return res.status(200).json({ message: "Successfully Updated" });
+    } else {
+      const trek = await Trekking.findOne({ _id: id });
+      if (trek) {
+        trek.isFeatured = !trek.isFeatured;
+        const updated = await trek.save();
+        if (!updated) {
+          return res.status(404).json({ error: "Failed" });
+        }
+
+        // return res.status(200).json({ message: "Successfully Updated" });
+      } else {
+        const veh = await Vehicle.findOne({ _id: id });
+        if (veh) {
+          veh.isFeatured = !veh.isFeatured;
+          const updated = await veh.save();
+          if (!updated) {
+            return res.status(404).json({ error: "Failed" });
+          }
+          // return res.status(200).json({ message: "Successfully Updated" });
+        }
+      }
+    }
+
+    return res.status(200).json({ message: "Successfully Removed" });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }

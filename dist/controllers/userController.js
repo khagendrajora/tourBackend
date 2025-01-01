@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addFeature = exports.getFeature = exports.deleteAdmin = exports.verifyAndResetPwd = exports.addBusinessByAdmin = exports.resetPass = exports.forgetPass = exports.businessApprove = exports.getAdmin = exports.adminlogin = exports.addAdminUser = void 0;
+exports.removeFeatureProduct = exports.deleteFeatureRequest = exports.addFeature = exports.getFeature = exports.deleteAdmin = exports.verifyAndResetPwd = exports.addBusinessByAdmin = exports.resetPass = exports.forgetPass = exports.businessApprove = exports.getAdmin = exports.adminlogin = exports.addAdminUser = void 0;
 const adminUser_1 = __importDefault(require("../models/adminUser"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const business_1 = __importDefault(require("../models/business"));
@@ -500,6 +500,12 @@ const addFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             if (!updated) {
                 return res.status(404).json({ error: "Failed" });
             }
+            const feature = yield Feature_1.default.findOneAndUpdate({ Id: id }, {
+                status: "Accepted",
+            }, { new: true });
+            if (!feature) {
+                return res.status(404).json({ error: "Failed" });
+            }
             return res.status(200).json({ message: "Successfully Updated" });
         }
         else {
@@ -530,6 +536,75 @@ const addFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.addFeature = addFeature;
+const deleteFeatureRequest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        const deleteFeature = yield Feature_1.default.findByIdAndDelete(id);
+        if (!deleteFeature) {
+            return res.status(404).json({ error: "Failed to delete" });
+        }
+        return res.status(200).json({ message: "Successfully Deleted" });
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.deleteFeatureRequest = deleteFeatureRequest;
+const removeFeatureProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        const deleteFeature = yield Feature_1.default.findOneAndDelete({ Id: id });
+        if (!deleteFeature) {
+            return res.status(404).json({ error: "Failed to delete" });
+        }
+        const tour = yield tour_1.default.findOne({ _id: id });
+        if (tour) {
+            tour.isFeatured = !tour.isFeatured;
+            const updated = yield tour.save();
+            if (!updated) {
+                return res.status(404).json({ error: "Failed" });
+            }
+            // const feature = await Feature.findOneAndUpdate(
+            //   { Id: id },
+            //   {
+            //     status: "Accepted",
+            //   },
+            //   { new: true }
+            // );
+            // if (!feature) {
+            //   return res.status(404).json({ error: "Failed" });
+            // }
+            // return res.status(200).json({ message: "Successfully Updated" });
+        }
+        else {
+            const trek = yield trekking_1.default.findOne({ _id: id });
+            if (trek) {
+                trek.isFeatured = !trek.isFeatured;
+                const updated = yield trek.save();
+                if (!updated) {
+                    return res.status(404).json({ error: "Failed" });
+                }
+                // return res.status(200).json({ message: "Successfully Updated" });
+            }
+            else {
+                const veh = yield vehicle_1.default.findOne({ _id: id });
+                if (veh) {
+                    veh.isFeatured = !veh.isFeatured;
+                    const updated = yield veh.save();
+                    if (!updated) {
+                        return res.status(404).json({ error: "Failed" });
+                    }
+                    // return res.status(200).json({ message: "Successfully Updated" });
+                }
+            }
+        }
+        return res.status(200).json({ message: "Successfully Removed" });
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.removeFeatureProduct = removeFeatureProduct;
 // export const tourFeature = async (req: Request, res: Response) => {
 //   const id = req.params.id;
 //   try {

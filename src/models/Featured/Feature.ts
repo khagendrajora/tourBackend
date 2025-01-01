@@ -1,10 +1,16 @@
 import mongoose from "mongoose";
 
+export enum FeatureStatus {
+  Accepted = "Accepted",
+  Reject = "Rejected",
+  Pending = "Pending",
+}
 export interface IFeature extends Document {
   _id?: string;
   Id: string;
   name: string;
   businessName: string;
+  status: FeatureStatus;
 }
 
 const featureSchema = new mongoose.Schema(
@@ -20,6 +26,12 @@ const featureSchema = new mongoose.Schema(
     businessName: {
       type: String,
       required: true,
+    },
+    status: {
+      type: String,
+      enum: Object.values(FeatureStatus),
+      required: true,
+      default: FeatureStatus.Pending,
     },
   },
   { timestamps: true }

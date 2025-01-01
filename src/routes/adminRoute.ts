@@ -7,9 +7,11 @@ import {
   // adminSignOut,
   businessApprove,
   deleteAdmin,
+  deleteFeatureRequest,
   forgetPass,
   getAdmin,
   getFeature,
+  removeFeatureProduct,
   resetPass,
   // tourFeature,
   // trekFeature,
@@ -30,6 +32,8 @@ router.delete("/deleteadmin/:id", deleteAdmin);
 
 router.get("/getfeature", getFeature);
 router.put("/addfeature/:id", addFeature);
+router.delete("/deletefeaturerequest/:id", deleteFeatureRequest);
+router.delete("/removefeature/:id", removeFeatureProduct);
 
 // router.put("/featureveh/:id", vehFeature);
 // router.put("/featuretour/:id", tourFeature);

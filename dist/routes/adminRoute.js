@@ -18,6 +18,8 @@ router.post("/addbusinessbyadmin", userController_1.addBusinessByAdmin);
 router.delete("/deleteadmin/:id", userController_1.deleteAdmin);
 router.get("/getfeature", userController_1.getFeature);
 router.put("/addfeature/:id", userController_1.addFeature);
+router.delete("/deletefeaturerequest/:id", userController_1.deleteFeatureRequest);
+router.delete("/removefeature/:id", userController_1.removeFeatureProduct);
 // router.put("/featureveh/:id", vehFeature);
 // router.put("/featuretour/:id", tourFeature);
 // router.put("/featuretrek/:id", trekFeature);
