@@ -43,6 +43,18 @@ export const getHero = async (req: Request, res: Response) => {
   }
 };
 
+export const getHeroById = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  try {
+    const data = await Hero.findById(id);
+    if (data) {
+      return res.send(data);
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: "internal error" });
+  }
+};
+
 export const updateHero = async (req: Request, res: Response) => {
   const id = req.params.id;
   const { heading, description } = req.body;

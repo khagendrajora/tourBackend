@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteDest = exports.updateDest = exports.getDestById = exports.getDest = exports.addDest = exports.deleteBlogs = exports.updateBlogs = exports.getBlogsById = exports.getBlogs = exports.addBlogs = exports.deleteHero = exports.updateHero = exports.getHero = exports.addHero = void 0;
+exports.deleteDest = exports.updateDest = exports.getDestById = exports.getDest = exports.addDest = exports.deleteBlogs = exports.updateBlogs = exports.getBlogsById = exports.getBlogs = exports.addBlogs = exports.deleteHero = exports.updateHero = exports.getHeroById = exports.getHero = exports.addHero = void 0;
 const Hero_1 = __importDefault(require("../../models/Pages/LandingPage/Hero"));
 const Blogs_1 = __importDefault(require("../../models/Pages/LandingPage/Blogs"));
 const { customAlphabet } = require("nanoid");
@@ -60,6 +60,19 @@ const getHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getHero = getHero;
+const getHeroById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        const data = yield Hero_1.default.findById(id);
+        if (data) {
+            return res.send(data);
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: "internal error" });
+    }
+});
+exports.getHeroById = getHeroById;
 const updateHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const { heading, description } = req.body;

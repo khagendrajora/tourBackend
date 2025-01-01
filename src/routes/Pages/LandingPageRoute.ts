@@ -11,6 +11,7 @@ import {
   getDest,
   getDestById,
   getHero,
+  getHeroById,
   updateBlogs,
   updateDest,
   updateHero,
@@ -25,6 +26,7 @@ router.post(
   addHero
 );
 router.get("/gethero", getHero);
+router.get("/getherobyid/:id", getHeroById);
 router.put(
   "/updatehero/:id",
   upload.fields([{ name: "heroImage", maxCount: 10 }]),
