@@ -112,10 +112,29 @@ export const addDriver = async (req: Request, res: Response) => {
       subject: "Account Verification Link",
       text: `Verify your Driver Email to Login\n\n
 ${api}/resetandverifyemail/${token.token}`,
-      html: `<h1>Click to Verify Email</h1> 
-    <a href='${url}'>Click here To verify</a>`,
+
+      html: `<div style="font-family: Arial, sans-serif; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div style="width: 75%; max-width: 600px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+          <div style="text-align: left; margin-bottom: 20px;">
+            <img src='https://tourbackend-rdtk.onrender.com/public/uploads/logo.png' className="" />
+          </div>
+          <div style="text-align: left;">
+            <h1 style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">Verify your Email address</h1>
+            <p style="font-size: 14px; margin-bottom: 20px;">
+              To continue on Toursewa with your account, please verify that
+              this is your email address.
+            </p>
+            <a href='${url}' style="display: inline-block; background-color: #e6310b; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-size: 14px;">Click to verify</a>
+            <p style="font-size: 12px; color: #888; margin-top: 20px;">
+              This link will expire in 24 hours
+            </p>
+          </div>
+        </div>
+      </div> `,
     });
-    return res.status(200).json({ message: "Verification link send" });
+    return res
+      .status(200)
+      .json({ message: "Verifying link is sent to Your Email" });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }

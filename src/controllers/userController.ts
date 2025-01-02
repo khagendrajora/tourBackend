@@ -595,17 +595,6 @@ export const removeFeatureProduct = async (req: Request, res: Response) => {
       if (!updated) {
         return res.status(404).json({ error: "Failed" });
       }
-      // const feature = await Feature.findOneAndUpdate(
-      //   { Id: id },
-      //   {
-      //     status: "Accepted",
-      //   },
-      //   { new: true }
-      // );
-      // if (!feature) {
-      //   return res.status(404).json({ error: "Failed" });
-      // }
-      // return res.status(200).json({ message: "Successfully Updated" });
     } else {
       const trek = await Trekking.findOne({ _id: id });
       if (trek) {
@@ -614,8 +603,6 @@ export const removeFeatureProduct = async (req: Request, res: Response) => {
         if (!updated) {
           return res.status(404).json({ error: "Failed" });
         }
-
-        // return res.status(200).json({ message: "Successfully Updated" });
       } else {
         const veh = await Vehicle.findOne({ _id: id });
         if (veh) {
@@ -624,7 +611,6 @@ export const removeFeatureProduct = async (req: Request, res: Response) => {
           if (!updated) {
             return res.status(404).json({ error: "Failed" });
           }
-          // return res.status(200).json({ message: "Successfully Updated" });
         }
       }
     }

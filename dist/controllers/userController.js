@@ -576,17 +576,6 @@ const removeFeatureProduct = (req, res) => __awaiter(void 0, void 0, void 0, fun
             if (!updated) {
                 return res.status(404).json({ error: "Failed" });
             }
-            // const feature = await Feature.findOneAndUpdate(
-            //   { Id: id },
-            //   {
-            //     status: "Accepted",
-            //   },
-            //   { new: true }
-            // );
-            // if (!feature) {
-            //   return res.status(404).json({ error: "Failed" });
-            // }
-            // return res.status(200).json({ message: "Successfully Updated" });
         }
         else {
             const trek = yield trekking_1.default.findOne({ _id: id });
@@ -596,7 +585,6 @@ const removeFeatureProduct = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 if (!updated) {
                     return res.status(404).json({ error: "Failed" });
                 }
-                // return res.status(200).json({ message: "Successfully Updated" });
             }
             else {
                 const veh = yield vehicle_1.default.findOne({ _id: id });
@@ -606,7 +594,6 @@ const removeFeatureProduct = (req, res) => __awaiter(void 0, void 0, void 0, fun
                     if (!updated) {
                         return res.status(404).json({ error: "Failed" });
                     }
-                    // return res.status(200).json({ message: "Successfully Updated" });
                 }
             }
         }

@@ -111,7 +111,7 @@ ${api}/verifybusinessemail/${token.token}`,
           <div style="text-align: left;">
             <h1 style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">Verify your Email address</h1>
             <p style="font-size: 14px; margin-bottom: 20px;">
-              To cointinue on Toursewa with your account, please verify that
+              To continue on Toursewa with your account, please verify that
               this is your email address.
             </p>
             <a href='${url}' style="display: inline-block; background-color: #e6310b; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-size: 14px;">Click to verify</a>
@@ -126,7 +126,7 @@ ${api}/verifybusinessemail/${token.token}`,
         hashedPassword = "";
         return res
             .status(200)
-            .json({ message: "Verifying link has been sent to Email " });
+            .json({ message: "Verifying link is sent to Your Email" });
     }
     catch (error) {
         return res.status(500).json({ error: error.message });
@@ -520,13 +520,14 @@ const resetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.resetPwd = resetPwd;
 const featureRequest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { businessName, name, productId } = req.body;
+    const { businessName, name, productId, price } = req.body;
     try {
         let data = new Feature_1.default({
             Id: id,
             businessName,
             name,
             productId,
+            price,
         });
         data = yield data.save();
         if (!data) {

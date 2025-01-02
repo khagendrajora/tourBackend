@@ -13,6 +13,9 @@ const VehSchema = new mongoose_1.default.Schema({
     businessId: {
         type: String,
     },
+    price: {
+        type: String,
+    },
     isFeatured: {
         type: Boolean,
         default: false,
