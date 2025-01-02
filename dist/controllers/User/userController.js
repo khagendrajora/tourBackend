@@ -25,7 +25,8 @@ const Driver_1 = __importDefault(require("../../models/Drivers/Driver"));
 const business_1 = __importDefault(require("../../models/business"));
 const adminUser_1 = __importDefault(require("../../models/adminUser"));
 const addNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { userName, userEmail, userPwd } = req.body;
+    let { userName, userEmail, userPwd } = req.body;
+    userEmail = userEmail.toLowerCase();
     const customId = customAlphabet("1234567890", 4);
     let userId = customId();
     userId = "U" + userId;

@@ -12,7 +12,8 @@ import Business from "../../models/business";
 import AdminUser from "../../models/adminUser";
 
 export const addNewUser = async (req: Request, res: Response) => {
-  const { userName, userEmail, userPwd } = req.body;
+  let { userName, userEmail, userPwd } = req.body;
+  userEmail = userEmail.toLowerCase();
   const customId = customAlphabet("1234567890", 4);
   let userId = customId();
   userId = "U" + userId;
