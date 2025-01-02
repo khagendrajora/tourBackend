@@ -16,6 +16,10 @@ const VehSchema = new mongoose_1.default.Schema({
     price: {
         type: String,
     },
+    description: {
+        type: String,
+        required: true,
+    },
     isFeatured: {
         type: Boolean,
         default: false,

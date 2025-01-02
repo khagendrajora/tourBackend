@@ -284,7 +284,7 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const customId = customAlphabet("1234567890", 4);
     let vehId = customId();
     vehId = "V" + vehId;
-    const { businessId, vehCategory, vehSubCategory, services, baseLocation, amenities, vehCondition, madeYear, vehNumber, businessName, capacity, name, operationDates, manufacturer, model, VIN, } = req.body;
+    const { businessId, vehCategory, vehSubCategory, services, baseLocation, amenities, vehCondition, description, madeYear, vehNumber, businessName, capacity, name, operationDates, manufacturer, model, VIN, } = req.body;
     try {
         let vehImages = [];
         if (req.files) {
@@ -311,6 +311,7 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             vehSubCategory,
             services,
             vehId: vehId,
+            description,
             amenities,
             vehCondition,
             madeYear,
@@ -385,7 +386,7 @@ const vehDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.vehDetails = vehDetails;
 const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { businessId, vehCategory, vehSubCategory, services, amenities, baseLocation, vehCondition, madeYear, vehNumber, capacity, name, operationDates, } = req.body;
+    const { businessId, vehCategory, vehSubCategory, services, amenities, baseLocation, vehCondition, description, madeYear, vehNumber, capacity, name, operationDates, } = req.body;
     try {
         let vehImages = req.body.existingVehImages || [];
         if (req.files) {
@@ -401,6 +402,7 @@ const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             vehSubCategory,
             services,
             amenities,
+            description,
             vehCondition,
             madeYear,
             vehNumber,
