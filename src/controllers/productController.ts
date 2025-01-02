@@ -456,6 +456,22 @@ export const updateVeh = async (req: Request, res: Response) => {
       }
     }
 
+    const vehData = await Vehicle.findOne({ vehId: id });
+    if (!vehData) {
+      return res.status(400).json({ error: "Vehicle Not Found" });
+    }
+
+    const numberCheck = await Vehicle.findOne({
+      vehNumber: { $ne: vehData.vehNumber },
+      $or: [{ vehNumber: vehNumber }],
+    });
+
+    if (numberCheck) {
+      return res
+        .status(400)
+        .json({ error: "Vehicle Number already Registered" });
+    }
+
     const updateData: { [key: string]: any } = {
       businessId,
       vehCategory,

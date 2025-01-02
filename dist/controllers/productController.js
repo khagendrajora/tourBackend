@@ -396,6 +396,19 @@ const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 vehImages.push(...uploadedFiles);
             }
         }
+        const vehData = yield vehicle_1.default.findOne({ vehId: id });
+        if (!vehData) {
+            return res.status(400).json({ error: "Vehicle Not Found" });
+        }
+        const numberCheck = yield vehicle_1.default.findOne({
+            vehNumber: { $ne: vehData.vehNumber },
+            $or: [{ vehNumber: vehNumber }],
+        });
+        if (numberCheck) {
+            return res
+                .status(400)
+                .json({ error: "Vehicle Number already Registered" });
+        }
         const updateData = {
             businessId,
             vehCategory,
