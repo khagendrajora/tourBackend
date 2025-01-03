@@ -3,12 +3,13 @@ import { Request, Response } from "express";
 import ReservedDate from "../../models/Reservations/ReservedDated";
 
 export const saveReservedDated = async (req: Request, res: Response) => {
-  const { vehicleId, bookedBy, bookingDate } = req.body;
+  const { vehicleId, bookedBy, bookingDate, time } = req.body;
   try {
     let revDates = new ReservedDate({
       vehicleId,
       bookingDate,
       bookedBy,
+      time,
     });
     revDates = await revDates.save();
     if (!revDates) {

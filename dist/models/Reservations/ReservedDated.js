@@ -13,6 +13,9 @@ const revDates = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    time: {
+        type: String,
+    },
     bookedBy: {
         type: String,
         required: true,
