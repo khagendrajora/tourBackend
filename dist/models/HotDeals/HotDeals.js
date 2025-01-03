@@ -15,6 +15,14 @@ const hotDealsSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    time: {
+        type: String,
+        required: true,
+    },
+    capacity: {
+        type: String,
+        required: true,
+    },
     sourceAddress: {
         type: String,
         required: true,

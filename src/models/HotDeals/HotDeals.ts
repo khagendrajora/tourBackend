@@ -20,11 +20,21 @@ export interface IHotDeal extends Document {
   sourceAddress: string;
   destAddress: string;
   hdID: string;
+  capacity: string;
+  time: string;
 }
 
 const hotDealsSchema = new mongoose.Schema(
   {
     vehicleId: {
+      type: String,
+      required: true,
+    },
+    time: {
+      type: String,
+      required: true,
+    },
+    capacity: {
       type: String,
       required: true,
     },
