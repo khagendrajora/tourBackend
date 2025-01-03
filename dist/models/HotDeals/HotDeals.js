@@ -15,6 +15,10 @@ const hotDealsSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    termsAndCondition: {
+        type: String,
+        // required: true,
+    },
     time: {
         type: String,
         required: true,

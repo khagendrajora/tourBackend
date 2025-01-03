@@ -20,7 +20,7 @@ const Driver_1 = __importDefault(require("../../models/Drivers/Driver"));
 const business_1 = __importDefault(require("../../models/business"));
 const addHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { price, sourceAddress, destAddress, driverId, date, time } = req.body;
+    const { price, sourceAddress, destAddress, driverId, date, time, termsAndCondition, } = req.body;
     const customId = customAlphabet("1234567890", 4);
     let hdID = customId();
     hdID = "hd" + hdID;
@@ -43,6 +43,7 @@ const addHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             destAddress,
             date,
             time,
+            termsAndCondition,
             businessName: businessData.businessName,
             vehicleName: vehData.name,
             vehicleId: id,
@@ -115,13 +116,14 @@ const getHotDealsByVehId = (req, res) => __awaiter(void 0, void 0, void 0, funct
 exports.getHotDealsByVehId = getHotDealsByVehId;
 const updateHotdeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    let { price, sourceAddress, destAddress, vehicle, time } = req.body;
+    let { price, sourceAddress, destAddress, termsAndCondition, vehicle, time } = req.body;
     try {
         const aboutUS = yield HotDeals_1.default.findOneAndUpdate({ hdID: id }, {
             price,
             sourceAddress,
             destAddress,
             vehicle,
+            termsAndCondition,
             time,
         }, { new: true });
         if (!aboutUS) {

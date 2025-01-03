@@ -22,6 +22,7 @@ export interface IHotDeal extends Document {
   hdID: string;
   capacity: string;
   time: string;
+  termsAndCondition?: string;
 }
 
 const hotDealsSchema = new mongoose.Schema(
@@ -29,6 +30,10 @@ const hotDealsSchema = new mongoose.Schema(
     vehicleId: {
       type: String,
       required: true,
+    },
+    termsAndCondition: {
+      type: String,
+      // required: true,
     },
     time: {
       type: String,

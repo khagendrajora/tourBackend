@@ -7,7 +7,15 @@ import Business from "../../models/business";
 
 export const addHotDeals = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const { price, sourceAddress, destAddress, driverId, date, time } = req.body;
+  const {
+    price,
+    sourceAddress,
+    destAddress,
+    driverId,
+    date,
+    time,
+    termsAndCondition,
+  } = req.body;
   const customId = customAlphabet("1234567890", 4);
   let hdID = customId();
   hdID = "hd" + hdID;
@@ -32,6 +40,7 @@ export const addHotDeals = async (req: Request, res: Response) => {
       destAddress,
       date,
       time,
+      termsAndCondition,
       businessName: businessData.businessName,
       vehicleName: vehData.name,
       vehicleId: id,
@@ -95,7 +104,8 @@ export const getHotDealsByVehId = async (req: Request, res: Response) => {
 
 export const updateHotdeals = async (req: Request, res: Response) => {
   const id = req.params.id;
-  let { price, sourceAddress, destAddress, vehicle, time } = req.body;
+  let { price, sourceAddress, destAddress, termsAndCondition, vehicle, time } =
+    req.body;
   try {
     const aboutUS = await HotDeals.findOneAndUpdate(
       { hdID: id },
@@ -104,6 +114,7 @@ export const updateHotdeals = async (req: Request, res: Response) => {
         sourceAddress,
         destAddress,
         vehicle,
+        termsAndCondition,
         time,
       },
       { new: true }
