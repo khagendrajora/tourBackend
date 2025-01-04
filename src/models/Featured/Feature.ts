@@ -13,6 +13,7 @@ export interface IFeature extends Document {
   productId: string;
   price?: number;
   status: FeatureStatus;
+  createdAt?: Date;
 }
 
 const featureSchema = new mongoose.Schema(

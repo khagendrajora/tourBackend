@@ -5,7 +5,7 @@ import morgan from "morgan";
 import useragent from "express-useragent";
 dotenv.config();
 import "./db/database";
-import userRoute from "./routes/adminRoute";
+import adminRoute from "./routes/adminRoute";
 import categoryRoute from "./routes/CategoryRoute/categoryRoute";
 import businessRoute from "./routes/businessRoute";
 import productRoute from "./routes/productRoute";
@@ -50,7 +50,7 @@ app.use(
 app.use("/public/uploads", express.static("public/uploads"));
 app.use("/api", UserRoute);
 app.use("/api", LandingPageRoute);
-app.use("/api", userRoute);
+app.use("/api", adminRoute);
 app.use("/api", categoryRoute);
 app.use("/api", businessRoute);
 app.use("/api", productRoute);
