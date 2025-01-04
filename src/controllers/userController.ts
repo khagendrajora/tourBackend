@@ -142,8 +142,20 @@ export const businessApprove = async (req: Request, res: Response) => {
 
     if (business.isActive) {
       status = "Activated";
+      const veh = await Vehicle.updateMany(
+        { businessId: id },
+        {
+          $set: { isActive: true },
+        }
+      );
     } else {
       status = "Deactivated";
+      const veh = await Vehicle.updateMany(
+        { businessId: id },
+        {
+          $set: { isActive: false },
+        }
+      );
     }
 
     sendEmail({
@@ -160,7 +172,9 @@ export const businessApprove = async (req: Request, res: Response) => {
             <p style="font-size: 14px; margin-bottom: 20px;">
               The status  of your Business account on toursewa is given below.
             </p>
-            <p style="display: inline-block;   text-decoration: none;   font-size: 14px;">Your business account with business Id ${id} has been made ${status}</p>
+            <p style="display: inline-block;   text-decoration: none;   font-size: 14px;">Your business account with business Id ${id} has been made ${status}. Also all the products of your business are made ${
+        status == "Activated" ? "available" : "unavailable"
+      }.</p>
           
           </div>
         </div>

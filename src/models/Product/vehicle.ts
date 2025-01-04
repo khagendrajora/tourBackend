@@ -13,6 +13,7 @@ export interface IVeh extends Document {
   vehSubCategory: string;
   services: string[];
   amenities: string[];
+  isActive: boolean;
   vehCondition: ICondition;
   madeYear: Date;
   vehNumber: string;
@@ -36,6 +37,10 @@ const VehSchema = new mongoose.Schema(
     },
     price: {
       type: String,
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
     },
     description: {
       type: String,
