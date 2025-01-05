@@ -19,6 +19,7 @@ export interface IDriver extends Document {
   driverPhone: string;
   driverEmail?: string;
   status: IStatus;
+  isActive: boolean;
   isVerified: boolean;
   driverPwd: string;
   driverImage: string;
@@ -29,6 +30,10 @@ const driverSchema = new mongoose.Schema(
     vehicleId: {
       type: String,
       required: true,
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
     },
     vehicleName: {
       type: String,

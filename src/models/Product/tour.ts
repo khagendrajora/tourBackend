@@ -7,6 +7,7 @@ export interface ITour extends Document {
   prodCategory: string;
   prodsubCategory: string;
   inclusion: string[];
+  isActive: boolean;
   dest: string;
   duration: string;
   itinerary: string;
@@ -22,6 +23,10 @@ export interface ITour extends Document {
 const tourSchema = new mongoose.Schema({
   businessId: {
     type: String,
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
   },
   price: {
     type: String,

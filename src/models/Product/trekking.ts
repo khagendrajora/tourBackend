@@ -10,6 +10,7 @@ export interface ITrekking extends Document {
   dest: string;
   numbers: number;
   itinerary: string;
+  isActive: boolean;
   capacity: string;
   name: string;
   operationDates?: Date[];
@@ -22,6 +23,10 @@ export interface ITrekking extends Document {
 const trekSchema = new mongoose.Schema({
   businessId: {
     type: String,
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
   },
   price: {
     type: String,

@@ -27,6 +27,7 @@ const tour_1 = __importDefault(require("../models/Product/tour"));
 const trekking_1 = __importDefault(require("../models/Product/trekking"));
 const vehicle_1 = __importDefault(require("../models/Product/vehicle"));
 const Feature_1 = __importDefault(require("../models/Featured/Feature"));
+// import Driver from "../models/Drivers/Driver";
 const addAdminUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { adminName, adminEmail, adminPwd } = req.body;
     const customId = customAlphabet("1234567890", 4);
@@ -154,10 +155,28 @@ const businessApprove = (req, res) => __awaiter(void 0, void 0, void 0, function
             const veh = yield vehicle_1.default.updateMany({ businessId: id }, {
                 $set: { isActive: true },
             });
+            const tour = yield tour_1.default.updateMany({ businessId: id }, {
+                $set: { isActive: true },
+            });
+            const trek = yield trekking_1.default.updateMany({ businessId: id }, {
+                $set: { isActive: true },
+            });
+            const driver = yield Driver_1.default.updateMany({ businessId: id }, {
+                $set: { isActive: true },
+            });
         }
         else {
             status = "Deactivated";
             const veh = yield vehicle_1.default.updateMany({ businessId: id }, {
+                $set: { isActive: false },
+            });
+            const tour = yield tour_1.default.updateMany({ businessId: id }, {
+                $set: { isActive: false },
+            });
+            const trek = yield trekking_1.default.updateMany({ businessId: id }, {
+                $set: { isActive: false },
+            });
+            const driver = yield Driver_1.default.updateMany({ businessId: id }, {
                 $set: { isActive: false },
             });
         }

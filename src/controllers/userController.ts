@@ -13,6 +13,7 @@ import Tour from "../models/Product/tour";
 import Trekking from "../models/Product/trekking";
 import Vehicle from "../models/Product/vehicle";
 import Feature from "../models/Featured/Feature";
+// import Driver from "../models/Drivers/Driver";
 
 export const addAdminUser = async (req: Request, res: Response) => {
   const { adminName, adminEmail, adminPwd } = req.body;
@@ -148,9 +149,45 @@ export const businessApprove = async (req: Request, res: Response) => {
           $set: { isActive: true },
         }
       );
+      const tour = await Tour.updateMany(
+        { businessId: id },
+        {
+          $set: { isActive: true },
+        }
+      );
+      const trek = await Trekking.updateMany(
+        { businessId: id },
+        {
+          $set: { isActive: true },
+        }
+      );
+      const driver = await Driver.updateMany(
+        { businessId: id },
+        {
+          $set: { isActive: true },
+        }
+      );
     } else {
       status = "Deactivated";
       const veh = await Vehicle.updateMany(
+        { businessId: id },
+        {
+          $set: { isActive: false },
+        }
+      );
+      const tour = await Tour.updateMany(
+        { businessId: id },
+        {
+          $set: { isActive: false },
+        }
+      );
+      const trek = await Trekking.updateMany(
+        { businessId: id },
+        {
+          $set: { isActive: false },
+        }
+      );
+      const driver = await Driver.updateMany(
         { businessId: id },
         {
           $set: { isActive: false },

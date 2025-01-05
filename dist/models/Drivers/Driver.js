@@ -17,6 +17,10 @@ const driverSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    isActive: {
+        type: Boolean,
+        default: true,
+    },
     vehicleName: {
         type: String,
         required: true,

@@ -8,6 +8,10 @@ const trekSchema = new mongoose_1.default.Schema({
     businessId: {
         type: String,
     },
+    isActive: {
+        type: Boolean,
+        default: true,
+    },
     price: {
         type: String,
     },
