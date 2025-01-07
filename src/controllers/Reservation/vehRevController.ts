@@ -27,6 +27,7 @@ export const vehReservation = async (req: Request, res: Response) => {
     bookedByName,
     numberOfPassengers,
     time,
+    startTime,
   } = req.body;
   let bookingDate: string[] = [];
   const newStartDate = new Date(startDate);
@@ -65,6 +66,7 @@ export const vehReservation = async (req: Request, res: Response) => {
       bookingName,
       numberOfPassengers,
       time,
+      startTime,
     });
     vehRev = await vehRev.save();
     if (!vehRev) {
@@ -75,6 +77,7 @@ export const vehReservation = async (req: Request, res: Response) => {
         bookingDate,
         bookedBy,
         time,
+        startTime,
         bookingId: bookingId,
       });
       resrvDate = await resrvDate.save();
