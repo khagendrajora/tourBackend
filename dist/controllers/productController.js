@@ -22,7 +22,7 @@ const addTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
     let tourId = customId();
     tourId = "TU" + tourId;
-    const { businessId, prodCategory, prodsubCategory, inclusion, dest, duration, itinerary, capacity, name, phone, operationDates, } = req.body;
+    const { businessId, prodCategory, prodsubCategory, inclusion, dest, duration, itinerary, capacity, name, phone, operationDates, addedBy, } = req.body;
     try {
         let tourImages = [];
         if (req.files) {
@@ -41,6 +41,7 @@ const addTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             prodsubCategory,
             inclusion,
             dest,
+            addedBy,
             duration,
             itinerary,
             capacity,
@@ -111,7 +112,7 @@ const tourDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.tourDetails = tourDetails;
 const updateTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { businessId, prodCategory, prodsubCategory, inclusion, dest, duration, itinerary, capacity, name, phone, operationDates, } = req.body;
+    const { businessId, prodCategory, prodsubCategory, inclusion, dest, duration, itinerary, capacity, name, phone, addedBy, operationDates, } = req.body;
     try {
         const tourImages = req.body.existingTourImages || [];
         if (req.files) {
@@ -131,6 +132,7 @@ const updateTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             itinerary,
             capacity,
             name,
+            addedBy,
             phone,
             operationDates,
             tourImages,
@@ -153,7 +155,7 @@ const addTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
     let trekId = customId();
     trekId = "TR" + trekId;
-    const { businessId, prodCategory, prodsubCategory, inclusion, days, dest, numbers, itinerary, capacity, name, operationDates, } = req.body;
+    const { businessId, prodCategory, prodsubCategory, inclusion, days, dest, numbers, itinerary, capacity, addedBy, name, operationDates, } = req.body;
     try {
         let trekImages = [];
         if (req.files) {
@@ -171,6 +173,7 @@ const addTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             prodsubCategory,
             inclusion,
             days,
+            addedBy,
             dest,
             trekId: trekId,
             numbers,
@@ -242,7 +245,7 @@ const trekDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.trekDetails = trekDetails;
 const updateTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { businessId, prodCategory, prodsubCategory, inclusion, days, dest, numbers, itinerary, capacity, name, operationDates, } = req.body;
+    const { businessId, prodCategory, prodsubCategory, inclusion, days, dest, numbers, addedBy, itinerary, capacity, name, operationDates, } = req.body;
     try {
         const trekImages = req.body.existingTrekImages || [];
         if (req.files) {
@@ -259,6 +262,7 @@ const updateTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             inclusion,
             days,
             dest,
+            addedBy,
             numbers,
             itinerary,
             capacity,
@@ -284,7 +288,7 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const customId = customAlphabet("1234567890", 4);
     let vehId = customId();
     vehId = "V" + vehId;
-    const { businessId, vehCategory, vehSubCategory, services, baseLocation, amenities, vehCondition, description, madeYear, vehNumber, businessName, capacity, name, operationDates, manufacturer, model, VIN, } = req.body;
+    const { businessId, vehCategory, vehSubCategory, services, baseLocation, addedBy, amenities, vehCondition, description, madeYear, vehNumber, businessName, capacity, name, operationDates, manufacturer, model, VIN, } = req.body;
     try {
         let vehImages = [];
         if (req.files) {
@@ -311,6 +315,7 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             vehSubCategory,
             services,
             vehId: vehId,
+            addedBy,
             description,
             amenities,
             vehCondition,
@@ -386,7 +391,7 @@ const vehDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.vehDetails = vehDetails;
 const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { businessId, vehCategory, vehSubCategory, services, amenities, baseLocation, vehCondition, description, madeYear, vehNumber, capacity, name, operationDates, } = req.body;
+    const { businessId, vehCategory, vehSubCategory, services, amenities, baseLocation, vehCondition, description, madeYear, addedBy, vehNumber, capacity, name, operationDates, } = req.body;
     try {
         let vehImages = req.body.existingVehImages || [];
         if (req.files) {
@@ -418,6 +423,7 @@ const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             description,
             vehCondition,
             madeYear,
+            addedBy,
             vehNumber,
             baseLocation,
             capacity,
@@ -457,22 +463,7 @@ const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         else {
             updateData.operationDates = [];
         }
-        const data = yield vehicle_1.default.findOneAndUpdate({ vehId: id }, updateData, 
-        // {
-        //   businessId,
-        //   vehCategory,
-        //   vehSubCategory,
-        //   services,
-        //   amenities,
-        //   vehCondition,
-        //   madeYear,
-        //   vehNumber,
-        //   capacity,
-        //   name,
-        //   operationDates,
-        //   vehImages,
-        // },
-        { new: true });
+        const data = yield vehicle_1.default.findOneAndUpdate({ vehId: id }, updateData, { new: true });
         if (!data) {
             return res.status(400).json({
                 error: "failed",

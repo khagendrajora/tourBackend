@@ -20,6 +20,9 @@ const VehSchema = new mongoose_1.default.Schema({
         type: Boolean,
         default: true,
     },
+    addedBy: {
+        type: String,
+    },
     description: {
         type: String,
         required: true,

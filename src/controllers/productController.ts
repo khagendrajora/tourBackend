@@ -22,6 +22,7 @@ export const addTour = async (req: Request, res: Response) => {
     name,
     phone,
     operationDates,
+    addedBy,
   } = req.body;
 
   try {
@@ -42,6 +43,7 @@ export const addTour = async (req: Request, res: Response) => {
       prodsubCategory,
       inclusion,
       dest,
+      addedBy,
       duration,
       itinerary,
       capacity,
@@ -116,6 +118,7 @@ export const updateTour = async (req: Request, res: Response) => {
     capacity,
     name,
     phone,
+    addedBy,
     operationDates,
   } = req.body;
   try {
@@ -139,6 +142,7 @@ export const updateTour = async (req: Request, res: Response) => {
         itinerary,
         capacity,
         name,
+        addedBy,
         phone,
         operationDates,
         tourImages,
@@ -172,6 +176,7 @@ export const addTrek = async (req: Request, res: Response) => {
     numbers,
     itinerary,
     capacity,
+    addedBy,
     name,
     operationDates,
   } = req.body;
@@ -193,6 +198,7 @@ export const addTrek = async (req: Request, res: Response) => {
       prodsubCategory,
       inclusion,
       days,
+      addedBy,
       dest,
       trekId: trekId,
       numbers,
@@ -265,6 +271,7 @@ export const updateTrek = async (req: Request, res: Response) => {
     days,
     dest,
     numbers,
+    addedBy,
     itinerary,
     capacity,
     name,
@@ -288,6 +295,7 @@ export const updateTrek = async (req: Request, res: Response) => {
         inclusion,
         days,
         dest,
+        addedBy,
         numbers,
         itinerary,
         capacity,
@@ -320,6 +328,7 @@ export const addVehicle = async (req: Request, res: Response) => {
     vehSubCategory,
     services,
     baseLocation,
+    addedBy,
     amenities,
     vehCondition,
     description,
@@ -361,6 +370,8 @@ export const addVehicle = async (req: Request, res: Response) => {
       vehSubCategory,
       services,
       vehId: vehId,
+      addedBy,
+
       description,
       amenities,
       vehCondition,
@@ -441,6 +452,7 @@ export const updateVeh = async (req: Request, res: Response) => {
     vehCondition,
     description,
     madeYear,
+    addedBy,
     vehNumber,
     capacity,
     name,
@@ -481,6 +493,7 @@ export const updateVeh = async (req: Request, res: Response) => {
       description,
       vehCondition,
       madeYear,
+      addedBy,
       vehNumber,
       baseLocation,
       capacity,
@@ -521,21 +534,7 @@ export const updateVeh = async (req: Request, res: Response) => {
     const data = await Vehicle.findOneAndUpdate(
       { vehId: id },
       updateData,
-      // {
-      //   businessId,
-      //   vehCategory,
-      //   vehSubCategory,
-      //   services,
-      //   amenities,
-      //   vehCondition,
-      //   madeYear,
-      //   vehNumber,
 
-      //   capacity,
-      //   name,
-      //   operationDates,
-      //   vehImages,
-      // },
       { new: true }
     );
     if (!data) {

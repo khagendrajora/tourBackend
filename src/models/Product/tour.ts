@@ -18,10 +18,15 @@ export interface ITour extends Document {
   tourImages?: string[];
   isFeatured: boolean;
   price?: string;
+
+  addedBy?: string;
 }
 
 const tourSchema = new mongoose.Schema({
   businessId: {
+    type: String,
+  },
+  addedBy: {
     type: String,
   },
   isActive: {
