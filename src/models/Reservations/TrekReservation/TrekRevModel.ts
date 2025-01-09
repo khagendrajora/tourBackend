@@ -22,7 +22,7 @@ export interface ITrRev extends Document {
   createdAt?: Date;
   isApproved: boolean;
   status: IStatus;
-  price?: number;
+  price?: string;
 }
 
 const TrekReservation = new mongoose.Schema(
@@ -32,7 +32,7 @@ const TrekReservation = new mongoose.Schema(
       required: true,
     },
     price: {
-      type: Number,
+      type: String,
     },
     businessId: {
       type: String,

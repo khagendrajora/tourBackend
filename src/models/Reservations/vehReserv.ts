@@ -32,7 +32,7 @@ export interface IVRev extends Document {
   numberOfPassengers: number;
   time: string;
   startTime: string;
-  price?: number;
+  price?: string;
   createdAt?: Date;
 }
 
@@ -43,7 +43,7 @@ const VehicleReservation = new mongoose.Schema(
       required: true,
     },
     price: {
-      type: Number,
+      type: String,
     },
     createdAt: {
       type: Date,

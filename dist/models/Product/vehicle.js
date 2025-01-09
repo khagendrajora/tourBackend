@@ -14,7 +14,7 @@ const VehSchema = new mongoose_1.default.Schema({
         type: String,
     },
     price: {
-        type: Number,
+        type: String,
     },
     isActive: {
         type: Boolean,
