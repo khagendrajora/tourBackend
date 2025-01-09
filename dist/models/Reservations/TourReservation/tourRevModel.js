@@ -17,6 +17,9 @@ const TourReservation = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    price: {
+        type: Number,
+    },
     bookedBy: {
         type: String,
     },

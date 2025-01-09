@@ -32,6 +32,7 @@ export interface IVRev extends Document {
   numberOfPassengers: number;
   time: string;
   startTime: string;
+  price?: number;
   createdAt?: Date;
 }
 
@@ -40,6 +41,9 @@ const VehicleReservation = new mongoose.Schema(
     vehicleId: {
       type: String,
       required: true,
+    },
+    price: {
+      type: Number,
     },
     createdAt: {
       type: Date,
@@ -130,7 +134,6 @@ const VehicleReservation = new mongoose.Schema(
     endDate: {
       type: Date,
     },
-
     status: {
       type: String,
       enum: Object.values(IStatus),

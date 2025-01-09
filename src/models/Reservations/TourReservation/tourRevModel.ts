@@ -22,6 +22,7 @@ export interface ITuRev extends Document {
   isApproved: boolean;
   businessId: string;
   status: IStatus;
+  price?: number;
 }
 
 const TourReservation = new mongoose.Schema(
@@ -29,6 +30,9 @@ const TourReservation = new mongoose.Schema(
     bookingId: {
       type: String,
       required: true,
+    },
+    price: {
+      type: Number,
     },
     bookedBy: {
       type: String,

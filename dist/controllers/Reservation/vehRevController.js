@@ -26,7 +26,7 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const customId = customAlphabet("1234567890", 4);
     let bookingId = customId();
     bookingId = "R" + bookingId;
-    const { bookingName, age, email, phone, sourceAddress, destinationAddress, startDate, endDate, address, bookedBy, bookedByName, numberOfPassengers, time, startTime, } = req.body;
+    const { bookingName, age, email, phone, price, sourceAddress, destinationAddress, startDate, endDate, address, bookedBy, bookedByName, numberOfPassengers, time, startTime, } = req.body;
     let bookingDate = [];
     const newStartDate = new Date(startDate);
     const newEndDate = new Date(endDate);
@@ -51,6 +51,7 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
             vehicleImage: ((_a = vehData.vehImages) === null || _a === void 0 ? void 0 : _a.length) ? vehData.vehImages : [],
             bookedBy,
             bookedByName,
+            price,
             age,
             sourceAddress,
             destinationAddress,
@@ -132,6 +133,11 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
           <strong>From - To:</strong> ${sourceAddress} - ${destinationAddress}
+        </td>
+      </tr>
+      <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Price:</strong> NRP.${price}
         </td>
       </tr>
       <tr>
@@ -235,6 +241,11 @@ const updateReservationStatusByClient = (req, res) => __awaiter(void 0, void 0, 
           <td style="font-size: 14px; font-weight: bold;">From - To:</td>
           <td style="font-size: 14px; color: #64748B;">${data.sourceAddress} - ${data.destinationAddress}</td>
         </tr>
+          <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Price:</strong> NRP.${data.price}
+        </td>
+      </tr>
         <tr>
           <td style="font-size: 14px; font-weight: bold;">Start Date - End Date:</td>
           <td style="font-size: 14px; color: #64748B;">${data.startDate} - ${data.endDate}</td>
@@ -305,6 +316,11 @@ const updateReservationStatusByBid = (req, res) => __awaiter(void 0, void 0, voi
           <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">From - To:</td>
           <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${data.sourceAddress} - ${data.destinationAddress}</td>
         </tr>
+          <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Price:</strong> NRP.${data.price}
+        </td>
+      </tr>
         <tr>
           <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Start Date - End Date:</td>
           <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${data.startDate} - ${data.endDate}</td>
@@ -412,6 +428,11 @@ const updateReservationByBid = (req, res) => __awaiter(void 0, void 0, void 0, f
       <td style="font-size: 14px; font-weight: bold; padding: 12px 8px; text-align: left;">From - To:</td>
       <td style="font-size: 14px; color: #64748B; padding: 12px 8px; text-align: left;">${data.sourceAddress} - ${data.destinationAddress}</td>
     </tr>
+      <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Price:</strong> NRP.${data.price}
+        </td>
+      </tr>
     <tr>
       <td style="font-size: 14px; font-weight: bold; padding: 12px 8px; text-align: left;">Start Date - End Date:</td>
       <td style="font-size: 14px; color: #64748B; padding: 12px 8px; text-align: left;">${data.startDate} - ${data.endDate}</td>

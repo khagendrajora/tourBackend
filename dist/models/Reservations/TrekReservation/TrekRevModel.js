@@ -17,6 +17,9 @@ const TrekReservation = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    price: {
+        type: Number,
+    },
     businessId: {
         type: String,
         required: true,

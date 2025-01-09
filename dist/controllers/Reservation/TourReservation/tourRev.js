@@ -24,7 +24,7 @@ const tourRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
     let bookingId = customId();
     bookingId = "TuR" + bookingId;
-    const { passengerName, tickets, email, phone, date, bookedBy } = req.body;
+    const { passengerName, tickets, email, phone, date, price, bookedBy } = req.body;
     try {
         const tourData = yield tour_1.default.findOne({ tourId: id });
         if (!tourData) {
@@ -41,6 +41,7 @@ const tourRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             tickets,
             email,
             phone,
+            price,
             date,
             businessId: tourData.businessId,
             bookingId,
@@ -90,6 +91,11 @@ const tourRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
           <strong>Date:</strong> ${date}
+        </td>
+      </tr>
+       <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Price:</strong> ${price}
         </td>
       </tr>
     </table>

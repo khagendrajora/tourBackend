@@ -12,7 +12,8 @@ export const tourRev = async (req: Request, res: Response) => {
   let bookingId = customId();
   bookingId = "TuR" + bookingId;
 
-  const { passengerName, tickets, email, phone, date, bookedBy } = req.body;
+  const { passengerName, tickets, email, phone, date, price, bookedBy } =
+    req.body;
   try {
     const tourData = await Tour.findOne({ tourId: id });
     if (!tourData) {
@@ -32,6 +33,7 @@ export const tourRev = async (req: Request, res: Response) => {
       tickets,
       email,
       phone,
+      price,
       date,
       businessId: tourData.businessId,
       bookingId,
@@ -82,6 +84,11 @@ export const tourRev = async (req: Request, res: Response) => {
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
           <strong>Date:</strong> ${date}
+        </td>
+      </tr>
+       <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Price:</strong> ${price}
         </td>
       </tr>
     </table>

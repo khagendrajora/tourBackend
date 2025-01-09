@@ -12,7 +12,8 @@ export const trekRev = async (req: Request, res: Response) => {
   let bookingId = customId();
   bookingId = "TrR" + bookingId;
 
-  const { passengerName, tickets, email, phone, date, bookedBy } = req.body;
+  const { passengerName, tickets, email, phone, date, bookedBy, price } =
+    req.body;
   try {
     const trekData = await Trekking.findOne({ trekId: id });
     if (!trekData) {
@@ -28,6 +29,7 @@ export const trekRev = async (req: Request, res: Response) => {
       bookedBy,
       passengerName,
       tickets,
+      price,
       email,
       phone,
       date,
@@ -79,6 +81,11 @@ export const trekRev = async (req: Request, res: Response) => {
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
           <strong>Date:</strong> ${date}
+        </td>
+      </tr>
+        <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Price:</strong> ${price}
         </td>
       </tr>
     </table>
@@ -208,6 +215,11 @@ export const updateTrekRevStatusByClient = async (
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
           <strong>Date:</strong> ${data.date}
+        </td>
+      </tr>
+        <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Date:</strong> ${data.price}
         </td>
       </tr>
     </table>

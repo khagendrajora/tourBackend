@@ -18,6 +18,7 @@ export const vehReservation = async (req: Request, res: Response) => {
     age,
     email,
     phone,
+    price,
     sourceAddress,
     destinationAddress,
     startDate,
@@ -55,6 +56,7 @@ export const vehReservation = async (req: Request, res: Response) => {
       vehicleImage: vehData.vehImages?.length ? vehData.vehImages : [],
       bookedBy,
       bookedByName,
+      price,
       age,
       sourceAddress,
       destinationAddress,
@@ -136,6 +138,11 @@ export const vehReservation = async (req: Request, res: Response) => {
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
           <strong>From - To:</strong> ${sourceAddress} - ${destinationAddress}
+        </td>
+      </tr>
+      <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Price:</strong> NRP.${price}
         </td>
       </tr>
       <tr>
@@ -247,6 +254,11 @@ export const updateReservationStatusByClient = async (
           <td style="font-size: 14px; font-weight: bold;">From - To:</td>
           <td style="font-size: 14px; color: #64748B;">${data.sourceAddress} - ${data.destinationAddress}</td>
         </tr>
+          <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Price:</strong> NRP.${data.price}
+        </td>
+      </tr>
         <tr>
           <td style="font-size: 14px; font-weight: bold;">Start Date - End Date:</td>
           <td style="font-size: 14px; color: #64748B;">${data.startDate} - ${data.endDate}</td>
@@ -325,6 +337,11 @@ export const updateReservationStatusByBid = async (
           <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">From - To:</td>
           <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${data.sourceAddress} - ${data.destinationAddress}</td>
         </tr>
+          <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Price:</strong> NRP.${data.price}
+        </td>
+      </tr>
         <tr>
           <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Start Date - End Date:</td>
           <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${data.startDate} - ${data.endDate}</td>
@@ -430,6 +447,11 @@ export const updateReservationByBid = async (req: Request, res: Response) => {
       <td style="font-size: 14px; font-weight: bold; padding: 12px 8px; text-align: left;">From - To:</td>
       <td style="font-size: 14px; color: #64748B; padding: 12px 8px; text-align: left;">${data.sourceAddress} - ${data.destinationAddress}</td>
     </tr>
+      <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Price:</strong> NRP.${data.price}
+        </td>
+      </tr>
     <tr>
       <td style="font-size: 14px; font-weight: bold; padding: 12px 8px; text-align: left;">Start Date - End Date:</td>
       <td style="font-size: 14px; color: #64748B; padding: 12px 8px; text-align: left;">${data.startDate} - ${data.endDate}</td>

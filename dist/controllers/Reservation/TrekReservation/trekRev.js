@@ -24,7 +24,7 @@ const trekRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
     let bookingId = customId();
     bookingId = "TrR" + bookingId;
-    const { passengerName, tickets, email, phone, date, bookedBy } = req.body;
+    const { passengerName, tickets, email, phone, date, bookedBy, price } = req.body;
     try {
         const trekData = yield trekking_1.default.findOne({ trekId: id });
         if (!trekData) {
@@ -39,6 +39,7 @@ const trekRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             bookedBy,
             passengerName,
             tickets,
+            price,
             email,
             phone,
             date,
@@ -89,6 +90,11 @@ const trekRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
           <strong>Date:</strong> ${date}
+        </td>
+      </tr>
+        <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Price:</strong> ${price}
         </td>
       </tr>
     </table>
@@ -217,6 +223,11 @@ const updateTrekRevStatusByClient = (req, res) => __awaiter(void 0, void 0, void
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
           <strong>Date:</strong> ${data.date}
+        </td>
+      </tr>
+        <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Date:</strong> ${data.price}
         </td>
       </tr>
     </table>
