@@ -26,7 +26,7 @@ export interface IVeh extends Document {
   model: string;
   VIN: string;
   vehId: string;
-  price?: string;
+  price?: number;
   description: string;
   addedBy?: string;
 }
@@ -37,7 +37,7 @@ const VehSchema = new mongoose.Schema(
       type: String,
     },
     price: {
-      type: String,
+      type: Number,
     },
     isActive: {
       type: Boolean,

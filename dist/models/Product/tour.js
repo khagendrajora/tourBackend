@@ -16,7 +16,7 @@ const tourSchema = new mongoose_1.default.Schema({
         default: true,
     },
     price: {
-        type: String,
+        type: Number,
     },
     tourId: {
         type: String,

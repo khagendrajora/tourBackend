@@ -17,7 +17,7 @@ export interface ITour extends Document {
   operationDates: Date[];
   tourImages?: string[];
   isFeatured: boolean;
-  price?: string;
+  price?: number;
 
   addedBy?: string;
 }
@@ -34,7 +34,7 @@ const tourSchema = new mongoose.Schema({
     default: true,
   },
   price: {
-    type: String,
+    type: Number,
   },
   tourId: {
     type: String,

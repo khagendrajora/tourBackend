@@ -17,7 +17,7 @@ export interface ITrekking extends Document {
   trekImages?: string[];
   trekId: string;
   isFeatured: boolean;
-  price?: string;
+  price?: number;
   addedBy?: string;
 }
 
@@ -33,7 +33,7 @@ const trekSchema = new mongoose.Schema({
     default: true,
   },
   price: {
-    type: String,
+    type: Number,
   },
   isFeatured: {
     type: Boolean,

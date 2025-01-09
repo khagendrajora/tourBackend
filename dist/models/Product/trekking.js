@@ -16,7 +16,7 @@ const trekSchema = new mongoose_1.default.Schema({
         default: true,
     },
     price: {
-        type: String,
+        type: Number,
     },
     isFeatured: {
         type: Boolean,
