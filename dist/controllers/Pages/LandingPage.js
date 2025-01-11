@@ -15,8 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteDest = exports.updateDest = exports.getDestById = exports.getDest = exports.addDest = exports.deleteBlogs = exports.updateBlogs = exports.getBlogsById = exports.getBlogs = exports.addBlogs = exports.deleteHero = exports.updateHero = exports.getHeroById = exports.getHero = exports.addHero = void 0;
 const Hero_1 = __importDefault(require("../../models/Pages/LandingPage/Hero"));
 const Blogs_1 = __importDefault(require("../../models/Pages/LandingPage/Blogs"));
-const { customAlphabet } = require("nanoid");
+const nanoid_1 = require("nanoid");
 const Destination_1 = __importDefault(require("../../models/Pages/LandingPage/Destination"));
+const BlogsLogs_1 = __importDefault(require("../../models/LogModel/BlogsLogs"));
+const DestinationLogs_1 = __importDefault(require("../../models/LogModel/DestinationLogs"));
 const addHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { heading, description } = req.body;
     try {
@@ -122,8 +124,8 @@ const deleteHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.deleteHero = deleteHero;
 const addBlogs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { title, desc } = req.body;
-    const customId = customAlphabet("1234567890", 4);
+    const { title, desc, updatedBy } = req.body;
+    const customId = (0, nanoid_1.customAlphabet)("1234567890", 4);
     const blogId = customId();
     try {
         let blogsImage = [];
@@ -144,6 +146,13 @@ const addBlogs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return res.status(400).json({ error: "failed to save" });
         }
         else {
+            let blogsLog = new BlogsLogs_1.default({
+                updatedBy: updatedBy,
+                productId: blogId,
+                action: "Added",
+                time: new Date(),
+            });
+            blogsLog = yield blogsLog.save();
             return res.status(200).json({ message: "Added" });
         }
     }
@@ -182,7 +191,7 @@ const getBlogsById = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.getBlogsById = getBlogsById;
 const updateBlogs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { title, desc } = req.body;
+    const { title, desc, updatedBy } = req.body;
     try {
         let blogsImage = req.body.existingblogsImage || [];
         if (req.files) {
@@ -203,6 +212,13 @@ const updateBlogs = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             });
         }
         else {
+            let blogsLog = new BlogsLogs_1.default({
+                updatedBy: updatedBy,
+                productId: id,
+                action: "Updated",
+                time: new Date(),
+            });
+            blogsLog = yield blogsLog.save();
             return res.status(200).json({ message: "Successfully Updated" });
         }
     }
@@ -213,15 +229,23 @@ const updateBlogs = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.updateBlogs = updateBlogs;
 const deleteBlogs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
+    const { updatedBy } = req.query;
     try {
-        Blogs_1.default.findByIdAndDelete(id).then((data) => {
+        Blogs_1.default.findByIdAndDelete(id).then((data) => __awaiter(void 0, void 0, void 0, function* () {
             if (!data) {
                 return res.status(404).json({ error: "Failed to delete" });
             }
             else {
+                let blogsLog = new BlogsLogs_1.default({
+                    updatedBy: updatedBy,
+                    productId: id,
+                    action: "Deleted",
+                    time: new Date(),
+                });
+                blogsLog = yield blogsLog.save();
                 return res.status(200).json({ message: "Successfully Deleted" });
             }
-        });
+        }));
     }
     catch (error) {
         return res.status(500).json({ error: "internal error" });
@@ -229,8 +253,8 @@ const deleteBlogs = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.deleteBlogs = deleteBlogs;
 const addDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { title } = req.body;
-    const customId = customAlphabet("1234567890", 4);
+    const { title, updatedBy } = req.body;
+    const customId = (0, nanoid_1.customAlphabet)("1234567890", 4);
     const destId = customId();
     try {
         let destImage = [];
@@ -250,6 +274,13 @@ const addDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return res.status(400).json({ error: "failed to save" });
         }
         else {
+            let destLog = new DestinationLogs_1.default({
+                updatedBy: updatedBy,
+                productId: destId,
+                action: "Added",
+                time: new Date(),
+            });
+            destLog = yield destLog.save();
             return res.status(200).json({ message: "Added" });
         }
     }
@@ -288,7 +319,7 @@ const getDestById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getDestById = getDestById;
 const updateDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { title } = req.body;
+    const { title, updatedBy } = req.body;
     try {
         let destImage = req.body.existingdestImage || [];
         if (req.files) {
@@ -308,6 +339,13 @@ const updateDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             });
         }
         else {
+            let destLog = new DestinationLogs_1.default({
+                updatedBy: updatedBy,
+                productId: id,
+                action: "Updated",
+                time: new Date(),
+            });
+            destLog = yield destLog.save();
             return res.status(200).json({ message: "Successfully Updated" });
         }
     }
@@ -318,15 +356,23 @@ const updateDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.updateDest = updateDest;
 const deleteDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
+    const { updatedBy } = req.query;
     try {
-        Destination_1.default.findByIdAndDelete(id).then((data) => {
+        Destination_1.default.findByIdAndDelete(id).then((data) => __awaiter(void 0, void 0, void 0, function* () {
             if (!data) {
                 return res.status(404).json({ error: "Failed to delete" });
             }
             else {
+                let destLog = new DestinationLogs_1.default({
+                    updatedBy: updatedBy,
+                    productId: id,
+                    action: "Deleted",
+                    time: new Date(),
+                });
+                destLog = yield destLog.save();
                 return res.status(200).json({ message: "Successfully Deleted" });
             }
-        });
+        }));
     }
     catch (error) {
         return res.status(500).json({ error: "internal error" });

@@ -15,13 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateTourRevStatusByBid = exports.updateTourRevStatusByClient = exports.getTourRevByBid = exports.getTourRevByUser = exports.getTourRev = exports.tourRev = void 0;
 const tourRevModel_1 = __importDefault(require("../../../models/Reservations/TourReservation/tourRevModel"));
 const setEmail_1 = require("../../../utils/setEmail");
-const { customAlphabet } = require("nanoid");
+const nanoid_1 = require("nanoid");
 const tour_1 = __importDefault(require("../../../models/Product/tour"));
 const TourRevLog_1 = __importDefault(require("../../../models/LogModel/TourRevLog"));
 const userModel_1 = __importDefault(require("../../../models/User/userModel"));
 const tourRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const customId = customAlphabet("1234567890", 4);
+    const customId = (0, nanoid_1.customAlphabet)("1234567890", 4);
     let bookingId = customId();
     bookingId = "TuR" + bookingId;
     const { passengerName, tickets, email, phone, date, price, bookedBy } = req.body;

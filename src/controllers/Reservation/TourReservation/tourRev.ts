@@ -1,7 +1,7 @@
 import TourReservation from "../../../models/Reservations/TourReservation/tourRevModel";
 import { Request, Response } from "express";
 import { sendEmail } from "../../../utils/setEmail";
-const { customAlphabet } = require("nanoid");
+import { customAlphabet } from "nanoid";
 import Tour from "../../../models/Product/tour";
 import TourRevLog from "../../../models/LogModel/TourRevLog";
 import User from "../../../models/User/userModel";

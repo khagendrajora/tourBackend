@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import bcryptjs from "bcryptjs";
 import Business from "../models/business";
-// import jwt from "jsonwebtoken";
 import Driver from "../models/Drivers/Driver";
 import AdminUser from "../models/adminUser";
 import Token from "../models/token";
@@ -80,6 +79,7 @@ export const addBusiness = async (req: Request, res: Response) => {
       primaryPhone,
       bId: bId,
       businessPwd: hashedPassword,
+      addedBy: bId,
     });
     business = await business.save();
 
@@ -185,55 +185,6 @@ export const verifyEmail = async (req: Request, res: Response) => {
   }
 };
 
-// export const businessLogin = async (req: Request, res: Response) => {
-//   const { primaryEmail, businessPwd } = req.body;
-
-//   try {
-//     const businessEmail = await Business.findOne({
-//       primaryEmail: primaryEmail,
-//     });
-//     if (!businessEmail) {
-//       return res.status(404).json({
-//         error: "Email not found",
-//       });
-//     }
-
-//     const isPassword = await bcryptjs.compare(
-//       businessPwd,
-//       businessEmail.businessPwd
-//     );
-
-//     if (!isPassword) {
-//       return res.status(400).json({ error: "Incorrect Password" });
-//     }
-
-//     const isActive = businessEmail.isActive;
-
-//     if (!isActive) {
-//       return res.status(400).json({ error: "Account not Activated" });
-//     }
-
-//     const data = { id: businessEmail._id };
-//     const authToken = jwt.sign(data, process.env.JWTSECRET as string);
-//     res.cookie("authToken", authToken, {
-//       httpOnly: true,
-//       sameSite: "strict",
-//       maxAge: 3600000,
-//     });
-//     return res.status(200).json({
-//       message: "Login succssfully",
-//       authToken: authToken,
-//       businesId: businessEmail._id,
-//       primaryEmail: primaryEmail,
-//       businessRole: primaryEmail.businessRole,
-//       businessName: businessEmail.businessName,
-//       bId: businessEmail.bId,
-//     });
-//   } catch (error: any) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
-
 export const businessProfile = async (req: Request, res: Response) => {
   const id = req.params.businessId;
 
@@ -284,22 +235,19 @@ export const updateBusinessProfile = async (req: Request, res: Response) => {
     const data = await Business.findByIdAndUpdate(
       id,
       {
-        // businessName: req.body.businessName,
-        // businessCategory: req.body.businessCategory,
         businessSubCategory: req.body.businessSubCategory,
         businessAddress: {
           street: req.body.businessAddress.street,
-          // country: req.body.businessAddress.country,
-          // state: req.body.businessAddress.state,
+
           city: req.body.businessAddress.city,
         },
-        // primaryEmail: req.body.primaryEmail,
+
         website: req.body.website,
         contactName: req.body.contactName,
         primaryPhone: req.body.primaryPhone,
         businessRegistration: {
           authority: req.body.businessRegistration.authority,
-          // registrationNumber: req.body.businessRegistration.registrationNumber,
+
           registrationOn: req.body.businessRegistration.registrationOn,
           expiresOn: req.body.businessRegistration.expiresOn,
         },

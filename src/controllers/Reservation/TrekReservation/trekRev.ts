@@ -1,7 +1,7 @@
 import TrekReservation from "../../../models/Reservations/TrekReservation/TrekRevModel";
 import { Request, Response } from "express";
 import { sendEmail } from "../../../utils/setEmail";
-const { customAlphabet } = require("nanoid");
+import { customAlphabet } from "nanoid";
 import User from "../../../models/User/userModel";
 import Trekking from "../../../models/Product/trekking";
 import TrekRevLog from "../../../models/LogModel/TrekRevLog";

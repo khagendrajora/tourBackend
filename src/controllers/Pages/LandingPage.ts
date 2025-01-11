@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
 import Hero from "../../models/Pages/LandingPage/Hero";
 import Blogs from "../../models/Pages/LandingPage/Blogs";
-const { customAlphabet } = require("nanoid");
+import { customAlphabet } from "nanoid";
 import Destination from "../../models/Pages/LandingPage/Destination";
+import BlogsLogs from "../../models/LogModel/BlogsLogs";
+import DestinationLogs from "../../models/LogModel/DestinationLogs";
 
 export const addHero = async (req: Request, res: Response) => {
   const { heading, description } = req.body;
@@ -106,9 +108,10 @@ export const deleteHero = async (req: Request, res: Response) => {
 };
 
 export const addBlogs = async (req: Request, res: Response) => {
-  const { title, desc } = req.body;
+  const { title, desc, updatedBy } = req.body;
   const customId = customAlphabet("1234567890", 4);
   const blogId = customId();
+
   try {
     let blogsImage: string[] = [];
     if (req.files) {
@@ -127,6 +130,13 @@ export const addBlogs = async (req: Request, res: Response) => {
     if (!blogs) {
       return res.status(400).json({ error: "failed to save" });
     } else {
+      let blogsLog = new BlogsLogs({
+        updatedBy: updatedBy,
+        productId: blogId,
+        action: "Added",
+        time: new Date(),
+      });
+      blogsLog = await blogsLog.save();
       return res.status(200).json({ message: "Added" });
     }
   } catch (error: any) {
@@ -161,7 +171,7 @@ export const getBlogsById = async (req: Request, res: Response) => {
 
 export const updateBlogs = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const { title, desc } = req.body;
+  const { title, desc, updatedBy } = req.body;
 
   try {
     let blogsImage: string[] = req.body.existingblogsImage || [];
@@ -187,6 +197,13 @@ export const updateBlogs = async (req: Request, res: Response) => {
         error: "Failed to Update",
       });
     } else {
+      let blogsLog = new BlogsLogs({
+        updatedBy: updatedBy,
+        productId: id,
+        action: "Updated",
+        time: new Date(),
+      });
+      blogsLog = await blogsLog.save();
       return res.status(200).json({ message: "Successfully Updated" });
     }
   } catch (error: any) {
@@ -196,11 +213,19 @@ export const updateBlogs = async (req: Request, res: Response) => {
 
 export const deleteBlogs = async (req: Request, res: Response) => {
   const id = req.params.id;
+  const { updatedBy } = req.query;
   try {
-    Blogs.findByIdAndDelete(id).then((data) => {
+    Blogs.findByIdAndDelete(id).then(async (data) => {
       if (!data) {
         return res.status(404).json({ error: "Failed to delete" });
       } else {
+        let blogsLog = new BlogsLogs({
+          updatedBy: updatedBy,
+          productId: id,
+          action: "Deleted",
+          time: new Date(),
+        });
+        blogsLog = await blogsLog.save();
         return res.status(200).json({ message: "Successfully Deleted" });
       }
     });
@@ -210,7 +235,7 @@ export const deleteBlogs = async (req: Request, res: Response) => {
 };
 
 export const addDest = async (req: Request, res: Response) => {
-  const { title } = req.body;
+  const { title, updatedBy } = req.body;
   const customId = customAlphabet("1234567890", 4);
   const destId = customId();
 
@@ -231,6 +256,13 @@ export const addDest = async (req: Request, res: Response) => {
     if (!dest) {
       return res.status(400).json({ error: "failed to save" });
     } else {
+      let destLog = new DestinationLogs({
+        updatedBy: updatedBy,
+        productId: destId,
+        action: "Added",
+        time: new Date(),
+      });
+      destLog = await destLog.save();
       return res.status(200).json({ message: "Added" });
     }
   } catch (error: any) {
@@ -264,7 +296,7 @@ export const getDestById = async (req: Request, res: Response) => {
 
 export const updateDest = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const { title } = req.body;
+  const { title, updatedBy } = req.body;
 
   try {
     let destImage: string[] = req.body.existingdestImage || [];
@@ -289,6 +321,13 @@ export const updateDest = async (req: Request, res: Response) => {
         error: "Failed to Update",
       });
     } else {
+      let destLog = new DestinationLogs({
+        updatedBy: updatedBy,
+        productId: id,
+        action: "Updated",
+        time: new Date(),
+      });
+      destLog = await destLog.save();
       return res.status(200).json({ message: "Successfully Updated" });
     }
   } catch (error: any) {
@@ -298,11 +337,19 @@ export const updateDest = async (req: Request, res: Response) => {
 
 export const deleteDest = async (req: Request, res: Response) => {
   const id = req.params.id;
+  const { updatedBy } = req.query;
   try {
-    Destination.findByIdAndDelete(id).then((data) => {
+    Destination.findByIdAndDelete(id).then(async (data) => {
       if (!data) {
         return res.status(404).json({ error: "Failed to delete" });
       } else {
+        let destLog = new DestinationLogs({
+          updatedBy: updatedBy,
+          productId: id,
+          action: "Deleted",
+          time: new Date(),
+        });
+        destLog = await destLog.save();
         return res.status(200).json({ message: "Successfully Deleted" });
       }
     });

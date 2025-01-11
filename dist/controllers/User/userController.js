@@ -18,8 +18,7 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const token_1 = __importDefault(require("../../models/token"));
 const uuidv4_1 = require("uuidv4");
 const setEmail_1 = require("../../utils/setEmail");
-// import jwt from "jsonwebtoken";
-const { customAlphabet } = require("nanoid");
+const nanoid_1 = require("nanoid");
 const ReservedDated_1 = __importDefault(require("../../models/Reservations/ReservedDated"));
 const Driver_1 = __importDefault(require("../../models/Drivers/Driver"));
 const business_1 = __importDefault(require("../../models/business"));
@@ -27,7 +26,7 @@ const adminUser_1 = __importDefault(require("../../models/adminUser"));
 const addNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let { userName, userEmail, userPwd } = req.body;
     userEmail = userEmail.toLowerCase();
-    const customId = customAlphabet("1234567890", 4);
+    const customId = (0, nanoid_1.customAlphabet)("1234567890", 4);
     let userId = customId();
     userId = "U" + userId;
     try {
@@ -137,40 +136,6 @@ const verifyUserEmail = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.verifyUserEmail = verifyUserEmail;
-// export const clientLogin = async (req: Request, res: Response) => {
-//   const { userEmail, userPwd } = req.body;
-//   try {
-//     const clientEmail = await ClientUser.findOne({
-//       userEmail: userEmail,
-//     });
-//     if (!clientEmail) {
-//       return res.status(404).json({
-//         error: "Email not found",
-//       });
-//     }
-//     const isPassword = await bcryptjs.compare(userPwd, clientEmail.userPwd);
-//     if (!isPassword) {
-//       return res.status(400).json({ error: "Incorrect Password" });
-//     }
-//     const data = { id: clientEmail._id };
-//     const authToken = jwt.sign(data, process.env.JWTSECRET as string);
-//     res.cookie("authToken", authToken, {
-//       httpOnly: true,
-//       sameSite: "strict",
-//       maxAge: 3600000,
-//     });
-//     return res.status(200).json({
-//       message: "Login succssfully",
-//       authToken: authToken,
-//       clientId: clientEmail._id,
-//       userEmail: clientEmail.userEmail,
-//       userRole: clientEmail.userRole,
-//       userName: clientEmail.userName,
-//     });
-//   } catch (error: any) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield userModel_1.default.find().then((data) => {
@@ -281,40 +246,6 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.deleteUser = deleteUser;
-// export const forgetPwd = async (req: Request, res: Response) => {
-//   let userEmail = req.body.userEmail;
-//   try {
-//     const data = await User.findOne({ userEmail });
-//     if (!data) {
-//       return res.status(404).json({ error: "Email not found" });
-//     }
-//     let token = new Token({
-//       token: uuid(),
-//       userId: data._id,
-//     });
-//     token = await token.save();
-//     if (!token) {
-//       return res.status(400).json({ error: "Token not generated" });
-//     }
-//     const url = `${process.env.FRONTEND_URL}/resetuserpwd/${token.token}`;
-//     const api = `${process.env.Backend_URL}`;
-//     sendEmail({
-//       from: "beta.toursewa@gmail.com",
-//       to: data.userEmail,
-//       subject: "Password Reset Link",
-//       text: `Reset password Using link below\n\n
-//       ${api}/resetuserpwd/${token.token}
-//       `,
-//       html: `<h1>Click to Reset Password</h1>
-//       <a href='${url}'>Click here Reset</a>`,
-//     });
-//     return res
-//       .status(200)
-//       .json({ message: "Password reset link sent to your email" });
-//   } catch (error: any) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
 const resetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.params.token;
     const newPwd = req.body.userPwd;

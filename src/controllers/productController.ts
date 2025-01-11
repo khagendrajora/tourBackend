@@ -3,8 +3,7 @@ import Tour from "../models/Product/tour";
 import Trekking from "../models/Product/trekking";
 import Vehicle from "../models/Product/vehicle";
 const { customAlphabet } = require("nanoid");
-
-// import ReservedDate from "../models/Reservations/ReservedDated";
+import ProductLogs from "../models/LogModel/ProductLogs";
 
 export const addTour = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);
@@ -121,7 +120,7 @@ export const updateTour = async (req: Request, res: Response) => {
     price,
     name,
     phone,
-    addedBy,
+    updatedBy,
     operationDates,
   } = req.body;
   try {
@@ -146,7 +145,6 @@ export const updateTour = async (req: Request, res: Response) => {
         capacity,
         price,
         name,
-        addedBy,
         phone,
         operationDates,
         tourImages,
@@ -158,6 +156,13 @@ export const updateTour = async (req: Request, res: Response) => {
         error: "failed",
       });
     } else {
+      let productLog = new ProductLogs({
+        updatedBy: updatedBy,
+        productId: id,
+        action: "Updated",
+        time: new Date(),
+      });
+      productLog = await productLog.save();
       return res.status(200).json({ message: "success" });
     }
   } catch (error: any) {
@@ -278,7 +283,7 @@ export const updateTrek = async (req: Request, res: Response) => {
     dest,
     price,
     numbers,
-    addedBy,
+    updatedBy,
     itinerary,
     capacity,
     name,
@@ -302,7 +307,6 @@ export const updateTrek = async (req: Request, res: Response) => {
         inclusion,
         days,
         dest,
-        addedBy,
         numbers,
         price,
         itinerary,
@@ -318,6 +322,13 @@ export const updateTrek = async (req: Request, res: Response) => {
         error: "failed",
       });
     } else {
+      let productLog = new ProductLogs({
+        updatedBy: updatedBy,
+        productId: id,
+        action: "Updated",
+        time: new Date(),
+      });
+      productLog = await productLog.save();
       return res.status(200).json({ message: "success" });
     }
   } catch (error: any) {
@@ -462,7 +473,7 @@ export const updateVeh = async (req: Request, res: Response) => {
     price,
     description,
     madeYear,
-    addedBy,
+    updatedBy,
     vehNumber,
     capacity,
     name,
@@ -504,7 +515,7 @@ export const updateVeh = async (req: Request, res: Response) => {
       vehCondition,
       madeYear,
       price,
-      addedBy,
+
       vehNumber,
       baseLocation,
       capacity,
@@ -553,6 +564,13 @@ export const updateVeh = async (req: Request, res: Response) => {
         error: "failed",
       });
     } else {
+      let productLog = new ProductLogs({
+        updatedBy: updatedBy,
+        productId: id,
+        action: "Updated",
+        time: new Date(),
+      });
+      productLog = await productLog.save();
       return res.status(200).json({ message: "success" });
     }
   } catch (error: any) {
@@ -562,6 +580,7 @@ export const updateVeh = async (req: Request, res: Response) => {
 
 export const deleteproduct = async (req: Request, res: Response) => {
   const id = req.params.id;
+  const { updatedBy } = req.query;
   try {
     const tour = await Tour.findByIdAndDelete(id);
 
@@ -573,12 +592,33 @@ export const deleteproduct = async (req: Request, res: Response) => {
         if (!veh) {
           return res.status(400).json({ error: "Not found" });
         } else {
+          let productLog = new ProductLogs({
+            updatedBy: updatedBy,
+            productId: veh.vehId,
+            action: "Deleted",
+            time: new Date(),
+          });
+          productLog = await productLog.save();
           return res.status(200).json({ message: "Vehicle Deleted" });
         }
       } else {
+        let productLog = new ProductLogs({
+          updatedBy: updatedBy,
+          productId: trek.trekId,
+          action: "Deleted",
+          time: new Date(),
+        });
+        productLog = await productLog.save();
         return res.status(200).json({ message: "Trek Deleted" });
       }
     } else {
+      let productLog = new ProductLogs({
+        updatedBy: updatedBy,
+        productId: tour.tourId,
+        action: "Deleted",
+        time: new Date(),
+      });
+      productLog = await productLog.save();
       return res.status(200).json({ message: "Tour Deleted" });
     }
   } catch (error: any) {

@@ -37,6 +37,7 @@ export const login = async (req: Request, res: Response) => {
         userEmail: clientEmail.userEmail,
         userRole: clientEmail.userRole,
         userName: clientEmail.userName,
+        loginedId: clientEmail.userId,
       });
     } else {
       const businessEmail = await Business.findOne({
@@ -77,6 +78,7 @@ export const login = async (req: Request, res: Response) => {
           businessRole: businessEmail.businessRole,
           businessName: businessEmail.businessName,
           bId: businessEmail.bId,
+          loginedId: businessEmail.bId,
         });
       } else {
         const driverEmail = await Driver.findOne({
@@ -106,6 +108,7 @@ export const login = async (req: Request, res: Response) => {
             driverEmail: driverEmail.driverEmail,
             driverName: driverEmail.driverName,
             vehicleId: driverEmail.vehicleId,
+            loginedId: driverEmail.driverId,
           });
         } else {
           return res.status(400).json({ error: "Data not found" });

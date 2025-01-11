@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import HotDeals from "../../models/HotDeals/HotDeals";
-const { customAlphabet } = require("nanoid");
+import { customAlphabet } from "nanoid";
 import Vehicle from "../../models/Product/vehicle";
 import Driver from "../../models/Drivers/Driver";
 import Business from "../../models/business";

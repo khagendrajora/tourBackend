@@ -8,11 +8,16 @@ export interface IAdminUser extends Document {
   isVerified: boolean;
   adminRole: string;
   adminId: string;
+  addedBy: string;
 }
 
 const adminUserSchema = new mongoose.Schema(
   {
     adminName: {
+      type: String,
+      required: true,
+    },
+    addedBy: {
       type: String,
       required: true,
     },

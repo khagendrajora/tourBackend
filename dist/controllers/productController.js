@@ -17,7 +17,7 @@ const tour_1 = __importDefault(require("../models/Product/tour"));
 const trekking_1 = __importDefault(require("../models/Product/trekking"));
 const vehicle_1 = __importDefault(require("../models/Product/vehicle"));
 const { customAlphabet } = require("nanoid");
-// import ReservedDate from "../models/Reservations/ReservedDated";
+const ProductLogs_1 = __importDefault(require("../models/LogModel/ProductLogs"));
 const addTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
     let tourId = customId();
@@ -113,7 +113,7 @@ const tourDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.tourDetails = tourDetails;
 const updateTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { businessId, prodCategory, prodsubCategory, inclusion, dest, duration, itinerary, capacity, price, name, phone, addedBy, operationDates, } = req.body;
+    const { businessId, prodCategory, prodsubCategory, inclusion, dest, duration, itinerary, capacity, price, name, phone, updatedBy, operationDates, } = req.body;
     try {
         const tourImages = req.body.existingTourImages || [];
         if (req.files) {
@@ -134,7 +134,6 @@ const updateTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             capacity,
             price,
             name,
-            addedBy,
             phone,
             operationDates,
             tourImages,
@@ -145,6 +144,13 @@ const updateTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             });
         }
         else {
+            let productLog = new ProductLogs_1.default({
+                updatedBy: updatedBy,
+                productId: id,
+                action: "Updated",
+                time: new Date(),
+            });
+            productLog = yield productLog.save();
             return res.status(200).json({ message: "success" });
         }
     }
@@ -248,7 +254,7 @@ const trekDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.trekDetails = trekDetails;
 const updateTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { businessId, prodCategory, prodsubCategory, inclusion, days, dest, price, numbers, addedBy, itinerary, capacity, name, operationDates, } = req.body;
+    const { businessId, prodCategory, prodsubCategory, inclusion, days, dest, price, numbers, updatedBy, itinerary, capacity, name, operationDates, } = req.body;
     try {
         const trekImages = req.body.existingTrekImages || [];
         if (req.files) {
@@ -265,7 +271,6 @@ const updateTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             inclusion,
             days,
             dest,
-            addedBy,
             numbers,
             price,
             itinerary,
@@ -280,6 +285,13 @@ const updateTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             });
         }
         else {
+            let productLog = new ProductLogs_1.default({
+                updatedBy: updatedBy,
+                productId: id,
+                action: "Updated",
+                time: new Date(),
+            });
+            productLog = yield productLog.save();
             return res.status(200).json({ message: "success" });
         }
     }
@@ -396,7 +408,7 @@ const vehDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.vehDetails = vehDetails;
 const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { businessId, vehCategory, vehSubCategory, services, amenities, baseLocation, vehCondition, price, description, madeYear, addedBy, vehNumber, capacity, name, operationDates, } = req.body;
+    const { businessId, vehCategory, vehSubCategory, services, amenities, baseLocation, vehCondition, price, description, madeYear, updatedBy, vehNumber, capacity, name, operationDates, } = req.body;
     try {
         let vehImages = req.body.existingVehImages || [];
         if (req.files) {
@@ -429,7 +441,6 @@ const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             vehCondition,
             madeYear,
             price,
-            addedBy,
             vehNumber,
             baseLocation,
             capacity,
@@ -476,6 +487,13 @@ const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             });
         }
         else {
+            let productLog = new ProductLogs_1.default({
+                updatedBy: updatedBy,
+                productId: id,
+                action: "Updated",
+                time: new Date(),
+            });
+            productLog = yield productLog.save();
             return res.status(200).json({ message: "success" });
         }
     }
@@ -486,6 +504,7 @@ const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.updateVeh = updateVeh;
 const deleteproduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
+    const { updatedBy } = req.query;
     try {
         const tour = yield tour_1.default.findByIdAndDelete(id);
         if (!tour) {
@@ -496,14 +515,35 @@ const deleteproduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                     return res.status(400).json({ error: "Not found" });
                 }
                 else {
+                    let productLog = new ProductLogs_1.default({
+                        updatedBy: updatedBy,
+                        productId: veh.vehId,
+                        action: "Deleted",
+                        time: new Date(),
+                    });
+                    productLog = yield productLog.save();
                     return res.status(200).json({ message: "Vehicle Deleted" });
                 }
             }
             else {
+                let productLog = new ProductLogs_1.default({
+                    updatedBy: updatedBy,
+                    productId: trek.trekId,
+                    action: "Deleted",
+                    time: new Date(),
+                });
+                productLog = yield productLog.save();
                 return res.status(200).json({ message: "Trek Deleted" });
             }
         }
         else {
+            let productLog = new ProductLogs_1.default({
+                updatedBy: updatedBy,
+                productId: tour.tourId,
+                action: "Deleted",
+                time: new Date(),
+            });
+            productLog = yield productLog.save();
             return res.status(200).json({ message: "Tour Deleted" });
         }
     }

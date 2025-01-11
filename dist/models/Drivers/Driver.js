@@ -17,6 +17,10 @@ const driverSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    addedBy: {
+        type: String,
+        required: true,
+    },
     isActive: {
         type: Boolean,
         default: true,
@@ -33,10 +37,6 @@ const driverSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    // bookingId: {
-    //   type: String,
-    //   required: true,
-    // },
     driverEmail: {
         type: String,
     },

@@ -17,19 +17,20 @@ const Driver_1 = __importDefault(require("../../models/Drivers/Driver"));
 const token_1 = __importDefault(require("../../models/token"));
 const uuid_1 = require("uuid");
 const setEmail_1 = require("../../utils/setEmail");
-const { customAlphabet } = require("nanoid");
+const nanoid_1 = require("nanoid");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 // import jwt from "jsonwebtoken";
 const business_1 = __importDefault(require("../../models/business"));
 const adminUser_1 = __importDefault(require("../../models/adminUser"));
 const userModel_1 = __importDefault(require("../../models/User/userModel"));
 const vehicle_1 = __importDefault(require("../../models/Product/vehicle"));
+const DriverLogs_1 = __importDefault(require("../../models/LogModel/DriverLogs"));
 const addDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const customId = customAlphabet("1234567890", 4);
+    const customId = (0, nanoid_1.customAlphabet)("1234567890", 4);
     let driverId = customId();
     driverId = "D" + driverId;
-    const { driverName, driverAge, driverPhone, driverEmail, vehicleId, businessId, driverPwd, } = req.body;
+    const { driverName, driverAge, driverPhone, driverEmail, vehicleId, businessId, addedBy, driverPwd, } = req.body;
     try {
         let driverImage = undefined;
         if (req.files) {
@@ -86,6 +87,7 @@ const addDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             driverPhone: driverPhone,
             driverPwd: hashedPassword,
             driverImage,
+            addedBy,
         });
         newDriver = yield newDriver.save();
         if (!newDriver) {
@@ -281,11 +283,19 @@ const getDriverById = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.getDriverById = getDriverById;
 const deleteDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
+    const { updatedBy, action } = req.query;
     try {
         const deleteDriver = yield Driver_1.default.findByIdAndDelete(id);
         if (!deleteDriver) {
             return res.status(404).json({ error: "Failed to delete" });
         }
+        let driverLog = new DriverLogs_1.default({
+            updatedBy: updatedBy,
+            productId: id,
+            action: action,
+            time: new Date(),
+        });
+        driverLog = yield driverLog.save();
         return res.status(200).json({ message: "Successfully Deleted" });
     }
     catch (error) {
@@ -296,7 +306,7 @@ exports.deleteDriver = deleteDriver;
 const updateDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const id = req.params.id;
-    const { driverName, driverAge, driverPhone, driverEmail, vehicleId } = req.body;
+    const { driverName, driverAge, driverPhone, driverEmail, vehicleId, updatedBy, } = req.body;
     try {
         let driverImage = undefined;
         if (req.files) {
@@ -319,6 +329,13 @@ const updateDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             });
         }
         else {
+            let driverLog = new DriverLogs_1.default({
+                updatedBy: updatedBy,
+                productId: id,
+                action: "updated",
+                time: new Date(),
+            });
+            driverLog = yield driverLog.save();
             return res.send({
                 message: "Updated",
                 data: data,

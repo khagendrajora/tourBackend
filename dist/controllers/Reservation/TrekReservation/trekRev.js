@@ -15,13 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateTrekRevStatusByBid = exports.updateTrekRevStatusByClient = exports.getTrekRevByBid = exports.getTrekRevByUser = exports.getTrekRev = exports.trekRev = void 0;
 const TrekRevModel_1 = __importDefault(require("../../../models/Reservations/TrekReservation/TrekRevModel"));
 const setEmail_1 = require("../../../utils/setEmail");
-const { customAlphabet } = require("nanoid");
+const nanoid_1 = require("nanoid");
 const userModel_1 = __importDefault(require("../../../models/User/userModel"));
 const trekking_1 = __importDefault(require("../../../models/Product/trekking"));
 const TrekRevLog_1 = __importDefault(require("../../../models/LogModel/TrekRevLog"));
 const trekRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const customId = customAlphabet("1234567890", 4);
+    const customId = (0, nanoid_1.customAlphabet)("1234567890", 4);
     let bookingId = customId();
     bookingId = "TrR" + bookingId;
     const { passengerName, tickets, email, phone, date, bookedBy, price } = req.body;

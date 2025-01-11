@@ -4,7 +4,7 @@ import bcryptjs from "bcryptjs";
 import Business from "../models/business";
 import jwt from "jsonwebtoken";
 import Token from "../models/token";
-const { customAlphabet } = require("nanoid");
+import { customAlphabet } from "nanoid";
 import { v4 as uuid } from "uuid";
 import Driver from "../models/Drivers/Driver";
 import { sendEmail } from "../utils/setEmail";
@@ -13,10 +13,11 @@ import Tour from "../models/Product/tour";
 import Trekking from "../models/Product/trekking";
 import Vehicle from "../models/Product/vehicle";
 import Feature from "../models/Featured/Feature";
-// import Driver from "../models/Drivers/Driver";
+import AdminLogs from "../models/LogModel/AdminLogs";
+import FeaturedLogs from "../models/LogModel/FeaturedLogs";
 
 export const addAdminUser = async (req: Request, res: Response) => {
-  const { adminName, adminEmail, adminPwd } = req.body;
+  const { adminName, adminEmail, adminPwd, addedBy } = req.body;
   const customId = customAlphabet("1234567890", 4);
   const adminId = customId();
   try {
@@ -28,6 +29,7 @@ export const addAdminUser = async (req: Request, res: Response) => {
       adminEmail,
       adminPwd: hashedPwd,
       adminId: adminId,
+      addedBy,
     });
 
     const email = await User.findOne({ userEmail: adminEmail });
@@ -82,10 +84,6 @@ export const adminlogin = async (req: Request, res: Response) => {
     const userID = data.id;
     const authToken = jwt.sign(userID, process.env.JWTSECRET as string);
     res.cookie("authToken", authToken, {
-      // httpOnly: true,
-      // sameSite: "strict",
-      // maxAge: 3600000,
-      // secure: false,
       expires: new Date(Date.now() + 99999),
     });
 
@@ -96,6 +94,7 @@ export const adminlogin = async (req: Request, res: Response) => {
       adminEmail: adminEmail,
       adminName: data.adminName,
       adminRole: data.adminRole,
+      loginedId: adminEmail,
     });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
@@ -119,6 +118,8 @@ export const getAdmin = async (req: Request, res: Response) => {
 export const businessApprove = async (req: Request, res: Response) => {
   const id = req.params.id;
   let status = "";
+  const { updatedBy } = req.body;
+
   // const authToken = req.cookies.authToken;
   // if (!authToken) {
   //   return res.status(404).json({ error: "Token not found or login first" });
@@ -141,8 +142,24 @@ export const businessApprove = async (req: Request, res: Response) => {
     business.isActive = !business.isActive;
     const updatedBusiness = await business.save();
 
+    // let adminLog = new AdminLogs({
+    //   updatedBy: updatedBy,
+    //   productId: id,
+    //   action: "Added",
+    //   time: new Date(),
+    // });
+    // destLog = await destLog.save();
+
     if (business.isActive) {
       status = "Activated";
+      let adminLog = new AdminLogs({
+        updatedBy: updatedBy,
+        productId: id,
+        action: "Activated",
+        time: new Date(),
+      });
+      adminLog = await adminLog.save();
+
       const veh = await Vehicle.updateMany(
         { businessId: id },
         {
@@ -169,6 +186,14 @@ export const businessApprove = async (req: Request, res: Response) => {
       );
     } else {
       status = "Deactivated";
+      let adminLog = new AdminLogs({
+        updatedBy: updatedBy,
+        productId: id,
+        action: "Deactivated",
+        time: new Date(),
+      });
+      adminLog = await adminLog.save();
+
       const veh = await Vehicle.updateMany(
         { businessId: id },
         {
@@ -229,24 +254,6 @@ export const businessApprove = async (req: Request, res: Response) => {
     return res.status(500).json({ error: error.message });
   }
 };
-
-// export const adminSignOut = async (req: Request, res: Response) => {
-//   const authToken = req.cookies.authToken;
-
-//   try {
-//     if (!authToken) {
-//       return res.status(400).json({ error: "token not found " });
-//     } else {
-//       res.clearCookie("authToken", {
-//         // httpOnly: true,
-//         // sameSite: "strict",
-//       });
-//       return res.status(200).json({ message: "Sign Out Successfully" });
-//     }
-//   } catch (error: any) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
 
 export const forgetPass = async (req: Request, res: Response) => {
   let adminEmail = req.body.adminEmail;
@@ -344,6 +351,7 @@ export const addBusinessByAdmin = async (req: Request, res: Response) => {
     primaryEmail,
     primaryPhone,
     businessPwd,
+    addedBy,
   } = req.body;
 
   try {
@@ -401,6 +409,7 @@ export const addBusinessByAdmin = async (req: Request, res: Response) => {
       primaryPhone,
       bId: bId,
       businessPwd: hashedPassword,
+      addedBy,
     });
     business = await business.save();
 
@@ -523,11 +532,19 @@ export const verifyAndResetPwd = async (req: Request, res: Response) => {
 
 export const deleteAdmin = async (req: Request, res: Response) => {
   const id = req.params.id;
+  const { updatedBy } = req.query;
   try {
     const deleteAdmin = await AdminUser.findByIdAndDelete(id);
     if (!deleteAdmin) {
       return res.status(404).json({ error: "Failed to delete" });
     }
+    let adminLog = new AdminLogs({
+      updatedBy: updatedBy,
+      productId: id,
+      action: "Deleted",
+      time: new Date(),
+    });
+    adminLog = await adminLog.save();
 
     return res.status(200).json({ message: "Successfully Deleted" });
   } catch (error: any) {
@@ -551,6 +568,7 @@ export const getFeature = async (req: Request, res: Response) => {
 
 export const addFeature = async (req: Request, res: Response) => {
   const id = req.params.id;
+  const { updatedBy } = req.body;
   try {
     const tour = await Tour.findOne({ _id: id });
     if (tour) {
@@ -569,6 +587,13 @@ export const addFeature = async (req: Request, res: Response) => {
       if (!feature) {
         return res.status(404).json({ error: "Failed" });
       }
+      let featureLog = new FeaturedLogs({
+        updatedBy: updatedBy,
+        productId: tour.tourId,
+        action: "Added To Feature",
+        time: new Date(),
+      });
+      featureLog = await featureLog.save();
       return res.status(200).json({ message: "Successfully Updated" });
     } else {
       const trek = await Trekking.findOne({ _id: id });
@@ -588,7 +613,13 @@ export const addFeature = async (req: Request, res: Response) => {
         if (!feature) {
           return res.status(404).json({ error: "Failed" });
         }
-
+        let featureLog = new FeaturedLogs({
+          updatedBy: updatedBy,
+          productId: trek.trekId,
+          action: "Added To Feature",
+          time: new Date(),
+        });
+        featureLog = await featureLog.save();
         return res.status(200).json({ message: "Successfully Updated" });
       } else {
         const veh = await Vehicle.findOne({ _id: id });
@@ -608,6 +639,13 @@ export const addFeature = async (req: Request, res: Response) => {
           if (!feature) {
             return res.status(404).json({ error: "Failed" });
           }
+          let featureLog = new FeaturedLogs({
+            updatedBy: updatedBy,
+            productId: veh.vehId,
+            action: "Added To Feature",
+            time: new Date(),
+          });
+          featureLog = await featureLog.save();
           return res.status(200).json({ message: "Successfully Updated" });
         }
       }
@@ -619,11 +657,19 @@ export const addFeature = async (req: Request, res: Response) => {
 
 export const deleteFeatureRequest = async (req: Request, res: Response) => {
   const id = req.params.id;
+  const { updatedBy } = req.query;
   try {
     const deleteFeature = await Feature.findOneAndDelete({ Id: id });
     if (!deleteFeature) {
       return res.status(404).json({ error: "Failed to delete" });
     }
+    let featureLog = new FeaturedLogs({
+      updatedBy: updatedBy,
+      productId: id,
+      action: "Feature Request Rejected",
+      time: new Date(),
+    });
+    featureLog = await featureLog.save();
 
     return res.status(200).json({ message: "Successfully Deleted" });
   } catch (error: any) {
@@ -633,6 +679,7 @@ export const deleteFeatureRequest = async (req: Request, res: Response) => {
 
 export const removeFeatureProduct = async (req: Request, res: Response) => {
   const id = req.params.id;
+  const { updatedBy } = req.query;
   try {
     const deleteFeature = await Feature.findOneAndDelete({ Id: id });
     if (!deleteFeature) {
@@ -646,6 +693,13 @@ export const removeFeatureProduct = async (req: Request, res: Response) => {
       if (!updated) {
         return res.status(404).json({ error: "Failed" });
       }
+      let featureLog = new FeaturedLogs({
+        updatedBy: updatedBy,
+        productId: tour.tourId,
+        action: "Removed from Feature",
+        time: new Date(),
+      });
+      featureLog = await featureLog.save();
     } else {
       const trek = await Trekking.findOne({ _id: id });
       if (trek) {
@@ -654,6 +708,13 @@ export const removeFeatureProduct = async (req: Request, res: Response) => {
         if (!updated) {
           return res.status(404).json({ error: "Failed" });
         }
+        let featureLog = new FeaturedLogs({
+          updatedBy: updatedBy,
+          productId: trek.trekId,
+          action: "Removed from Feature",
+          time: new Date(),
+        });
+        featureLog = await featureLog.save();
       } else {
         const veh = await Vehicle.findOne({ _id: id });
         if (veh) {
@@ -662,6 +723,13 @@ export const removeFeatureProduct = async (req: Request, res: Response) => {
           if (!updated) {
             return res.status(404).json({ error: "Failed" });
           }
+          let featureLog = new FeaturedLogs({
+            updatedBy: updatedBy,
+            productId: veh.vehId,
+            action: "Removed from Feature",
+            time: new Date(),
+          });
+          featureLog = await featureLog.save();
         }
       }
     }
@@ -671,60 +739,3 @@ export const removeFeatureProduct = async (req: Request, res: Response) => {
     return res.status(500).json({ error: error.message });
   }
 };
-
-// export const tourFeature = async (req: Request, res: Response) => {
-//   const id = req.params.id;
-//   try {
-//     const tour = await Tour.findById(id);
-//     if (!tour) {
-//       return res.status(404).json({ error: "Tour not found" });
-//     }
-//     tour.isFeatured = !tour.isFeatured;
-//     const updated = await tour.save();
-//     if (!updated) {
-//       return res.status(404).json({ error: "Failed" });
-//     }
-
-//     return res.status(200).json({ message: "Successfully Updated" });
-//   } catch (error: any) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
-
-// export const trekFeature = async (req: Request, res: Response) => {
-//   const id = req.params.id;
-//   try {
-//     const tour = await Trekking.findById(id);
-//     if (!tour) {
-//       return res.status(404).json({ error: "Trek not found" });
-//     }
-//     tour.isFeatured = !tour.isFeatured;
-//     const updated = await tour.save();
-//     if (!updated) {
-//       return res.status(404).json({ error: "Failed" });
-//     }
-
-//     return res.status(200).json({ message: "Successfully Updated" });
-//   } catch (error: any) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
-
-// export const vehFeature = async (req: Request, res: Response) => {
-//   const id = req.params.id;
-//   try {
-//     const tour = await Vehicle.findById(id);
-//     if (!tour) {
-//       return res.status(404).json({ error: "Vehicle not found" });
-//     }
-//     tour.isFeatured = !tour.isFeatured;
-//     const updated = await tour.save();
-//     if (!updated) {
-//       return res.status(404).json({ error: "Failed" });
-//     }
-
-//     return res.status(200).json({ message: "Successfully Updated" });
-//   } catch (error: any) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };

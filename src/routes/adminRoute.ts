@@ -4,7 +4,6 @@ import {
   addBusinessByAdmin,
   addFeature,
   adminlogin,
-  // adminSignOut,
   businessApprove,
   deleteAdmin,
   deleteFeatureRequest,
@@ -13,9 +12,6 @@ import {
   getFeature,
   removeFeatureProduct,
   resetPass,
-  // tourFeature,
-  // trekFeature,
-  // vehFeature,
 } from "../controllers/userController";
 import { adminSignup, validation } from "../validation/Validation";
 const router = express.Router();
@@ -23,7 +19,7 @@ const router = express.Router();
 router.post("/addadmin", adminSignup, validation, addAdminUser);
 router.get("/getadmin", getAdmin);
 router.put("/businessapprove/:id", businessApprove);
-// router.post("/adminsignout", adminSignOut);
+
 router.post("/adminlogin", adminlogin);
 router.post("/forgetadminpwd", forgetPass);
 router.put("/resetpwd/:token", resetPass);
@@ -34,9 +30,5 @@ router.get("/getfeature", getFeature);
 router.put("/addfeature/:id", addFeature);
 router.delete("/deletefeaturerequest/:id", deleteFeatureRequest);
 router.delete("/removefeature/:id", removeFeatureProduct);
-
-// router.put("/featureveh/:id", vehFeature);
-// router.put("/featuretour/:id", tourFeature);
-// router.put("/featuretrek/:id", trekFeature);
 
 export default router;

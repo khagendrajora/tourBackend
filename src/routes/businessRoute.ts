@@ -1,7 +1,6 @@
 import express from "express";
 import {
   addBusiness,
-  // businessLogin,
   businessProfile,
   businessSignOut,
   deleteBusiness,
@@ -20,7 +19,7 @@ const router = express.Router();
 
 router.post("/addbusiness", addBusinessData, validation, addBusiness);
 router.put("/verifybusinessemail/:token", verifyEmail);
-// router.post("/businesslogin", businessLogin);
+
 router.get("/getbusiness", getBusiness);
 
 router.get("/businessprofile/:businessId", businessProfile);

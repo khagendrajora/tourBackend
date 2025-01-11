@@ -14,14 +14,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteHotDeals = exports.updateHotdeals = exports.getHotDealsByVehId = exports.getHotDealsById = exports.getHotDeals = exports.addHotDeals = void 0;
 const HotDeals_1 = __importDefault(require("../../models/HotDeals/HotDeals"));
-const { customAlphabet } = require("nanoid");
+const nanoid_1 = require("nanoid");
 const vehicle_1 = __importDefault(require("../../models/Product/vehicle"));
 const Driver_1 = __importDefault(require("../../models/Drivers/Driver"));
 const business_1 = __importDefault(require("../../models/business"));
 const addHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const { price, sourceAddress, destAddress, driverId, date, time, termsAndCondition, } = req.body;
-    const customId = customAlphabet("1234567890", 4);
+    const customId = (0, nanoid_1.customAlphabet)("1234567890", 4);
     let hdID = customId();
     hdID = "hd" + hdID;
     try {

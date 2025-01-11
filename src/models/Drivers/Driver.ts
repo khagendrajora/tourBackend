@@ -11,7 +11,6 @@ export interface IDriver extends Document {
   _id?: string;
   driverId: string;
   vehicleId: string;
-  //   bookingId: string;
   vehicleName: string;
   businessId: string;
   driverName: string;
@@ -23,11 +22,16 @@ export interface IDriver extends Document {
   isVerified: boolean;
   driverPwd: string;
   driverImage: string;
+  addedBy: string;
 }
 
 const driverSchema = new mongoose.Schema(
   {
     vehicleId: {
+      type: String,
+      required: true,
+    },
+    addedBy: {
       type: String,
       required: true,
     },
@@ -47,10 +51,6 @@ const driverSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    // bookingId: {
-    //   type: String,
-    //   required: true,
-    // },
     driverEmail: {
       type: String,
     },

@@ -3,13 +3,14 @@ import Driver from "../../models/Drivers/Driver";
 import Token from "../../models/token";
 import { v4 as uuid } from "uuid";
 import { sendEmail } from "../../utils/setEmail";
-const { customAlphabet } = require("nanoid");
+import { customAlphabet } from "nanoid";
 import bcryptjs from "bcryptjs";
 // import jwt from "jsonwebtoken";
 import Business from "../../models/business";
 import AdminUser from "../../models/adminUser";
 import ClientUser from "../../models/User/userModel";
 import vehicle from "../../models/Product/vehicle";
+import DriverLogs from "../../models/LogModel/DriverLogs";
 
 export const addDriver = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);
@@ -22,6 +23,7 @@ export const addDriver = async (req: Request, res: Response) => {
     driverEmail,
     vehicleId,
     businessId,
+    addedBy,
     driverPwd,
   } = req.body;
   try {
@@ -90,6 +92,7 @@ export const addDriver = async (req: Request, res: Response) => {
       driverPhone: driverPhone,
       driverPwd: hashedPassword,
       driverImage,
+      addedBy,
     });
     newDriver = await newDriver.save();
     if (!newDriver) {
@@ -279,12 +282,20 @@ export const getDriverById = async (req: Request, res: Response) => {
 
 export const deleteDriver = async (req: Request, res: Response) => {
   const id = req.params.id;
+  const { updatedBy, action } = req.query;
+
   try {
     const deleteDriver = await Driver.findByIdAndDelete(id);
     if (!deleteDriver) {
       return res.status(404).json({ error: "Failed to delete" });
     }
-
+    let driverLog = new DriverLogs({
+      updatedBy: updatedBy,
+      productId: id,
+      action: action,
+      time: new Date(),
+    });
+    driverLog = await driverLog.save();
     return res.status(200).json({ message: "Successfully Deleted" });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
@@ -293,8 +304,14 @@ export const deleteDriver = async (req: Request, res: Response) => {
 
 export const updateDriver = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const { driverName, driverAge, driverPhone, driverEmail, vehicleId } =
-    req.body;
+  const {
+    driverName,
+    driverAge,
+    driverPhone,
+    driverEmail,
+    vehicleId,
+    updatedBy,
+  } = req.body;
   try {
     let driverImage: string | undefined = undefined;
 
@@ -321,6 +338,14 @@ export const updateDriver = async (req: Request, res: Response) => {
         error: "Failed to Update",
       });
     } else {
+      let driverLog = new DriverLogs({
+        updatedBy: updatedBy,
+        productId: id,
+        action: "updated",
+        time: new Date(),
+      });
+      driverLog = await driverLog.save();
+
       return res.send({
         message: "Updated",
         data: data,

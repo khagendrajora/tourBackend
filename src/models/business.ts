@@ -37,11 +37,16 @@ export interface IBusiness extends Document {
   socialMedia?: ISocialMedia;
   imageGallery?: string[];
   profileIcon?: string;
+  addedBy: string;
 }
 
 const businessSchema = new mongoose.Schema(
   {
     businessName: {
+      type: String,
+      required: true,
+    },
+    addedBy: {
       type: String,
       required: true,
     },

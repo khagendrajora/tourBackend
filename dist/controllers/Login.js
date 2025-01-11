@@ -48,6 +48,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 userEmail: clientEmail.userEmail,
                 userRole: clientEmail.userRole,
                 userName: clientEmail.userName,
+                loginedId: clientEmail.userId,
             });
         }
         else {
@@ -82,6 +83,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                     businessRole: businessEmail.businessRole,
                     businessName: businessEmail.businessName,
                     bId: businessEmail.bId,
+                    loginedId: businessEmail.bId,
                 });
             }
             else {
@@ -112,6 +114,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                         driverEmail: driverEmail.driverEmail,
                         driverName: driverEmail.driverName,
                         vehicleId: driverEmail.vehicleId,
+                        loginedId: driverEmail.driverId,
                     });
                 }
                 else {

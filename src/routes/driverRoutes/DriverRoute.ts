@@ -29,8 +29,6 @@ router.post(
   addDriver
 );
 
-// router.put("/verifydriveremail/:token", verifyDriverEmail);
-// router.post("/driverlogin", driverLogin);
 router.get("/getdrivers", getDrivers);
 router.get("/getdrivers/:id", getDriverById);
 router.get("/getdriverbybid/:id", getDriverByBId);

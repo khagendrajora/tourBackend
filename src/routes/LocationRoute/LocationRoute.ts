@@ -2,11 +2,9 @@ import express from "express";
 import {
   addCountry,
   addDistrict,
-  // addCountryState,
   addLocation,
   addMunicipality,
   addState,
-  // addStateMunicipality,
   deleteCountry,
   deleteDistrict,
   deleteLocation,
@@ -21,12 +19,6 @@ import {
   importBhaktapur,
   importLalitpur,
   importUData,
-  // importGandaki,
-  // importkarnali,
-  // importLumbini,
-  // importprov1,
-  // importprov2,
-  // importsudur,
   updateLocation,
 } from "../../controllers/Location/location";
 import upload from "../../middleware/fileUpload";

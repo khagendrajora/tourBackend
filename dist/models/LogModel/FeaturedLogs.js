@@ -4,34 +4,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
-const adminUserSchema = new mongoose_1.default.Schema({
-    adminName: {
+const featuredLogs = new mongoose_1.default.Schema({
+    updatedBy: {
         type: String,
         required: true,
     },
-    addedBy: {
+    productId: {
         type: String,
         required: true,
     },
-    adminId: {
+    action: {
         type: String,
         required: true,
     },
-    adminEmail: {
-        type: String,
-        required: true,
-    },
-    adminPwd: {
-        type: String,
-        required: true,
-    },
-    adminRole: {
-        type: String,
-        default: "1",
-    },
-    isVerified: {
-        type: Boolean,
-        default: false,
+    time: {
+        type: Date,
     },
 }, { timestamps: true });
-exports.default = mongoose_1.default.model("AdminUser", adminUserSchema);
+exports.default = mongoose_1.default.model("featuredLogs", featuredLogs);

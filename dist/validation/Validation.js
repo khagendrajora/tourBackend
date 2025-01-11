@@ -34,9 +34,6 @@ exports.addBusinessData = [
 exports.addCategoryData = [
     (0, express_validator_1.check)("categoryName", "Category is required").trim().notEmpty(),
 ];
-// export const addSubCategoryData = [
-//   check("subCategoryName", "Sub Category is required").trim().notEmpty(),
-// ];
 exports.addPropertyData = [
     (0, express_validator_1.check)("propName", "Property name is required").trim().notEmpty(),
     (0, express_validator_1.check)("propCategory", "Sub Category is required").trim().notEmpty(),

@@ -9,8 +9,6 @@ const fileUpload_1 = __importDefault(require("../../middleware/fileUpload"));
 const HotDealsCOntroller_1 = require("../../controllers/HotDealsControllers/HotDealsCOntroller");
 const router = express_1.default.Router();
 router.post("/adddriver", fileUpload_1.default.fields([{ name: "driverImage", maxCount: 1 }]), driver_1.addDriver);
-// router.put("/verifydriveremail/:token", verifyDriverEmail);
-// router.post("/driverlogin", driverLogin);
 router.get("/getdrivers", driver_1.getDrivers);
 router.get("/getdrivers/:id", driver_1.getDriverById);
 router.get("/getdriverbybid/:id", driver_1.getDriverByBId);

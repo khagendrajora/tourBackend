@@ -18,7 +18,7 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const business_1 = __importDefault(require("../models/business"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const token_1 = __importDefault(require("../models/token"));
-const { customAlphabet } = require("nanoid");
+const nanoid_1 = require("nanoid");
 const uuid_1 = require("uuid");
 const Driver_1 = __importDefault(require("../models/Drivers/Driver"));
 const setEmail_1 = require("../utils/setEmail");
@@ -27,10 +27,11 @@ const tour_1 = __importDefault(require("../models/Product/tour"));
 const trekking_1 = __importDefault(require("../models/Product/trekking"));
 const vehicle_1 = __importDefault(require("../models/Product/vehicle"));
 const Feature_1 = __importDefault(require("../models/Featured/Feature"));
-// import Driver from "../models/Drivers/Driver";
+const AdminLogs_1 = __importDefault(require("../models/LogModel/AdminLogs"));
+const FeaturedLogs_1 = __importDefault(require("../models/LogModel/FeaturedLogs"));
 const addAdminUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { adminName, adminEmail, adminPwd } = req.body;
-    const customId = customAlphabet("1234567890", 4);
+    const { adminName, adminEmail, adminPwd, addedBy } = req.body;
+    const customId = (0, nanoid_1.customAlphabet)("1234567890", 4);
     const adminId = customId();
     try {
         const salt = yield bcryptjs_1.default.genSalt(5);
@@ -40,6 +41,7 @@ const addAdminUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             adminEmail,
             adminPwd: hashedPwd,
             adminId: adminId,
+            addedBy,
         });
         const email = yield userModel_1.default.findOne({ userEmail: adminEmail });
         if (email) {
@@ -90,10 +92,6 @@ const adminlogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const userID = data.id;
         const authToken = jsonwebtoken_1.default.sign(userID, process.env.JWTSECRET);
         res.cookie("authToken", authToken, {
-            // httpOnly: true,
-            // sameSite: "strict",
-            // maxAge: 3600000,
-            // secure: false,
             expires: new Date(Date.now() + 99999),
         });
         return res.status(200).json({
@@ -103,6 +101,7 @@ const adminlogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             adminEmail: adminEmail,
             adminName: data.adminName,
             adminRole: data.adminRole,
+            loginedId: adminEmail,
         });
     }
     catch (error) {
@@ -129,6 +128,7 @@ exports.getAdmin = getAdmin;
 const businessApprove = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     let status = "";
+    const { updatedBy } = req.body;
     // const authToken = req.cookies.authToken;
     // if (!authToken) {
     //   return res.status(404).json({ error: "Token not found or login first" });
@@ -150,8 +150,22 @@ const businessApprove = (req, res) => __awaiter(void 0, void 0, void 0, function
         }
         business.isActive = !business.isActive;
         const updatedBusiness = yield business.save();
+        // let adminLog = new AdminLogs({
+        //   updatedBy: updatedBy,
+        //   productId: id,
+        //   action: "Added",
+        //   time: new Date(),
+        // });
+        // destLog = await destLog.save();
         if (business.isActive) {
             status = "Activated";
+            let adminLog = new AdminLogs_1.default({
+                updatedBy: updatedBy,
+                productId: id,
+                action: "Activated",
+                time: new Date(),
+            });
+            adminLog = yield adminLog.save();
             const veh = yield vehicle_1.default.updateMany({ businessId: id }, {
                 $set: { isActive: true },
             });
@@ -167,6 +181,13 @@ const businessApprove = (req, res) => __awaiter(void 0, void 0, void 0, function
         }
         else {
             status = "Deactivated";
+            let adminLog = new AdminLogs_1.default({
+                updatedBy: updatedBy,
+                productId: id,
+                action: "Deactivated",
+                time: new Date(),
+            });
+            adminLog = yield adminLog.save();
             const veh = yield vehicle_1.default.updateMany({ businessId: id }, {
                 $set: { isActive: false },
             });
@@ -213,22 +234,6 @@ const businessApprove = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.businessApprove = businessApprove;
-// export const adminSignOut = async (req: Request, res: Response) => {
-//   const authToken = req.cookies.authToken;
-//   try {
-//     if (!authToken) {
-//       return res.status(400).json({ error: "token not found " });
-//     } else {
-//       res.clearCookie("authToken", {
-//         // httpOnly: true,
-//         // sameSite: "strict",
-//       });
-//       return res.status(200).json({ message: "Sign Out Successfully" });
-//     }
-//   } catch (error: any) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
 const forgetPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let adminEmail = req.body.adminEmail;
     try {
@@ -312,12 +317,12 @@ const resetPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.resetPass = resetPass;
 const addBusinessByAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const customId = customAlphabet("1234567890", 4);
+    const customId = (0, nanoid_1.customAlphabet)("1234567890", 4);
     let bId = customId();
     bId = "B" + bId;
     const { registrationNumber } = req.body.businessRegistration;
     const { country, state } = req.body.businessAddress;
-    const { businessName, businessCategory, primaryEmail, primaryPhone, businessPwd, } = req.body;
+    const { businessName, businessCategory, primaryEmail, primaryPhone, businessPwd, addedBy, } = req.body;
     try {
         if (businessPwd == "") {
             return res.status(400).json({ error: "Password is reqired" });
@@ -368,6 +373,7 @@ const addBusinessByAdmin = (req, res) => __awaiter(void 0, void 0, void 0, funct
             primaryPhone,
             bId: bId,
             businessPwd: hashedPassword,
+            addedBy,
         });
         business = yield business.save();
         if (!business) {
@@ -487,11 +493,19 @@ const verifyAndResetPwd = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.verifyAndResetPwd = verifyAndResetPwd;
 const deleteAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
+    const { updatedBy } = req.query;
     try {
         const deleteAdmin = yield adminUser_1.default.findByIdAndDelete(id);
         if (!deleteAdmin) {
             return res.status(404).json({ error: "Failed to delete" });
         }
+        let adminLog = new AdminLogs_1.default({
+            updatedBy: updatedBy,
+            productId: id,
+            action: "Deleted",
+            time: new Date(),
+        });
+        adminLog = yield adminLog.save();
         return res.status(200).json({ message: "Successfully Deleted" });
     }
     catch (error) {
@@ -517,6 +531,7 @@ const getFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.getFeature = getFeature;
 const addFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
+    const { updatedBy } = req.body;
     try {
         const tour = yield tour_1.default.findOne({ _id: id });
         if (tour) {
@@ -531,6 +546,13 @@ const addFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             if (!feature) {
                 return res.status(404).json({ error: "Failed" });
             }
+            let featureLog = new FeaturedLogs_1.default({
+                updatedBy: updatedBy,
+                productId: tour.tourId,
+                action: "Added To Feature",
+                time: new Date(),
+            });
+            featureLog = yield featureLog.save();
             return res.status(200).json({ message: "Successfully Updated" });
         }
         else {
@@ -547,6 +569,13 @@ const addFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 if (!feature) {
                     return res.status(404).json({ error: "Failed" });
                 }
+                let featureLog = new FeaturedLogs_1.default({
+                    updatedBy: updatedBy,
+                    productId: trek.trekId,
+                    action: "Added To Feature",
+                    time: new Date(),
+                });
+                featureLog = yield featureLog.save();
                 return res.status(200).json({ message: "Successfully Updated" });
             }
             else {
@@ -563,6 +592,13 @@ const addFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                     if (!feature) {
                         return res.status(404).json({ error: "Failed" });
                     }
+                    let featureLog = new FeaturedLogs_1.default({
+                        updatedBy: updatedBy,
+                        productId: veh.vehId,
+                        action: "Added To Feature",
+                        time: new Date(),
+                    });
+                    featureLog = yield featureLog.save();
                     return res.status(200).json({ message: "Successfully Updated" });
                 }
             }
@@ -575,11 +611,19 @@ const addFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.addFeature = addFeature;
 const deleteFeatureRequest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
+    const { updatedBy } = req.query;
     try {
         const deleteFeature = yield Feature_1.default.findOneAndDelete({ Id: id });
         if (!deleteFeature) {
             return res.status(404).json({ error: "Failed to delete" });
         }
+        let featureLog = new FeaturedLogs_1.default({
+            updatedBy: updatedBy,
+            productId: id,
+            action: "Feature Request Rejected",
+            time: new Date(),
+        });
+        featureLog = yield featureLog.save();
         return res.status(200).json({ message: "Successfully Deleted" });
     }
     catch (error) {
@@ -589,6 +633,7 @@ const deleteFeatureRequest = (req, res) => __awaiter(void 0, void 0, void 0, fun
 exports.deleteFeatureRequest = deleteFeatureRequest;
 const removeFeatureProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
+    const { updatedBy } = req.query;
     try {
         const deleteFeature = yield Feature_1.default.findOneAndDelete({ Id: id });
         if (!deleteFeature) {
@@ -601,6 +646,13 @@ const removeFeatureProduct = (req, res) => __awaiter(void 0, void 0, void 0, fun
             if (!updated) {
                 return res.status(404).json({ error: "Failed" });
             }
+            let featureLog = new FeaturedLogs_1.default({
+                updatedBy: updatedBy,
+                productId: tour.tourId,
+                action: "Removed from Feature",
+                time: new Date(),
+            });
+            featureLog = yield featureLog.save();
         }
         else {
             const trek = yield trekking_1.default.findOne({ _id: id });
@@ -610,6 +662,13 @@ const removeFeatureProduct = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 if (!updated) {
                     return res.status(404).json({ error: "Failed" });
                 }
+                let featureLog = new FeaturedLogs_1.default({
+                    updatedBy: updatedBy,
+                    productId: trek.trekId,
+                    action: "Removed from Feature",
+                    time: new Date(),
+                });
+                featureLog = yield featureLog.save();
             }
             else {
                 const veh = yield vehicle_1.default.findOne({ _id: id });
@@ -619,6 +678,13 @@ const removeFeatureProduct = (req, res) => __awaiter(void 0, void 0, void 0, fun
                     if (!updated) {
                         return res.status(404).json({ error: "Failed" });
                     }
+                    let featureLog = new FeaturedLogs_1.default({
+                        updatedBy: updatedBy,
+                        productId: veh.vehId,
+                        action: "Removed from Feature",
+                        time: new Date(),
+                    });
+                    featureLog = yield featureLog.save();
                 }
             }
         }
@@ -629,54 +695,3 @@ const removeFeatureProduct = (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.removeFeatureProduct = removeFeatureProduct;
-// export const tourFeature = async (req: Request, res: Response) => {
-//   const id = req.params.id;
-//   try {
-//     const tour = await Tour.findById(id);
-//     if (!tour) {
-//       return res.status(404).json({ error: "Tour not found" });
-//     }
-//     tour.isFeatured = !tour.isFeatured;
-//     const updated = await tour.save();
-//     if (!updated) {
-//       return res.status(404).json({ error: "Failed" });
-//     }
-//     return res.status(200).json({ message: "Successfully Updated" });
-//   } catch (error: any) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
-// export const trekFeature = async (req: Request, res: Response) => {
-//   const id = req.params.id;
-//   try {
-//     const tour = await Trekking.findById(id);
-//     if (!tour) {
-//       return res.status(404).json({ error: "Trek not found" });
-//     }
-//     tour.isFeatured = !tour.isFeatured;
-//     const updated = await tour.save();
-//     if (!updated) {
-//       return res.status(404).json({ error: "Failed" });
-//     }
-//     return res.status(200).json({ message: "Successfully Updated" });
-//   } catch (error: any) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
-// export const vehFeature = async (req: Request, res: Response) => {
-//   const id = req.params.id;
-//   try {
-//     const tour = await Vehicle.findById(id);
-//     if (!tour) {
-//       return res.status(404).json({ error: "Vehicle not found" });
-//     }
-//     tour.isFeatured = !tour.isFeatured;
-//     const updated = await tour.save();
-//     if (!updated) {
-//       return res.status(404).json({ error: "Failed" });
-//     }
-//     return res.status(200).json({ message: "Successfully Updated" });
-//   } catch (error: any) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
