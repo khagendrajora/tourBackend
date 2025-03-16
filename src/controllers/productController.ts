@@ -4,6 +4,14 @@ import Trekking from "../models/Product/trekking";
 import Vehicle from "../models/Product/vehicle";
 const { customAlphabet } = require("nanoid");
 import ProductLogs from "../models/LogModel/ProductLogs";
+import { v2 as cloudinary } from "cloudinary";
+import fileUpload, { UploadedFile } from "express-fileupload";
+
+cloudinary.config({
+  cloud_name: "dwepmpy6w",
+  api_key: "934775798563485",
+  api_secret: "0fc2bZa8Pv7Vy22Ji7AhCjD0ErA", // Click 'View API Keys' above to copy your API secret
+});
 
 export const addTour = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);
@@ -26,13 +34,30 @@ export const addTour = async (req: Request, res: Response) => {
   } = req.body;
 
   try {
-    let tourImages: string[] = [];
-    if (req.files) {
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["tourImages"]) {
-        tourImages = files["tourImages"].map((file) => file.path);
-      }
+    if (!req.files || !(req.files as any).item_image) {
+      return res.status(400).json({ message: "No image uploaded" });
     }
+    const fileArray = req.files as unknown as fileUpload.FileArray;
+    const files = fileArray?.item_image
+      ? Array.isArray(fileArray.item_image)
+        ? fileArray.item_image
+        : [fileArray.item_image]
+      : null;
+
+    if (!files) {
+      return res.status(400).json({ message: "No image uploaded" });
+    }
+
+    const uploadedImages = await Promise.all(
+      files.map(async (file: UploadedFile) => {
+        const result = await cloudinary.uploader.upload(file.tempFilePath, {
+          folder: "tour",
+          use_filename: true,
+          unique_filename: false,
+        });
+        return result.secure_url;
+      })
+    );
     if (!itinerary) {
       return res.status(400).json({ error: "Itinerary is required" });
     }
@@ -51,7 +76,7 @@ export const addTour = async (req: Request, res: Response) => {
       name,
       phone,
       operationDates,
-      tourImages,
+      tourImages: uploadedImages,
     });
     tour = await tour.save();
     if (!tour) {

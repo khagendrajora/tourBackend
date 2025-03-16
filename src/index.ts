@@ -18,6 +18,7 @@ import UserRoute from "./routes/UserRoutes/UserRoute";
 import DriverRoute from "./routes/driverRoutes/DriverRoute";
 import Login from "./routes/Login/Login";
 import LocationRoute from "./routes/LocationRoute/LocationRoute";
+import fileUpload from "express-fileupload";
 
 export const app: Express = express();
 app.use(express.json());
@@ -44,6 +45,13 @@ app.use(
         }
       },
     },
+  })
+);
+
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
   })
 );
 

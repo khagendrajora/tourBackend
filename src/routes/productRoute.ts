@@ -21,11 +21,7 @@ import upload from "../middleware/fileUpload";
 
 const router = express.Router();
 
-router.post(
-  "/addtour",
-  upload.fields([{ name: "tourImages", maxCount: 1000 }]),
-  addTour
-);
+router.post("/addtour", addTour);
 
 router.get("/gettour", getTour);
 router.get("/gettourdetails/:id", tourDetails);

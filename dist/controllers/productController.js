@@ -18,19 +18,38 @@ const trekking_1 = __importDefault(require("../models/Product/trekking"));
 const vehicle_1 = __importDefault(require("../models/Product/vehicle"));
 const { customAlphabet } = require("nanoid");
 const ProductLogs_1 = __importDefault(require("../models/LogModel/ProductLogs"));
+const cloudinary_1 = require("cloudinary");
+cloudinary_1.v2.config({
+    cloud_name: "dwepmpy6w",
+    api_key: "934775798563485",
+    api_secret: "0fc2bZa8Pv7Vy22Ji7AhCjD0ErA", // Click 'View API Keys' above to copy your API secret
+});
 const addTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
     let tourId = customId();
     tourId = "TU" + tourId;
     const { businessId, prodCategory, prodsubCategory, inclusion, dest, duration, price, itinerary, capacity, name, phone, operationDates, addedBy, } = req.body;
     try {
-        let tourImages = [];
-        if (req.files) {
-            const files = req.files;
-            if (files["tourImages"]) {
-                tourImages = files["tourImages"].map((file) => file.path);
-            }
+        if (!req.files || !req.files.item_image) {
+            return res.status(400).json({ message: "No image uploaded" });
         }
+        const fileArray = req.files;
+        const files = (fileArray === null || fileArray === void 0 ? void 0 : fileArray.item_image)
+            ? Array.isArray(fileArray.item_image)
+                ? fileArray.item_image
+                : [fileArray.item_image]
+            : null;
+        if (!files) {
+            return res.status(400).json({ message: "No image uploaded" });
+        }
+        const uploadedImages = yield Promise.all(files.map((file) => __awaiter(void 0, void 0, void 0, function* () {
+            const result = yield cloudinary_1.v2.uploader.upload(file.tempFilePath, {
+                folder: "tour",
+                use_filename: true,
+                unique_filename: false,
+            });
+            return result.secure_url;
+        })));
         if (!itinerary) {
             return res.status(400).json({ error: "Itinerary is required" });
         }
@@ -49,7 +68,7 @@ const addTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             name,
             phone,
             operationDates,
-            tourImages,
+            tourImages: uploadedImages,
         });
         tour = yield tour.save();
         if (!tour) {
