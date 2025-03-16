@@ -34,14 +34,14 @@ export const addTour = async (req: Request, res: Response) => {
   } = req.body;
 
   try {
-    if (!req.files || !(req.files as any).item_image) {
+    if (!req.files || !(req.files as any).tourImages) {
       return res.status(400).json({ message: "No image uploaded" });
     }
     const fileArray = req.files as unknown as fileUpload.FileArray;
-    const files = fileArray?.item_image
-      ? Array.isArray(fileArray.item_image)
-        ? fileArray.item_image
-        : [fileArray.item_image]
+    const files = fileArray?.tourImages
+      ? Array.isArray(fileArray.tourImages)
+        ? fileArray.tourImages
+        : [fileArray.tourImages]
       : null;
 
     if (!files) {
