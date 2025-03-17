@@ -138,26 +138,26 @@ const updateTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const tourImages = req.body.existingTourImages || [];
         if (req.files && req.files.tourImages) {
             const fileArray = req.files;
-            const files = (fileArray === null || fileArray === void 0 ? void 0 : fileArray.tourImages)
-                ? Array.isArray(fileArray.tourImages)
-                    ? fileArray.tourImages
-                    : [fileArray.tourImages]
-                : null;
-            if (files) {
-                const uploadedImages = yield Promise.all(files.map((file) => __awaiter(void 0, void 0, void 0, function* () {
-                    const result = yield cloudinary_1.v2.uploader.upload(file.tempFilePath, {
-                        folder: "tour",
-                        use_filename: true,
-                        unique_filename: false,
-                    });
-                    return result.secure_url;
-                })));
-                if (!uploadedImages) {
-                    return res.status(400).json({ message: "Image not uploaded" });
-                }
-                tourImages.push(...uploadedImages);
+            const files = Array.isArray(fileArray.tourImages)
+                ? fileArray.tourImages
+                : [fileArray.tourImages];
+            console.log("Processing uploaded images...");
+            // if (files) {
+            const uploadedImages = yield Promise.all(files.map((file) => __awaiter(void 0, void 0, void 0, function* () {
+                console.log("Uploading:", file.name);
+                const result = yield cloudinary_1.v2.uploader.upload(file.tempFilePath, {
+                    folder: "tour",
+                    use_filename: true,
+                    unique_filename: false,
+                });
+                return result.secure_url;
+            })));
+            if (!uploadedImages) {
+                return res.status(400).json({ message: "Image not uploaded" });
             }
+            tourImages.push(...uploadedImages);
         }
+        // }
         // if (req.files) {
         //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
         //   if (files["tourImages"]) {
