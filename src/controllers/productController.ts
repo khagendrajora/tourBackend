@@ -150,13 +150,38 @@ export const updateTour = async (req: Request, res: Response) => {
   } = req.body;
   try {
     const tourImages: string[] = req.body.existingTourImages || [];
-    if (req.files) {
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["tourImages"]) {
-        const uploadedFiles = files["tourImages"].map((file) => file.path);
-        tourImages.push(...uploadedFiles);
+
+    if (req.files && (req.files as any).tourImages) {
+      const fileArray = req.files as unknown as fileUpload.FileArray;
+      const files = fileArray?.tourImages
+        ? Array.isArray(fileArray.tourImages)
+          ? fileArray.tourImages
+          : [fileArray.tourImages]
+        : null;
+      if (files) {
+        const uploadedImages = await Promise.all(
+          files.map(async (file: UploadedFile) => {
+            const result = await cloudinary.uploader.upload(file.tempFilePath, {
+              folder: "tour",
+              use_filename: true,
+              unique_filename: false,
+            });
+            return result.secure_url;
+          })
+        );
+        if (!uploadedImages) {
+          return res.status(400).json({ message: "Image not uploaded" });
+        }
+        tourImages.push(...uploadedImages);
       }
     }
+    // if (req.files) {
+    //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+    //   if (files["tourImages"]) {
+    //     const uploadedFiles = files["tourImages"].map((file) => file.path);
+    //     tourImages.push(...uploadedFiles);
+    //   }
+    // }
     const data = await Tour.findOneAndUpdate(
       { tourId: id },
       {
