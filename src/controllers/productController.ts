@@ -153,10 +153,9 @@ export const updateTour = async (req: Request, res: Response) => {
     // if (!req.files || !(req.files as any).tourImages) {
     //   return res.status(400).json({ message: "No image uploaded" });
     // }
-    let existingTourImages = req.body.existingTourImages;
-    let tourImages: string[] = existingTourImages
-      ? JSON.parse(existingTourImages)
-      : [];
+    let existingTourImages: string[] = req.body.existingTourImages || [];
+    let tourImages: string[] = existingTourImages || [];
+
     // if (!Array.isArray(tourImages)) {
     //   return res.status(400).json({ message: "eXIXTING IMAGES NOT UPLOADED" });
     // }

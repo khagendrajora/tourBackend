@@ -151,10 +151,8 @@ const updateTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         // if (!req.files || !(req.files as any).tourImages) {
         //   return res.status(400).json({ message: "No image uploaded" });
         // }
-        let existingTourImages = req.body.existingTourImages;
-        let tourImages = existingTourImages
-            ? JSON.parse(existingTourImages)
-            : [];
+        let existingTourImages = req.body.existingTourImages || [];
+        let tourImages = existingTourImages || [];
         // if (!Array.isArray(tourImages)) {
         //   return res.status(400).json({ message: "eXIXTING IMAGES NOT UPLOADED" });
         // }

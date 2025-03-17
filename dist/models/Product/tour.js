@@ -24,11 +24,11 @@ const tourSchema = new mongoose_1.default.Schema({
     },
     prodCategory: {
         type: String,
-        required: true,
+        // required: true,
     },
     prodsubCategory: {
         type: String,
-        required: true,
+        // required: true,
     },
     inclusion: [
         {
@@ -38,7 +38,7 @@ const tourSchema = new mongoose_1.default.Schema({
     ],
     dest: {
         type: String,
-        required: true,
+        // required: true,
     },
     duration: {
         type: String,
