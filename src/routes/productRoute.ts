@@ -28,7 +28,7 @@ router.get("/gettourdetails/:id", tourDetails);
 router.get("/gettour/:businessid", getTourByBusinessId);
 router.put(
   "/updatetour/:id",
-  // upload.fields([{ name: "tourImages", maxCount: 1000 }]),
+  upload.fields([{ name: "tourImages", maxCount: 1000 }]),
   updateTour
 );
 
