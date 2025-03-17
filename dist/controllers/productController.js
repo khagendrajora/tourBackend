@@ -80,7 +80,7 @@ const addTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
     }
     catch (error) {
-        return res.status(500).json({ error: error });
+        return res.status(500).json({ error: error + "catch" });
     }
 });
 exports.addTour = addTour;

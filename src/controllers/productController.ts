@@ -86,7 +86,7 @@ export const addTour = async (req: Request, res: Response) => {
       return res.status(200).json({ message: "Tour Registered" });
     }
   } catch (error: any) {
-    return res.status(500).json({ error: error });
+    return res.status(500).json({ error: error + "catch" });
   }
 };
 
