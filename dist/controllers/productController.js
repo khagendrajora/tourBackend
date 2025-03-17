@@ -135,7 +135,13 @@ const updateTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const id = req.params.id;
     const { businessId, prodCategory, prodsubCategory, inclusion, dest, duration, itinerary, capacity, price, name, phone, updatedBy, operationDates, } = req.body;
     try {
+        if (!req.files || !req.files.tourImages) {
+            return res.status(400).json({ message: "No image uploaded" });
+        }
         const tourImages = req.body.existingTourImages || [];
+        if (!tourImages) {
+            return res.status(400).json({ message: "eXIXTING IMAGES NOT UPLOADED" });
+        }
         if (req.files && req.files.tourImages) {
             const fileArray = req.files;
             const files = fileArray.tourImages
@@ -195,7 +201,7 @@ const updateTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 time: new Date(),
             });
             productLog = yield productLog.save();
-            return res.status(200).json({ message: "success" });
+            return res.status(200).json({ message: "success", data });
         }
     }
     catch (error) {

@@ -150,7 +150,13 @@ export const updateTour = async (req: Request, res: Response) => {
     operationDates,
   } = req.body;
   try {
+    if (!req.files || !(req.files as any).tourImages) {
+      return res.status(400).json({ message: "No image uploaded" });
+    }
     const tourImages: string[] = req.body.existingTourImages || [];
+    if (!tourImages) {
+      return res.status(400).json({ message: "eXIXTING IMAGES NOT UPLOADED" });
+    }
 
     if (req.files && (req.files as any).tourImages) {
       const fileArray = req.files as unknown as fileUpload.FileArray;
@@ -216,7 +222,7 @@ export const updateTour = async (req: Request, res: Response) => {
         time: new Date(),
       });
       productLog = await productLog.save();
-      return res.status(200).json({ message: "success" });
+      return res.status(200).json({ message: "success", data });
     }
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
