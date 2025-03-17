@@ -31,30 +31,25 @@ const addTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     tourId = "TU" + tourId;
     const { businessId, prodCategory, prodsubCategory, inclusion, dest, duration, price, itinerary, capacity, name, phone, operationDates, addedBy, } = req.body;
     try {
-        const fileArray = req.files;
-        if (!req.files || (!req.files).tourImages) {
+        if (!req.files || !req.files.tourImages) {
             return res.status(400).json({ message: "No image uploaded" });
         }
-        // const fileArray = req.files as unknown as fileUpload.FileArray;
-        const files = Array.isArray(fileArray.tourImages)
-            ? fileArray.tourImages
-            : [fileArray.tourImages];
+        const fileArray = req.files;
+        const files = (fileArray === null || fileArray === void 0 ? void 0 : fileArray.tourImages)
+            ? Array.isArray(fileArray.tourImages)
+                ? fileArray.tourImages
+                : [fileArray.tourImages]
+            : null;
         if (!files) {
             return res.status(400).json({ message: "No image uploaded" });
         }
         const uploadedImages = yield Promise.all(files.map((file) => __awaiter(void 0, void 0, void 0, function* () {
-            try {
-                const result = yield cloudinary_1.v2.uploader.upload(file.tempFilePath, {
-                    folder: "tour",
-                    use_filename: true,
-                    unique_filename: false,
-                });
-                return result.secure_url;
-            }
-            catch (error) {
-                console.error("Cloudinary upload error:", error);
-                throw new Error("Image upload failed");
-            }
+            const result = yield cloudinary_1.v2.uploader.upload(file.tempFilePath, {
+                folder: "tour",
+                use_filename: true,
+                unique_filename: false,
+            });
+            return result.secure_url;
         })));
         if (!itinerary) {
             return res.status(400).json({ error: "Itinerary is required" });
@@ -85,7 +80,7 @@ const addTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
     }
     catch (error) {
-        return res.status(500).json({ error: error + "catch" });
+        return res.status(500).json({ error: error });
     }
 });
 exports.addTour = addTour;

@@ -1,5 +1,5 @@
 import express from "express";
-import fileUpload from "express-fileupload";
+// import fileUpload from "express-fileupload";
 import {
   addBlogs,
   addDest,
@@ -21,12 +21,12 @@ import upload from "../../middleware/fileUpload";
 
 const router = express.Router();
 
-router.use(
-  fileUpload({
-    useTempFiles: true,
-    tempFileDir: "/tmp/",
-  })
-);
+// router.use(
+//   fileUpload({
+//     useTempFiles: true,
+//     tempFileDir: "/tmp/",
+//   })
+// );
 
 router.post(
   "/addhero",
