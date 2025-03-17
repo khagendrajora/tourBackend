@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { UploadedFile } from "express-fileupload";
-
+import fs from "fs";
 import Hero from "../../models/Pages/LandingPage/Hero";
 import Blogs from "../../models/Pages/LandingPage/Blogs";
 import { customAlphabet } from "nanoid";
@@ -244,6 +244,10 @@ export const addDest = async (req: Request, res: Response) => {
 
   try {
     let destImage: string[] = [];
+    const uploadDir = path.join(__dirname, "../public/uploads");
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
     if (req.files && "destImage" in req.files) {
       const uploadedFiles = req.files.destImage as unknown as
         | UploadedFile
@@ -263,8 +267,8 @@ export const addDest = async (req: Request, res: Response) => {
       } else {
         // Single file
         const uploadPath = path.join(
-          __dirname,
-          "../public/uploads",
+          uploadDir,
+
           uploadedFiles.name
         );
         await uploadedFiles.mv(uploadPath);

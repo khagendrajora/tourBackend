@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteDest = exports.updateDest = exports.getDestById = exports.getDest = exports.addDest = exports.deleteBlogs = exports.updateBlogs = exports.getBlogsById = exports.getBlogs = exports.addBlogs = exports.deleteHero = exports.updateHero = exports.getHeroById = exports.getHero = exports.addHero = void 0;
+const fs_1 = __importDefault(require("fs"));
 const Hero_1 = __importDefault(require("../../models/Pages/LandingPage/Hero"));
 const Blogs_1 = __importDefault(require("../../models/Pages/LandingPage/Blogs"));
 const nanoid_1 = require("nanoid");
@@ -259,6 +260,10 @@ const addDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const destId = customId();
     try {
         let destImage = [];
+        const uploadDir = path_1.default.join(__dirname, "../public/uploads");
+        if (!fs_1.default.existsSync(uploadDir)) {
+            fs_1.default.mkdirSync(uploadDir, { recursive: true });
+        }
         if (req.files && "destImage" in req.files) {
             const uploadedFiles = req.files.destImage;
             if (Array.isArray(uploadedFiles)) {
@@ -271,7 +276,7 @@ const addDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             }
             else {
                 // Single file
-                const uploadPath = path_1.default.join(__dirname, "../public/uploads", uploadedFiles.name);
+                const uploadPath = path_1.default.join(uploadDir, uploadedFiles.name);
                 yield uploadedFiles.mv(uploadPath);
                 destImage.push(`/public/uploads/${uploadedFiles.name}`);
             }
