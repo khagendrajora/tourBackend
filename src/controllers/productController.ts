@@ -14,81 +14,81 @@ cloudinary.config({
 });
 
 // Tour Controller
-export const addTour = async (req: Request, res: Response) => {
-  const customId = customAlphabet("1234567890", 4);
-  let tourId = customId();
-  tourId = "TU" + tourId;
-  const {
-    businessId,
-    prodCategory,
-    prodsubCategory,
-    inclusion,
-    dest,
-    duration,
-    price,
-    itinerary,
-    capacity,
-    name,
-    phone,
-    operationDates,
-    addedBy,
-  } = req.body;
+// export const addTour = async (req: Request, res: Response) => {
+//   const customId = customAlphabet("1234567890", 4);
+//   let tourId = customId();
+//   tourId = "TU" + tourId;
+//   const {
+//     businessId,
+//     prodCategory,
+//     prodsubCategory,
+//     inclusion,
+//     dest,
+//     duration,
+//     price,
+//     itinerary,
+//     capacity,
+//     name,
+//     phone,
+//     operationDates,
+//     addedBy,
+//   } = req.body;
 
-  try {
-    if (!req.files || !(req.files as any).tourImages) {
-      return res.status(400).json({ message: "No image uploaded" });
-    }
-    const fileArray = req.files as unknown as fileUpload.FileArray;
-    const files = fileArray?.tourImages
-      ? Array.isArray(fileArray.tourImages)
-        ? fileArray.tourImages
-        : [fileArray.tourImages]
-      : null;
+//   try {
+//     if (!req.files || !(req.files as any).tourImages) {
+//       return res.status(400).json({ message: "No image uploaded" });
+//     }
+//     const fileArray = req.files as unknown as fileUpload.FileArray;
+//     const files = fileArray?.tourImages
+//       ? Array.isArray(fileArray.tourImages)
+//         ? fileArray.tourImages
+//         : [fileArray.tourImages]
+//       : null;
 
-    if (!files) {
-      return res.status(400).json({ message: "No image uploaded" });
-    }
+//     if (!files) {
+//       return res.status(400).json({ message: "No image uploaded" });
+//     }
 
-    const uploadedImages = await Promise.all(
-      files.map(async (file: UploadedFile) => {
-        const result = await cloudinary.uploader.upload(file.tempFilePath, {
-          folder: "tour",
-          use_filename: true,
-          unique_filename: false,
-        });
-        return result.secure_url;
-      })
-    );
-    if (!itinerary) {
-      return res.status(400).json({ error: "Itinerary is required" });
-    }
-    let tour = new Tour({
-      tourId: tourId,
-      businessId,
-      prodCategory,
-      prodsubCategory,
-      inclusion,
-      dest,
-      price,
-      addedBy,
-      duration,
-      itinerary,
-      capacity,
-      name,
-      phone,
-      operationDates,
-      tourImages: uploadedImages,
-    });
-    tour = await tour.save();
-    if (!tour) {
-      return res.status(400).json({ error: "failed to save" });
-    } else {
-      return res.status(200).json({ message: "Tour Registered" });
-    }
-  } catch (error: any) {
-    return res.status(500).json({ error: error });
-  }
-};
+//     const uploadedImages = await Promise.all(
+//       files.map(async (file: UploadedFile) => {
+//         const result = await cloudinary.uploader.upload(file.tempFilePath, {
+//           folder: "tour",
+//           use_filename: true,
+//           unique_filename: false,
+//         });
+//         return result.secure_url;
+//       })
+//     );
+//     if (!itinerary) {
+//       return res.status(400).json({ error: "Itinerary is required" });
+//     }
+//     let tour = new Tour({
+//       tourId: tourId,
+//       businessId,
+//       prodCategory,
+//       prodsubCategory,
+//       inclusion,
+//       dest,
+//       price,
+//       addedBy,
+//       duration,
+//       itinerary,
+//       capacity,
+//       name,
+//       phone,
+//       operationDates,
+//       tourImages: uploadedImages,
+//     });
+//     tour = await tour.save();
+//     if (!tour) {
+//       return res.status(400).json({ error: "failed to save" });
+//     } else {
+//       return res.status(200).json({ message: "Tour Registered" });
+//     }
+//   } catch (error: any) {
+//     return res.status(500).json({ error: error });
+//   }
+// };
 
 export const getTour = async (req: Request, res: Response) => {
   try {
@@ -150,40 +150,43 @@ export const updateTour = async (req: Request, res: Response) => {
     operationDates,
   } = req.body;
   try {
-    if (!req.files || !(req.files as any).tourImages) {
-      return res.status(400).json({ message: "No image uploaded" });
-    }
-    const tourImages: string[] = req.body.existingTourImages || [];
-    if (!tourImages) {
-      return res.status(400).json({ message: "eXIXTING IMAGES NOT UPLOADED" });
-    }
+    // if (!req.files || !(req.files as any).tourImages) {
+    //   return res.status(400).json({ message: "No image uploaded" });
+    // }
+    let existingTourImages = req.body.existingTourImages;
+    let tourImages: string[] = existingTourImages
+      ? JSON.parse(existingTourImages)
+      : [];
+    // if (!Array.isArray(tourImages)) {
+    //   return res.status(400).json({ message: "eXIXTING IMAGES NOT UPLOADED" });
+    // }
 
-    if (req.files && (req.files as any).tourImages) {
-      const fileArray = req.files as unknown as fileUpload.FileArray;
-      const files = fileArray.tourImages
-        ? Array.isArray(fileArray.tourImages)
-          ? fileArray.tourImages
-          : [fileArray.tourImages] // Ensure single files are also handled as an array
-        : null;
-      if (files && files.length > 0) {
-        console.log("Uploading files to Cloudinary...");
-        const uploadedImages = await Promise.all(
-          files.map(async (file: UploadedFile) => {
-            console.log("Uploading:", file.name);
-            const result = await cloudinary.uploader.upload(file.tempFilePath, {
-              folder: "tour",
-              use_filename: true,
-              unique_filename: false,
-            });
-            return result.secure_url;
-          })
-        );
-        if (!uploadedImages || uploadedImages.length === 0) {
-          return res.status(400).json({ message: "Image not uploaded" });
-        }
-        tourImages.push(...uploadedImages);
-      }
-    }
+    // if (req.files && (req.files as any).tourImages) {
+    //   const fileArray = req.files as unknown as fileUpload.FileArray;
+    //   const files = fileArray.tourImages
+    //     ? Array.isArray(fileArray.tourImages)
+    //       ? fileArray.tourImages
+    //       : [fileArray.tourImages] // Ensure single files are also handled as an array
+    //     : null;
+    //   if (files && files.length > 0) {
+    //     console.log("Uploading files to Cloudinary...");
+    //     const uploadedImages = await Promise.all(
+    //       files.map(async (file: UploadedFile) => {
+    //         console.log("Uploading:", file.name);
+    //         const result = await cloudinary.uploader.upload(file.tempFilePath, {
+    //           folder: "tour",
+    //           use_filename: true,
+    //           unique_filename: false,
+    //         });
+    //         return result.secure_url;
+    //       })
+    //     );
+    //     if (!uploadedImages || uploadedImages.length === 0) {
+    //       return res.status(400).json({ message: "Image not uploaded" });
+    //     }
+    //     tourImages.push(...uploadedImages);
+    //   }
+    // }
     // if (req.files) {
     //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
     //   if (files["tourImages"]) {
@@ -191,6 +194,25 @@ export const updateTour = async (req: Request, res: Response) => {
     //     tourImages.push(...uploadedFiles);
     //   }
     // }
+
+    if (req.files && (req.files as any).tourImages) {
+      const fileArray = req.files as any;
+      const files = Array.isArray(fileArray.tourImages)
+        ? fileArray.tourImages
+        : [fileArray.tourImages];
+
+      const uploadedImages = await Promise.all(
+        files.map(async (file: UploadedFile) => {
+          const result = await cloudinary.uploader.upload(file.tempFilePath, {
+            folder: "tour",
+            use_filename: true,
+            unique_filename: false,
+          });
+          return result.secure_url;
+        })
+      );
+      tourImages.push(...uploadedImages);
+    }
     const data = await Tour.findOneAndUpdate(
       { tourId: id },
       {

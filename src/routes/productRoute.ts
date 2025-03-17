@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  addTour,
+  // addTour,
   addTrek,
   addVehicle,
   deleteproduct,
@@ -22,13 +22,13 @@ import upload from "../middleware/fileUpload";
 const router = express.Router();
 
 // Tour Routes
-router.post("/addtour", addTour);
+// router.post("/addtour", addTour);
 router.get("/gettour", getTour);
 router.get("/gettourdetails/:id", tourDetails);
 router.get("/gettour/:businessid", getTourByBusinessId);
 router.put(
   "/updatetour/:id",
-  // upload.fields([{ name: "tourImages", maxCount: 1000 }]),
+  upload.fields([{ name: "tourImages", maxCount: 1000 }]),
   updateTour
 );
 
