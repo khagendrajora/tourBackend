@@ -1,4 +1,5 @@
 import express from "express";
+import fileUpload from "express-fileupload";
 import {
   addTour,
   addTrek,
@@ -20,6 +21,13 @@ import {
 import upload from "../middleware/fileUpload";
 
 const router = express.Router();
+
+router.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
+  })
+);
 
 // Tour Routes
 router.post("/addtour", addTour);
