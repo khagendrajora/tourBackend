@@ -6,9 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.app = void 0;
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const logger_1 = __importDefault(require("./logger"));
-const morgan_1 = __importDefault(require("morgan"));
-const express_useragent_1 = __importDefault(require("express-useragent"));
+// import morgan from "morgan";
+// import useragent from "express-useragent";
 dotenv_1.default.config();
 require("./db/database");
 const adminRoute_1 = __importDefault(require("./routes/adminRoute"));
@@ -29,24 +28,26 @@ exports.app = (0, express_1.default)();
 exports.app.use(express_1.default.json());
 exports.app.use((0, cookie_parser_1.default)());
 exports.app.use((0, cors_1.default)());
-exports.app.use(express_useragent_1.default.express());
-const morganFormat = ":method :url :status :response-time ms";
-exports.app.use((0, morgan_1.default)(morganFormat, {
-    stream: {
-        write: (message) => {
-            const [method, url, status, responseTime] = message.split("");
-            if (["PUT", "POST", "DELETE"].includes(method)) {
-                const logObject = {
-                    method,
-                    url,
-                    status,
-                    responseTime,
-                };
-                logger_1.default.info(JSON.stringify(logObject));
-            }
-        },
-    },
-}));
+// app.use(useragent.express());
+// const morganFormat = ":method :url :status :response-time ms";
+// app.use(
+//   morgan(morganFormat, {
+//     stream: {
+//       write: (message: any) => {
+//         const [method, url, status, responseTime] = message.split("");
+//         if (["PUT", "POST", "DELETE"].includes(method)) {
+//           const logObject = {
+//             method,
+//             url,
+//             status,
+//             responseTime,
+//           };
+//           logger.info(JSON.stringify(logObject));
+//         }
+//       },
+//     },
+//   })
+// );
 exports.app.use((0, express_fileupload_1.default)({
     useTempFiles: true,
     tempFileDir: "/tmp/",

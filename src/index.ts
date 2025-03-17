@@ -1,8 +1,8 @@
 import express, { Express } from "express";
 import dotenv from "dotenv";
 import logger from "./logger";
-import morgan from "morgan";
-import useragent from "express-useragent";
+// import morgan from "morgan";
+// import useragent from "express-useragent";
 dotenv.config();
 import "./db/database";
 import adminRoute from "./routes/adminRoute";
@@ -25,28 +25,28 @@ app.use(express.json());
 
 app.use(cookieParser());
 app.use(cors());
-app.use(useragent.express());
+// app.use(useragent.express());
 
-const morganFormat = ":method :url :status :response-time ms";
+// const morganFormat = ":method :url :status :response-time ms";
 
-app.use(
-  morgan(morganFormat, {
-    stream: {
-      write: (message: any) => {
-        const [method, url, status, responseTime] = message.split("");
-        if (["PUT", "POST", "DELETE"].includes(method)) {
-          const logObject = {
-            method,
-            url,
-            status,
-            responseTime,
-          };
-          logger.info(JSON.stringify(logObject));
-        }
-      },
-    },
-  })
-);
+// app.use(
+//   morgan(morganFormat, {
+//     stream: {
+//       write: (message: any) => {
+//         const [method, url, status, responseTime] = message.split("");
+//         if (["PUT", "POST", "DELETE"].includes(method)) {
+//           const logObject = {
+//             method,
+//             url,
+//             status,
+//             responseTime,
+//           };
+//           logger.info(JSON.stringify(logObject));
+//         }
+//       },
+//     },
+//   })
+// );
 
 app.use(
   fileUpload({

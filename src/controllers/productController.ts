@@ -35,15 +35,14 @@ export const addTour = async (req: Request, res: Response) => {
   } = req.body;
 
   try {
-    if (!req.files || !(req.files as any).tourImages) {
+    const fileArray = req.files as unknown as fileUpload.FileArray;
+    if (!req.files || (!req.files as any).tourImages) {
       return res.status(400).json({ message: "No image uploaded" });
     }
-    const fileArray = req.files as unknown as fileUpload.FileArray;
-    const files = fileArray?.tourImages
-      ? Array.isArray(fileArray.tourImages)
-        ? fileArray.tourImages
-        : [fileArray.tourImages]
-      : null;
+    // const fileArray = req.files as unknown as fileUpload.FileArray;
+    const files = Array.isArray(fileArray.tourImages)
+      ? fileArray.tourImages
+      : [fileArray.tourImages];
 
     if (!files) {
       return res.status(400).json({ message: "No image uploaded" });
@@ -51,12 +50,17 @@ export const addTour = async (req: Request, res: Response) => {
 
     const uploadedImages = await Promise.all(
       files.map(async (file: UploadedFile) => {
-        const result = await cloudinary.uploader.upload(file.tempFilePath, {
-          folder: "tour",
-          use_filename: true,
-          unique_filename: false,
-        });
-        return result.secure_url;
+        try {
+          const result = await cloudinary.uploader.upload(file.tempFilePath, {
+            folder: "tour",
+            use_filename: true,
+            unique_filename: false,
+          });
+          return result.secure_url;
+        } catch (error) {
+          console.error("Cloudinary upload error:", error);
+          throw new Error("Image upload failed");
+        }
       })
     );
     if (!itinerary) {
