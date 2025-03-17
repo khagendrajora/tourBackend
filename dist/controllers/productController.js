@@ -19,6 +19,7 @@ const vehicle_1 = __importDefault(require("../models/Product/vehicle"));
 const { customAlphabet } = require("nanoid");
 const ProductLogs_1 = __importDefault(require("../models/LogModel/ProductLogs"));
 const cloudinary_1 = require("cloudinary");
+// import fileUpload, { UploadedFile } from "express-fileupload";
 cloudinary_1.v2.config({
     cloud_name: "dwepmpy6w",
     api_key: "934775798563485",
@@ -195,7 +196,7 @@ const updateTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 ? fileArray.tourImages
                 : [fileArray.tourImages];
             const uploadedImages = yield Promise.all(files.map((file) => __awaiter(void 0, void 0, void 0, function* () {
-                const result = yield cloudinary_1.v2.uploader.upload(file.tempFilePath, {
+                const result = yield cloudinary_1.v2.uploader.upload(file.path, {
                     folder: "tour",
                     use_filename: true,
                     unique_filename: false,

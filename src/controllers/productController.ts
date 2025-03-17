@@ -5,7 +5,7 @@ import Vehicle from "../models/Product/vehicle";
 const { customAlphabet } = require("nanoid");
 import ProductLogs from "../models/LogModel/ProductLogs";
 import { v2 as cloudinary } from "cloudinary";
-import fileUpload, { UploadedFile } from "express-fileupload";
+// import fileUpload, { UploadedFile } from "express-fileupload";
 
 cloudinary.config({
   cloud_name: "dwepmpy6w",
@@ -201,8 +201,8 @@ export const updateTour = async (req: Request, res: Response) => {
         : [fileArray.tourImages];
 
       const uploadedImages = await Promise.all(
-        files.map(async (file: UploadedFile) => {
-          const result = await cloudinary.uploader.upload(file.tempFilePath, {
+        files.map(async (file: Express.Multer.File) => {
+          const result = await cloudinary.uploader.upload(file.path, {
             folder: "tour",
             use_filename: true,
             unique_filename: false,
