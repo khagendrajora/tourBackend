@@ -24,7 +24,7 @@ const UserRoute_1 = __importDefault(require("./routes/UserRoutes/UserRoute"));
 const DriverRoute_1 = __importDefault(require("./routes/driverRoutes/DriverRoute"));
 const Login_1 = __importDefault(require("./routes/Login/Login"));
 const LocationRoute_1 = __importDefault(require("./routes/LocationRoute/LocationRoute"));
-const express_fileupload_1 = __importDefault(require("express-fileupload"));
+// import fileUpload from "express-fileupload";
 exports.app = (0, express_1.default)();
 exports.app.use(express_1.default.json());
 exports.app.use((0, cookie_parser_1.default)());
@@ -47,10 +47,12 @@ exports.app.use((0, morgan_1.default)(morganFormat, {
         },
     },
 }));
-exports.app.use((0, express_fileupload_1.default)({
-    useTempFiles: true,
-    tempFileDir: "/tmp/",
-}));
+// app.use(
+//   fileUpload({
+//     useTempFiles: true,
+//     tempFileDir: "/tmp/",
+//   })
+// );
 exports.app.use("/public/uploads", express_1.default.static("public/uploads"));
 exports.app.use("/api", UserRoute_1.default);
 exports.app.use("/api", LandingPageRoute_1.default);

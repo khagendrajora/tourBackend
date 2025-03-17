@@ -10,9 +10,10 @@ import fileUpload, { UploadedFile } from "express-fileupload";
 cloudinary.config({
   cloud_name: "dwepmpy6w",
   api_key: "934775798563485",
-  api_secret: "0fc2bZa8Pv7Vy22Ji7AhCjD0ErA", // Click 'View API Keys' above to copy your API secret
+  api_secret: "0fc2bZa8Pv7Vy22Ji7AhCjD0ErA",
 });
 
+// Tour Controller
 export const addTour = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);
   let tourId = customId();
@@ -220,6 +221,8 @@ export const updateTour = async (req: Request, res: Response) => {
   }
 };
 
+// Trek controller
+
 export const addTrek = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);
   let trekId = customId();
@@ -385,6 +388,8 @@ export const updateTrek = async (req: Request, res: Response) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+// Vehicle Controller
 
 export const addVehicle = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);

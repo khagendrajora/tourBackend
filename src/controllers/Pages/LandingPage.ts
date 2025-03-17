@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
+import { UploadedFile } from "express-fileupload";
+
 import Hero from "../../models/Pages/LandingPage/Hero";
 import Blogs from "../../models/Pages/LandingPage/Blogs";
 import { customAlphabet } from "nanoid";
+import path from "path";
 import Destination from "../../models/Pages/LandingPage/Destination";
 import BlogsLogs from "../../models/LogModel/BlogsLogs";
 import DestinationLogs from "../../models/LogModel/DestinationLogs";
@@ -241,12 +244,39 @@ export const addDest = async (req: Request, res: Response) => {
 
   try {
     let destImage: string[] = [];
-    if (req.files) {
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["destImage"]) {
-        destImage = files["destImage"].map((file) => file.path);
+    if (req.files && "destImage" in req.files) {
+      const uploadedFiles = req.files.destImage as unknown as
+        | UploadedFile
+        | UploadedFile[];
+
+      if (Array.isArray(uploadedFiles)) {
+        // Multiple files
+        for (const file of uploadedFiles) {
+          const uploadPath = path.join(
+            __dirname,
+            "../public/uploads",
+            file.name
+          );
+          await file.mv(uploadPath);
+          destImage.push(`/public/uploads/${file.name}`);
+        }
+      } else {
+        // Single file
+        const uploadPath = path.join(
+          __dirname,
+          "../public/uploads",
+          uploadedFiles.name
+        );
+        await uploadedFiles.mv(uploadPath);
+        destImage.push(`/public/uploads/${uploadedFiles.name}`);
       }
     }
+    // if (req.files) {
+    //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+    //   if (files["destImage"]) {
+    //     destImage = files["destImage"].map((file) => file.path);
+    //   }
+    // }
     let dest = new Destination({
       title,
       destImage,

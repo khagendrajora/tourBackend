@@ -16,6 +16,7 @@ exports.deleteDest = exports.updateDest = exports.getDestById = exports.getDest 
 const Hero_1 = __importDefault(require("../../models/Pages/LandingPage/Hero"));
 const Blogs_1 = __importDefault(require("../../models/Pages/LandingPage/Blogs"));
 const nanoid_1 = require("nanoid");
+const path_1 = __importDefault(require("path"));
 const Destination_1 = __importDefault(require("../../models/Pages/LandingPage/Destination"));
 const BlogsLogs_1 = __importDefault(require("../../models/LogModel/BlogsLogs"));
 const DestinationLogs_1 = __importDefault(require("../../models/LogModel/DestinationLogs"));
@@ -258,12 +259,29 @@ const addDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const destId = customId();
     try {
         let destImage = [];
-        if (req.files) {
-            const files = req.files;
-            if (files["destImage"]) {
-                destImage = files["destImage"].map((file) => file.path);
+        if (req.files && "destImage" in req.files) {
+            const uploadedFiles = req.files.destImage;
+            if (Array.isArray(uploadedFiles)) {
+                // Multiple files
+                for (const file of uploadedFiles) {
+                    const uploadPath = path_1.default.join(__dirname, "../public/uploads", file.name);
+                    yield file.mv(uploadPath);
+                    destImage.push(`/public/uploads/${file.name}`);
+                }
+            }
+            else {
+                // Single file
+                const uploadPath = path_1.default.join(__dirname, "../public/uploads", uploadedFiles.name);
+                yield uploadedFiles.mv(uploadPath);
+                destImage.push(`/public/uploads/${uploadedFiles.name}`);
             }
         }
+        // if (req.files) {
+        //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+        //   if (files["destImage"]) {
+        //     destImage = files["destImage"].map((file) => file.path);
+        //   }
+        // }
         let dest = new Destination_1.default({
             title,
             destImage,

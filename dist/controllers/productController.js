@@ -22,8 +22,9 @@ const cloudinary_1 = require("cloudinary");
 cloudinary_1.v2.config({
     cloud_name: "dwepmpy6w",
     api_key: "934775798563485",
-    api_secret: "0fc2bZa8Pv7Vy22Ji7AhCjD0ErA", // Click 'View API Keys' above to copy your API secret
+    api_secret: "0fc2bZa8Pv7Vy22Ji7AhCjD0ErA",
 });
+// Tour Controller
 const addTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
     let tourId = customId();
@@ -200,6 +201,7 @@ const updateTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.updateTour = updateTour;
+// Trek controller
 const addTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
     let trekId = customId();
@@ -341,6 +343,7 @@ const updateTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.updateTrek = updateTrek;
+// Vehicle Controller
 const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
     let vehId = customId();

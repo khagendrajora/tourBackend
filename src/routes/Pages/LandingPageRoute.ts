@@ -1,4 +1,5 @@
 import express from "express";
+import fileUpload from "express-fileupload";
 import {
   addBlogs,
   addDest,
@@ -19,6 +20,13 @@ import {
 import upload from "../../middleware/fileUpload";
 
 const router = express.Router();
+
+router.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
+  })
+);
 
 router.post(
   "/addhero",
@@ -52,7 +60,7 @@ router.put(
 router.delete("/deleteblog/:id", deleteBlogs);
 router.post(
   "/addDest",
-  upload.fields([{ name: "destImage", maxCount: 10 }]),
+  // upload.fields([{ name: "destImage", maxCount: 10 }]),
   addDest
 );
 
