@@ -4,14 +4,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const express_fileupload_1 = __importDefault(require("express-fileupload"));
+// import fileUpload from "express-fileupload";
 const productController_1 = require("../controllers/productController");
 const fileUpload_1 = __importDefault(require("../middleware/fileUpload"));
 const router = express_1.default.Router();
-router.use((0, express_fileupload_1.default)({
-    useTempFiles: true,
-    tempFileDir: "/tmp/",
-}));
+// router.use(
+//   fileUpload({
+//     useTempFiles: true,
+//     tempFileDir: "/tmp/",
+//   })
+// );
 // Tour Routes
 router.post("/addtour", productController_1.addTour);
 router.get("/gettour", productController_1.getTour);
