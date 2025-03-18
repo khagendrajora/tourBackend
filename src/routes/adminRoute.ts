@@ -12,7 +12,7 @@ import {
   getFeature,
   removeFeatureProduct,
   resetPass,
-} from "../controllers/userController";
+} from "../controllers/adminController";
 import { adminSignup, validation } from "../validation/Validation";
 const router = express.Router();
 

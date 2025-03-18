@@ -8,11 +8,11 @@ import {
   updateReservationStatusByBid,
   updateReservationStatusByClient,
   vehReservation,
-} from "../controllers/Reservation/vehRevController";
+} from "../controllers/Reservation/VehicleReservation/vehRevController";
 import {
   getAllRevDates,
   getReservedDates,
-} from "../controllers/Reservation/resrvedDated";
+} from "../controllers/Reservation/VehicleReservation/resrvedDated";
 import {
   getTourRev,
   getTourRevByBid,
@@ -31,6 +31,8 @@ import {
 } from "../controllers/Reservation/TrekReservation/trekRev";
 const router = express.Router();
 
+//Vehicle reservation routes
+
 router.post("/addRev/:id", vehReservation);
 router.get("/reservdates/:id", getReservedDates);
 router.get("/getclientrev/:id", getRevByClientId);
@@ -42,6 +44,8 @@ router.get("/getalldates", getAllRevDates);
 router.get("/getallreservations", getAllReservations);
 router.get("/getrevbyvehid/:id", getRevByVehicleId);
 
+//Tour reservation routes
+
 router.post("/addtourrev/:id", tourRev);
 router.get("/gettourrev", getTourRev);
 router.get("/gettourrevbyuserid/:id", getTourRevByUser);
@@ -49,6 +53,7 @@ router.get("/gettourrevbybid/:id", getTourRevByBid);
 router.put("/updatetourRevStatusbyclient/:id", updateTourRevStatusByClient);
 router.put("/updatetourRevStatusbybid/:id", updateTourRevStatusByBid);
 
+//Trek reservation routes
 router.post("/addtrekrev/:id", trekRev);
 router.get("/gettrekrev", getTrekRev);
 router.get("/gettrekrevbyuserid/:id", getTrekRevByUser);

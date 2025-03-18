@@ -23,6 +23,7 @@ const setEmail_1 = require("../utils/setEmail");
 const userModel_1 = __importDefault(require("../models/User/userModel"));
 const { customAlphabet } = require("nanoid");
 const Feature_1 = __importDefault(require("../models/Featured/Feature"));
+const cloudinary_1 = require("cloudinary");
 const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
     let bId = customId();
@@ -218,19 +219,33 @@ const getBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.getBusiness = getBusiness;
 const updateBusinessProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     const id = req.params.businessid;
     try {
-        const imageGallery = req.body.existingImageGallery || [];
+        let imageGallery = req.body.existingImageGallery
+            ? [...req.body.existingImageGallery]
+            : [];
         let profileIcon = undefined;
         if (req.files) {
             const files = req.files;
             if (files["imageGallery"]) {
-                const uploadedFiles = files["imageGallery"].map((file) => file.path);
+                const uploadedFiles = yield Promise.all(files["imageGallery"].map((file) => __awaiter(void 0, void 0, void 0, function* () {
+                    const result = yield cloudinary_1.v2.uploader.upload(file.path, {
+                        folder: "businessImages",
+                        use_filename: true,
+                        unique_filename: false,
+                    });
+                    return result.secure_url;
+                })));
                 imageGallery.push(...uploadedFiles);
             }
             if (files["profileIcon"]) {
-                profileIcon = (_a = files["profileIcon"][0]) === null || _a === void 0 ? void 0 : _a.path;
+                const result = yield cloudinary_1.v2.uploader.upload(files["profileIcon"][0].path, {
+                    folder: "businessIcons",
+                    use_filename: true,
+                    unique_filename: false,
+                });
+                profileIcon = result.secure_url;
+                // profileIcon = files["profileIcon"][0]?.path;
             }
         }
         const data = yield business_1.default.findByIdAndUpdate(id, {

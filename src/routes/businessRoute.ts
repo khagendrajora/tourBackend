@@ -13,7 +13,7 @@ import {
 } from "../controllers/businessController";
 import upload from "../middleware/fileUpload";
 import { addBusinessData, validation } from "../validation/Validation";
-import { verifyAndResetPwd } from "../controllers/userController";
+import { verifyAndResetPwd } from "../controllers/adminController";
 
 const router = express.Router();
 

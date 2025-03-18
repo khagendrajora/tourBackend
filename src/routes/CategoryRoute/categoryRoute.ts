@@ -29,50 +29,52 @@ import {
 import { addCategoryData, validation } from "../../validation/Validation";
 
 const router = express.Router();
+//Business category routes
 
-router.post("/addbusinesscategory", addCategoryData, validation, addBusinessCategory);
+router.post(
+  "/addbusinesscategory",
+  addCategoryData,
+  validation,
+  addBusinessCategory
+);
 router.get("/getbusinesscategory", getBusinessCategory);
 router.delete("/deletebusinesscategory/:id", deleteBusinessCategory);
 router.get("/businesscategorydetail/:id", getBusinessCategoryDetails);
 router.put("/updatebusinesscategory/:id", updateBusinessCategory);
+
+//business subcategory routes
 router.put("/addbuinesssubcategory/:id", addSubCategory);
 router.delete("/deletebusinesssubcategory/:id", deleteSubCategory);
 
-router.post(
-  "/addtrekcategory",
-  addCategoryData,
-  validation,
-  addTrekCategory
-);
+//Trek category routes
+
+router.post("/addtrekcategory", addCategoryData, validation, addTrekCategory);
 router.get("/gettrekcategory", getTrekCategory);
 router.get("/trektcategorydetail/:id", getTrekCategoryDetails);
 router.put("/updatetrekcategory/:id", updateTrekCategory);
+
+//Trek subcategory routes
 router.put("/addtreksubcategory/:id", addTrekSubCategory);
 router.delete("/deletetrekcategory/:id", deleteTrekCategory);
 
-
-router.post(
-  "/addtourcategory",
-  addCategoryData,
-  validation,
-  addTourCategory
-);
+//Tour category routes
+router.post("/addtourcategory", addCategoryData, validation, addTourCategory);
 router.get("/gettourcategory", getTourCategory);
 router.get("/tourcategorydetail/:id", getTourCategoryDetails);
 router.put("/updatetourcategory/:id", updateTourCategory);
+
+//Tour subcategory routes
 router.put("/addtoursubcategory/:id", addTourSubCategory);
 router.delete("/deletetourcategory/:id", deleteTourCategory);
 
+//Vehicle category routes
 
-router.post(
-  "/addvehcategory",
-  addCategoryData,
-  validation,
-  addVehicleCategory
-);
+router.post("/addvehcategory", addCategoryData, validation, addVehicleCategory);
 router.get("/getvehiclecategory", getVehicleCategory);
 router.get("/vehiclecategorydetail/:id", getVehicleCategoryDetails);
 router.put("/updatevehiclecategory/:id", updateVehicleCategory);
+
+//Vehicle subcategory routes
 router.put("/addvehiclesubcategory/:id", addVehicleSubCategory);
 router.delete("/deletevehiclecategory/:id", deleteVehicleCategory);
 

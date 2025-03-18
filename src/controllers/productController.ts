@@ -238,12 +238,42 @@ export const addTrek = async (req: Request, res: Response) => {
     operationDates,
   } = req.body;
   try {
-    let trekImages: string[] = [];
-    if (req.files) {
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["trekImages"]) {
-        trekImages = files["trekImages"].map((file) => file.path);
-      }
+    // let trekImages: string[] = [];
+    if (!req.files || !(req.files as any).trekImages) {
+      return res.status(400).json({ error: "No Image uploaded" });
+    }
+
+    // if (req.files) {
+    //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+    //   if (files["trekImages"]) {
+    //     trekImages = files["trekImages"].map((file) => file.path);
+    //   }
+    // }
+
+    const fileArray = req.files as any;
+    const files = Array.isArray(fileArray.trekImages)
+      ? fileArray.trekImages
+      : [fileArray.tourImages];
+
+    if (!files) {
+      return res.status(400).json({ error: "No images Array found" });
+    }
+
+    const uploadedImages = await Promise.all(
+      files.map(async (file: Express.Multer.File) => {
+        const result = await cloudinary.uploader.upload(file.path, {
+          folder: "trek",
+          use_filename: true,
+          unique_filename: false,
+        });
+        return result.secure_url;
+      })
+    );
+
+    if (!uploadedImages) {
+      return res
+        .status(400)
+        .json({ error: "Failed to save images in Cloudinary" });
     }
 
     if (!itinerary) {
@@ -264,11 +294,11 @@ export const addTrek = async (req: Request, res: Response) => {
       capacity,
       name,
       operationDates,
-      trekImages,
+      trekImages: uploadedImages,
     });
     trek = await trek.save();
     if (!trek) {
-      return res.status(400).json({ error: "failed to save" });
+      return res.status(400).json({ error: "Failed" });
     } else {
       return res.status(200).json({ message: "Trek Registered" });
     }
@@ -337,14 +367,36 @@ export const updateTrek = async (req: Request, res: Response) => {
     operationDates,
   } = req.body;
   try {
-    const trekImages: string[] = req.body.existingTrekImages || [];
-    if (req.files) {
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["trekImages"]) {
-        const uploadedFiles = files["trekImages"].map((file) => file.path);
-        trekImages.push(...uploadedFiles);
-      }
+    // const trekImages: string[] = req.body.existingTrekImages || [];
+    // if (req.files) {
+    //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+    //   if (files["trekImages"]) {
+    //     const uploadedFiles = files["trekImages"].map((file) => file.path);
+    //     trekImages.push(...uploadedFiles);
+    //   }
+    // }
+
+    let existingTrekImages: string[] = req.body.existingTrekImages || [];
+    let trekImages: string[] = existingTrekImages || [];
+
+    if (req.files && (req.files as any).trekImages) {
+      const fileArray = req.files as any;
+      const files = Array.isArray(fileArray.trekImages)
+        ? fileArray.trekImages
+        : [fileArray.trekImages];
+      const uploadedImages = await Promise.all(
+        files.map(async (file: Express.Multer.File) => {
+          const result = await cloudinary.uploader.upload(file.path, {
+            folder: "trek",
+            use_filename: true,
+            unique_filename: false,
+          });
+          return result.secure_url;
+        })
+      );
+      trekImages.push(...uploadedImages);
     }
+
     const data = await Trekking.findOneAndUpdate(
       { trekId: id },
       {
@@ -412,13 +464,38 @@ export const addVehicle = async (req: Request, res: Response) => {
     VIN,
   } = req.body;
   try {
-    let vehImages: string[] = [];
-    if (req.files) {
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["vehImages"]) {
-        vehImages = files["vehImages"].map((file) => file.path);
-      }
+    // let vehImages: string[] = [];
+    // if (req.files) {
+    //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+    //   if (files["vehImages"]) {
+    //     vehImages = files["vehImages"].map((file) => file.path);
+    //   }
+    // }
+
+    if (!req.files || !(req.files as any).vehImages) {
+      return res.status(400).json({ message: "No image uploaded" });
     }
+
+    const fileArray = req.files as any;
+    const files = Array.isArray(fileArray.vehImages)
+      ? fileArray.vehImages
+      : [fileArray.vehImages];
+
+    if (!files) {
+      return res.status(400).json({ message: "No image array uploaded" });
+    }
+
+    const uploadedImages = await Promise.all(
+      files.map(async (file: Express.Multer.File) => {
+        const result = await cloudinary.uploader.upload(file.path, {
+          folder: "Vehicle",
+          use_filename: true,
+          unique_filename: false,
+        });
+        return result.secure_url;
+      })
+    );
+
     const vehicleNumber = await Vehicle.findOne({
       vehNumber: vehNumber,
     });
@@ -451,7 +528,7 @@ export const addVehicle = async (req: Request, res: Response) => {
       capacity,
       name,
       operationDates,
-      vehImages,
+      vehImages: uploadedImages,
       manufacturer,
       model,
       VIN,
@@ -529,13 +606,34 @@ export const updateVeh = async (req: Request, res: Response) => {
     operationDates,
   } = req.body;
   try {
-    let vehImages: string[] = req.body.existingVehImages || [];
-    if (req.files) {
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["vehImages"]) {
-        const uploadedFiles = files["vehImages"].map((file) => file.path);
-        vehImages.push(...uploadedFiles);
-      }
+    // let vehImages: string[] = req.body.existingVehImages || [];
+    // if (req.files) {
+    //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+    //   if (files["vehImages"]) {
+    //     const uploadedFiles = files["vehImages"].map((file) => file.path);
+    //     vehImages.push(...uploadedFiles);
+    //   }
+    // }
+    let existingVehImages: string[] = req.body.existingVehImages || [];
+    let vehImages: string[] = existingVehImages || [];
+
+    if (req.files && (req.files as any).vehImages) {
+      const fileArray = req.files as any;
+      const files = Array.isArray(fileArray.vehImages)
+        ? fileArray.vehImages
+        : [fileArray.vehImages];
+
+      const uploadedImages = await Promise.all(
+        files.map(async (file: Express.Multer.File) => {
+          const result = await cloudinary.uploader.upload(file.path, {
+            folder: "Vehicle",
+            use_filename: true,
+            unique_filename: false,
+          });
+          return result.secure_url;
+        })
+      );
+      vehImages.push(...uploadedImages);
     }
 
     const vehData = await Vehicle.findOne({ vehId: id });

@@ -201,12 +201,35 @@ const addTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     trekId = "TR" + trekId;
     const { businessId, prodCategory, prodsubCategory, inclusion, days, dest, price, numbers, itinerary, capacity, addedBy, name, operationDates, } = req.body;
     try {
-        let trekImages = [];
-        if (req.files) {
-            const files = req.files;
-            if (files["trekImages"]) {
-                trekImages = files["trekImages"].map((file) => file.path);
-            }
+        // let trekImages: string[] = [];
+        if (!req.files || !req.files.trekImages) {
+            return res.status(400).json({ error: "No Image uploaded" });
+        }
+        // if (req.files) {
+        //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+        //   if (files["trekImages"]) {
+        //     trekImages = files["trekImages"].map((file) => file.path);
+        //   }
+        // }
+        const fileArray = req.files;
+        const files = Array.isArray(fileArray.trekImages)
+            ? fileArray.trekImages
+            : [fileArray.tourImages];
+        if (!files) {
+            return res.status(400).json({ error: "No images Array found" });
+        }
+        const uploadedImages = yield Promise.all(files.map((file) => __awaiter(void 0, void 0, void 0, function* () {
+            const result = yield cloudinary_1.v2.uploader.upload(file.path, {
+                folder: "trek",
+                use_filename: true,
+                unique_filename: false,
+            });
+            return result.secure_url;
+        })));
+        if (!uploadedImages) {
+            return res
+                .status(400)
+                .json({ error: "Failed to save images in Cloudinary" });
         }
         if (!itinerary) {
             return res.status(400).json({ error: "Itinerary is required" });
@@ -226,11 +249,11 @@ const addTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             capacity,
             name,
             operationDates,
-            trekImages,
+            trekImages: uploadedImages,
         });
         trek = yield trek.save();
         if (!trek) {
-            return res.status(400).json({ error: "failed to save" });
+            return res.status(400).json({ error: "Failed" });
         }
         else {
             return res.status(200).json({ message: "Trek Registered" });
@@ -292,13 +315,30 @@ const updateTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const id = req.params.id;
     const { businessId, prodCategory, prodsubCategory, inclusion, days, dest, price, numbers, updatedBy, itinerary, capacity, name, operationDates, } = req.body;
     try {
-        const trekImages = req.body.existingTrekImages || [];
-        if (req.files) {
-            const files = req.files;
-            if (files["trekImages"]) {
-                const uploadedFiles = files["trekImages"].map((file) => file.path);
-                trekImages.push(...uploadedFiles);
-            }
+        // const trekImages: string[] = req.body.existingTrekImages || [];
+        // if (req.files) {
+        //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+        //   if (files["trekImages"]) {
+        //     const uploadedFiles = files["trekImages"].map((file) => file.path);
+        //     trekImages.push(...uploadedFiles);
+        //   }
+        // }
+        let existingTrekImages = req.body.existingTrekImages || [];
+        let trekImages = existingTrekImages || [];
+        if (req.files && req.files.trekImages) {
+            const fileArray = req.files;
+            const files = Array.isArray(fileArray.trekImages)
+                ? fileArray.trekImages
+                : [fileArray.trekImages];
+            const uploadedImages = yield Promise.all(files.map((file) => __awaiter(void 0, void 0, void 0, function* () {
+                const result = yield cloudinary_1.v2.uploader.upload(file.path, {
+                    folder: "trek",
+                    use_filename: true,
+                    unique_filename: false,
+                });
+                return result.secure_url;
+            })));
+            trekImages.push(...uploadedImages);
         }
         const data = yield trekking_1.default.findOneAndUpdate({ trekId: id }, {
             businessId,
@@ -343,13 +383,31 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     vehId = "V" + vehId;
     const { businessId, vehCategory, vehSubCategory, services, baseLocation, addedBy, amenities, vehCondition, price, description, madeYear, vehNumber, businessName, capacity, name, operationDates, manufacturer, model, VIN, } = req.body;
     try {
-        let vehImages = [];
-        if (req.files) {
-            const files = req.files;
-            if (files["vehImages"]) {
-                vehImages = files["vehImages"].map((file) => file.path);
-            }
+        // let vehImages: string[] = [];
+        // if (req.files) {
+        //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+        //   if (files["vehImages"]) {
+        //     vehImages = files["vehImages"].map((file) => file.path);
+        //   }
+        // }
+        if (!req.files || !req.files.vehImages) {
+            return res.status(400).json({ message: "No image uploaded" });
         }
+        const fileArray = req.files;
+        const files = Array.isArray(fileArray.vehImages)
+            ? fileArray.vehImages
+            : [fileArray.vehImages];
+        if (!files) {
+            return res.status(400).json({ message: "No image array uploaded" });
+        }
+        const uploadedImages = yield Promise.all(files.map((file) => __awaiter(void 0, void 0, void 0, function* () {
+            const result = yield cloudinary_1.v2.uploader.upload(file.path, {
+                folder: "Vehicle",
+                use_filename: true,
+                unique_filename: false,
+            });
+            return result.secure_url;
+        })));
         const vehicleNumber = yield vehicle_1.default.findOne({
             vehNumber: vehNumber,
         });
@@ -380,7 +438,7 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             capacity,
             name,
             operationDates,
-            vehImages,
+            vehImages: uploadedImages,
             manufacturer,
             model,
             VIN,
@@ -447,13 +505,30 @@ const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const { businessId, vehCategory, vehSubCategory, services, amenities, baseLocation, vehCondition, price, description, madeYear, updatedBy, vehNumber, capacity, name, operationDates, } = req.body;
     try {
-        let vehImages = req.body.existingVehImages || [];
-        if (req.files) {
-            const files = req.files;
-            if (files["vehImages"]) {
-                const uploadedFiles = files["vehImages"].map((file) => file.path);
-                vehImages.push(...uploadedFiles);
-            }
+        // let vehImages: string[] = req.body.existingVehImages || [];
+        // if (req.files) {
+        //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+        //   if (files["vehImages"]) {
+        //     const uploadedFiles = files["vehImages"].map((file) => file.path);
+        //     vehImages.push(...uploadedFiles);
+        //   }
+        // }
+        let existingVehImages = req.body.existingVehImages || [];
+        let vehImages = existingVehImages || [];
+        if (req.files && req.files.vehImages) {
+            const fileArray = req.files;
+            const files = Array.isArray(fileArray.vehImages)
+                ? fileArray.vehImages
+                : [fileArray.vehImages];
+            const uploadedImages = yield Promise.all(files.map((file) => __awaiter(void 0, void 0, void 0, function* () {
+                const result = yield cloudinary_1.v2.uploader.upload(file.path, {
+                    folder: "Vehicle",
+                    use_filename: true,
+                    unique_filename: false,
+                });
+                return result.secure_url;
+            })));
+            vehImages.push(...uploadedImages);
         }
         const vehData = yield vehicle_1.default.findOne({ vehId: id });
         if (!vehData) {

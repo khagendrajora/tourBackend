@@ -1,6 +1,4 @@
 import { Request, Response } from "express";
-import { UploadedFile } from "express-fileupload";
-import fs from "fs";
 import Hero from "../../models/Pages/LandingPage/Hero";
 import Blogs from "../../models/Pages/LandingPage/Blogs";
 import { customAlphabet } from "nanoid";
@@ -8,19 +6,44 @@ import path from "path";
 import Destination from "../../models/Pages/LandingPage/Destination";
 import BlogsLogs from "../../models/LogModel/BlogsLogs";
 import DestinationLogs from "../../models/LogModel/DestinationLogs";
+import { v2 as cloudinary } from "cloudinary";
 
+//Dashboard Section
 export const addHero = async (req: Request, res: Response) => {
   const { heading, description } = req.body;
   try {
-    let heroImage: string[] = [];
-    if (req.files) {
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["heroImage"]) {
-        heroImage = files["heroImage"].map((file) => file.path);
-      }
+    if (!req.files || !(req.files as any).heroImage) {
+      return res.status(400).json({ message: "No image uploaded" });
     }
+    const fileArray = req.files as any;
+    const files = Array.isArray(fileArray.heroImage)
+      ? fileArray.heroImage
+      : [fileArray.heroImage];
+
+    if (!files) {
+      return res.status(400).json({ message: "No image array uploaded" });
+    }
+    // let heroImage: string[] = [];
+    // if (req.files) {
+    //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+    //   if (files["heroImage"]) {
+    //     heroImage = files["heroImage"].map((file) => file.path);
+    //   }
+    // }
+
+    const uploadedImages = await Promise.all(
+      files.map(async (file: Express.Multer.File) => {
+        const result = await cloudinary.uploader.upload(file.path, {
+          folder: "DashboardImages",
+          use_filename: true,
+          unique_filename: false,
+        });
+        return result.secure_url;
+      })
+    );
+
     let hero = new Hero({
-      heroImage,
+      heroImage: uploadedImages,
       heading,
       description,
     });
@@ -65,14 +88,35 @@ export const updateHero = async (req: Request, res: Response) => {
   const { heading, description } = req.body;
 
   try {
-    let heroImage: string[] = req.body.existingheroImage || [];
-    if (req.files) {
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["heroImage"]) {
-        const uploadedFiles = files["heroImage"].map((file) => file.path);
-        heroImage.push(...uploadedFiles);
-      }
+    let existingHeroImage: string[] = req.body.existingheroImage || [];
+    let heroImage: string[] = existingHeroImage || [];
+    // let heroImage: string[] = req.body.existingheroImage || [];
+    // if (req.files) {
+    //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+    //   if (files["heroImage"]) {
+    //     const uploadedFiles = files["heroImage"].map((file) => file.path);
+    //     heroImage.push(...uploadedFiles);
+    //   }
+    // }
+    if (req.files && (req.files as any).heroImage) {
+      const fileArray = req.files as any;
+      const files = Array.isArray(fileArray.heroImage)
+        ? fileArray.heroImage
+        : [fileArray.heroImage];
+
+      const uploadedImages = await Promise.all(
+        files.map(async (file: Express.Multer.File) => {
+          const result = await cloudinary.uploader.upload(file.path, {
+            folder: "DashboardImages",
+            use_filename: true,
+            unique_filename: false,
+          });
+          return result.secure_url;
+        })
+      );
+      heroImage.push(...uploadedImages);
     }
+
     const hero = await Hero.findByIdAndUpdate(
       id,
       {
@@ -110,23 +154,48 @@ export const deleteHero = async (req: Request, res: Response) => {
   }
 };
 
+//Blogs Section
 export const addBlogs = async (req: Request, res: Response) => {
   const { title, desc, updatedBy } = req.body;
   const customId = customAlphabet("1234567890", 4);
   const blogId = customId();
 
   try {
-    let blogsImage: string[] = [];
-    if (req.files) {
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["blogsImage"]) {
-        blogsImage = files["blogsImage"].map((file) => file.path);
-      }
+    // let blogsImage: string[] = [];
+    // if (req.files) {
+    //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+    //   if (files["blogsImage"]) {
+    //     blogsImage = files["blogsImage"].map((file) => file.path);
+    //   }
+    // }
+
+    if (!req.files || !(req.files as any).blogsImage) {
+      return res.status(400).json({ message: "No image uploaded" });
     }
+    const fileArray = req.files as any;
+    const files = Array.isArray(fileArray.blogsImage)
+      ? fileArray.blogsImage
+      : [fileArray.blogsImage];
+
+    if (!files) {
+      return res.status(400).json({ message: "No image array uploaded" });
+    }
+
+    const uploadedImages = await Promise.all(
+      files.map(async (file: Express.Multer.File) => {
+        const result = await cloudinary.uploader.upload(file.path, {
+          folder: "BlogImages",
+          use_filename: true,
+          unique_filename: false,
+        });
+        return result.secure_url;
+      })
+    );
+
     let blogs = new Blogs({
       title,
       desc,
-      blogsImage,
+      blogsImage: uploadedImages,
       blogId: blogId,
     });
     blogs = await blogs.save();
@@ -177,14 +246,36 @@ export const updateBlogs = async (req: Request, res: Response) => {
   const { title, desc, updatedBy } = req.body;
 
   try {
-    let blogsImage: string[] = req.body.existingblogsImage || [];
-    if (req.files) {
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["blogsImage"]) {
-        const uploadedFiles = files["blogsImage"].map((file) => file.path);
-        blogsImage.push(...uploadedFiles);
-      }
+    // let blogsImage: string[] = req.body.existingblogsImage || [];
+    // if (req.files) {
+    //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+    //   if (files["blogsImage"]) {
+    //     const uploadedFiles = files["blogsImage"].map((file) => file.path);
+    //     blogsImage.push(...uploadedFiles);
+    //   }
+    // }
+    let existingblogsImage: string[] = req.body.existingblogsImage || [];
+    let blogsImage: string[] = existingblogsImage || [];
+
+    if (req.files && (req.files as any).blogsImage) {
+      const fileArray = req.files as any;
+      const files = Array.isArray(fileArray.blogsImage)
+        ? fileArray.blogsImage
+        : [fileArray.blogsImage];
+
+      const uploadedImages = await Promise.all(
+        files.map(async (file: Express.Multer.File) => {
+          const result = await cloudinary.uploader.upload(file.path, {
+            folder: "BlogImages",
+            use_filename: true,
+            unique_filename: false,
+          });
+          return result.secure_url;
+        })
+      );
+      blogsImage.push(...uploadedImages);
     }
+
     const blogs = await Blogs.findOneAndUpdate(
       { blogId: id },
       {
@@ -237,53 +328,49 @@ export const deleteBlogs = async (req: Request, res: Response) => {
   }
 };
 
+//Popular Destination Section
+
 export const addDest = async (req: Request, res: Response) => {
   const { title, updatedBy } = req.body;
   const customId = customAlphabet("1234567890", 4);
   const destId = customId();
 
   try {
-    let destImage: string[] = [];
-    const uploadDir = path.join(__dirname, "../public/uploads");
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
-    if (req.files && "destImage" in req.files) {
-      const uploadedFiles = req.files.destImage as unknown as
-        | UploadedFile
-        | UploadedFile[];
+    // let destImage: string[] = [];
 
-      if (Array.isArray(uploadedFiles)) {
-        // Multiple files
-        for (const file of uploadedFiles) {
-          const uploadPath = path.join(
-            __dirname,
-            "../public/uploads",
-            file.name
-          );
-          await file.mv(uploadPath);
-          destImage.push(`/public/uploads/${file.name}`);
-        }
-      } else {
-        // Single file
-        const uploadPath = path.join(
-          uploadDir,
-
-          uploadedFiles.name
-        );
-        await uploadedFiles.mv(uploadPath);
-        destImage.push(`/public/uploads/${uploadedFiles.name}`);
-      }
-    }
     // if (req.files) {
     //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
     //   if (files["destImage"]) {
     //     destImage = files["destImage"].map((file) => file.path);
     //   }
     // }
+
+    if (!req.files || !(req.files as any).destImage) {
+      return res.status(400).json({ message: "No image uploaded" });
+    }
+    const fileArray = req.files as any;
+    const files = Array.isArray(fileArray.destImage)
+      ? fileArray.destImage
+      : [fileArray.destImage];
+
+    if (!files) {
+      return res.status(400).json({ message: "No image array uploaded" });
+    }
+
+    const uploadedImages = await Promise.all(
+      files.map(async (file: Express.Multer.File) => {
+        const result = await cloudinary.uploader.upload(file.path, {
+          folder: "DestinationImages",
+          use_filename: true,
+          unique_filename: false,
+        });
+        return result.secure_url;
+      })
+    );
+
     let dest = new Destination({
       title,
-      destImage,
+      destImage: uploadedImages,
       destId: destId,
     });
     dest = await dest.save();
@@ -333,14 +420,36 @@ export const updateDest = async (req: Request, res: Response) => {
   const { title, updatedBy } = req.body;
 
   try {
-    let destImage: string[] = req.body.existingdestImage || [];
-    if (req.files) {
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["destImage"]) {
-        const uploadedFiles = files["destImage"].map((file) => file.path);
-        destImage.push(...uploadedFiles);
-      }
+    // let destImage: string[] = req.body.existingdestImage || [];
+    // if (req.files) {
+    //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+    //   if (files["destImage"]) {
+    //     const uploadedFiles = files["destImage"].map((file) => file.path);
+    //     destImage.push(...uploadedFiles);
+    //   }
+    // }
+    let existingdestImage: string[] = req.body.existingdestImage || [];
+    let destImage: string[] = existingdestImage || [];
+
+    if (req.files && (req.files as any).destImage) {
+      const fileArray = req.files as any;
+      const files = Array.isArray(fileArray.destImage)
+        ? fileArray.destImage
+        : [fileArray.destImage];
+
+      const uploadedImages = await Promise.all(
+        files.map(async (file: Express.Multer.File) => {
+          const result = await cloudinary.uploader.upload(file.path, {
+            folder: "DestinationImages",
+            use_filename: true,
+            unique_filename: false,
+          });
+          return result.secure_url;
+        })
+      );
+      destImage.push(...uploadedImages);
     }
+
     const dest = await Blogs.findOneAndUpdate(
       { destId: id },
       {

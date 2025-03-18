@@ -9,6 +9,7 @@ import { sendEmail } from "../utils/setEmail";
 import User from "../models/User/userModel";
 const { customAlphabet } = require("nanoid");
 import Feature from "../models/Featured/Feature";
+import { v2 as cloudinary } from "cloudinary";
 
 export const addBusiness = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);
@@ -217,19 +218,40 @@ export const getBusiness = async (req: Request, res: Response) => {
 export const updateBusinessProfile = async (req: Request, res: Response) => {
   const id = req.params.businessid;
   try {
-    const imageGallery: string[] = req.body.existingImageGallery || [];
+    let imageGallery: string[] = req.body.existingImageGallery
+      ? [...req.body.existingImageGallery]
+      : [];
     let profileIcon: string | undefined = undefined;
 
     if (req.files) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
       if (files["imageGallery"]) {
-        const uploadedFiles = files["imageGallery"].map((file) => file.path);
+        const uploadedFiles = await Promise.all(
+          files["imageGallery"].map(async (file) => {
+            const result = await cloudinary.uploader.upload(file.path, {
+              folder: "businessImages",
+              use_filename: true,
+              unique_filename: false,
+            });
+            return result.secure_url;
+          })
+        );
         imageGallery.push(...uploadedFiles);
       }
 
       if (files["profileIcon"]) {
-        profileIcon = files["profileIcon"][0]?.path;
+        const result = await cloudinary.uploader.upload(
+          files["profileIcon"][0].path,
+          {
+            folder: "businessIcons",
+            use_filename: true,
+            unique_filename: false,
+          }
+        );
+        profileIcon = result.secure_url;
+
+        // profileIcon = files["profileIcon"][0]?.path;
       }
     }
     const data = await Business.findByIdAndUpdate(

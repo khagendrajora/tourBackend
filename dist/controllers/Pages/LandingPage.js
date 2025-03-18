@@ -13,26 +13,44 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteDest = exports.updateDest = exports.getDestById = exports.getDest = exports.addDest = exports.deleteBlogs = exports.updateBlogs = exports.getBlogsById = exports.getBlogs = exports.addBlogs = exports.deleteHero = exports.updateHero = exports.getHeroById = exports.getHero = exports.addHero = void 0;
-const fs_1 = __importDefault(require("fs"));
 const Hero_1 = __importDefault(require("../../models/Pages/LandingPage/Hero"));
 const Blogs_1 = __importDefault(require("../../models/Pages/LandingPage/Blogs"));
 const nanoid_1 = require("nanoid");
-const path_1 = __importDefault(require("path"));
 const Destination_1 = __importDefault(require("../../models/Pages/LandingPage/Destination"));
 const BlogsLogs_1 = __importDefault(require("../../models/LogModel/BlogsLogs"));
 const DestinationLogs_1 = __importDefault(require("../../models/LogModel/DestinationLogs"));
+const cloudinary_1 = require("cloudinary");
+//Dashboard Section
 const addHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { heading, description } = req.body;
     try {
-        let heroImage = [];
-        if (req.files) {
-            const files = req.files;
-            if (files["heroImage"]) {
-                heroImage = files["heroImage"].map((file) => file.path);
-            }
+        if (!req.files || !req.files.heroImage) {
+            return res.status(400).json({ message: "No image uploaded" });
         }
+        const fileArray = req.files;
+        const files = Array.isArray(fileArray.heroImage)
+            ? fileArray.heroImage
+            : [fileArray.heroImage];
+        if (!files) {
+            return res.status(400).json({ message: "No image array uploaded" });
+        }
+        // let heroImage: string[] = [];
+        // if (req.files) {
+        //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+        //   if (files["heroImage"]) {
+        //     heroImage = files["heroImage"].map((file) => file.path);
+        //   }
+        // }
+        const uploadedImages = yield Promise.all(files.map((file) => __awaiter(void 0, void 0, void 0, function* () {
+            const result = yield cloudinary_1.v2.uploader.upload(file.path, {
+                folder: "DashboardImages",
+                use_filename: true,
+                unique_filename: false,
+            });
+            return result.secure_url;
+        })));
         let hero = new Hero_1.default({
-            heroImage,
+            heroImage: uploadedImages,
             heading,
             description,
         });
@@ -81,13 +99,30 @@ const updateHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const id = req.params.id;
     const { heading, description } = req.body;
     try {
-        let heroImage = req.body.existingheroImage || [];
-        if (req.files) {
-            const files = req.files;
-            if (files["heroImage"]) {
-                const uploadedFiles = files["heroImage"].map((file) => file.path);
-                heroImage.push(...uploadedFiles);
-            }
+        let existingHeroImage = req.body.existingheroImage || [];
+        let heroImage = existingHeroImage || [];
+        // let heroImage: string[] = req.body.existingheroImage || [];
+        // if (req.files) {
+        //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+        //   if (files["heroImage"]) {
+        //     const uploadedFiles = files["heroImage"].map((file) => file.path);
+        //     heroImage.push(...uploadedFiles);
+        //   }
+        // }
+        if (req.files && req.files.heroImage) {
+            const fileArray = req.files;
+            const files = Array.isArray(fileArray.heroImage)
+                ? fileArray.heroImage
+                : [fileArray.heroImage];
+            const uploadedImages = yield Promise.all(files.map((file) => __awaiter(void 0, void 0, void 0, function* () {
+                const result = yield cloudinary_1.v2.uploader.upload(file.path, {
+                    folder: "DashboardImages",
+                    use_filename: true,
+                    unique_filename: false,
+                });
+                return result.secure_url;
+            })));
+            heroImage.push(...uploadedImages);
         }
         const hero = yield Hero_1.default.findByIdAndUpdate(id, {
             heroImage,
@@ -125,22 +160,41 @@ const deleteHero = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.deleteHero = deleteHero;
+//Blogs Section
 const addBlogs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, desc, updatedBy } = req.body;
     const customId = (0, nanoid_1.customAlphabet)("1234567890", 4);
     const blogId = customId();
     try {
-        let blogsImage = [];
-        if (req.files) {
-            const files = req.files;
-            if (files["blogsImage"]) {
-                blogsImage = files["blogsImage"].map((file) => file.path);
-            }
+        // let blogsImage: string[] = [];
+        // if (req.files) {
+        //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+        //   if (files["blogsImage"]) {
+        //     blogsImage = files["blogsImage"].map((file) => file.path);
+        //   }
+        // }
+        if (!req.files || !req.files.blogsImage) {
+            return res.status(400).json({ message: "No image uploaded" });
         }
+        const fileArray = req.files;
+        const files = Array.isArray(fileArray.blogsImage)
+            ? fileArray.blogsImage
+            : [fileArray.blogsImage];
+        if (!files) {
+            return res.status(400).json({ message: "No image array uploaded" });
+        }
+        const uploadedImages = yield Promise.all(files.map((file) => __awaiter(void 0, void 0, void 0, function* () {
+            const result = yield cloudinary_1.v2.uploader.upload(file.path, {
+                folder: "BlogImages",
+                use_filename: true,
+                unique_filename: false,
+            });
+            return result.secure_url;
+        })));
         let blogs = new Blogs_1.default({
             title,
             desc,
-            blogsImage,
+            blogsImage: uploadedImages,
             blogId: blogId,
         });
         blogs = yield blogs.save();
@@ -195,13 +249,30 @@ const updateBlogs = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const id = req.params.id;
     const { title, desc, updatedBy } = req.body;
     try {
-        let blogsImage = req.body.existingblogsImage || [];
-        if (req.files) {
-            const files = req.files;
-            if (files["blogsImage"]) {
-                const uploadedFiles = files["blogsImage"].map((file) => file.path);
-                blogsImage.push(...uploadedFiles);
-            }
+        // let blogsImage: string[] = req.body.existingblogsImage || [];
+        // if (req.files) {
+        //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+        //   if (files["blogsImage"]) {
+        //     const uploadedFiles = files["blogsImage"].map((file) => file.path);
+        //     blogsImage.push(...uploadedFiles);
+        //   }
+        // }
+        let existingblogsImage = req.body.existingblogsImage || [];
+        let blogsImage = existingblogsImage || [];
+        if (req.files && req.files.blogsImage) {
+            const fileArray = req.files;
+            const files = Array.isArray(fileArray.blogsImage)
+                ? fileArray.blogsImage
+                : [fileArray.blogsImage];
+            const uploadedImages = yield Promise.all(files.map((file) => __awaiter(void 0, void 0, void 0, function* () {
+                const result = yield cloudinary_1.v2.uploader.upload(file.path, {
+                    folder: "BlogImages",
+                    use_filename: true,
+                    unique_filename: false,
+                });
+                return result.secure_url;
+            })));
+            blogsImage.push(...uploadedImages);
         }
         const blogs = yield Blogs_1.default.findOneAndUpdate({ blogId: id }, {
             title,
@@ -254,42 +325,40 @@ const deleteBlogs = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.deleteBlogs = deleteBlogs;
+//Popular Destination Section
 const addDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, updatedBy } = req.body;
     const customId = (0, nanoid_1.customAlphabet)("1234567890", 4);
     const destId = customId();
     try {
-        let destImage = [];
-        const uploadDir = path_1.default.join(__dirname, "../public/uploads");
-        if (!fs_1.default.existsSync(uploadDir)) {
-            fs_1.default.mkdirSync(uploadDir, { recursive: true });
-        }
-        if (req.files && "destImage" in req.files) {
-            const uploadedFiles = req.files.destImage;
-            if (Array.isArray(uploadedFiles)) {
-                // Multiple files
-                for (const file of uploadedFiles) {
-                    const uploadPath = path_1.default.join(__dirname, "../public/uploads", file.name);
-                    yield file.mv(uploadPath);
-                    destImage.push(`/public/uploads/${file.name}`);
-                }
-            }
-            else {
-                // Single file
-                const uploadPath = path_1.default.join(uploadDir, uploadedFiles.name);
-                yield uploadedFiles.mv(uploadPath);
-                destImage.push(`/public/uploads/${uploadedFiles.name}`);
-            }
-        }
+        // let destImage: string[] = [];
         // if (req.files) {
         //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
         //   if (files["destImage"]) {
         //     destImage = files["destImage"].map((file) => file.path);
         //   }
         // }
+        if (!req.files || !req.files.destImage) {
+            return res.status(400).json({ message: "No image uploaded" });
+        }
+        const fileArray = req.files;
+        const files = Array.isArray(fileArray.destImage)
+            ? fileArray.destImage
+            : [fileArray.destImage];
+        if (!files) {
+            return res.status(400).json({ message: "No image array uploaded" });
+        }
+        const uploadedImages = yield Promise.all(files.map((file) => __awaiter(void 0, void 0, void 0, function* () {
+            const result = yield cloudinary_1.v2.uploader.upload(file.path, {
+                folder: "DestinationImages",
+                use_filename: true,
+                unique_filename: false,
+            });
+            return result.secure_url;
+        })));
         let dest = new Destination_1.default({
             title,
-            destImage,
+            destImage: uploadedImages,
             destId: destId,
         });
         dest = yield dest.save();
@@ -344,13 +413,30 @@ const updateDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const id = req.params.id;
     const { title, updatedBy } = req.body;
     try {
-        let destImage = req.body.existingdestImage || [];
-        if (req.files) {
-            const files = req.files;
-            if (files["destImage"]) {
-                const uploadedFiles = files["destImage"].map((file) => file.path);
-                destImage.push(...uploadedFiles);
-            }
+        // let destImage: string[] = req.body.existingdestImage || [];
+        // if (req.files) {
+        //   const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+        //   if (files["destImage"]) {
+        //     const uploadedFiles = files["destImage"].map((file) => file.path);
+        //     destImage.push(...uploadedFiles);
+        //   }
+        // }
+        let existingdestImage = req.body.existingdestImage || [];
+        let destImage = existingdestImage || [];
+        if (req.files && req.files.destImage) {
+            const fileArray = req.files;
+            const files = Array.isArray(fileArray.destImage)
+                ? fileArray.destImage
+                : [fileArray.destImage];
+            const uploadedImages = yield Promise.all(files.map((file) => __awaiter(void 0, void 0, void 0, function* () {
+                const result = yield cloudinary_1.v2.uploader.upload(file.path, {
+                    folder: "DestinationImages",
+                    use_filename: true,
+                    unique_filename: false,
+                });
+                return result.secure_url;
+            })));
+            destImage.push(...uploadedImages);
         }
         const dest = yield Blogs_1.default.findOneAndUpdate({ destId: id }, {
             title,

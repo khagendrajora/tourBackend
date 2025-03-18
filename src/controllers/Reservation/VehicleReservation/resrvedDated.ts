@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import ReservedDate from "../../models/Reservations/ReservedDated";
+import ReservedDate from "../../../models/Reservations/ReservedDated";
 
 export const saveReservedDated = async (req: Request, res: Response) => {
   const { vehicleId, bookedBy, bookingDate, time } = req.body;

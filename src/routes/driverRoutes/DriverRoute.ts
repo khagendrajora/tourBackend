@@ -23,6 +23,7 @@ import {
 
 const router = express.Router();
 
+//Driver routes
 router.post(
   "/adddriver",
   upload.fields([{ name: "driverImage", maxCount: 1 }]),
@@ -39,6 +40,8 @@ router.delete("/deletedriver/:id", deleteDriver);
 router.put("/updatedriver/:id", updateDriver);
 router.put("/resetdriverpwd/:token", resetPwd);
 router.put("/resetandverifyemail/:token", verifyDriverEmail);
+
+//Hot deals routes
 
 router.post("/addhotdeals/:id", addHotDeals);
 router.get("/gethotdeals", getHotDeals);

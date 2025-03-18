@@ -8,6 +8,7 @@ const driver_1 = require("../../controllers/DriverController/driver");
 const fileUpload_1 = __importDefault(require("../../middleware/fileUpload"));
 const HotDealsCOntroller_1 = require("../../controllers/HotDealsControllers/HotDealsCOntroller");
 const router = express_1.default.Router();
+//Driver routes
 router.post("/adddriver", fileUpload_1.default.fields([{ name: "driverImage", maxCount: 1 }]), driver_1.addDriver);
 router.get("/getdrivers", driver_1.getDrivers);
 router.get("/getdrivers/:id", driver_1.getDriverById);
@@ -18,6 +19,7 @@ router.delete("/deletedriver/:id", driver_1.deleteDriver);
 router.put("/updatedriver/:id", driver_1.updateDriver);
 router.put("/resetdriverpwd/:token", driver_1.resetPwd);
 router.put("/resetandverifyemail/:token", driver_1.verifyDriverEmail);
+//Hot deals routes
 router.post("/addhotdeals/:id", HotDealsCOntroller_1.addHotDeals);
 router.get("/gethotdeals", HotDealsCOntroller_1.getHotDeals);
 router.get("/gethodealbyid/:id", HotDealsCOntroller_1.getHotDealsById);

@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import VehicleReservation from "../../models/Reservations/vehReserv";
-import Vehicle from "../../models/Product/vehicle";
-import ReservedDate from "../../models/Reservations/ReservedDated";
+import VehicleReservation from "../../../models/Reservations/vehReserv";
+import Vehicle from "../../../models/Product/vehicle";
+import ReservedDate from "../../../models/Reservations/ReservedDated";
 import { customAlphabet } from "nanoid";
-import { sendEmail } from "../../utils/setEmail";
-import Business from "../../models/business";
-import VehRevLogs from "../../models/LogModel/VehRevLogs";
+import { sendEmail } from "../../../utils/setEmail";
+import Business from "../../../models/business";
+import VehRevLogs from "../../../models/LogModel/VehRevLogs";
 
 export const vehReservation = async (req: Request, res: Response) => {
   const id = req.params.id;
