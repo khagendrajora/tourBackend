@@ -25,28 +25,6 @@ app.use(express.json());
 
 app.use(cookieParser());
 app.use(cors());
-// app.use(useragent.express());
-
-// const morganFormat = ":method :url :status :response-time ms";
-
-// app.use(
-//   morgan(morganFormat, {
-//     stream: {
-//       write: (message: any) => {
-//         const [method, url, status, responseTime] = message.split("");
-//         if (["PUT", "POST", "DELETE"].includes(method)) {
-//           const logObject = {
-//             method,
-//             url,
-//             status,
-//             responseTime,
-//           };
-//           logger.info(JSON.stringify(logObject));
-//         }
-//       },
-//     },
-//   })
-// );
 
 // app.use(
 //   fileUpload({

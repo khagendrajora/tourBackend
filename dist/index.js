@@ -28,26 +28,6 @@ exports.app = (0, express_1.default)();
 exports.app.use(express_1.default.json());
 exports.app.use((0, cookie_parser_1.default)());
 exports.app.use((0, cors_1.default)());
-// app.use(useragent.express());
-// const morganFormat = ":method :url :status :response-time ms";
-// app.use(
-//   morgan(morganFormat, {
-//     stream: {
-//       write: (message: any) => {
-//         const [method, url, status, responseTime] = message.split("");
-//         if (["PUT", "POST", "DELETE"].includes(method)) {
-//           const logObject = {
-//             method,
-//             url,
-//             status,
-//             responseTime,
-//           };
-//           logger.info(JSON.stringify(logObject));
-//         }
-//       },
-//     },
-//   })
-// );
 // app.use(
 //   fileUpload({
 //     useTempFiles: true,
