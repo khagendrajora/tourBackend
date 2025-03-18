@@ -11,6 +11,7 @@ import AdminUser from "../../models/adminUser";
 import ClientUser from "../../models/User/userModel";
 import vehicle from "../../models/Product/vehicle";
 import DriverLogs from "../../models/LogModel/DriverLogs";
+import { v2 as cloudinary } from "cloudinary";
 
 export const addDriver = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);
@@ -31,7 +32,15 @@ export const addDriver = async (req: Request, res: Response) => {
     if (req.files) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
       if (files["driverImage"]) {
-        driverImage = files["driverImage"][0]?.path;
+        const result = await cloudinary.uploader.upload(
+          files["driverImage"][0]?.path,
+          {
+            folder: "driverImage",
+            use_filename: true,
+            unique_filename: false,
+          }
+        );
+        driverImage = result.secure_url;
       }
     }
     const driverNumber = await Driver.findOne({ driverPhone });
@@ -318,7 +327,15 @@ export const updateDriver = async (req: Request, res: Response) => {
     if (req.files) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
       if (files["driverImage"]) {
-        driverImage = files["driverImage"][0]?.path;
+        const result = await cloudinary.uploader.upload(
+          files["driverImage"][0]?.path,
+          {
+            folder: "driverImage",
+            use_filename: true,
+            unique_filename: false,
+          }
+        );
+        driverImage = result.secure_url;
       }
     }
     const data = await Driver.findByIdAndUpdate(

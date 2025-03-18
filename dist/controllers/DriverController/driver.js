@@ -25,6 +25,7 @@ const adminUser_1 = __importDefault(require("../../models/adminUser"));
 const userModel_1 = __importDefault(require("../../models/User/userModel"));
 const vehicle_1 = __importDefault(require("../../models/Product/vehicle"));
 const DriverLogs_1 = __importDefault(require("../../models/LogModel/DriverLogs"));
+const cloudinary_1 = require("cloudinary");
 const addDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const customId = (0, nanoid_1.customAlphabet)("1234567890", 4);
@@ -36,7 +37,12 @@ const addDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (req.files) {
             const files = req.files;
             if (files["driverImage"]) {
-                driverImage = (_a = files["driverImage"][0]) === null || _a === void 0 ? void 0 : _a.path;
+                const result = yield cloudinary_1.v2.uploader.upload((_a = files["driverImage"][0]) === null || _a === void 0 ? void 0 : _a.path, {
+                    folder: "driverImage",
+                    use_filename: true,
+                    unique_filename: false,
+                });
+                driverImage = result.secure_url;
             }
         }
         const driverNumber = yield Driver_1.default.findOne({ driverPhone });
@@ -312,7 +318,12 @@ const updateDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         if (req.files) {
             const files = req.files;
             if (files["driverImage"]) {
-                driverImage = (_a = files["driverImage"][0]) === null || _a === void 0 ? void 0 : _a.path;
+                const result = yield cloudinary_1.v2.uploader.upload((_a = files["driverImage"][0]) === null || _a === void 0 ? void 0 : _a.path, {
+                    folder: "driverImage",
+                    use_filename: true,
+                    unique_filename: false,
+                });
+                driverImage = result.secure_url;
             }
         }
         const data = yield Driver_1.default.findByIdAndUpdate(id, {
