@@ -3,7 +3,9 @@ import {
   addTour,
   addTrek,
   addVehicle,
-  deleteproduct,
+  deleteTour,
+  deleteTrek,
+  deleteVehicle,
   getTour,
   getTourByBusinessId,
   getTrek,
@@ -35,6 +37,7 @@ router.put(
   upload.fields([{ name: "tourImages", maxCount: 1000 }]),
   updateTour
 );
+router.delete("/deletetour/:id", deleteTour);
 
 // Trek Routes
 
@@ -51,6 +54,7 @@ router.put(
   upload.fields([{ name: "trekImages", maxCount: 1000 }]),
   updateTrek
 );
+router.delete("/deletetrek/:id", deleteTrek);
 
 // Venicle Routes
 
@@ -68,6 +72,6 @@ router.put(
   updateVeh
 );
 
-router.delete("/deleteprod/:id", deleteproduct);
+router.delete("/deletevehicle/:id", deleteVehicle);
 
 export default router;

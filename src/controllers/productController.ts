@@ -725,39 +725,57 @@ export const updateVeh = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteproduct = async (req: Request, res: Response) => {
+export const deleteVehicle = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const { updatedBy } = req.query;
+  try {
+    const veh = await Vehicle.findByIdAndDelete(id);
+    if (!veh) {
+      return res.status(400).json({ error: "Not found" });
+    } else {
+      let productLog = new ProductLogs({
+        updatedBy: updatedBy,
+        productId: veh.vehId,
+        action: "Deleted",
+        time: new Date(),
+      });
+      productLog = await productLog.save();
+      return res.status(200).json({ message: "Vehicle Deleted" });
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: error });
+  }
+};
+
+export const deleteTrek = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const { updatedBy } = req.query;
+  try {
+    const trek = await Trekking.findByIdAndDelete(id);
+    if (!trek) {
+      return res.status(400).json({ error: "Not found" });
+    } else {
+      let productLog = new ProductLogs({
+        updatedBy: updatedBy,
+        productId: trek.trekId,
+        action: "Deleted",
+        time: new Date(),
+      });
+      productLog = await productLog.save();
+      return res.status(200).json({ message: "Trek Deleted" });
+    }
+  } catch (error: any) {
+    return res.status(500).json({ error: error });
+  }
+};
+
+export const deleteTour = async (req: Request, res: Response) => {
   const id = req.params.id;
   const { updatedBy } = req.query;
   try {
     const tour = await Tour.findByIdAndDelete(id);
-
     if (!tour) {
-      const trek = await Trekking.findByIdAndDelete(id);
-      if (!trek) {
-        const veh = await Vehicle.findByIdAndDelete(id);
-
-        if (!veh) {
-          return res.status(400).json({ error: "Not found" });
-        } else {
-          let productLog = new ProductLogs({
-            updatedBy: updatedBy,
-            productId: veh.vehId,
-            action: "Deleted",
-            time: new Date(),
-          });
-          productLog = await productLog.save();
-          return res.status(200).json({ message: "Vehicle Deleted" });
-        }
-      } else {
-        let productLog = new ProductLogs({
-          updatedBy: updatedBy,
-          productId: trek.trekId,
-          action: "Deleted",
-          time: new Date(),
-        });
-        productLog = await productLog.save();
-        return res.status(200).json({ message: "Trek Deleted" });
-      }
+      return res.status(400).json({ error: "Not found" });
     } else {
       let productLog = new ProductLogs({
         updatedBy: updatedBy,

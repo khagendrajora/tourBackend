@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteproduct = exports.updateVeh = exports.vehDetails = exports.getVehicleByBusinessId = exports.getVeh = exports.addVehicle = exports.updateTrek = exports.trekDetails = exports.getTrekByBusinessId = exports.getTrek = exports.addTrek = exports.updateTour = exports.tourDetails = exports.getTourByBusinessId = exports.getTour = exports.addTour = void 0;
+exports.deleteTour = exports.deleteTrek = exports.deleteVehicle = exports.updateVeh = exports.vehDetails = exports.getVehicleByBusinessId = exports.getVeh = exports.addVehicle = exports.updateTrek = exports.trekDetails = exports.getTrekByBusinessId = exports.getTrek = exports.addTrek = exports.updateTour = exports.tourDetails = exports.getTourByBusinessId = exports.getTour = exports.addTour = void 0;
 const tour_1 = __importDefault(require("../models/Product/tour"));
 const trekking_1 = __importDefault(require("../models/Product/trekking"));
 const vehicle_1 = __importDefault(require("../models/Product/vehicle"));
@@ -614,39 +614,61 @@ const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.updateVeh = updateVeh;
-const deleteproduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const deleteVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const { updatedBy } = req.query;
+    try {
+        const veh = yield vehicle_1.default.findByIdAndDelete(id);
+        if (!veh) {
+            return res.status(400).json({ error: "Not found" });
+        }
+        else {
+            let productLog = new ProductLogs_1.default({
+                updatedBy: updatedBy,
+                productId: veh.vehId,
+                action: "Deleted",
+                time: new Date(),
+            });
+            productLog = yield productLog.save();
+            return res.status(200).json({ message: "Vehicle Deleted" });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: error });
+    }
+});
+exports.deleteVehicle = deleteVehicle;
+const deleteTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const { updatedBy } = req.query;
+    try {
+        const trek = yield trekking_1.default.findByIdAndDelete(id);
+        if (!trek) {
+            return res.status(400).json({ error: "Not found" });
+        }
+        else {
+            let productLog = new ProductLogs_1.default({
+                updatedBy: updatedBy,
+                productId: trek.trekId,
+                action: "Deleted",
+                time: new Date(),
+            });
+            productLog = yield productLog.save();
+            return res.status(200).json({ message: "Trek Deleted" });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: error });
+    }
+});
+exports.deleteTrek = deleteTrek;
+const deleteTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const { updatedBy } = req.query;
     try {
         const tour = yield tour_1.default.findByIdAndDelete(id);
         if (!tour) {
-            const trek = yield trekking_1.default.findByIdAndDelete(id);
-            if (!trek) {
-                const veh = yield vehicle_1.default.findByIdAndDelete(id);
-                if (!veh) {
-                    return res.status(400).json({ error: "Not found" });
-                }
-                else {
-                    let productLog = new ProductLogs_1.default({
-                        updatedBy: updatedBy,
-                        productId: veh.vehId,
-                        action: "Deleted",
-                        time: new Date(),
-                    });
-                    productLog = yield productLog.save();
-                    return res.status(200).json({ message: "Vehicle Deleted" });
-                }
-            }
-            else {
-                let productLog = new ProductLogs_1.default({
-                    updatedBy: updatedBy,
-                    productId: trek.trekId,
-                    action: "Deleted",
-                    time: new Date(),
-                });
-                productLog = yield productLog.save();
-                return res.status(200).json({ message: "Trek Deleted" });
-            }
+            return res.status(400).json({ error: "Not found" });
         }
         else {
             let productLog = new ProductLogs_1.default({
@@ -663,4 +685,4 @@ const deleteproduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         return res.status(500).json({ error: error });
     }
 });
-exports.deleteproduct = deleteproduct;
+exports.deleteTour = deleteTour;
