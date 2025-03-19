@@ -11,7 +11,7 @@ export const veriftyToken = (
 
   try {
     const verified = jwt.verify(token, process.env.JWTSECRET as string);
-    req.body.user = verified;
+    req.body.data = verified;
     next();
   } catch (error) {
     res.status(400).json({ message: "Invalid Token" });

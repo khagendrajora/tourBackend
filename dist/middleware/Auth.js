@@ -11,7 +11,7 @@ const veriftyToken = (req, res, next) => {
         return res.status(401).json({ message: "Access Denied" });
     try {
         const verified = jsonwebtoken_1.default.verify(token, process.env.JWTSECRET);
-        req.body.user = verified;
+        req.body.data = verified;
         next();
     }
     catch (error) {
