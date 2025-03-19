@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.app = void 0;
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
+// import logger from "./logger";
 // import morgan from "morgan";
 // import useragent from "express-useragent";
 dotenv_1.default.config();
@@ -27,6 +28,7 @@ const LocationRoute_1 = __importDefault(require("./routes/LocationRoute/Location
 exports.app = (0, express_1.default)();
 exports.app.use(express_1.default.json());
 exports.app.use((0, cookie_parser_1.default)());
+exports.app.use(express_1.default.urlencoded({ extended: true }));
 exports.app.use((0, cors_1.default)());
 // app.use(
 //   fileUpload({
@@ -34,6 +36,10 @@ exports.app.use((0, cors_1.default)());
 //     tempFileDir: "/tmp/",
 //   })
 // );
+exports.app.use((0, cors_1.default)({
+    origin: "http://localhost:3000", // Update with your frontend URL
+    credentials: true, // Important for cookies to be stored in the frontend
+}));
 exports.app.use("/public/uploads", express_1.default.static("public/uploads"));
 exports.app.use("/api", UserRoute_1.default);
 exports.app.use("/api", LandingPageRoute_1.default);

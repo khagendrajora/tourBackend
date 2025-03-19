@@ -1,6 +1,6 @@
 import express, { Express } from "express";
 import dotenv from "dotenv";
-import logger from "./logger";
+// import logger from "./logger";
 // import morgan from "morgan";
 // import useragent from "express-useragent";
 dotenv.config();
@@ -24,6 +24,7 @@ export const app: Express = express();
 app.use(express.json());
 
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // app.use(
@@ -32,6 +33,13 @@ app.use(cors());
 //     tempFileDir: "/tmp/",
 //   })
 // );
+
+app.use(
+  cors({
+    origin: "http://localhost:3000", // Update with your frontend URL
+    credentials: true, // Important for cookies to be stored in the frontend
+  })
+);
 
 app.use("/public/uploads", express.static("public/uploads"));
 app.use("/api", UserRoute);

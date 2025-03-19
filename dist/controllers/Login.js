@@ -39,9 +39,9 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             });
             res.cookie("authToken", authToken, {
                 httpOnly: true,
-                // sameSite: "strict",
-                // maxAge: 3600000,
-                // secure: true,
+                sameSite: "strict",
+                maxAge: 3600000, // 1 hour
+                secure: process.env.NODE_ENV === "production",
             });
             return res.status(200).json({
                 message: "Login succssfully",
@@ -77,8 +77,9 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 });
                 res.cookie("authToken", authToken, {
                     httpOnly: true,
-                    // sameSite: "strict",
-                    // maxAge: 3600000,
+                    sameSite: "strict",
+                    maxAge: 3600000, // 1 hour
+                    secure: process.env.NODE_ENV === "production",
                 });
                 return res.status(200).json({
                     message: "Login succssfully",
@@ -110,8 +111,9 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                     });
                     res.cookie("authToken", authToken, {
                         httpOnly: true,
-                        // sameSite: "strict",
-                        // maxAge: 3600000,
+                        sameSite: "strict",
+                        maxAge: 3600000, // 1 hour
+                        secure: process.env.NODE_ENV === "production",
                     });
                     return res.status(200).json({
                         message: "Login succssfully",
