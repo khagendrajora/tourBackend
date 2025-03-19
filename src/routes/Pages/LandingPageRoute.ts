@@ -60,7 +60,7 @@ router.put(
 router.delete("/deleteblog/:id", deleteBlogs);
 router.post(
   "/addDest",
-  // upload.fields([{ name: "destImage", maxCount: 10 }]),
+  upload.fields([{ name: "destImage", maxCount: 10 }]),
   addDest
 );
 
