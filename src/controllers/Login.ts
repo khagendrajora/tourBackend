@@ -78,6 +78,7 @@ export const login = async (req: Request, res: Response) => {
           // sameSite: "none",
           // maxAge: 3600000, // 1 hour
         );
+        console.log("Cookie should be set:", authToken);
         return res.status(200).json({
           message: "Login succssfully",
           authToken: authToken,

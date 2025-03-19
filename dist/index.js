@@ -37,8 +37,8 @@ exports.app.use((0, cors_1.default)());
 //   })
 // );
 exports.app.use((0, cors_1.default)({
-    origin: "http://localhost:5173", // Update with your frontend URL
-    credentials: true, // Important for cookies to be stored in the frontend
+    origin: "http://localhost:5173",
+    credentials: true,
 }));
 exports.app.use("/public/uploads", express_1.default.static("public/uploads"));
 exports.app.use("/api", UserRoute_1.default);

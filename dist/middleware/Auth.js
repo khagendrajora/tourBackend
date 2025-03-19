@@ -8,14 +8,14 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const veriftyToken = (req, res, next) => {
     const token = req.cookies.authToken;
     if (!token)
-        return res.status(401).json({ message: "Access Denied" });
+        return res.status(401).json({ error: "Access Denied" });
     try {
         const verified = jsonwebtoken_1.default.verify(token, process.env.JWTSECRET);
         req.body.data = verified;
         next();
     }
     catch (error) {
-        res.status(400).json({ message: "Invalid Token" });
+        res.status(400).json({ error: "Invalid Token" });
     }
 };
 exports.veriftyToken = veriftyToken;
