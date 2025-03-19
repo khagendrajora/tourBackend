@@ -23,12 +23,14 @@ export const login = async (req: Request, res: Response) => {
       }
 
       const data = { id: clientEmail._id };
-      const authToken = jwt.sign(data, process.env.JWTSECRET as string);
+      const authToken = jwt.sign(data, process.env.JWTSECRET as string, {
+        expiresIn: "1h",
+      });
       res.cookie("authToken", authToken, {
         httpOnly: true,
-        sameSite: "strict",
-        maxAge: 3600000,
-        secure: true,
+        // sameSite: "strict",
+        // maxAge: 3600000,
+        // secure: true,
       });
       return res.status(200).json({
         message: "Login succssfully",
@@ -65,11 +67,13 @@ export const login = async (req: Request, res: Response) => {
           return res.status(400).json({ error: "Account not Activated" });
         }
         const data = { id: businessEmail._id };
-        const authToken = jwt.sign(data, process.env.JWTSECRET as string);
+        const authToken = jwt.sign(data, process.env.JWTSECRET as string, {
+          expiresIn: "1h",
+        });
         res.cookie("authToken", authToken, {
           httpOnly: true,
-          sameSite: "strict",
-          maxAge: 3600000,
+          // sameSite: "strict",
+          // maxAge: 3600000,
         });
         return res.status(200).json({
           message: "Login succssfully",
@@ -95,11 +99,13 @@ export const login = async (req: Request, res: Response) => {
             return res.status(400).json({ error: "Email not Verified" });
           }
           const data = { id: email._id };
-          const authToken = jwt.sign(data, process.env.JWTSECRET as string);
+          const authToken = jwt.sign(data, process.env.JWTSECRET as string, {
+            expiresIn: "1h",
+          });
           res.cookie("authToken", authToken, {
             httpOnly: true,
-            sameSite: "strict",
-            maxAge: 3600000,
+            // sameSite: "strict",
+            // maxAge: 3600000,
           });
           return res.status(200).json({
             message: "Login succssfully",
