@@ -71,12 +71,13 @@ export const login = async (req: Request, res: Response) => {
         const authToken = jwt.sign(data, process.env.JWTSECRET as string, {
           expiresIn: "1h",
         });
-        res.cookie("authToken", authToken, {
-          httpOnly: true,
-          sameSite: "strict",
-          maxAge: 3600000, // 1 hour
-          secure: process.env.NODE_ENV === "production",
-        });
+        res.cookie(
+          "authToken",
+          authToken
+          // httpOnly: true,
+          // sameSite: "none",
+          // maxAge: 3600000, // 1 hour
+        );
         return res.status(200).json({
           message: "Login succssfully",
           authToken: authToken,

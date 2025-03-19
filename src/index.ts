@@ -23,8 +23,8 @@ import LocationRoute from "./routes/LocationRoute/LocationRoute";
 export const app: Express = express();
 app.use(express.json());
 
-app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(cors());
 
 // app.use(

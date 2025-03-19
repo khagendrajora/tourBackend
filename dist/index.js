@@ -27,8 +27,8 @@ const LocationRoute_1 = __importDefault(require("./routes/LocationRoute/Location
 // import fileUpload from "express-fileupload";
 exports.app = (0, express_1.default)();
 exports.app.use(express_1.default.json());
-exports.app.use((0, cookie_parser_1.default)());
 exports.app.use(express_1.default.urlencoded({ extended: true }));
+exports.app.use((0, cookie_parser_1.default)());
 exports.app.use((0, cors_1.default)());
 // app.use(
 //   fileUpload({
