@@ -39,6 +39,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 httpOnly: true,
                 sameSite: "strict",
                 maxAge: 3600000,
+                secure: true,
             });
             return res.status(200).json({
                 message: "Login succssfully",

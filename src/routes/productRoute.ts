@@ -20,12 +20,14 @@ import {
   vehDetails,
 } from "../controllers/productController";
 import upload from "../middleware/fileUpload";
+import { veriftyToken } from "../middleware/Auth";
 
 const router = express.Router();
 
 // Tour Routes
 router.post(
   "/addtour",
+  veriftyToken,
   upload.fields([{ name: "tourImages", maxCount: 1000 }]),
   addTour
 );
