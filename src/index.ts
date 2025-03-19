@@ -34,12 +34,13 @@ app.use(cors());
 //   })
 // );
 
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: "http://localhost:5173",
+//     credentials: true,
+//   })
+// );
+// app.use(cors());
 
 app.use("/public/uploads", express.static("public/uploads"));
 app.use("/api", UserRoute);

@@ -6,10 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const productController_1 = require("../controllers/productController");
 const fileUpload_1 = __importDefault(require("../middleware/fileUpload"));
-const Auth_1 = require("../middleware/Auth");
+// import { veriftyToken } from "../middleware/Auth";
 const router = express_1.default.Router();
 // Tour Routes
-router.post("/addtour", Auth_1.veriftyToken, fileUpload_1.default.fields([{ name: "tourImages", maxCount: 1000 }]), productController_1.addTour);
+router.post("/addtour", 
+// veriftyToken,
+fileUpload_1.default.fields([{ name: "tourImages", maxCount: 1000 }]), productController_1.addTour);
 router.get("/gettour", productController_1.getTour);
 router.get("/gettourdetails/:id", productController_1.tourDetails);
 router.get("/gettour/:businessid", productController_1.getTourByBusinessId);

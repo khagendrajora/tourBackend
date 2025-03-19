@@ -36,10 +36,13 @@ exports.app.use((0, cors_1.default)());
 //     tempFileDir: "/tmp/",
 //   })
 // );
-exports.app.use((0, cors_1.default)({
-    origin: "http://localhost:5173",
-    credentials: true,
-}));
+// app.use(
+//   cors({
+//     origin: "http://localhost:5173",
+//     credentials: true,
+//   })
+// );
+// app.use(cors());
 exports.app.use("/public/uploads", express_1.default.static("public/uploads"));
 exports.app.use("/api", UserRoute_1.default);
 exports.app.use("/api", LandingPageRoute_1.default);
