@@ -74,6 +74,7 @@ export const getHotDeals = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "internal error" });
   }
 };
+
 export const getHotDealsById = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {

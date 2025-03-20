@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import Hero from "../../models/Pages/LandingPage/Hero";
 import Blogs from "../../models/Pages/LandingPage/Blogs";
 import { customAlphabet } from "nanoid";
-import path from "path";
 import Destination from "../../models/Pages/LandingPage/Destination";
 import BlogsLogs from "../../models/LogModel/BlogsLogs";
 import DestinationLogs from "../../models/LogModel/DestinationLogs";

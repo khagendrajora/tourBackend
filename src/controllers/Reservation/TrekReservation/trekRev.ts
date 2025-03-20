@@ -111,7 +111,7 @@ export const getTrekRev = async (req: Request, res: Response) => {
     if (data.length > 0) {
       return res.send(data);
     } else {
-      return res.json({ message: "NO Trek Reservations " });
+      return res.json({ message: "No Trek Reservations " });
     }
   } catch (error: any) {
     return res.status(500).json({ error: error.message });

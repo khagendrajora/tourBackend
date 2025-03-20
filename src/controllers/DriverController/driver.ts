@@ -363,6 +363,10 @@ export const updateDriver = async (req: Request, res: Response) => {
       });
       driverLog = await driverLog.save();
 
+      if (!driverLog) {
+        return res.status(400).json({ error: "Failed to update" });
+      }
+
       return res.send({
         message: "Updated",
         data: data,

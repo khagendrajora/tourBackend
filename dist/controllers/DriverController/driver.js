@@ -347,6 +347,9 @@ const updateDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 time: new Date(),
             });
             driverLog = yield driverLog.save();
+            if (!driverLog) {
+                return res.status(400).json({ error: "Failed to update" });
+            }
             return res.send({
                 message: "Updated",
                 data: data,

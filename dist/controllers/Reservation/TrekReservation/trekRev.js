@@ -122,7 +122,7 @@ const getTrekRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             return res.send(data);
         }
         else {
-            return res.json({ message: "NO Trek Reservations " });
+            return res.json({ message: "No Trek Reservations " });
         }
     }
     catch (error) {
