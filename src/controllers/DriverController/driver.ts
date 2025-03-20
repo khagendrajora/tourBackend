@@ -338,6 +338,8 @@ export const updateDriver = async (req: Request, res: Response) => {
         driverImage = result.secure_url;
       }
     }
+
+    const vehicleName = await vehicle.findOne({ vehId: vehicleId });
     const data = await Driver.findByIdAndUpdate(
       id,
       {
@@ -346,6 +348,7 @@ export const updateDriver = async (req: Request, res: Response) => {
         driverPhone,
         driverEmail,
         vehicleId,
+        vehicleName: vehicleName?.name,
         driverImage,
       },
       { new: true }

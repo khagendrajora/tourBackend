@@ -326,12 +326,14 @@ const updateDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 driverImage = result.secure_url;
             }
         }
+        const vehicleName = yield vehicle_1.default.findOne({ vehId: vehicleId });
         const data = yield Driver_1.default.findByIdAndUpdate(id, {
             driverName,
             driverAge,
             driverPhone,
             driverEmail,
             vehicleId,
+            vehicleName: vehicleName === null || vehicleName === void 0 ? void 0 : vehicleName.name,
             driverImage,
         }, { new: true });
         if (!data) {
