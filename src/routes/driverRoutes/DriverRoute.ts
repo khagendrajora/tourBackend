@@ -37,7 +37,11 @@ router.get("/getdrivervehicle/:vehicleId", getDriverVehicles);
 
 router.put("/updatedriverstatus/:id", updateDriverStatus);
 router.delete("/deletedriver/:id", deleteDriver);
-router.put("/updatedriver/:id", updateDriver);
+router.put(
+  "/updatedriver/:id",
+  upload.fields([{ name: "driverImage", maxCount: 1 }]),
+  updateDriver
+);
 router.put("/resetdriverpwd/:token", resetPwd);
 router.put("/resetandverifyemail/:token", verifyDriverEmail);
 

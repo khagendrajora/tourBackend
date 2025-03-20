@@ -16,7 +16,7 @@ router.get("/getdriverbybid/:id", driver_1.getDriverByBId);
 router.get("/getdrivervehicle/:vehicleId", driver_1.getDriverVehicles);
 router.put("/updatedriverstatus/:id", driver_1.updateDriverStatus);
 router.delete("/deletedriver/:id", driver_1.deleteDriver);
-router.put("/updatedriver/:id", driver_1.updateDriver);
+router.put("/updatedriver/:id", fileUpload_1.default.fields([{ name: "driverImage", maxCount: 1 }]), driver_1.updateDriver);
 router.put("/resetdriverpwd/:token", driver_1.resetPwd);
 router.put("/resetandverifyemail/:token", driver_1.verifyDriverEmail);
 //Hot deals routes
