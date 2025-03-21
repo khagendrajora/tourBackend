@@ -611,7 +611,7 @@ const addFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.addFeature = addFeature;
 const deleteFeatureRequest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { updatedBy } = req.query;
+    const { updatedBy } = req.body;
     try {
         const deleteFeature = yield Feature_1.default.findOneAndDelete({ Id: id });
         if (!deleteFeature) {
@@ -624,6 +624,9 @@ const deleteFeatureRequest = (req, res) => __awaiter(void 0, void 0, void 0, fun
             time: new Date(),
         });
         featureLog = yield featureLog.save();
+        if (!featureLog) {
+            return res.status(404).json({ error: "Failed to save log files" });
+        }
         return res.status(200).json({ message: "Successfully Deleted" });
     }
     catch (error) {

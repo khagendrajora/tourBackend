@@ -657,7 +657,7 @@ export const addFeature = async (req: Request, res: Response) => {
 
 export const deleteFeatureRequest = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const { updatedBy } = req.query;
+  const { updatedBy } = req.body;
   try {
     const deleteFeature = await Feature.findOneAndDelete({ Id: id });
     if (!deleteFeature) {
@@ -670,6 +670,10 @@ export const deleteFeatureRequest = async (req: Request, res: Response) => {
       time: new Date(),
     });
     featureLog = await featureLog.save();
+
+    if (!featureLog) {
+      return res.status(404).json({ error: "Failed to save log files" });
+    }
 
     return res.status(200).json({ message: "Successfully Deleted" });
   } catch (error: any) {
