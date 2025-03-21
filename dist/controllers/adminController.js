@@ -553,7 +553,7 @@ const addFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 time: new Date(),
             });
             featureLog = yield featureLog.save();
-            return res.status(200).json({ message: "Successfully Updated" });
+            return res.status(200).json({ message: "Added to Features" });
         }
         else {
             const trek = yield trekking_1.default.findOne({ _id: id });
@@ -576,7 +576,7 @@ const addFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                     time: new Date(),
                 });
                 featureLog = yield featureLog.save();
-                return res.status(200).json({ message: "Successfully Updated" });
+                return res.status(200).json({ message: "Added to Features" });
             }
             else {
                 const veh = yield vehicle_1.default.findOne({ _id: id });
@@ -599,7 +599,7 @@ const addFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                         time: new Date(),
                     });
                     featureLog = yield featureLog.save();
-                    return res.status(200).json({ message: "Successfully Updated" });
+                    return res.status(200).json({ message: "Added to Features" });
                 }
             }
         }
@@ -625,9 +625,9 @@ const deleteFeatureRequest = (req, res) => __awaiter(void 0, void 0, void 0, fun
         });
         featureLog = yield featureLog.save();
         if (!featureLog) {
-            return res.status(404).json({ error: "Failed to save log files" });
+            return res.status(404).json({ error: "Rejected - Log files not saved" });
         }
-        return res.status(200).json({ message: "Successfully Deleted" });
+        return res.status(200).json({ message: "Rejected" });
     }
     catch (error) {
         return res.status(500).json({ error: error.message });
@@ -636,7 +636,7 @@ const deleteFeatureRequest = (req, res) => __awaiter(void 0, void 0, void 0, fun
 exports.deleteFeatureRequest = deleteFeatureRequest;
 const removeFeatureProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { updatedBy } = req.query;
+    const { updatedBy } = req.body;
     try {
         const deleteFeature = yield Feature_1.default.findOneAndDelete({ Id: id });
         if (!deleteFeature) {
@@ -691,7 +691,7 @@ const removeFeatureProduct = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 }
             }
         }
-        return res.status(200).json({ message: "Successfully Removed" });
+        return res.status(200).json({ message: "Removed from Featured Products" });
     }
     catch (error) {
         return res.status(500).json({ error: error.message });
