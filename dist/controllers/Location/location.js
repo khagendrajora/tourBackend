@@ -186,13 +186,13 @@ const deleteDistrict = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.deleteDistrict = deleteDistrict;
 const addMunicipality = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let { state, municipality, country } = req.body;
+    let { state, municipality, district } = req.body;
     state = state.toLowerCase();
     municipality = municipality.toLowerCase();
-    country = country.toLowerCase();
+    district = district.toLowerCase();
     try {
         const checkMunicipality = yield municipality_1.default.findOne({
-            country,
+            district,
             state,
             municipality,
         });
@@ -202,7 +202,7 @@ const addMunicipality = (req, res) => __awaiter(void 0, void 0, void 0, function
         let location = new municipality_1.default({
             state,
             municipality,
-            country,
+            district,
         });
         location = yield location.save();
         if (!location) {

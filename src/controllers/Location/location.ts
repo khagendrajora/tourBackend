@@ -160,14 +160,14 @@ export const deleteDistrict = async (req: Request, res: Response) => {
 };
 
 export const addMunicipality = async (req: Request, res: Response) => {
-  let { state, municipality, country } = req.body;
+  let { state, municipality, district } = req.body;
 
   state = state.toLowerCase();
   municipality = municipality.toLowerCase();
-  country = country.toLowerCase();
+  district = district.toLowerCase();
   try {
     const checkMunicipality = await Municipality.findOne({
-      country,
+      district,
       state,
       municipality,
     });
@@ -177,7 +177,7 @@ export const addMunicipality = async (req: Request, res: Response) => {
     let location = new Municipality({
       state,
       municipality,
-      country,
+      district,
     });
     location = await location.save();
     if (!location) {
