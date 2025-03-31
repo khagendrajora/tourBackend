@@ -24,7 +24,7 @@ export const addBusinessData = [
     .isEmail()
     .withMessage("Invalid Email"),
   check("primaryPhone", "Phone Number is required").trim().notEmpty(),
-  check("businessPwd", "password is required")
+  check("password", "password is required")
     .trim()
     .notEmpty()
     .isLength({ min: 8 })

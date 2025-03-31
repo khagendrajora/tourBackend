@@ -24,13 +24,13 @@ const Driver_1 = __importDefault(require("../../models/Business/Driver"));
 const business_1 = __importDefault(require("../../models/Business/business"));
 const adminUser_1 = __importDefault(require("../../models/adminUser"));
 const addNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let { userName, userEmail, userPwd } = req.body;
+    let { userName, userEmail, password } = req.body;
     userEmail = userEmail.toLowerCase();
     const customId = (0, nanoid_1.customAlphabet)("1234567890", 4);
     let userId = customId();
     userId = "U" + userId;
     try {
-        if (userPwd == "") {
+        if (password == "") {
             return res.status(400).json({ error: "Password is reqired" });
         }
         const email = yield userModel_1.default.findOne({ userEmail });
@@ -50,11 +50,11 @@ const addNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             return res.status(400).json({ error: "Email already registered" });
         }
         const salt = yield bcryptjs_1.default.genSalt(5);
-        let hashedPassword = yield bcryptjs_1.default.hash(userPwd, salt);
+        let hashedPassword = yield bcryptjs_1.default.hash(password, salt);
         let clientUser = new userModel_1.default({
             userName,
             userEmail,
-            userPwd: hashedPassword,
+            password: hashedPassword,
             userId: userId,
         });
         clientUser = yield clientUser.save();
@@ -170,20 +170,20 @@ const getUserstById = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.getUserstById = getUserstById;
 const changePwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { newPwd, userPwd } = req.body;
+    const { newPwd, password } = req.body;
     try {
         const userData = yield userModel_1.default.findById(id);
         if (!userData) {
             return res.status(400).json({ error: "Failed" });
         }
-        const isPwd = yield bcryptjs_1.default.compare(userPwd, userData.userPwd);
+        const isPwd = yield bcryptjs_1.default.compare(password, userData.password);
         if (!isPwd) {
             return res.status(400).json({ error: "Incorrect Old Password" });
         }
         const salt = yield bcryptjs_1.default.genSalt(5);
         let hashedPwd = yield bcryptjs_1.default.hash(newPwd, salt);
         const newData = yield userModel_1.default.findByIdAndUpdate(id, {
-            userPwd: hashedPwd,
+            password: hashedPwd,
         }, { new: true });
         if (!newData) {
             return res.status(400).json({ error: "Failed to Change" });
@@ -248,7 +248,7 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.deleteUser = deleteUser;
 const resetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.params.token;
-    const newPwd = req.body.userPwd;
+    const newPwd = req.body.password;
     try {
         const data = yield token_1.default.findOne({ token });
         if (!data) {
@@ -258,14 +258,14 @@ const resetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!userId) {
             return res.status(404).json({ error: "Token and Email not matched" });
         }
-        const isOldPwd = yield bcryptjs_1.default.compare(newPwd, userId.userPwd);
+        const isOldPwd = yield bcryptjs_1.default.compare(newPwd, userId.password);
         if (isOldPwd) {
             return res.status(400).json({ error: "Password Previously Used" });
         }
         else {
             const salt = yield bcryptjs_1.default.genSalt(5);
             let hashedPwd = yield bcryptjs_1.default.hash(newPwd, salt);
-            userId.userPwd = hashedPwd;
+            userId.password = hashedPwd;
             userId.save();
             yield token_1.default.deleteOne({ _id: data._id });
             return res.status(201).json({ message: "Reset Successful" });

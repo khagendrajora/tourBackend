@@ -420,14 +420,14 @@ const verifyAndResetPwd = (req, res) => __awaiter(void 0, void 0, void 0, functi
         if (businessId.isVerified) {
             return res.status(400).json({ error: "Email Already verified" });
         }
-        const isOldPwd = yield bcryptjs_1.default.compare(newPwd, businessId.businessPwd);
+        const isOldPwd = yield bcryptjs_1.default.compare(newPwd, businessId.password);
         if (isOldPwd) {
             return res.status(400).json({ error: "Password Previously Used" });
         }
         else {
             const salt = yield bcryptjs_1.default.genSalt(5);
             let hashedPwd = yield bcryptjs_1.default.hash(newPwd, salt);
-            businessId.businessPwd = hashedPwd;
+            businessId.password = hashedPwd;
             businessId.isVerified = true;
             yield token_1.default.deleteOne({ _id: data._id });
             businessId.save().then((business) => {

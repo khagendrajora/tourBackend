@@ -29,7 +29,7 @@ const driverSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    driverPwd: {
+    password: {
         type: String,
         required: true,
     },

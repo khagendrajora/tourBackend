@@ -9,6 +9,7 @@ export interface BManager extends Document {
   role: BRole;
   name: string;
   image: string;
+  managerId: string;
 }
 
 const ManagerSchema = new mongoose.Schema(

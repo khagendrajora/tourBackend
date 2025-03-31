@@ -9,6 +9,7 @@ export interface BSales extends Document {
   role: BRole;
   name: string;
   image: string;
+  salesId: string;
 }
 
 const SalesSchema = new mongoose.Schema(

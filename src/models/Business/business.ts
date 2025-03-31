@@ -34,8 +34,8 @@ export interface IBusiness extends Document {
   primaryEmail: string;
   primaryPhone: string;
   isActive: boolean;
-  businessPwd: string;
-  businessRole: BRole;
+  password: string;
+  role: BRole;
   isVerified: boolean;
   bId: string;
   website?: string;
@@ -111,11 +111,11 @@ const businessSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    businessPwd: {
+    password: {
       type: String,
       required: true,
     },
-    businessRole: {
+    role: {
       type: String,
       enum: ["Admin", "Manager", "Driver", "Sales"],
       default: "Admin",

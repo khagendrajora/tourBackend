@@ -25,7 +25,7 @@ export const addDriver = async (req: Request, res: Response) => {
     vehicleId,
     businessId,
     addedBy,
-    driverPwd,
+    password,
   } = req.body;
   try {
     let driverImage: string | undefined = undefined;
@@ -88,7 +88,7 @@ export const addDriver = async (req: Request, res: Response) => {
     // }
 
     const salt = await bcryptjs.genSalt(5);
-    let hashedPassword = await bcryptjs.hash(driverPwd, salt);
+    let hashedPassword = await bcryptjs.hash(password, salt);
 
     let newDriver = new Driver({
       driverId: driverId,
@@ -99,7 +99,7 @@ export const addDriver = async (req: Request, res: Response) => {
       driverName: driverName,
       driverAge: driverAge,
       driverPhone: driverPhone,
-      driverPwd: hashedPassword,
+      password: hashedPassword,
       driverImage,
       addedBy,
     });
@@ -154,7 +154,7 @@ ${api}/resetandverifyemail/${token.token}`,
 
 export const verifyDriverEmail = async (req: Request, res: Response) => {
   const token = req.params.token;
-  const newPwd = req.body.driverPwd;
+  const newPwd = req.body.password;
   try {
     const data = await Token.findOne({ token });
     if (!data) {
@@ -168,13 +168,13 @@ export const verifyDriverEmail = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Email Already verified" });
     }
 
-    const isOldPwd = await bcryptjs.compare(newPwd, driverId.driverPwd);
+    const isOldPwd = await bcryptjs.compare(newPwd, driverId.password);
     if (isOldPwd) {
       return res.status(400).json({ error: "Password Previously Used" });
     } else {
       const salt = await bcryptjs.genSalt(5);
       let hashedPwd = await bcryptjs.hash(newPwd, salt);
-      driverId.driverPwd = hashedPwd;
+      driverId.password = hashedPwd;
       driverId.isVerified = true;
       const businessEmail = await Business.findOne({
         bId: driverId.businessId,
@@ -382,7 +382,7 @@ export const updateDriver = async (req: Request, res: Response) => {
 
 export const resetPwd = async (req: Request, res: Response) => {
   const token = req.params.token;
-  const newPwd = req.body.driverPwd;
+  const newPwd = req.body.password;
   try {
     const data = await Token.findOne({ token });
     if (!data) {
@@ -392,14 +392,14 @@ export const resetPwd = async (req: Request, res: Response) => {
     if (!driverId) {
       return res.status(404).json({ error: "Token and Email not matched" });
     }
-    const isOldPwd = await bcryptjs.compare(newPwd, driverId.driverPwd);
+    const isOldPwd = await bcryptjs.compare(newPwd, driverId.password);
 
     if (isOldPwd) {
       return res.status(400).json({ error: "Password Previously Used" });
     } else {
       const salt = await bcryptjs.genSalt(5);
       let hashedPwd = await bcryptjs.hash(newPwd, salt);
-      driverId.driverPwd = hashedPwd;
+      driverId.password = hashedPwd;
       driverId.save();
 
       await Token.deleteOne({ _id: data._id });

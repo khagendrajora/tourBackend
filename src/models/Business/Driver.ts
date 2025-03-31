@@ -22,7 +22,7 @@ export interface IDriver extends Document {
   status: IStatus;
   isActive: boolean;
   isVerified: boolean;
-  driverPwd: string;
+  password: string;
   driverImage: string;
   addedBy: string;
 }
@@ -45,7 +45,7 @@ const driverSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    driverPwd: {
+    password: {
       type: String,
       required: true,
     },

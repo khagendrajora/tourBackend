@@ -31,7 +31,7 @@ const addDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = (0, nanoid_1.customAlphabet)("1234567890", 4);
     let driverId = customId();
     driverId = "D" + driverId;
-    const { driverName, driverAge, driverPhone, driverEmail, vehicleId, businessId, addedBy, driverPwd, } = req.body;
+    const { driverName, driverAge, driverPhone, driverEmail, vehicleId, businessId, addedBy, password, } = req.body;
     try {
         let driverImage = undefined;
         if (req.files) {
@@ -81,7 +81,7 @@ const addDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         //   return res.status(400).json({ error: "Phone Number is already used " });
         // }
         const salt = yield bcryptjs_1.default.genSalt(5);
-        let hashedPassword = yield bcryptjs_1.default.hash(driverPwd, salt);
+        let hashedPassword = yield bcryptjs_1.default.hash(password, salt);
         let newDriver = new Driver_1.default({
             driverId: driverId,
             vehicleId: vehicleId,
@@ -91,7 +91,7 @@ const addDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             driverName: driverName,
             driverAge: driverAge,
             driverPhone: driverPhone,
-            driverPwd: hashedPassword,
+            password: hashedPassword,
             driverImage,
             addedBy,
         });
@@ -145,7 +145,7 @@ ${api}/resetandverifyemail/${token.token}`,
 exports.addDriver = addDriver;
 const verifyDriverEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.params.token;
-    const newPwd = req.body.driverPwd;
+    const newPwd = req.body.password;
     try {
         const data = yield token_1.default.findOne({ token });
         if (!data) {
@@ -158,14 +158,14 @@ const verifyDriverEmail = (req, res) => __awaiter(void 0, void 0, void 0, functi
         if (driverId.isVerified) {
             return res.status(400).json({ error: "Email Already verified" });
         }
-        const isOldPwd = yield bcryptjs_1.default.compare(newPwd, driverId.driverPwd);
+        const isOldPwd = yield bcryptjs_1.default.compare(newPwd, driverId.password);
         if (isOldPwd) {
             return res.status(400).json({ error: "Password Previously Used" });
         }
         else {
             const salt = yield bcryptjs_1.default.genSalt(5);
             let hashedPwd = yield bcryptjs_1.default.hash(newPwd, salt);
-            driverId.driverPwd = hashedPwd;
+            driverId.password = hashedPwd;
             driverId.isVerified = true;
             const businessEmail = yield business_1.default.findOne({
                 bId: driverId.businessId,
@@ -365,7 +365,7 @@ const updateDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.updateDriver = updateDriver;
 const resetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.params.token;
-    const newPwd = req.body.driverPwd;
+    const newPwd = req.body.password;
     try {
         const data = yield token_1.default.findOne({ token });
         if (!data) {
@@ -375,14 +375,14 @@ const resetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!driverId) {
             return res.status(404).json({ error: "Token and Email not matched" });
         }
-        const isOldPwd = yield bcryptjs_1.default.compare(newPwd, driverId.driverPwd);
+        const isOldPwd = yield bcryptjs_1.default.compare(newPwd, driverId.password);
         if (isOldPwd) {
             return res.status(400).json({ error: "Password Previously Used" });
         }
         else {
             const salt = yield bcryptjs_1.default.genSalt(5);
             let hashedPwd = yield bcryptjs_1.default.hash(newPwd, salt);
-            driverId.driverPwd = hashedPwd;
+            driverId.password = hashedPwd;
             driverId.save();
             yield token_1.default.deleteOne({ _id: data._id });
             return res.status(201).json({ message: "Reset Successful" });

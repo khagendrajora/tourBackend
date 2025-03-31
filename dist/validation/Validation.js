@@ -25,7 +25,7 @@ exports.addBusinessData = [
         .isEmail()
         .withMessage("Invalid Email"),
     (0, express_validator_1.check)("primaryPhone", "Phone Number is required").trim().notEmpty(),
-    (0, express_validator_1.check)("businessPwd", "password is required")
+    (0, express_validator_1.check)("password", "password is required")
         .trim()
         .notEmpty()
         .isLength({ min: 8 })

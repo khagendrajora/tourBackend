@@ -11,13 +11,13 @@ import Business from "../../models/Business/business";
 import AdminUser from "../../models/adminUser";
 
 export const addNewUser = async (req: Request, res: Response) => {
-  let { userName, userEmail, userPwd } = req.body;
+  let { userName, userEmail, password } = req.body;
   userEmail = userEmail.toLowerCase();
   const customId = customAlphabet("1234567890", 4);
   let userId = customId();
   userId = "U" + userId;
   try {
-    if (userPwd == "") {
+    if (password == "") {
       return res.status(400).json({ error: "Password is reqired" });
     }
 
@@ -41,11 +41,11 @@ export const addNewUser = async (req: Request, res: Response) => {
     }
 
     const salt = await bcryptjs.genSalt(5);
-    let hashedPassword = await bcryptjs.hash(userPwd, salt);
+    let hashedPassword = await bcryptjs.hash(password, salt);
     let clientUser = new User({
       userName,
       userEmail,
-      userPwd: hashedPassword,
+      password: hashedPassword,
       userId: userId,
     });
     clientUser = await clientUser.save();
@@ -157,13 +157,13 @@ export const getUserstById = async (req: Request, res: Response) => {
 
 export const changePwd = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const { newPwd, userPwd } = req.body;
+  const { newPwd, password } = req.body;
   try {
     const userData = await User.findById(id);
     if (!userData) {
       return res.status(400).json({ error: "Failed" });
     }
-    const isPwd = await bcryptjs.compare(userPwd, userData.userPwd);
+    const isPwd = await bcryptjs.compare(password, userData.password);
     if (!isPwd) {
       return res.status(400).json({ error: "Incorrect Old Password" });
     }
@@ -172,7 +172,7 @@ export const changePwd = async (req: Request, res: Response) => {
     const newData = await User.findByIdAndUpdate(
       id,
       {
-        userPwd: hashedPwd,
+        password: hashedPwd,
       },
       { new: true }
     );
@@ -237,7 +237,7 @@ export const deleteUser = async (req: Request, res: Response) => {
 
 export const resetPwd = async (req: Request, res: Response) => {
   const token = req.params.token;
-  const newPwd = req.body.userPwd;
+  const newPwd = req.body.password;
   try {
     const data = await Token.findOne({ token });
     if (!data) {
@@ -247,13 +247,13 @@ export const resetPwd = async (req: Request, res: Response) => {
     if (!userId) {
       return res.status(404).json({ error: "Token and Email not matched" });
     }
-    const isOldPwd = await bcryptjs.compare(newPwd, userId.userPwd);
+    const isOldPwd = await bcryptjs.compare(newPwd, userId.password);
     if (isOldPwd) {
       return res.status(400).json({ error: "Password Previously Used" });
     } else {
       const salt = await bcryptjs.genSalt(5);
       let hashedPwd = await bcryptjs.hash(newPwd, salt);
-      userId.userPwd = hashedPwd;
+      userId.password = hashedPwd;
       userId.save();
 
       await Token.deleteOne({ _id: data._id });

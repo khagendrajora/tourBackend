@@ -459,13 +459,13 @@ export const verifyAndResetPwd = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Email Already verified" });
     }
 
-    const isOldPwd = await bcryptjs.compare(newPwd, businessId.businessPwd);
+    const isOldPwd = await bcryptjs.compare(newPwd, businessId.password);
     if (isOldPwd) {
       return res.status(400).json({ error: "Password Previously Used" });
     } else {
       const salt = await bcryptjs.genSalt(5);
       let hashedPwd = await bcryptjs.hash(newPwd, salt);
-      businessId.businessPwd = hashedPwd;
+      businessId.password = hashedPwd;
       businessId.isVerified = true;
 
       await Token.deleteOne({ _id: data._id });

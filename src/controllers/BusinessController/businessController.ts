@@ -28,11 +28,11 @@ export const addBusiness = async (req: Request, res: Response) => {
     businessCategory,
     primaryEmail,
     primaryPhone,
-    businessPwd,
+    password,
   } = req.body;
 
   try {
-    if (businessPwd == "") {
+    if (password == "") {
       return res.status(400).json({ error: "Password is reqired" });
     }
     const tax = await Business.findOne({
@@ -71,7 +71,7 @@ export const addBusiness = async (req: Request, res: Response) => {
     }
 
     const salt = await bcryptjs.genSalt(5);
-    let hashedPassword = await bcryptjs.hash(businessPwd, salt);
+    let hashedPassword = await bcryptjs.hash(password, salt);
     let business = new Business({
       businessName,
       businessCategory,
@@ -85,7 +85,7 @@ export const addBusiness = async (req: Request, res: Response) => {
       primaryEmail,
       primaryPhone,
       bId: bId,
-      businessPwd: hashedPassword,
+      password: hashedPassword,
       addedBy: bId,
     });
     business = await business.save();
@@ -470,7 +470,7 @@ export const forgetPwd = async (req: Request, res: Response) => {
 
 export const resetPwd = async (req: Request, res: Response) => {
   const token = req.params.token;
-  const newPwd = req.body.businessPwd;
+  const newPwd = req.body.password;
   try {
     const data = await Token.findOne({ token });
     if (!data) {
@@ -481,13 +481,13 @@ export const resetPwd = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "Token and Email not matched" });
     }
 
-    const isOldPwd = await bcryptjs.compare(newPwd, businessId.businessPwd);
+    const isOldPwd = await bcryptjs.compare(newPwd, businessId.password);
     if (isOldPwd) {
       return res.status(400).json({ error: "Password Previously Used" });
     } else {
       const salt = await bcryptjs.genSalt(5);
       let hashedPwd = await bcryptjs.hash(newPwd, salt);
-      businessId.businessPwd = hashedPwd;
+      businessId.password = hashedPwd;
       businessId.save();
 
       await Token.deleteOne({ _id: data._id });

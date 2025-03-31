@@ -75,11 +75,11 @@ const businessSchema = new mongoose_1.default.Schema({
         type: Boolean,
         default: false,
     },
-    businessPwd: {
+    password: {
         type: String,
         required: true,
     },
-    businessRole: {
+    role: {
         type: String,
         enum: ["Admin", "Manager", "Driver", "Sales"],
         default: "Admin",
