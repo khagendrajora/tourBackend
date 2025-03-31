@@ -1,13 +1,10 @@
 import express, { Express } from "express";
 import dotenv from "dotenv";
-// import logger from "./logger";
-// import morgan from "morgan";
-// import useragent from "express-useragent";
 dotenv.config();
 import "./db/database";
 import adminRoute from "./routes/adminRoute";
 import categoryRoute from "./routes/CategoryRoute/categoryRoute";
-import businessRoute from "./routes/businessRoute";
+import businessRoute from "./routes/BusinessRoute/businessRoute";
 import productRoute from "./routes/productRoute";
 import propertyRoute from "./routes/propertyRoute";
 import LandingPageRoute from "./routes/Pages/LandingPageRoute";
@@ -15,9 +12,12 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import reservationRoute from "./routes/reservationRoute";
 import UserRoute from "./routes/UserRoutes/UserRoute";
-import DriverRoute from "./routes/driverRoutes/DriverRoute";
+import DriverRoute from "./routes/BusinessRoute/DriverRoute";
 import Login from "./routes/Login/Login";
 import LocationRoute from "./routes/LocationRoute/LocationRoute";
+import businessManagerRoute from "./routes/BusinessRoute/businessManagerRoute";
+import businessSales from "./routes/BusinessRoute/businessSales";
+
 // import fileUpload from "express-fileupload";
 
 export const app: Express = express();
@@ -54,6 +54,8 @@ app.use("/api", reservationRoute);
 app.use("/api", DriverRoute);
 app.use("/api", Login);
 app.use("/api", LocationRoute);
+app.use("/api", businessManagerRoute);
+app.use("/api", businessSales);
 
 const port = 3000;
 

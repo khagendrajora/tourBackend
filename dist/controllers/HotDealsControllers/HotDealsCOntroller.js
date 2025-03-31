@@ -16,8 +16,8 @@ exports.deleteHotDeals = exports.updateHotdeals = exports.getHotDealsByVehId = e
 const HotDeals_1 = __importDefault(require("../../models/HotDeals/HotDeals"));
 const nanoid_1 = require("nanoid");
 const vehicle_1 = __importDefault(require("../../models/Product/vehicle"));
-const Driver_1 = __importDefault(require("../../models/Drivers/Driver"));
-const business_1 = __importDefault(require("../../models/business"));
+const Driver_1 = __importDefault(require("../../models/Business/Driver"));
+const business_1 = __importDefault(require("../../models/Business/business"));
 const addHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const { price, sourceAddress, destAddress, driverId, date, time, termsAndCondition, } = req.body;

@@ -1,5 +1,12 @@
 import mongoose from "mongoose";
 
+export enum BRole {
+  Admin = "Admin",
+  Manager = "Manager",
+  Driver = "Driver",
+  Sales = "Sales",
+}
+
 interface ISocialMedia {
   platform: string;
   url: string;
@@ -28,7 +35,7 @@ export interface IBusiness extends Document {
   primaryPhone: string;
   isActive: boolean;
   businessPwd: string;
-  businessRole: string;
+  businessRole: BRole;
   isVerified: boolean;
   bId: string;
   website?: string;
@@ -110,7 +117,8 @@ const businessSchema = new mongoose.Schema(
     },
     businessRole: {
       type: String,
-      default: "1",
+      enum: ["Admin", "Manager", "Driver", "Sales"],
+      default: "Admin",
     },
     isVerified: {
       type: Boolean,

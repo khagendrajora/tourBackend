@@ -10,7 +10,7 @@ import {
   updateDriver,
   updateDriverStatus,
   verifyDriverEmail,
-} from "../../controllers/DriverController/driver";
+} from "../../controllers/BusinessController/driver";
 import upload from "../../middleware/fileUpload";
 import {
   addHotDeals,

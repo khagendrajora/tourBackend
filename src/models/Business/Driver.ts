@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { BRole } from "./business";
 
 export enum IStatus {
   Available = "Available",
@@ -13,6 +14,7 @@ export interface IDriver extends Document {
   vehicleId: string;
   vehicleName: string;
   businessId: string;
+  role: BRole;
   driverName: string;
   driverAge: number;
   driverPhone: string;
@@ -56,6 +58,7 @@ const driverSchema = new mongoose.Schema(
     },
     businessId: {
       type: String,
+      ref: "Business",
       required: true,
     },
     driverAge: {
@@ -78,6 +81,11 @@ const driverSchema = new mongoose.Schema(
     },
     driverImage: {
       type: String,
+    },
+    role: {
+      type: String,
+      enum: ["Admin", "Manager", "Driver", "Sales"],
+      default: "Sales",
     },
     isVerified: {
       type: Boolean,

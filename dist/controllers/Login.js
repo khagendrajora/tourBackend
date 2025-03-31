@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.login = void 0;
 const userModel_1 = __importDefault(require("../models/User/userModel"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const Driver_1 = __importDefault(require("../models/Drivers/Driver"));
-const business_1 = __importDefault(require("../models/business"));
+const Driver_1 = __importDefault(require("../models/Business/Driver"));
+const business_1 = __importDefault(require("../models/Business/business"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, Pwd } = req.body;
@@ -75,11 +75,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 const authToken = jsonwebtoken_1.default.sign(data, process.env.JWTSECRET, {
                     expiresIn: "1h",
                 });
-                res.cookie("authToken", authToken
-                // httpOnly: true,
-                // sameSite: "none",
-                // maxAge: 3600000, // 1 hour
-                );
+                res.cookie("authToken", authToken);
                 console.log("Cookie should be set:", authToken);
                 return res.status(200).json({
                     message: "Login succssfully",

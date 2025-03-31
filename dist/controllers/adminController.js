@@ -15,12 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.removeFeatureProduct = exports.deleteFeatureRequest = exports.addFeature = exports.getFeature = exports.deleteAdmin = exports.verifyAndResetPwd = exports.addBusinessByAdmin = exports.resetPass = exports.forgetPass = exports.businessApprove = exports.getAdmin = exports.adminlogin = exports.addAdminUser = void 0;
 const adminUser_1 = __importDefault(require("../models/adminUser"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const business_1 = __importDefault(require("../models/business"));
+const business_1 = __importDefault(require("../models/Business/business"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const token_1 = __importDefault(require("../models/token"));
 const nanoid_1 = require("nanoid");
 const uuid_1 = require("uuid");
-const Driver_1 = __importDefault(require("../models/Drivers/Driver"));
+const Driver_1 = __importDefault(require("../models/Business/Driver"));
 const setEmail_1 = require("../utils/setEmail");
 const userModel_1 = __importDefault(require("../models/User/userModel"));
 const tour_1 = __importDefault(require("../models/Product/tour"));
@@ -129,34 +129,13 @@ const businessApprove = (req, res) => __awaiter(void 0, void 0, void 0, function
     const id = req.params.id;
     let status = "";
     const { updatedBy } = req.body;
-    // const authToken = req.cookies.authToken;
-    // if (!authToken) {
-    //   return res.status(404).json({ error: "Token not found or login first" });
-    // }
     try {
-        // const decodedToken = jwt.verify(
-        //   authToken,
-        //   process.env.JWTSECRET as string
-        // ) as { id: string };
-        // const userId = decodedToken.id;
-        // const user = await AdminUser.findOne({ userId });
-        // if (!user) {
-        //   return res.status(404).json({ err: "failed to Get user ID" });
-        // }
-        // if (user?.Role == true) {
         const business = yield business_1.default.findOne({ bId: id });
         if (!business) {
             return res.status(404).json({ error: "Business not found" });
         }
         business.isActive = !business.isActive;
         const updatedBusiness = yield business.save();
-        // let adminLog = new AdminLogs({
-        //   updatedBy: updatedBy,
-        //   productId: id,
-        //   action: "Added",
-        //   time: new Date(),
-        // });
-        // destLog = await destLog.save();
         if (business.isActive) {
             status = "Activated";
             let adminLog = new AdminLogs_1.default({

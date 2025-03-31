@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import AdminUser from "../models/adminUser";
 import bcryptjs from "bcryptjs";
-import Business from "../models/business";
+import Business from "../models/Business/business";
 import jwt from "jsonwebtoken";
 import Token from "../models/token";
 import { customAlphabet } from "nanoid";
 import { v4 as uuid } from "uuid";
-import Driver from "../models/Drivers/Driver";
+import Driver from "../models/Business/Driver";
 import { sendEmail } from "../utils/setEmail";
 import User from "../models/User/userModel";
 import Tour from "../models/Product/tour";
@@ -120,35 +120,13 @@ export const businessApprove = async (req: Request, res: Response) => {
   let status = "";
   const { updatedBy } = req.body;
 
-  // const authToken = req.cookies.authToken;
-  // if (!authToken) {
-  //   return res.status(404).json({ error: "Token not found or login first" });
-  // }
   try {
-    // const decodedToken = jwt.verify(
-    //   authToken,
-    //   process.env.JWTSECRET as string
-    // ) as { id: string };
-    // const userId = decodedToken.id;
-    // const user = await AdminUser.findOne({ userId });
-    // if (!user) {
-    //   return res.status(404).json({ err: "failed to Get user ID" });
-    // }
-    // if (user?.Role == true) {
     const business = await Business.findOne({ bId: id });
     if (!business) {
       return res.status(404).json({ error: "Business not found" });
     }
     business.isActive = !business.isActive;
     const updatedBusiness = await business.save();
-
-    // let adminLog = new AdminLogs({
-    //   updatedBy: updatedBy,
-    //   productId: id,
-    //   action: "Added",
-    //   time: new Date(),
-    // });
-    // destLog = await destLog.save();
 
     if (business.isActive) {
       status = "Activated";

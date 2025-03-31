@@ -6,8 +6,8 @@ import { uuid } from "uuidv4";
 import { sendEmail } from "../../utils/setEmail";
 import { customAlphabet } from "nanoid";
 import ReservationDate from "../../models/Reservations/ReservedDated";
-import Driver from "../../models/Drivers/Driver";
-import Business from "../../models/business";
+import Driver from "../../models/Business/Driver";
+import Business from "../../models/Business/business";
 import AdminUser from "../../models/adminUser";
 
 export const addNewUser = async (req: Request, res: Response) => {

@@ -20,8 +20,8 @@ const uuidv4_1 = require("uuidv4");
 const setEmail_1 = require("../../utils/setEmail");
 const nanoid_1 = require("nanoid");
 const ReservedDated_1 = __importDefault(require("../../models/Reservations/ReservedDated"));
-const Driver_1 = __importDefault(require("../../models/Drivers/Driver"));
-const business_1 = __importDefault(require("../../models/business"));
+const Driver_1 = __importDefault(require("../../models/Business/Driver"));
+const business_1 = __importDefault(require("../../models/Business/business"));
 const adminUser_1 = __importDefault(require("../../models/adminUser"));
 const addNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let { userName, userEmail, userPwd } = req.body;

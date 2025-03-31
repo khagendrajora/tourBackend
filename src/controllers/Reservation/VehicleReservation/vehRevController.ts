@@ -4,7 +4,7 @@ import Vehicle from "../../../models/Product/vehicle";
 import ReservedDate from "../../../models/Reservations/ReservedDated";
 import { customAlphabet } from "nanoid";
 import { sendEmail } from "../../../utils/setEmail";
-import Business from "../../../models/business";
+import Business from "../../../models/Business/business";
 import VehRevLogs from "../../../models/LogModel/VehRevLogs";
 
 export const vehReservation = async (req: Request, res: Response) => {

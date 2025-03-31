@@ -1,15 +1,21 @@
 import { Request, Response } from "express";
 import bcryptjs from "bcryptjs";
-import Business from "../models/business";
-import Driver from "../models/Drivers/Driver";
-import AdminUser from "../models/adminUser";
-import Token from "../models/token";
+import Business from "../../models/Business/business";
+import Driver from "../../models/Business/Driver";
+import AdminUser from "../../models/adminUser";
+import Token from "../../models/token";
 import { v4 as uuid } from "uuid";
-import { sendEmail } from "../utils/setEmail";
-import User from "../models/User/userModel";
+import { sendEmail } from "../../utils/setEmail";
+import User from "../../models/User/userModel";
 const { customAlphabet } = require("nanoid");
-import Feature from "../models/Featured/Feature";
+import Feature from "../../models/Featured/Feature";
 import { v2 as cloudinary } from "cloudinary";
+
+cloudinary.config({
+  cloud_name: "dwepmpy6w",
+  api_key: "934775798563485",
+  api_secret: "0fc2bZa8Pv7Vy22Ji7AhCjD0ErA",
+});
 
 export const addBusiness = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);

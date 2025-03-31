@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import HotDeals from "../../models/HotDeals/HotDeals";
 import { customAlphabet } from "nanoid";
 import Vehicle from "../../models/Product/vehicle";
-import Driver from "../../models/Drivers/Driver";
-import Business from "../../models/business";
+import Driver from "../../models/Business/Driver";
+import Business from "../../models/Business/business";
 
 export const addHotDeals = async (req: Request, res: Response) => {
   const id = req.params.id;

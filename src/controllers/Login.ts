@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import User from "../models/User/userModel";
 import bcryptjs from "bcryptjs";
-import Driver from "../models/Drivers/Driver";
-import Business from "../models/business";
+import Driver from "../models/Business/Driver";
+import Business from "../models/Business/business";
 import jwt from "jsonwebtoken";
 
 export const login = async (req: Request, res: Response) => {
@@ -71,13 +71,7 @@ export const login = async (req: Request, res: Response) => {
         const authToken = jwt.sign(data, process.env.JWTSECRET as string, {
           expiresIn: "1h",
         });
-        res.cookie(
-          "authToken",
-          authToken
-          // httpOnly: true,
-          // sameSite: "none",
-          // maxAge: 3600000, // 1 hour
-        );
+        res.cookie("authToken", authToken);
         console.log("Cookie should be set:", authToken);
         return res.status(200).json({
           message: "Login succssfully",

@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
-import Driver from "../../models/Drivers/Driver";
+import Driver from "../../models/Business/Driver";
 import Token from "../../models/token";
 import { v4 as uuid } from "uuid";
 import { sendEmail } from "../../utils/setEmail";
 import { customAlphabet } from "nanoid";
 import bcryptjs from "bcryptjs";
 // import jwt from "jsonwebtoken";
-import Business from "../../models/business";
+import Business from "../../models/Business/business";
 import AdminUser from "../../models/adminUser";
 import ClientUser from "../../models/User/userModel";
 import vehicle from "../../models/Product/vehicle";

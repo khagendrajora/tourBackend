@@ -18,7 +18,7 @@ const vehicle_1 = __importDefault(require("../../../models/Product/vehicle"));
 const ReservedDated_1 = __importDefault(require("../../../models/Reservations/ReservedDated"));
 const nanoid_1 = require("nanoid");
 const setEmail_1 = require("../../../utils/setEmail");
-const business_1 = __importDefault(require("../../../models/business"));
+const business_1 = __importDefault(require("../../../models/Business/business"));
 const VehRevLogs_1 = __importDefault(require("../../../models/LogModel/VehRevLogs"));
 const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;

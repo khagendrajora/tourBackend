@@ -10,10 +10,10 @@ import {
   resetPwd,
   updateBusinessProfile,
   verifyEmail,
-} from "../controllers/businessController";
-import upload from "../middleware/fileUpload";
-import { addBusinessData, validation } from "../validation/Validation";
-import { verifyAndResetPwd } from "../controllers/adminController";
+} from "../../controllers/BusinessController/businessController";
+import upload from "../../middleware/fileUpload";
+import { addBusinessData, validation } from "../../validation/Validation";
+import { verifyAndResetPwd } from "../../controllers/adminController";
 
 const router = express.Router();
 
