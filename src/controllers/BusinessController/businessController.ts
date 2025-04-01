@@ -196,7 +196,7 @@ export const businessProfile = async (req: Request, res: Response) => {
   const id = req.params.businessId;
 
   try {
-    const data = await Business.findById(id);
+    const data = await Business.findOne({ businessId: id });
     if (!data) {
       return res.status(404).json({ error: "Failed to get business Profile" });
     } else {

@@ -194,7 +194,7 @@ exports.verifyEmail = verifyEmail;
 const businessProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.businessId;
     try {
-        const data = yield business_1.default.findById(id);
+        const data = yield business_1.default.findOne({ businessId: id });
         if (!data) {
             return res.status(404).json({ error: "Failed to get business Profile" });
         }
