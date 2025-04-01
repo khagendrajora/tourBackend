@@ -35,7 +35,7 @@ const adminUserSchema = new mongoose.Schema(
     },
     adminRole: {
       type: String,
-      default: "1",
+      default: "ToursewaAdmin",
     },
     isVerified: {
       type: Boolean,

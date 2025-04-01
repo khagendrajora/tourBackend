@@ -91,7 +91,7 @@ export const adminlogin = async (req: Request, res: Response) => {
 
     userData = {
       adminEmail: adminEmail,
-      role: "Admin",
+      role: data.adminRole,
     };
 
     return res.status(200).json({

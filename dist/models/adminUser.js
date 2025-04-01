@@ -27,7 +27,7 @@ const adminUserSchema = new mongoose_1.default.Schema({
     },
     adminRole: {
         type: String,
-        default: "1",
+        default: "ToursewaAdmin",
     },
     isVerified: {
         type: Boolean,
