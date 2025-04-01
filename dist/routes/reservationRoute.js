@@ -19,7 +19,7 @@ router.get("/getbusinessrev/:id", vehRevController_1.getRevByBusinessId);
 router.put("/updateRevbybid/:id", vehRevController_1.updateReservationByBid);
 router.get("/getalldates", resrvedDated_1.getAllRevDates);
 router.get("/getallreservations", vehRevController_1.getAllReservations);
-router.get("/getrevbyvehid/:id", vehRevController_1.getRevByVehicleId);
+router.get("/getrevbyvehicleId/:id", vehRevController_1.getRevByVehicleId);
 //Tour reservation routes
 router.post("/addtourrev/:id", tourRev_1.tourRev);
 router.get("/gettourrev", tourRev_1.getTourRev);

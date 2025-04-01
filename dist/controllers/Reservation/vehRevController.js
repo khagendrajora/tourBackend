@@ -35,7 +35,7 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
         newStartDate.setDate(newStartDate.getDate() + 1);
     }
     try {
-        const vehData = yield vehicle_1.default.findOne({ vehId: id });
+        const vehData = yield vehicle_1.default.findOne({ vehicleId: id });
         if (!vehData) {
             return res.status(401).json({ error: "Vehicle Unavailable" });
         }
@@ -84,7 +84,7 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
             }
             else {
                 // await Vehicle.findOneAndUpdate(
-                //   { vehId: id },
+                //   { vehicleId: id },
                 //   {
                 //     operationDates: bookingDate,
                 //   },

@@ -37,7 +37,7 @@ const driverSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    driverEmail: {
+    email: {
         type: String,
     },
     businessId: {
@@ -45,15 +45,15 @@ const driverSchema = new mongoose_1.default.Schema({
         ref: "Business",
         required: true,
     },
-    driverAge: {
+    age: {
         type: Number,
         required: true,
     },
-    driverName: {
+    name: {
         type: String,
         required: true,
     },
-    driverPhone: {
+    phone: {
         type: String,
         required: true,
     },
@@ -63,7 +63,7 @@ const driverSchema = new mongoose_1.default.Schema({
         default: IStatus.Available,
         required: true,
     },
-    driverImage: {
+    image: {
         type: String,
     },
     role: {

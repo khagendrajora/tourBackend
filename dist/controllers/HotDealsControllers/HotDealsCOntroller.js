@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteHotDeals = exports.updateHotdeals = exports.getHotDealsByVehId = exports.getHotDealsById = exports.getHotDeals = exports.addHotDeals = void 0;
+exports.deleteHotDeals = exports.updateHotdeals = exports.getHotDealsByvehicleId = exports.getHotDealsById = exports.getHotDeals = exports.addHotDeals = void 0;
 const HotDeals_1 = __importDefault(require("../../models/HotDeals/HotDeals"));
 const nanoid_1 = require("nanoid");
 const vehicle_1 = __importDefault(require("../../models/Product/vehicle"));
@@ -25,7 +25,7 @@ const addHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     let hdID = customId();
     hdID = "hd" + hdID;
     try {
-        const vehData = yield vehicle_1.default.findOne({ vehId: id });
+        const vehData = yield vehicle_1.default.findOne({ vehicleId: id });
         if (!vehData) {
             return res.status(400).json({ error: "Vehicle Not found" });
         }
@@ -48,8 +48,8 @@ const addHotDeals = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             vehicleName: vehData.name,
             vehicleId: id,
             businessId: vehData.businessId,
-            driverName: driverData.driverName,
-            driverPhone: driverData.driverPhone,
+            driverName: driverData.name,
+            driverPhone: driverData.phone,
             driverId,
             hdID,
             capacity: vehData.capacity,
@@ -98,7 +98,7 @@ const getHotDealsById = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.getHotDealsById = getHotDealsById;
-const getHotDealsByVehId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getHotDealsByvehicleId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
         let data = yield HotDeals_1.default.find({ vehicleId: id });
@@ -113,7 +113,7 @@ const getHotDealsByVehId = (req, res) => __awaiter(void 0, void 0, void 0, funct
         return res.status(500).json({ error: "internal error" });
     }
 });
-exports.getHotDealsByVehId = getHotDealsByVehId;
+exports.getHotDealsByvehicleId = getHotDealsByvehicleId;
 const updateHotdeals = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     let { price, sourceAddress, destAddress, termsAndCondition, vehicle, time } = req.body;

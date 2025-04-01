@@ -20,7 +20,7 @@ export const addHotDeals = async (req: Request, res: Response) => {
   let hdID = customId();
   hdID = "hd" + hdID;
   try {
-    const vehData = await Vehicle.findOne({ vehId: id });
+    const vehData = await Vehicle.findOne({ vehicleId: id });
     if (!vehData) {
       return res.status(400).json({ error: "Vehicle Not found" });
     }
@@ -45,8 +45,8 @@ export const addHotDeals = async (req: Request, res: Response) => {
       vehicleName: vehData.name,
       vehicleId: id,
       businessId: vehData.businessId,
-      driverName: driverData.driverName,
-      driverPhone: driverData.driverPhone,
+      driverName: driverData.name,
+      driverPhone: driverData.phone,
       driverId,
       hdID,
       capacity: vehData.capacity,
@@ -89,7 +89,7 @@ export const getHotDealsById = async (req: Request, res: Response) => {
   }
 };
 
-export const getHotDealsByVehId = async (req: Request, res: Response) => {
+export const getHotDealsByvehicleId = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
     let data = await HotDeals.find({ vehicleId: id });

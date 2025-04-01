@@ -24,8 +24,8 @@ const Driver_1 = __importDefault(require("../../models/Business/Driver"));
 const business_1 = __importDefault(require("../../models/Business/business"));
 const adminUser_1 = __importDefault(require("../../models/adminUser"));
 const addNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let { userName, userEmail, password } = req.body;
-    userEmail = userEmail.toLowerCase();
+    let { name, email, password } = req.body;
+    email = email.toLowerCase();
     const customId = (0, nanoid_1.customAlphabet)("1234567890", 4);
     let userId = customId();
     userId = "U" + userId;
@@ -33,38 +33,38 @@ const addNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (password == "") {
             return res.status(400).json({ error: "Password is reqired" });
         }
-        const email = yield userModel_1.default.findOne({ userEmail });
-        if (email) {
+        const userEmail = yield userModel_1.default.findOne({ email });
+        if (userEmail) {
             return res.status(400).json({ error: "Email already registered" });
         }
-        const driverEmail = yield Driver_1.default.findOne({ driverEmail: userEmail });
+        const driverEmail = yield Driver_1.default.findOne({ email });
         if (driverEmail) {
             return res.status(400).json({ error: "Email already registered" });
         }
-        const businessEmail = yield business_1.default.findOne({ primaryEmail: userEmail });
+        const businessEmail = yield business_1.default.findOne({ primaryEmail: email });
         if (businessEmail) {
             return res.status(400).json({ error: "Email already registered" });
         }
-        const adminEmail = yield adminUser_1.default.findOne({ adminEmail: userEmail });
+        const adminEmail = yield adminUser_1.default.findOne({ adminEmail: email });
         if (adminEmail) {
             return res.status(400).json({ error: "Email already registered" });
         }
         const salt = yield bcryptjs_1.default.genSalt(5);
         let hashedPassword = yield bcryptjs_1.default.hash(password, salt);
-        let clientUser = new userModel_1.default({
-            userName,
-            userEmail,
+        let user = new userModel_1.default({
+            name,
+            email,
             password: hashedPassword,
             userId: userId,
         });
-        clientUser = yield clientUser.save();
-        if (!clientUser) {
+        user = yield user.save();
+        if (!user) {
             hashedPassword = "";
             return res.status(400).json({ error: "Failed to save the User" });
         }
         let token = new token_1.default({
             token: (0, uuidv4_1.uuid)(),
-            userId: clientUser._id,
+            userId: user._id,
         });
         token = yield token.save();
         if (!token) {
@@ -74,7 +74,7 @@ const addNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const api = `${process.env.Backend_URL}`;
         (0, setEmail_1.sendEmail)({
             from: "beta.toursewa@gmail.com",
-            to: clientUser.userEmail,
+            to: user.email,
             subject: "Account Verification Link",
             text: `Verify your Business Email to Login\n\n
     ${api}/verifyuseremail/${token.token}`,
@@ -200,25 +200,25 @@ exports.changePwd = changePwd;
 const updateProfileById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const id = req.params.id;
-    const { userName, userEmail } = req.body;
+    const { name, email } = req.body;
     try {
-        let userImage = req.body.userImage || null;
+        let image = req.body.image || null;
         if (req.files) {
             const files = req.files;
-            if (files["userImage"]) {
-                userImage = (_a = files["userImage"][0]) === null || _a === void 0 ? void 0 : _a.path;
+            if (files["image"]) {
+                image = (_a = files["image"][0]) === null || _a === void 0 ? void 0 : _a.path;
             }
         }
-        else if (req.body.userImage) {
-            userImage = req.body.userImage;
+        else if (req.body.image) {
+            image = req.body.image;
         }
         else if (req.body.userImage === "") {
-            userImage = null;
+            image = null;
         }
         const data = yield userModel_1.default.findByIdAndUpdate(id, {
-            userName,
-            userEmail,
-            userImage,
+            name,
+            email,
+            image,
         }, { new: true });
         if (!data) {
             return res.status(400).json({ error: "Failed To Update" });

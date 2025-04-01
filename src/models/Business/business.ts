@@ -37,7 +37,7 @@ export interface IBusiness extends Document {
   password: string;
   role: BRole;
   isVerified: boolean;
-  bId: string;
+  businessId: string;
   website?: string;
   contactName?: string;
   businessRegistration?: IBusinessRegistration;
@@ -57,7 +57,7 @@ const businessSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    bId: {
+    businessId: {
       type: String,
       required: true,
     },

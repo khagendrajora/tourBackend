@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateBusinessSales = exports.getBusinessSales = exports.addSales = void 0;
+const businessManager_1 = __importDefault(require("../../models/Business/businessManager"));
 const setEmail_1 = require("../../utils/setEmail");
 const nanoid_1 = require("nanoid");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
@@ -33,15 +34,19 @@ const addSales = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     salesId = "S" + salesId;
     const { businessId, name, email, password } = req.body;
     try {
-        const driver = yield Driver_1.default.findOne({ driverEmail: email });
+        const driver = yield Driver_1.default.findOne({ email });
         if (driver) {
             return res.status(400).json({ error: "Email already registered" });
         }
-        const client = yield userModel_1.default.findOne({ userEmail: email });
+        const managerEmail = yield businessManager_1.default.findOne({ email });
+        if (managerEmail) {
+            return res.status(400).json({ error: "Email already registered" });
+        }
+        const client = yield userModel_1.default.findOne({ email });
         if (client) {
             return res.status(400).json({ error: "Email already registered" });
         }
-        const businessData = yield business_1.default.findOne({ bId: businessId });
+        const businessData = yield business_1.default.findOne({ businessId });
         if (!businessData) {
             return res.status(400).json({ error: "Business Not Found" });
         }

@@ -11,8 +11,8 @@ import Business from "../../models/Business/business";
 import AdminUser from "../../models/adminUser";
 
 export const addNewUser = async (req: Request, res: Response) => {
-  let { userName, userEmail, password } = req.body;
-  userEmail = userEmail.toLowerCase();
+  let { name, email, password } = req.body;
+  email = email.toLowerCase();
   const customId = customAlphabet("1234567890", 4);
   let userId = customId();
   userId = "U" + userId;
@@ -21,42 +21,42 @@ export const addNewUser = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Password is reqired" });
     }
 
-    const email = await User.findOne({ userEmail });
-    if (email) {
+    const userEmail = await User.findOne({ email });
+    if (userEmail) {
       return res.status(400).json({ error: "Email already registered" });
     }
-    const driverEmail = await Driver.findOne({ driverEmail: userEmail });
+    const driverEmail = await Driver.findOne({ email });
     if (driverEmail) {
       return res.status(400).json({ error: "Email already registered" });
     }
 
-    const businessEmail = await Business.findOne({ primaryEmail: userEmail });
+    const businessEmail = await Business.findOne({ primaryEmail: email });
     if (businessEmail) {
       return res.status(400).json({ error: "Email already registered" });
     }
 
-    const adminEmail = await AdminUser.findOne({ adminEmail: userEmail });
+    const adminEmail = await AdminUser.findOne({ adminEmail: email });
     if (adminEmail) {
       return res.status(400).json({ error: "Email already registered" });
     }
 
     const salt = await bcryptjs.genSalt(5);
     let hashedPassword = await bcryptjs.hash(password, salt);
-    let clientUser = new User({
-      userName,
-      userEmail,
+    let user = new User({
+      name,
+      email,
       password: hashedPassword,
       userId: userId,
     });
-    clientUser = await clientUser.save();
+    user = await user.save();
 
-    if (!clientUser) {
+    if (!user) {
       hashedPassword = "";
       return res.status(400).json({ error: "Failed to save the User" });
     }
     let token = new Token({
       token: uuid(),
-      userId: clientUser._id,
+      userId: user._id,
     });
     token = await token.save();
     if (!token) {
@@ -67,7 +67,7 @@ export const addNewUser = async (req: Request, res: Response) => {
 
     sendEmail({
       from: "beta.toursewa@gmail.com",
-      to: clientUser.userEmail,
+      to: user.email,
       subject: "Account Verification Link",
       text: `Verify your Business Email to Login\n\n
     ${api}/verifyuseremail/${token.token}`,
@@ -188,27 +188,27 @@ export const changePwd = async (req: Request, res: Response) => {
 
 export const updateProfileById = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const { userName, userEmail } = req.body;
+  const { name, email } = req.body;
   try {
-    let userImage: string | null = req.body.userImage || null;
+    let image: string | null = req.body.image || null;
     if (req.files) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
-      if (files["userImage"]) {
-        userImage = files["userImage"][0]?.path;
+      if (files["image"]) {
+        image = files["image"][0]?.path;
       }
-    } else if (req.body.userImage) {
-      userImage = req.body.userImage;
+    } else if (req.body.image) {
+      image = req.body.image;
     } else if (req.body.userImage === "") {
-      userImage = null;
+      image = null;
     }
 
     const data = await User.findByIdAndUpdate(
       id,
       {
-        userName,
-        userEmail,
-        userImage,
+        name,
+        email,
+        image,
       },
       { new: true }
     );

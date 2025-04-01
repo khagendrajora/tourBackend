@@ -8,7 +8,7 @@ import bcryptjs from "bcryptjs";
 // import jwt from "jsonwebtoken";
 import Business from "../../models/Business/business";
 import AdminUser from "../../models/adminUser";
-import ClientUser from "../../models/User/userModel";
+import User from "../../models/User/userModel";
 import vehicle from "../../models/Product/vehicle";
 import DriverLogs from "../../models/LogModel/DriverLogs";
 import { v2 as cloudinary } from "cloudinary";
@@ -17,44 +17,36 @@ export const addDriver = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);
   let driverId = customId();
   driverId = "D" + driverId;
-  const {
-    driverName,
-    driverAge,
-    driverPhone,
-    driverEmail,
-    vehicleId,
-    businessId,
-    addedBy,
-    password,
-  } = req.body;
+  const { name, phone, email, vehicleId, age, businessId, addedBy, password } =
+    req.body;
   try {
-    let driverImage: string | undefined = undefined;
+    let image: string | undefined = undefined;
     if (req.files) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["driverImage"]) {
+      if (files["image"]) {
         const result = await cloudinary.uploader.upload(
-          files["driverImage"][0]?.path,
+          files["image"][0]?.path,
           {
             folder: "driverImage",
             use_filename: true,
             unique_filename: false,
           }
         );
-        driverImage = result.secure_url;
+        image = result.secure_url;
       }
     }
-    const driverNumber = await Driver.findOne({ driverPhone });
+    const driverNumber = await Driver.findOne({ phone });
     if (driverNumber) {
       return res.status(400).json({ error: "Phone Number is already used " });
     }
 
-    const driver = await Driver.findOne({ driverEmail });
-    if (driver) {
+    const driverEmail = await Driver.findOne({ email });
+    if (driverEmail) {
       return res.status(400).json({ error: "Email already registered" });
     }
 
-    const email = await ClientUser.findOne({ userEmail: driverEmail });
-    if (email) {
+    const userEmail = await User.findOne({ email: email });
+    if (userEmail) {
       return res.status(400).json({ error: "Email already registered" });
     }
     // const businessEmail = await Business.findOne({ primaryEmail: driverEmail });
@@ -62,7 +54,7 @@ export const addDriver = async (req: Request, res: Response) => {
     //   return res.status(400).json({ error: "Business Not Found" });
     // }
 
-    const businessData = await Business.findOne({ bId: businessId });
+    const businessData = await Business.findOne({ businessId });
     if (!businessData) {
       return res.status(400).json({ error: "Business Not Found" });
     }
@@ -76,12 +68,12 @@ export const addDriver = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Email already in use" });
     }
 
-    const adminEmail = await AdminUser.findOne({ adminEmail: driverEmail });
+    const adminEmail = await AdminUser.findOne({ adminEmail: email });
     if (adminEmail) {
       return res.status(400).json({ error: "Email already registered" });
     }
 
-    const vehicleName = await vehicle.findOne({ vehId: vehicleId });
+    const vehicleName = await vehicle.findOne({ vehicleId: vehicleId });
 
     // if (driverNumber) {
     //   return res.status(400).json({ error: "Phone Number is already used " });
@@ -95,12 +87,12 @@ export const addDriver = async (req: Request, res: Response) => {
       vehicleId: vehicleId,
       vehicleName: vehicleName?.name,
       businessId: businessId,
-      driverEmail: driverEmail,
-      driverName: driverName,
-      driverAge: driverAge,
-      driverPhone: driverPhone,
+      email: email,
+      name: name,
+      age: age,
+      phone: phone,
       password: hashedPassword,
-      driverImage,
+      image,
       addedBy,
     });
     newDriver = await newDriver.save();
@@ -177,7 +169,7 @@ export const verifyDriverEmail = async (req: Request, res: Response) => {
       driverId.password = hashedPwd;
       driverId.isVerified = true;
       const businessEmail = await Business.findOne({
-        bId: driverId.businessId,
+        businessId: driverId.businessId,
       });
       await Token.deleteOne({ _id: data._id });
       driverId.save().then((driver) => {
@@ -186,7 +178,7 @@ export const verifyDriverEmail = async (req: Request, res: Response) => {
         } else {
           sendEmail({
             from: "beta.toursewa@gmail.com",
-            to: driverId.driverEmail,
+            to: driverId.email,
             subject: "Email Verified",
             html: `<h2>Your Email with business ID ${driverId.businessId} for vehicle ${driverId.vehicleId} has been verified</h2>`,
           });
@@ -209,7 +201,7 @@ export const verifyDriverEmail = async (req: Request, res: Response) => {
 
 export const updateDriverStatus = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const { status, driverEmail } = req.body;
+  const { status, email } = req.body;
   try {
     const data = await Driver.findByIdAndUpdate(
       id,
@@ -223,7 +215,7 @@ export const updateDriverStatus = async (req: Request, res: Response) => {
     }
     sendEmail({
       from: "beta.toursewa@gmail.com",
-      to: driverEmail,
+      to: email,
       subject: "Status Changedd",
       html: `<h2>Your Status has been changed to ${status}</h2>`,
     });
@@ -261,7 +253,7 @@ export const getDriverByBId = async (req: Request, res: Response) => {
   }
 };
 
-export const getDriverByVehId = async (req: Request, res: Response) => {
+export const getDriverByvehicleId = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
     const data = await Driver.find({ vehicleId: id });
@@ -313,43 +305,36 @@ export const deleteDriver = async (req: Request, res: Response) => {
 
 export const updateDriver = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const {
-    driverName,
-    driverAge,
-    driverPhone,
-    driverEmail,
-    vehicleId,
-    updatedBy,
-  } = req.body;
+  const { name, age, phone, email, vehicleId, updatedBy } = req.body;
   try {
-    let driverImage: string | undefined = undefined;
+    let image: string | undefined = undefined;
 
     if (req.files) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      if (files["driverImage"]) {
+      if (files["image"]) {
         const result = await cloudinary.uploader.upload(
-          files["driverImage"][0]?.path,
+          files["image"][0]?.path,
           {
             folder: "driverImage",
             use_filename: true,
             unique_filename: false,
           }
         );
-        driverImage = result.secure_url;
+        image = result.secure_url;
       }
     }
 
-    const vehicleName = await vehicle.findOne({ vehId: vehicleId });
+    const vehicleName = await vehicle.findOne({ vehicleId: vehicleId });
     const data = await Driver.findByIdAndUpdate(
       id,
       {
-        driverName,
-        driverAge,
-        driverPhone,
-        driverEmail,
+        name,
+        age,
+        phone,
+        email,
         vehicleId,
         vehicleName: vehicleName?.name,
-        driverImage,
+        image,
       },
       { new: true }
     );
@@ -414,7 +399,7 @@ export const resetPwd = async (req: Request, res: Response) => {
 export const getDriverVehicles = async (req: Request, res: Response) => {
   const id = req.params.vehicleId;
   try {
-    const data = await vehicle.find({ vehId: id });
+    const data = await vehicle.find({ vehicleId: id });
     if (!data) {
       return res.status(400).json({ error: "No vehicle found" });
     }

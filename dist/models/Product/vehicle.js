@@ -31,7 +31,7 @@ const VehSchema = new mongoose_1.default.Schema({
         type: Boolean,
         default: false,
     },
-    vehId: {
+    vehicleId: {
         type: String,
         required: true,
     },

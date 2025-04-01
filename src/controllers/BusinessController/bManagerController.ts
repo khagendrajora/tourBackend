@@ -5,7 +5,7 @@ import { customAlphabet } from "nanoid";
 import bcryptjs from "bcryptjs";
 import { v2 as cloudinary } from "cloudinary";
 import Driver from "../../models/Business/Driver";
-import ClientUser from "../../models/User/userModel";
+import User from "../../models/User/userModel";
 import Business from "../../models/Business/business";
 
 cloudinary.config({
@@ -20,17 +20,17 @@ export const addBusinessManager = async (req: Request, res: Response) => {
   managerId = "M" + managerId;
   const { businessId, name, email, password } = req.body;
   try {
-    const driver = await Driver.findOne({ driverEmail: email });
+    const driver = await Driver.findOne({ email });
     if (driver) {
       return res.status(400).json({ error: "Email already registered" });
     }
 
-    const client = await ClientUser.findOne({ userEmail: email });
+    const client = await User.findOne({ email });
     if (client) {
       return res.status(400).json({ error: "Email already registered" });
     }
 
-    const businessData = await Business.findOne({ bId: businessId });
+    const businessData = await Business.findOne({ businessId: businessId });
     if (!businessData) {
       return res.status(400).json({ error: "Business Not Found" });
     }

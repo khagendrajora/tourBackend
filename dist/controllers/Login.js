@@ -44,14 +44,15 @@ const setAuthCookie = (res, authToken) => {
 };
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, Pwd } = req.body;
+    let userData;
     try {
-        const user = (yield userModel_1.default.findOne({ userEmail: email })) ||
+        const user = (yield userModel_1.default.findOne({ email })) ||
             (yield business_1.default.findOne({ primaryEmail: email })) ||
-            (yield Driver_1.default.findOne({ driverEmail: email })) ||
+            (yield Driver_1.default.findOne({ email })) ||
             (yield businessManager_1.default.findOne({ email })) ||
             (yield Sales_1.default.findOne({ email }));
         if (!user) {
-            return res.status(400).json({ error: "USer not found" });
+            return res.status(400).json({ error: "User not found" });
         }
         const isPassword = yield bcryptjs_1.default.compare(Pwd, user.password);
         if (!isPassword) {
@@ -66,83 +67,60 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const authToken = createAuthToken(user._id.toString());
         setAuthCookie(res, authToken);
         const _a = user.toObject(), { password } = _a, UserData = __rest(_a, ["password"]);
+        if (user instanceof userModel_1.default) {
+            userData = {
+                email: email,
+                loginedId: user.userId,
+                role: user.role,
+                name: user.name,
+            };
+        }
+        else if (user instanceof Driver_1.default) {
+            userData = {
+                loginedId: user.driverId,
+                vehicleId: user.vehicleId,
+                businessId: user.businessId,
+                role: user.role,
+                email: email,
+                name: user.name,
+            };
+        }
+        else if (user instanceof business_1.default) {
+            userData = {
+                loginedId: user.businessId,
+                role: user.role,
+                email: email,
+                name: user.businessName,
+            };
+        }
+        else if (user instanceof businessManager_1.default) {
+            userData = {
+                businessId: user.businessId,
+                role: user.role,
+                email: email,
+                name: user.name,
+                loginedId: user.managerId,
+            };
+        }
+        else if (user instanceof Sales_1.default) {
+            userData = {
+                businessId: user.businessId,
+                role: user.role,
+                email: email,
+                name: user.name,
+                loginedId: user.salesId,
+            };
+        }
         return res.status(200).json({
             message: "Login Successful",
             authToken,
-            user: UserData,
+            userData: UserData,
         });
     }
     catch (error) {
         return res.status(500).json({ error: error.message });
     }
     // try {
-    //   const userTypes = [
-    //     {
-    //       model: User,
-    //       emailField: "userEmail",
-    //       passwordField: "userPwd",
-    //       extraFields: ["userId", "userRole", "userName"],
-    //     },
-    //     {
-    //       model: Business,
-    //       emailField: "primaryEmail",
-    //       passwordField: "businessPwd",
-    //       extraFields: ["bId", "businessRole", "businessName"],
-    //       additionalChecks: { field: "isActive", error: "Account not Activated" },
-    //     },
-    //     {
-    //       model: Driver,
-    //       emailField: "driverEmail",
-    //       passwordField: "driverPwd",
-    //       extraFields: ["driverId", "driverName", "vehicleId"],
-    //     },
-    //     {
-    //       model: BusinessManager,
-    //       emailField: "email",
-    //       passwordField: "password",
-    //       extraFields: ["managerId"],
-    //     },
-    //     {
-    //       model: Sales,
-    //       emailField: "email",
-    //       passwordField: "password",
-    //       extraFields: ["salesId"],
-    //     },
-    //   ];
-    //   for (const userType of userTypes) {
-    //     const user = await userTypes.model.findOne({
-    //       [userType.emailField]: email,
-    //     });
-    //     if (user) {
-    //       const isPassword = await bcryptjs.compare(
-    //         Pwd,
-    //         user[userType.passwordField]
-    //       );
-    //       if (!isPassword)
-    //         return res.status(401).json({ error: "Invalid Credentials" });
-    //       if (user.isVerified === false)
-    //         return res.status(401).json({ error: "Email not verified" });
-    //       if (
-    //         userType.additionalChecks &&
-    //         user[userType.additionalChecks.field] === false
-    //       ) {
-    //         return res
-    //           .status(400)
-    //           .json({ error: userType.additionalChecks.error });
-    //       }
-    //       const authToken = createAuthToken(user._id.toString());
-    //       setAuthCookie(res, authToken);
-    //       const responseData: any = {
-    //         message: "Login Successful",
-    //         authToken,
-    //         email,
-    //         loginedId: user[userType.extraFields[0]],
-    //       };
-    //       userType.extraFields.forEach((field) => {
-    //         responseData[field] = user[field];
-    //       });
-    //     }
-    //   }
     //   const clientEmail = await User.findOne({
     //     userEmail: email,
     //   });

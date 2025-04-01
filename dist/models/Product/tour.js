@@ -8,6 +8,9 @@ const tourSchema = new mongoose_1.default.Schema({
     businessId: {
         type: String,
     },
+    businessName: {
+        type: String,
+    },
     addedBy: {
         type: String,
     },

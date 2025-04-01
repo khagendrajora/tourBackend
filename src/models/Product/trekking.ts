@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 export interface ITrekking extends Document {
   _id?: string;
   businessId: string;
+  businessName: string;
   prodCategory: string;
   prodsubCategory: string;
   inclusion: string[];
@@ -23,6 +24,9 @@ export interface ITrekking extends Document {
 
 const trekSchema = new mongoose.Schema({
   businessId: {
+    type: String,
+  },
+  businessName: {
     type: String,
   },
   addedBy: {

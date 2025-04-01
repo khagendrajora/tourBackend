@@ -19,8 +19,8 @@ cloudinary.config({
 
 export const addBusiness = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);
-  let bId = customId();
-  bId = "B" + bId;
+  let businessId = customId();
+  businessId = "B" + businessId;
   const { registrationNumber } = req.body.businessRegistration;
   const { country, state } = req.body.businessAddress;
   const {
@@ -49,11 +49,11 @@ export const addBusiness = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Email already registered" });
     }
 
-    const userEmail = await User.findOne({ userEmail: primaryEmail });
+    const userEmail = await User.findOne({ email: primaryEmail });
     if (userEmail) {
       return res.status(400).json({ error: "Email already registered" });
     }
-    const driverEmail = await Driver.findOne({ driverEmail: primaryEmail });
+    const driverEmail = await Driver.findOne({ email: primaryEmail });
     if (driverEmail) {
       return res.status(400).json({ error: "Email already registered" });
     }
@@ -84,9 +84,9 @@ export const addBusiness = async (req: Request, res: Response) => {
       },
       primaryEmail,
       primaryPhone,
-      bId: bId,
+      businessId: businessId,
       password: hashedPassword,
-      addedBy: bId,
+      addedBy: businessId,
     });
     business = await business.save();
 
@@ -171,11 +171,11 @@ export const verifyEmail = async (req: Request, res: Response) => {
             <img src='https://tourbackend-rdtk.onrender.com/public/uploads/logo.png' className="" />
           </div>
           <div style="text-align: left;">
-            <h1 style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">A new business with business Id ${businessId.bId} has been registered</h1>
+            <h1 style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">A new business with business Id ${businessId} has been registered</h1>
             <p style="font-size: 14px; margin-bottom: 20px;">
               Please verify and activate the account from the admin side or activate directly from here.
             </p>
-            <a href='${process.env.FRONTEND_URL}/businessapprove/${businessId.bId}' style="display: inline-block; background-color: #e6310b; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-size: 14px;">Verify and activate the account</a>
+            <a href='${process.env.FRONTEND_URL}/businessapprove/${businessId}' style="display: inline-block; background-color: #e6310b; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-size: 14px;">Verify and activate the account</a>
             <p style="font-size: 12px; color: #888; margin-top: 20px;">
               This link will expire in 24 hours
             </p>
@@ -266,7 +266,6 @@ export const updateBusinessProfile = async (req: Request, res: Response) => {
         businessSubCategory: req.body.businessSubCategory,
         businessAddress: {
           street: req.body.businessAddress.street,
-
           city: req.body.businessAddress.city,
         },
 
@@ -275,7 +274,6 @@ export const updateBusinessProfile = async (req: Request, res: Response) => {
         primaryPhone: req.body.primaryPhone,
         businessRegistration: {
           authority: req.body.businessRegistration.authority,
-
           registrationOn: req.body.businessRegistration.registrationOn,
           expiresOn: req.body.businessRegistration.expiresOn,
         },
@@ -379,7 +377,7 @@ export const forgetPwd = async (req: Request, res: Response) => {
         .status(200)
         .json({ message: "Password reset link sent to your email" });
     } else {
-      const data = await User.findOne({ userEmail: email });
+      const data = await User.findOne({ email: email });
       if (data) {
         let token = new Token({
           token: uuid(),
@@ -393,7 +391,7 @@ export const forgetPwd = async (req: Request, res: Response) => {
         const api = `${process.env.Backend_URL}`;
         sendEmail({
           from: "beta.toursewa@gmail.com",
-          to: data.userEmail,
+          to: data.email,
           subject: "Password Reset Link",
           text: `Reset password Using link below\n\n
       ${api}/resetuserpwd/${token.token}
@@ -420,7 +418,7 @@ export const forgetPwd = async (req: Request, res: Response) => {
           .status(200)
           .json({ message: "Password reset link sent to your email" });
       } else {
-        const driver = await Driver.findOne({ driverEmail: email });
+        const driver = await Driver.findOne({ email: email });
         if (driver) {
           let token = new Token({
             token: uuid(),
@@ -434,7 +432,7 @@ export const forgetPwd = async (req: Request, res: Response) => {
           const api = `${process.env.Backend_URL}`;
           sendEmail({
             from: "beta.toursewa@gmail.com",
-            to: driver.driverEmail,
+            to: driver.email,
             subject: "Password Reset Link",
             text: `Reset password USing link below\n\n
     ${api}/resetdriverpwd/${token.token}

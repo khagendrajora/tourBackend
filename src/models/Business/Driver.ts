@@ -15,15 +15,15 @@ export interface IDriver extends Document {
   vehicleName: string;
   businessId: string;
   role: BRole;
-  driverName: string;
-  driverAge: number;
-  driverPhone: string;
-  driverEmail?: string;
+  name: string;
+  age: number;
+  phone: string;
+  email?: string;
   status: IStatus;
   isActive: boolean;
   isVerified: boolean;
   password: string;
-  driverImage: string;
+  image: string;
   addedBy: string;
 }
 
@@ -53,7 +53,7 @@ const driverSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    driverEmail: {
+    email: {
       type: String,
     },
     businessId: {
@@ -61,15 +61,15 @@ const driverSchema = new mongoose.Schema(
       ref: "Business",
       required: true,
     },
-    driverAge: {
+    age: {
       type: Number,
       required: true,
     },
-    driverName: {
+    name: {
       type: String,
       required: true,
     },
-    driverPhone: {
+    phone: {
       type: String,
       required: true,
     },
@@ -79,7 +79,7 @@ const driverSchema = new mongoose.Schema(
       default: IStatus.Available,
       required: true,
     },
-    driverImage: {
+    image: {
       type: String,
     },
     role: {

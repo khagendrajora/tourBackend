@@ -31,8 +31,8 @@ cloudinary_1.v2.config({
 });
 const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
-    let bId = customId();
-    bId = "B" + bId;
+    let businessId = customId();
+    businessId = "B" + businessId;
     const { registrationNumber } = req.body.businessRegistration;
     const { country, state } = req.body.businessAddress;
     const { businessName, businessCategory, primaryEmail, primaryPhone, password, } = req.body;
@@ -52,11 +52,11 @@ const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         if (email) {
             return res.status(400).json({ error: "Email already registered" });
         }
-        const userEmail = yield userModel_1.default.findOne({ userEmail: primaryEmail });
+        const userEmail = yield userModel_1.default.findOne({ email: primaryEmail });
         if (userEmail) {
             return res.status(400).json({ error: "Email already registered" });
         }
-        const driverEmail = yield Driver_1.default.findOne({ driverEmail: primaryEmail });
+        const driverEmail = yield Driver_1.default.findOne({ email: primaryEmail });
         if (driverEmail) {
             return res.status(400).json({ error: "Email already registered" });
         }
@@ -84,9 +84,9 @@ const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             },
             primaryEmail,
             primaryPhone,
-            bId: bId,
+            businessId: businessId,
             password: hashedPassword,
-            addedBy: bId,
+            addedBy: businessId,
         });
         business = yield business.save();
         if (!business) {
@@ -169,11 +169,11 @@ const verifyEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             <img src='https://tourbackend-rdtk.onrender.com/public/uploads/logo.png' className="" />
           </div>
           <div style="text-align: left;">
-            <h1 style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">A new business with business Id ${businessId.bId} has been registered</h1>
+            <h1 style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">A new business with business Id ${businessId} has been registered</h1>
             <p style="font-size: 14px; margin-bottom: 20px;">
               Please verify and activate the account from the admin side or activate directly from here.
             </p>
-            <a href='${process.env.FRONTEND_URL}/businessapprove/${businessId.bId}' style="display: inline-block; background-color: #e6310b; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-size: 14px;">Verify and activate the account</a>
+            <a href='${process.env.FRONTEND_URL}/businessapprove/${businessId}' style="display: inline-block; background-color: #e6310b; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-size: 14px;">Verify and activate the account</a>
             <p style="font-size: 12px; color: #888; margin-top: 20px;">
               This link will expire in 24 hours
             </p>
@@ -369,7 +369,7 @@ const forgetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 .json({ message: "Password reset link sent to your email" });
         }
         else {
-            const data = yield userModel_1.default.findOne({ userEmail: email });
+            const data = yield userModel_1.default.findOne({ email: email });
             if (data) {
                 let token = new token_1.default({
                     token: (0, uuid_1.v4)(),
@@ -383,7 +383,7 @@ const forgetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 const api = `${process.env.Backend_URL}`;
                 (0, setEmail_1.sendEmail)({
                     from: "beta.toursewa@gmail.com",
-                    to: data.userEmail,
+                    to: data.email,
                     subject: "Password Reset Link",
                     text: `Reset password Using link below\n\n
       ${api}/resetuserpwd/${token.token}
@@ -411,7 +411,7 @@ const forgetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                     .json({ message: "Password reset link sent to your email" });
             }
             else {
-                const driver = yield Driver_1.default.findOne({ driverEmail: email });
+                const driver = yield Driver_1.default.findOne({ email: email });
                 if (driver) {
                     let token = new token_1.default({
                         token: (0, uuid_1.v4)(),
@@ -425,7 +425,7 @@ const forgetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                     const api = `${process.env.Backend_URL}`;
                     (0, setEmail_1.sendEmail)({
                         from: "beta.toursewa@gmail.com",
-                        to: driver.driverEmail,
+                        to: driver.email,
                         subject: "Password Reset Link",
                         text: `Reset password USing link below\n\n
     ${api}/resetdriverpwd/${token.token}

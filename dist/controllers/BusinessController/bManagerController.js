@@ -33,15 +33,15 @@ const addBusinessManager = (req, res) => __awaiter(void 0, void 0, void 0, funct
     managerId = "M" + managerId;
     const { businessId, name, email, password } = req.body;
     try {
-        const driver = yield Driver_1.default.findOne({ driverEmail: email });
+        const driver = yield Driver_1.default.findOne({ email });
         if (driver) {
             return res.status(400).json({ error: "Email already registered" });
         }
-        const client = yield userModel_1.default.findOne({ userEmail: email });
+        const client = yield userModel_1.default.findOne({ email });
         if (client) {
             return res.status(400).json({ error: "Email already registered" });
         }
-        const businessData = yield business_1.default.findOne({ bId: businessId });
+        const businessData = yield business_1.default.findOne({ businessId: businessId });
         if (!businessData) {
             return res.status(400).json({ error: "Business Not Found" });
         }

@@ -17,7 +17,7 @@ import {
   deleteHotDeals,
   getHotDeals,
   getHotDealsById,
-  getHotDealsByVehId,
+  getHotDealsByvehicleId,
   updateHotdeals,
 } from "../../controllers/HotDealsControllers/HotDealsCOntroller";
 
@@ -26,7 +26,7 @@ const router = express.Router();
 //Driver routes
 router.post(
   "/adddriver",
-  upload.fields([{ name: "driverImage", maxCount: 1 }]),
+  upload.fields([{ name: "image", maxCount: 1 }]),
   addDriver
 );
 
@@ -39,7 +39,7 @@ router.put("/updatedriverstatus/:id", updateDriverStatus);
 router.delete("/deletedriver/:id", deleteDriver);
 router.put(
   "/updatedriver/:id",
-  upload.fields([{ name: "driverImage", maxCount: 1 }]),
+  upload.fields([{ name: "image", maxCount: 1 }]),
   updateDriver
 );
 router.put("/resetdriverpwd/:token", resetPwd);
@@ -50,7 +50,7 @@ router.put("/resetandverifyemail/:token", verifyDriverEmail);
 router.post("/addhotdeals/:id", addHotDeals);
 router.get("/gethotdeals", getHotDeals);
 router.get("/gethodealbyid/:id", getHotDealsById);
-router.get("/gethotdealbyvehid/:id", getHotDealsByVehId);
+router.get("/gethotdealbyvehicleId/:id", getHotDealsByvehicleId);
 router.put("/updatehotdeal/:id", updateHotdeals);
 router.delete("/deletehotdeal/:id", deleteHotDeals);
 

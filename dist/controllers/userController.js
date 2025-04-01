@@ -594,7 +594,7 @@ const addFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                     }
                     let featureLog = new FeaturedLogs_1.default({
                         updatedBy: updatedBy,
-                        productId: veh.vehId,
+                        productId: veh.vehicleId,
                         action: "Added To Feature",
                         time: new Date(),
                     });
@@ -680,7 +680,7 @@ const removeFeatureProduct = (req, res) => __awaiter(void 0, void 0, void 0, fun
                     }
                     let featureLog = new FeaturedLogs_1.default({
                         updatedBy: updatedBy,
-                        productId: veh.vehId,
+                        productId: veh.vehicleId,
                         action: "Removed from Feature",
                         time: new Date(),
                     });

@@ -2,18 +2,18 @@ import mongoose from "mongoose";
 
 export interface IUser extends Document {
   _id?: string;
-  userName: string;
-  userEmail: string;
+  name: string;
+  email: string;
   password: string;
-  userRole: string;
+  role: string;
   isVerified: boolean;
-  // userImage?: string;
+  // image?: string;
   userId: string;
 }
 
 const userSchema = new mongoose.Schema(
   {
-    userName: {
+    name: {
       type: String,
       required: true,
     },
@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    userEmail: {
+    email: {
       type: String,
       required: true,
     },
@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema(
     // userImage: {
     //   type: String,
     // },
-    userRole: {
+    role: {
       type: String,
       default: "0",
     },

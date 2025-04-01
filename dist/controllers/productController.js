@@ -19,6 +19,7 @@ const vehicle_1 = __importDefault(require("../models/Product/vehicle"));
 const { customAlphabet } = require("nanoid");
 const ProductLogs_1 = __importDefault(require("../models/LogModel/ProductLogs"));
 const cloudinary_1 = require("cloudinary");
+const business_1 = __importDefault(require("../models/Business/business"));
 // import fileUpload, { UploadedFile } from "express-fileupload";
 cloudinary_1.v2.config({
     cloud_name: "dwepmpy6w",
@@ -32,6 +33,10 @@ const addTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     tourId = "TU" + tourId;
     const { businessId, prodCategory, prodsubCategory, inclusion, dest, duration, price, itinerary, capacity, name, phone, operationDates, addedBy, } = req.body;
     try {
+        const businessData = yield business_1.default.findOne({ businessId });
+        if (!businessData) {
+            return res.status(404).json({ error: "Business Details not found" });
+        }
         if (!req.files || !req.files.tourImages) {
             return res.status(400).json({ message: "No image uploaded" });
         }
@@ -56,6 +61,7 @@ const addTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         let tour = new tour_1.default({
             tourId: tourId,
             businessId,
+            businessName: businessData.businessName,
             prodCategory,
             prodsubCategory,
             inclusion,
@@ -201,6 +207,10 @@ const addTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     trekId = "TR" + trekId;
     const { businessId, prodCategory, prodsubCategory, inclusion, days, dest, price, numbers, itinerary, capacity, addedBy, name, operationDates, } = req.body;
     try {
+        const businessData = yield business_1.default.findOne({ businessId });
+        if (!businessData) {
+            return res.status(404).json({ error: "Business Details not found" });
+        }
         // let trekImages: string[] = [];
         if (!req.files || !req.files.trekImages) {
             return res.status(400).json({ error: "No Image uploaded" });
@@ -238,6 +248,7 @@ const addTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             businessId,
             prodCategory,
             prodsubCategory,
+            businessName: businessData.businessName,
             inclusion,
             days,
             addedBy,
@@ -379,9 +390,9 @@ exports.updateTrek = updateTrek;
 // Vehicle Controller
 const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
-    let vehId = customId();
-    vehId = "V" + vehId;
-    const { businessId, vehCategory, vehSubCategory, services, baseLocation, addedBy, amenities, vehCondition, price, description, madeYear, vehNumber, businessName, capacity, name, operationDates, manufacturer, model, VIN, } = req.body;
+    let vehicleId = customId();
+    vehicleId = "V" + vehicleId;
+    const { businessId, vehCategory, vehSubCategory, services, baseLocation, addedBy, amenities, vehCondition, price, description, madeYear, vehNumber, capacity, name, operationDates, manufacturer, model, VIN, } = req.body;
     try {
         // let vehImages: string[] = [];
         // if (req.files) {
@@ -390,6 +401,10 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         //     vehImages = files["vehImages"].map((file) => file.path);
         //   }
         // }
+        const businessData = yield business_1.default.findOne({ businessId });
+        if (!businessData) {
+            return res.status(404).json({ error: "Business Details not found" });
+        }
         if (!req.files || !req.files.vehImages) {
             return res.status(400).json({ message: "No image uploaded" });
         }
@@ -425,7 +440,7 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             vehCategory,
             vehSubCategory,
             services,
-            vehId: vehId,
+            vehicleId: vehicleId,
             addedBy,
             price,
             description,
@@ -434,7 +449,7 @@ const addVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             madeYear,
             vehNumber,
             baseLocation,
-            businessName,
+            businessName: businessData.businessName,
             capacity,
             name,
             operationDates,
@@ -488,7 +503,7 @@ exports.getVehicleByBusinessId = getVehicleByBusinessId;
 const vehDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        const data = yield vehicle_1.default.findOne({ vehId: id });
+        const data = yield vehicle_1.default.findOne({ vehicleId: id });
         if (!data) {
             return res.status(404).json({ error: "Failed" });
         }
@@ -530,7 +545,7 @@ const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             })));
             vehImages.push(...uploadedImages);
         }
-        const vehData = yield vehicle_1.default.findOne({ vehId: id });
+        const vehData = yield vehicle_1.default.findOne({ vehicleId: id });
         if (!vehData) {
             return res.status(400).json({ error: "Vehicle Not Found" });
         }
@@ -592,7 +607,7 @@ const updateVeh = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         else {
             updateData.operationDates = [];
         }
-        const data = yield vehicle_1.default.findOneAndUpdate({ vehId: id }, updateData, { new: true });
+        const data = yield vehicle_1.default.findOneAndUpdate({ vehicleId: id }, updateData, { new: true });
         if (!data) {
             return res.status(400).json({
                 error: "failed",
@@ -625,7 +640,7 @@ const deleteVehicle = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         else {
             let productLog = new ProductLogs_1.default({
                 updatedBy: updatedBy,
-                productId: veh.vehId,
+                productId: veh.vehicleId,
                 action: "Deleted",
                 time: new Date(),
             });

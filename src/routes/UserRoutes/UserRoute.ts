@@ -13,11 +13,7 @@ import {
 const router = express.Router();
 
 router.post("/adduser", addNewUser);
-router.put(
-  "/updateuser/:id",
-
-  updateProfileById
-);
+router.put("/updateuser/:id", updateProfileById);
 router.put("/changepwd/:id", changePwd);
 router.put("/verifyuseremail/:token", verifyUserEmail);
 router.get("/getusers", getUsers);

@@ -77,6 +77,7 @@ const addAdminUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.addAdminUser = addAdminUser;
 const adminlogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { adminEmail, adminPwd } = req.body;
+    let userData;
     try {
         if (!adminEmail || !adminPwd) {
             return res.status(400).json({ error: "fill all Fields" });
@@ -94,14 +95,13 @@ const adminlogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         res.cookie("authToken", authToken, {
             expires: new Date(Date.now() + 99999),
         });
+        userData = {
+            loginedId: adminEmail,
+        };
         return res.status(200).json({
             message: "Login succssfully",
             authToken: authToken,
-            userId: data._id,
-            adminEmail: adminEmail,
-            adminName: data.adminName,
-            adminRole: data.adminRole,
-            loginedId: adminEmail,
+            userData: userData,
         });
     }
     catch (error) {
@@ -447,9 +447,9 @@ const verifyAndResetPwd = (req, res) => __awaiter(void 0, void 0, void 0, functi
           <div style="text-align: left;">
             <h1 style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">New Business Account Registered</h1>
             <p style="font-size: 14px; margin-bottom: 20px;">
-             A new business with business Id ${businessId.bId} has been registered. You can verify and activate the account directly here.
+             A new business with business Id ${businessId.businessId} has been registered. You can verify and activate the account directly here.
             </p>
-            <a href='${process.env.FRONTEND_URL}/businessapprove/${businessId.bId}' style="display: inline-block; background-color: #e6310b; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-size: 14px;">Activate Account</a>
+            <a href='${process.env.FRONTEND_URL}/businessapprove/${businessId.businessId}' style="display: inline-block; background-color: #e6310b; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-size: 14px;">Activate Account</a>
             <p style="font-size: 12px; color: #888; margin-top: 20px;">
               This link will expire in 24 hours
             </p>
@@ -573,7 +573,7 @@ const addFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                     }
                     let featureLog = new FeaturedLogs_1.default({
                         updatedBy: updatedBy,
-                        productId: veh.vehId,
+                        productId: veh.vehicleId,
                         action: "Added To Feature",
                         time: new Date(),
                     });
@@ -662,7 +662,7 @@ const removeFeatureProduct = (req, res) => __awaiter(void 0, void 0, void 0, fun
                     }
                     let featureLog = new FeaturedLogs_1.default({
                         updatedBy: updatedBy,
-                        productId: veh.vehId,
+                        productId: veh.vehicleId,
                         action: "Removed from Feature",
                         time: new Date(),
                     });

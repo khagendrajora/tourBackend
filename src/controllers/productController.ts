@@ -5,6 +5,7 @@ import Vehicle from "../models/Product/vehicle";
 const { customAlphabet } = require("nanoid");
 import ProductLogs from "../models/LogModel/ProductLogs";
 import { v2 as cloudinary } from "cloudinary";
+import Business from "../models/Business/business";
 // import fileUpload, { UploadedFile } from "express-fileupload";
 
 cloudinary.config({
@@ -35,6 +36,11 @@ export const addTour = async (req: Request, res: Response) => {
   } = req.body;
 
   try {
+    const businessData = await Business.findOne({ businessId });
+    if (!businessData) {
+      return res.status(404).json({ error: "Business Details not found" });
+    }
+
     if (!req.files || !(req.files as any).tourImages) {
       return res.status(400).json({ message: "No image uploaded" });
     }
@@ -63,6 +69,7 @@ export const addTour = async (req: Request, res: Response) => {
     let tour = new Tour({
       tourId: tourId,
       businessId,
+      businessName: businessData.businessName,
       prodCategory,
       prodsubCategory,
       inclusion,
@@ -238,6 +245,11 @@ export const addTrek = async (req: Request, res: Response) => {
     operationDates,
   } = req.body;
   try {
+    const businessData = await Business.findOne({ businessId });
+    if (!businessData) {
+      return res.status(404).json({ error: "Business Details not found" });
+    }
+
     // let trekImages: string[] = [];
     if (!req.files || !(req.files as any).trekImages) {
       return res.status(400).json({ error: "No Image uploaded" });
@@ -283,6 +295,7 @@ export const addTrek = async (req: Request, res: Response) => {
       businessId,
       prodCategory,
       prodsubCategory,
+      businessName: businessData.businessName,
       inclusion,
       days,
       addedBy,
@@ -439,8 +452,8 @@ export const updateTrek = async (req: Request, res: Response) => {
 
 export const addVehicle = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);
-  let vehId = customId();
-  vehId = "V" + vehId;
+  let vehicleId = customId();
+  vehicleId = "V" + vehicleId;
 
   const {
     businessId,
@@ -455,7 +468,6 @@ export const addVehicle = async (req: Request, res: Response) => {
     description,
     madeYear,
     vehNumber,
-    businessName,
     capacity,
     name,
     operationDates,
@@ -471,6 +483,11 @@ export const addVehicle = async (req: Request, res: Response) => {
     //     vehImages = files["vehImages"].map((file) => file.path);
     //   }
     // }
+
+    const businessData = await Business.findOne({ businessId });
+    if (!businessData) {
+      return res.status(404).json({ error: "Business Details not found" });
+    }
 
     if (!req.files || !(req.files as any).vehImages) {
       return res.status(400).json({ message: "No image uploaded" });
@@ -515,7 +532,7 @@ export const addVehicle = async (req: Request, res: Response) => {
       vehCategory,
       vehSubCategory,
       services,
-      vehId: vehId,
+      vehicleId: vehicleId,
       addedBy,
       price,
       description,
@@ -524,7 +541,7 @@ export const addVehicle = async (req: Request, res: Response) => {
       madeYear,
       vehNumber,
       baseLocation,
-      businessName,
+      businessName: businessData.businessName,
       capacity,
       name,
       operationDates,
@@ -575,7 +592,7 @@ export const vehDetails = async (req: Request, res: Response) => {
   const id = req.params.id;
 
   try {
-    const data = await Vehicle.findOne({ vehId: id });
+    const data = await Vehicle.findOne({ vehicleId: id });
     if (!data) {
       return res.status(404).json({ error: "Failed" });
     } else {
@@ -636,7 +653,7 @@ export const updateVeh = async (req: Request, res: Response) => {
       vehImages.push(...uploadedImages);
     }
 
-    const vehData = await Vehicle.findOne({ vehId: id });
+    const vehData = await Vehicle.findOne({ vehicleId: id });
     if (!vehData) {
       return res.status(400).json({ error: "Vehicle Not Found" });
     }
@@ -701,7 +718,7 @@ export const updateVeh = async (req: Request, res: Response) => {
     }
 
     const data = await Vehicle.findOneAndUpdate(
-      { vehId: id },
+      { vehicleId: id },
       updateData,
 
       { new: true }
@@ -735,7 +752,7 @@ export const deleteVehicle = async (req: Request, res: Response) => {
     } else {
       let productLog = new ProductLogs({
         updatedBy: updatedBy,
-        productId: veh.vehId,
+        productId: veh.vehicleId,
         action: "Deleted",
         time: new Date(),
       });

@@ -39,11 +39,13 @@ export const vehReservation = async (req: Request, res: Response) => {
     newStartDate.setDate(newStartDate.getDate() + 1);
   }
   try {
-    const vehData = await Vehicle.findOne({ vehId: id });
+    const vehData = await Vehicle.findOne({ vehicleId: id });
     if (!vehData) {
       return res.status(401).json({ error: "Vehicle Unavailable" });
     }
-    const businessdata = await Business.findOne({ bId: vehData.businessId });
+    const businessdata = await Business.findOne({
+      businessId: vehData.businessId,
+    });
 
     let vehRev = new VehicleReservation({
       vehicleId: id,
@@ -87,7 +89,7 @@ export const vehReservation = async (req: Request, res: Response) => {
         return res.status(400).json({ error: "failed to save date" });
       } else {
         // await Vehicle.findOneAndUpdate(
-        //   { vehId: id },
+        //   { vehicleId: id },
         //   {
         //     operationDates: bookingDate,
         //   },
