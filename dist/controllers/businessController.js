@@ -30,9 +30,9 @@ const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     bId = "B" + bId;
     const { registrationNumber } = req.body.businessRegistration;
     const { country, state } = req.body.businessAddress;
-    const { businessName, businessCategory, primaryEmail, primaryPhone, businessPwd, } = req.body;
+    const { businessName, businessCategory, primaryEmail, primaryPhone, password, } = req.body;
     try {
-        if (businessPwd == "") {
+        if (password == "") {
             return res.status(400).json({ error: "Password is reqired" });
         }
         const tax = yield business_1.default.findOne({
@@ -66,7 +66,7 @@ const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 .json({ error: "Phone Number already registered " });
         }
         const salt = yield bcryptjs_1.default.genSalt(5);
-        let hashedPassword = yield bcryptjs_1.default.hash(businessPwd, salt);
+        let hashedPassword = yield bcryptjs_1.default.hash(password, salt);
         let business = new business_1.default({
             businessName,
             businessCategory,
@@ -80,7 +80,7 @@ const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             primaryEmail,
             primaryPhone,
             bId: bId,
-            businessPwd: hashedPassword,
+            password: hashedPassword,
             addedBy: bId,
         });
         business = yield business.save();
@@ -332,14 +332,14 @@ const forgetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             if (!token) {
                 return res.status(400).json({ error: "Token not generated" });
             }
-            const url = `${process.env.FRONTEND_URL}/resetbusinesspwd/${token.token}`;
+            const url = `${process.env.FRONTEND_URL}/resetpassword/${token.token}`;
             const api = `${process.env.Backend_URL}`;
             (0, setEmail_1.sendEmail)({
                 from: "beta.toursewa@gmail.com",
                 to: businessEmail.primaryEmail,
                 subject: "Password Reset Link",
                 text: `Reset password USing link below\n\n
-    ${api}/resetbusinesspwd/${token.token}
+    ${api}/resetpassword/${token.token}
     `,
                 html: `<div style="font-family: Arial, sans-serif; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
         <div style="width: 75%; max-width: 600px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
@@ -457,7 +457,7 @@ const forgetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.forgetPwd = forgetPwd;
 const resetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.params.token;
-    const newPwd = req.body.businessPwd;
+    const newPwd = req.body.password;
     try {
         const data = yield token_1.default.findOne({ token });
         if (!data) {
@@ -467,14 +467,14 @@ const resetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!businessId) {
             return res.status(404).json({ error: "Token and Email not matched" });
         }
-        const isOldPwd = yield bcryptjs_1.default.compare(newPwd, businessId.businessPwd);
+        const isOldPwd = yield bcryptjs_1.default.compare(newPwd, businessId.password);
         if (isOldPwd) {
             return res.status(400).json({ error: "Password Previously Used" });
         }
         else {
             const salt = yield bcryptjs_1.default.genSalt(5);
             let hashedPwd = yield bcryptjs_1.default.hash(newPwd, salt);
-            businessId.businessPwd = hashedPwd;
+            businessId.password = hashedPwd;
             businessId.save();
             yield token_1.default.deleteOne({ _id: data._id });
             return res.status(201).json({ message: "Reset Successful" });

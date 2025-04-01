@@ -146,7 +146,7 @@ export const login = async (req: Request, res: Response) => {
   //     if (businessEmail) {
   //       const isPassword = await bcryptjs.compare(
   //         Pwd,
-  //         businessEmail.businessPwd
+  //         businessEmail.password
   //       );
   //       if (!isPassword) {
   //         return res.status(400).json({ error: "Credentials not matched" });

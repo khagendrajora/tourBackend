@@ -322,9 +322,9 @@ const addBusinessByAdmin = (req, res) => __awaiter(void 0, void 0, void 0, funct
     bId = "B" + bId;
     const { registrationNumber } = req.body.businessRegistration;
     const { country, state } = req.body.businessAddress;
-    const { businessName, businessCategory, primaryEmail, primaryPhone, businessPwd, addedBy, } = req.body;
+    const { businessName, businessCategory, primaryEmail, primaryPhone, password, addedBy, } = req.body;
     try {
-        if (businessPwd == "") {
+        if (password == "") {
             return res.status(400).json({ error: "Password is reqired" });
         }
         const tax = yield business_1.default.findOne({
@@ -358,7 +358,7 @@ const addBusinessByAdmin = (req, res) => __awaiter(void 0, void 0, void 0, funct
                 .json({ error: "Phone Number already registered " });
         }
         const salt = yield bcryptjs_1.default.genSalt(5);
-        let hashedPassword = yield bcryptjs_1.default.hash(businessPwd, salt);
+        let hashedPassword = yield bcryptjs_1.default.hash(password, salt);
         let business = new business_1.default({
             businessName,
             businessCategory,
@@ -372,7 +372,7 @@ const addBusinessByAdmin = (req, res) => __awaiter(void 0, void 0, void 0, funct
             primaryEmail,
             primaryPhone,
             bId: bId,
-            businessPwd: hashedPassword,
+            password: hashedPassword,
             addedBy,
         });
         business = yield business.save();
@@ -428,7 +428,7 @@ const addBusinessByAdmin = (req, res) => __awaiter(void 0, void 0, void 0, funct
 exports.addBusinessByAdmin = addBusinessByAdmin;
 const verifyAndResetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.params.token;
-    const newPwd = req.body.businessPwd;
+    const newPwd = req.body.password;
     try {
         const data = yield token_1.default.findOne({ token });
         if (!data) {
@@ -441,14 +441,14 @@ const verifyAndResetPwd = (req, res) => __awaiter(void 0, void 0, void 0, functi
         if (businessId.isVerified) {
             return res.status(400).json({ error: "Email Already verified" });
         }
-        const isOldPwd = yield bcryptjs_1.default.compare(newPwd, businessId.businessPwd);
+        const isOldPwd = yield bcryptjs_1.default.compare(newPwd, businessId.password);
         if (isOldPwd) {
             return res.status(400).json({ error: "Password Previously Used" });
         }
         else {
             const salt = yield bcryptjs_1.default.genSalt(5);
             let hashedPwd = yield bcryptjs_1.default.hash(newPwd, salt);
-            businessId.businessPwd = hashedPwd;
+            businessId.password = hashedPwd;
             businessId.isVerified = true;
             yield token_1.default.deleteOne({ _id: data._id });
             businessId.save().then((business) => {

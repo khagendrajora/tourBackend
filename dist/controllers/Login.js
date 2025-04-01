@@ -160,7 +160,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     //     if (businessEmail) {
     //       const isPassword = await bcryptjs.compare(
     //         Pwd,
-    //         businessEmail.businessPwd
+    //         businessEmail.password
     //       );
     //       if (!isPassword) {
     //         return res.status(400).json({ error: "Credentials not matched" });

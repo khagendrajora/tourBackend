@@ -322,8 +322,8 @@ export const resetPass = async (req: Request, res: Response) => {
 
 export const addBusinessByAdmin = async (req: Request, res: Response) => {
   const customId = customAlphabet("1234567890", 4);
-  let bId = customId();
-  bId = "B" + bId;
+  let businessId = customId();
+  businessId = "B" + businessId;
   const { registrationNumber } = req.body.businessRegistration;
   const { country, state } = req.body.businessAddress;
   const {
@@ -331,12 +331,12 @@ export const addBusinessByAdmin = async (req: Request, res: Response) => {
     businessCategory,
     primaryEmail,
     primaryPhone,
-    businessPwd,
+    password,
     addedBy,
   } = req.body;
 
   try {
-    if (businessPwd == "") {
+    if (password == "") {
       return res.status(400).json({ error: "Password is reqired" });
     }
     const tax = await Business.findOne({
@@ -353,11 +353,11 @@ export const addBusinessByAdmin = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Email already registered" });
     }
 
-    const userEmail = await User.findOne({ userEmail: primaryEmail });
+    const userEmail = await User.findOne({ email: primaryEmail });
     if (userEmail) {
       return res.status(400).json({ error: "Email already registered" });
     }
-    const driverEmail = await Driver.findOne({ driverEmail: primaryEmail });
+    const driverEmail = await Driver.findOne({ email: primaryEmail });
     if (driverEmail) {
       return res.status(400).json({ error: "Email already registered" });
     }
@@ -375,7 +375,7 @@ export const addBusinessByAdmin = async (req: Request, res: Response) => {
     }
 
     const salt = await bcryptjs.genSalt(5);
-    let hashedPassword = await bcryptjs.hash(businessPwd, salt);
+    let hashedPassword = await bcryptjs.hash(password, salt);
     let business = new Business({
       businessName,
       businessCategory,
@@ -388,8 +388,8 @@ export const addBusinessByAdmin = async (req: Request, res: Response) => {
       },
       primaryEmail,
       primaryPhone,
-      bId: bId,
-      businessPwd: hashedPassword,
+      businessId: businessId,
+      password: hashedPassword,
       addedBy,
     });
     business = await business.save();
@@ -448,7 +448,7 @@ export const addBusinessByAdmin = async (req: Request, res: Response) => {
 
 export const verifyAndResetPwd = async (req: Request, res: Response) => {
   const token = req.params.token;
-  const newPwd = req.body.businessPwd;
+  const newPwd = req.body.password;
   try {
     const data = await Token.findOne({ token });
     if (!data) {

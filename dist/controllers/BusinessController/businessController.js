@@ -337,14 +337,14 @@ const forgetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             if (!token) {
                 return res.status(400).json({ error: "Token not generated" });
             }
-            const url = `${process.env.FRONTEND_URL}/resetbusinesspwd/${token.token}`;
+            const url = `${process.env.FRONTEND_URL}/resetpassword/${token.token}`;
             const api = `${process.env.Backend_URL}`;
             (0, setEmail_1.sendEmail)({
                 from: "beta.toursewa@gmail.com",
                 to: businessEmail.primaryEmail,
                 subject: "Password Reset Link",
                 text: `Reset password USing link below\n\n
-    ${api}/resetbusinesspwd/${token.token}
+    ${api}/resetpassword/${token.token}
     `,
                 html: `<div style="font-family: Arial, sans-serif; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
         <div style="width: 75%; max-width: 600px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">

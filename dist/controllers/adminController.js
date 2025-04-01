@@ -298,13 +298,13 @@ const resetPass = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.resetPass = resetPass;
 const addBusinessByAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = (0, nanoid_1.customAlphabet)("1234567890", 4);
-    let bId = customId();
-    bId = "B" + bId;
+    let businessId = customId();
+    businessId = "B" + businessId;
     const { registrationNumber } = req.body.businessRegistration;
     const { country, state } = req.body.businessAddress;
-    const { businessName, businessCategory, primaryEmail, primaryPhone, businessPwd, addedBy, } = req.body;
+    const { businessName, businessCategory, primaryEmail, primaryPhone, password, addedBy, } = req.body;
     try {
-        if (businessPwd == "") {
+        if (password == "") {
             return res.status(400).json({ error: "Password is reqired" });
         }
         const tax = yield business_1.default.findOne({
@@ -319,11 +319,11 @@ const addBusinessByAdmin = (req, res) => __awaiter(void 0, void 0, void 0, funct
         if (email) {
             return res.status(400).json({ error: "Email already registered" });
         }
-        const userEmail = yield userModel_1.default.findOne({ userEmail: primaryEmail });
+        const userEmail = yield userModel_1.default.findOne({ email: primaryEmail });
         if (userEmail) {
             return res.status(400).json({ error: "Email already registered" });
         }
-        const driverEmail = yield Driver_1.default.findOne({ driverEmail: primaryEmail });
+        const driverEmail = yield Driver_1.default.findOne({ email: primaryEmail });
         if (driverEmail) {
             return res.status(400).json({ error: "Email already registered" });
         }
@@ -338,7 +338,7 @@ const addBusinessByAdmin = (req, res) => __awaiter(void 0, void 0, void 0, funct
                 .json({ error: "Phone Number already registered " });
         }
         const salt = yield bcryptjs_1.default.genSalt(5);
-        let hashedPassword = yield bcryptjs_1.default.hash(businessPwd, salt);
+        let hashedPassword = yield bcryptjs_1.default.hash(password, salt);
         let business = new business_1.default({
             businessName,
             businessCategory,
@@ -351,8 +351,8 @@ const addBusinessByAdmin = (req, res) => __awaiter(void 0, void 0, void 0, funct
             },
             primaryEmail,
             primaryPhone,
-            bId: bId,
-            businessPwd: hashedPassword,
+            businessId: businessId,
+            password: hashedPassword,
             addedBy,
         });
         business = yield business.save();
@@ -408,7 +408,7 @@ const addBusinessByAdmin = (req, res) => __awaiter(void 0, void 0, void 0, funct
 exports.addBusinessByAdmin = addBusinessByAdmin;
 const verifyAndResetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.params.token;
-    const newPwd = req.body.businessPwd;
+    const newPwd = req.body.password;
     try {
         const data = yield token_1.default.findOne({ token });
         if (!data) {

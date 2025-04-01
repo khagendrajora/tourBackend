@@ -20,7 +20,7 @@ router.put("/updatebusinessprofile/:businessid", fileUpload_1.default.fields([
 router.delete("/deletebusiness/:id", businessController_1.deleteBusiness);
 router.post("/businesssignout", businessController_1.businessSignOut);
 router.post("/forgetpwd", businessController_1.forgetPwd);
-router.put("/resetbusinesspwd/:token", businessController_1.resetPwd);
+router.put("/resetpassword/:token", businessController_1.resetPwd);
 router.put("/resetandverify/:token", adminController_1.verifyAndResetPwd);
 router.post("/requestfeature/:id", businessController_1.featureRequest);
 exports.default = router;
