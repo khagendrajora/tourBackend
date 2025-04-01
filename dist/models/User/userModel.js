@@ -26,7 +26,7 @@ const userSchema = new mongoose_1.default.Schema({
     // },
     role: {
         type: String,
-        default: "0",
+        default: "User",
     },
     isVerified: {
         type: Boolean,
