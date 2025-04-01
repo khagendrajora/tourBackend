@@ -124,7 +124,7 @@ export const businessApprove = async (req: Request, res: Response) => {
   const { updatedBy } = req.body;
 
   try {
-    const business = await Business.findOne({ bId: id });
+    const business = await Business.findOne({ businessId: id });
     if (!business) {
       return res.status(404).json({ error: "Business not found" });
     }

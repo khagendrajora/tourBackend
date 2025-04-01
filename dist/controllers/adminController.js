@@ -131,7 +131,7 @@ const businessApprove = (req, res) => __awaiter(void 0, void 0, void 0, function
     let status = "";
     const { updatedBy } = req.body;
     try {
-        const business = yield business_1.default.findOne({ bId: id });
+        const business = yield business_1.default.findOne({ businessId: id });
         if (!business) {
             return res.status(404).json({ error: "Business not found" });
         }
