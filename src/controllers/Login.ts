@@ -51,8 +51,6 @@ export const login = async (req: Request, res: Response) => {
     const authToken = createAuthToken(user._id.toString());
     setAuthCookie(res, authToken);
 
-    const { password, ...UserData } = user.toObject();
-
     if (user instanceof User) {
       userData = {
         email: email,
@@ -97,7 +95,7 @@ export const login = async (req: Request, res: Response) => {
     return res.status(200).json({
       message: "Login Successful",
       authToken,
-      userData: UserData,
+      userData: userData,
     });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
