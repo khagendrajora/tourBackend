@@ -62,8 +62,7 @@ const tourSchema = new mongoose_1.default.Schema({
     },
     operationDates: [
         {
-            type: String,
-            required: true,
+            type: Date,
         },
     ],
     isFeatured: {

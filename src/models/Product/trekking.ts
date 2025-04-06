@@ -90,7 +90,7 @@ const trekSchema = new mongoose.Schema({
 
   operationDates: [
     {
-      type: String,
+      type: Date,
     },
   ],
 
