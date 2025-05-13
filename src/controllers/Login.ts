@@ -7,18 +7,18 @@ import jwt from "jsonwebtoken";
 import BusinessManager from "../models/Business/businessManager";
 import Sales from "../models/Business/Sales";
 
-const createAuthToken = (id: string) => {
-  return jwt.sign({ id }, process.env.JWTSECRET as string, { expiresIn: "1h" });
-};
+// const createAuthToken = (id: string) => {
+//   return jwt.sign({ id }, process.env.JWTSECRET as string, { expiresIn: "1h" });
+// };
 
-const setAuthCookie = (res: Response, authToken: string) => {
-  res.cookie("authTOken", authToken, {
-    httpOnly: true,
-    sameSite: "strict",
-    secure: process.env.NODE_ENV === "production",
-    maxAge: 3600000, // 1 hour
-  });
-};
+// const setAuthCookie = (res: Response, authToken: string) => {
+//   res.cookie("authTOken", authToken, {
+//     httpOnly: true,
+//     sameSite: "strict",
+//     secure: process.env.NODE_ENV === "production",
+//     maxAge: 3600000, // 1 hour
+//   });
+// };
 
 export const login = async (req: Request, res: Response) => {
   const { email, Pwd } = req.body;
@@ -47,9 +47,16 @@ export const login = async (req: Request, res: Response) => {
     if ("isActive" in user && user.isActive === false) {
       return res.status(400).json({ error: "Account not Activated" });
     }
+    if (!process.env.JWTSECRET) {
+      return res.status(500).json({ error: "JWT_SECRET is not defined" });
+    }
 
-    const authToken = createAuthToken(user._id.toString());
-    setAuthCookie(res, authToken);
+    const authToken = jwt.sign({ id: user._id }, process.env.JWTSECRET, {
+      expiresIn: "1h",
+    });
+    if (!authToken) return res.status(401).json({ error: "Failed" });
+    // const authToken = createAuthToken(user._id.toString());
+    // setAuthCookie(res, authToken);
 
     if (user instanceof User) {
       userData = {

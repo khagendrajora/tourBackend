@@ -6,16 +6,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.veriftyToken = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const veriftyToken = (req, res, next) => {
-    const token = req.cookies.authToken;
-    if (!token)
-        return res.status(401).json({ error: "Access Denied" });
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer "))
+        // if (!token) return res.status(401).json({ error: "Access Denied" });
+        return res.status(401).json({ error: "Access denied. No token provided." });
+    const token = authHeader.split(" ")[1];
     try {
-        const verified = jsonwebtoken_1.default.verify(token, process.env.JWTSECRET);
-        req.body.data = verified;
+        const jwtSecret = process.env.JWTSECRET;
+        if (!jwtSecret) {
+            return res.status(500).json({ error: "Token not configured." });
+        }
+        const decoded = jsonwebtoken_1.default.verify(token, jwtSecret);
+        req.user = decoded;
         next();
     }
     catch (error) {
-        res.status(400).json({ error: "Invalid Token" });
+        res
+            .status(400)
+            .json({ error: "Invalid Token or Expired ", message: "Login Again" });
     }
 };
 exports.veriftyToken = veriftyToken;

@@ -20,17 +20,17 @@ const business_1 = __importDefault(require("../models/Business/business"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const businessManager_1 = __importDefault(require("../models/Business/businessManager"));
 const Sales_1 = __importDefault(require("../models/Business/Sales"));
-const createAuthToken = (id) => {
-    return jsonwebtoken_1.default.sign({ id }, process.env.JWTSECRET, { expiresIn: "1h" });
-};
-const setAuthCookie = (res, authToken) => {
-    res.cookie("authTOken", authToken, {
-        httpOnly: true,
-        sameSite: "strict",
-        secure: process.env.NODE_ENV === "production",
-        maxAge: 3600000, // 1 hour
-    });
-};
+// const createAuthToken = (id: string) => {
+//   return jwt.sign({ id }, process.env.JWTSECRET as string, { expiresIn: "1h" });
+// };
+// const setAuthCookie = (res: Response, authToken: string) => {
+//   res.cookie("authTOken", authToken, {
+//     httpOnly: true,
+//     sameSite: "strict",
+//     secure: process.env.NODE_ENV === "production",
+//     maxAge: 3600000, // 1 hour
+//   });
+// };
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, Pwd } = req.body;
     let userData;
@@ -53,8 +53,16 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if ("isActive" in user && user.isActive === false) {
             return res.status(400).json({ error: "Account not Activated" });
         }
-        const authToken = createAuthToken(user._id.toString());
-        setAuthCookie(res, authToken);
+        if (!process.env.JWTSECRET) {
+            return res.status(500).json({ error: "JWT_SECRET is not defined" });
+        }
+        const authToken = jsonwebtoken_1.default.sign({ id: user._id }, process.env.JWTSECRET, {
+            expiresIn: "1h",
+        });
+        if (!authToken)
+            return res.status(401).json({ error: "Failed" });
+        // const authToken = createAuthToken(user._id.toString());
+        // setAuthCookie(res, authToken);
         if (user instanceof userModel_1.default) {
             userData = {
                 email: email,

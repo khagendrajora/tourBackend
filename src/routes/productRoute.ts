@@ -20,6 +20,7 @@ import {
   vehDetails,
 } from "../controllers/productController";
 import upload from "../middleware/fileUpload";
+import { veriftyToken } from "../middleware/Auth";
 // import { veriftyToken } from "../middleware/Auth";
 
 const router = express.Router();
@@ -27,7 +28,7 @@ const router = express.Router();
 // Tour Routes
 router.post(
   "/addtour",
-  // veriftyToken,
+  veriftyToken,
   upload.fields([{ name: "tourImages", maxCount: 1000 }]),
   addTour
 );
@@ -45,6 +46,7 @@ router.delete("/deletetour/:id", deleteTour);
 
 router.post(
   "/addtrek",
+  veriftyToken,
   upload.fields([{ name: "trekImages", maxCount: 1000 }]),
   addTrek
 );
@@ -62,6 +64,7 @@ router.delete("/deletetrek/:id", deleteTrek);
 
 router.post(
   "/addveh",
+  veriftyToken,
   upload.fields([{ name: "vehImages", maxCount: 1000 }]),
   addVehicle
 );
@@ -74,6 +77,6 @@ router.put(
   updateVeh
 );
 
-router.delete("/deletevehicle/:id", deleteVehicle);
+router.delete("/deletevehicle/:id", veriftyToken, deleteVehicle);
 
 export default router;
