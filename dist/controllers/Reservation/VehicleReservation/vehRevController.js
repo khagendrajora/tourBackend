@@ -114,7 +114,7 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
       </tr>
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Passenger Name:</strong> ${bookingName}
+          <strong>Booking Name:</strong> ${bookingName}
         </td>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
           <strong>Number of Passengers:</strong> ${numberOfPassengers}
@@ -225,7 +225,7 @@ const updateReservationStatusByClient = (req, res) => __awaiter(void 0, void 0, 
           <td style="font-size: 14px; color: #64748B;">${data.vehicleNumber}</td>
         </tr>
         <tr>
-          <td style="font-size: 14px; font-weight: bold;">Passenger Name:</td>
+          <td style="font-size: 14px; font-weight: bold;">Booking Name:</td>
           <td style="font-size: 14px; color: #64748B;">${data.bookingName}</td>
         </tr>
         <tr>
@@ -300,7 +300,7 @@ const updateReservationStatusByBid = (req, res) => __awaiter(void 0, void 0, voi
           <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${data.vehicleNumber}</td>
         </tr>
         <tr>
-          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Passenger Name:</td>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Booking Name:</td>
           <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${data.bookingName}</td>
         </tr>
         <tr>
@@ -412,7 +412,7 @@ const updateReservationByBid = (req, res) => __awaiter(void 0, void 0, void 0, f
       <td style="font-size: 14px; color: #64748B; padding: 12px 8px; text-align: left;">${data.vehicleNumber}</td>
     </tr>
     <tr style="background-color: #F3F4F6;">
-      <td style="font-size: 14px; font-weight: bold; padding: 12px 8px; text-align: left;">Passenger Name:</td>
+      <td style="font-size: 14px; font-weight: bold; padding: 12px 8px; text-align: left;">Booking Name:</td>
       <td style="font-size: 14px; color: #64748B; padding: 12px 8px; text-align: left;">${data.bookingName}</td>
     </tr>
     <tr>

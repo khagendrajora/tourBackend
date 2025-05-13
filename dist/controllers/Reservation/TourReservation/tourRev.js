@@ -87,7 +87,7 @@ const tourRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
       </tr>
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Passenger Name:</strong> ${bookingName}
+          <strong>Booking Name:</strong> ${bookingName}
         </td>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
           <strong>Number of Passengers:</strong> ${numberOfPeople}
@@ -219,7 +219,7 @@ const updateTourRevStatusByClient = (req, res) => __awaiter(void 0, void 0, void
       </tr>
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Passenger Name:</strong> ${data.bookingName}
+          <strong>Booking Name:</strong> ${data.bookingName}
         </td>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
           <strong>Number of Passengers:</strong> ${data.numberOfPeople}
@@ -287,7 +287,7 @@ const updateTourRevStatusByBid = (req, res) => __awaiter(void 0, void 0, void 0,
       </tr>
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Passenger Name:</strong> ${data.bookingName}
+          <strong>Booking Name:</strong> ${data.bookingName}
         </td>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
           <strong>Number of Passengers:</strong> ${data.numberOfPeople}

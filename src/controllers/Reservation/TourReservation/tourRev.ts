@@ -87,7 +87,7 @@ export const tourRev = async (req: Request, res: Response) => {
       </tr>
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Passenger Name:</strong> ${bookingName}
+          <strong>Booking Name:</strong> ${bookingName}
         </td>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
           <strong>Number of Passengers:</strong> ${numberOfPeople}
@@ -221,7 +221,7 @@ export const updateTourRevStatusByClient = async (
       </tr>
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Passenger Name:</strong> ${data.bookingName}
+          <strong>Booking Name:</strong> ${data.bookingName}
         </td>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
           <strong>Number of Passengers:</strong> ${data.numberOfPeople}
@@ -294,7 +294,7 @@ export const updateTourRevStatusByBid = async (req: Request, res: Response) => {
       </tr>
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Passenger Name:</strong> ${data.bookingName}
+          <strong>Booking Name:</strong> ${data.bookingName}
         </td>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
           <strong>Number of Passengers:</strong> ${data.numberOfPeople}
