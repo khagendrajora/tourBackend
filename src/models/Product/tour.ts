@@ -5,6 +5,8 @@ export interface ITour extends Document {
   tourId: string;
   businessId: string;
   businessName: string;
+
+  pickUpLocation: string;
   prodCategory: string;
   prodsubCategory: string;
   inclusion: string[];
@@ -15,7 +17,7 @@ export interface ITour extends Document {
   capacity: string;
   name: string;
   phone: number;
-  operationDates: Date[];
+  operationDates: string[];
   tourImages?: string[];
   isFeatured: boolean;
   price?: string;
@@ -27,6 +29,9 @@ const tourSchema = new mongoose.Schema({
     type: String,
   },
   businessName: {
+    type: String,
+  },
+  pickUpLocation: {
     type: String,
   },
   addedBy: {
@@ -81,7 +86,7 @@ const tourSchema = new mongoose.Schema({
   },
   operationDates: [
     {
-      type: Date,
+      type: String,
     },
   ],
   isFeatured: {

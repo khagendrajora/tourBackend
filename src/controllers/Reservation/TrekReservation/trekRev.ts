@@ -2,7 +2,8 @@ import TrekReservation from "../../../models/Reservations/TrekReservation/TrekRe
 import { Request, Response } from "express";
 import { sendEmail } from "../../../utils/setEmail";
 import { customAlphabet } from "nanoid";
-import User from "../../../models/User/userModel";
+// import User from "../../../models/User/userModel";
+import Business from "../../../models/Business/business";
 import Trekking from "../../../models/Product/trekking";
 import TrekRevLog from "../../../models/LogModel/TrekRevLog";
 
@@ -12,30 +13,42 @@ export const trekRev = async (req: Request, res: Response) => {
   let bookingId = customId();
   bookingId = "TrR" + bookingId;
 
-  const { passengerName, tickets, email, phone, date, bookedBy, price } =
-    req.body;
+  const {
+    bookingName,
+    numberOfPeople,
+    email,
+    phone,
+    date,
+    bookedBy,
+    totalPrice,
+  } = req.body;
   try {
     const trekData = await Trekking.findOne({ trekId: id });
     if (!trekData) {
       return res.status(401).json({ error: "Trek Unavailable" });
     }
-    const userData = await User.findOne({ userId: bookedBy });
-    if (!userData) {
-      return res.status(401).json({ error: "User Not found" });
-    }
+
+    const businessdata = await Business.findOne({
+      businessId: trekData.businessId,
+    });
+    // const userData = await User.findOne({ userId: bookedBy });
+    // if (!userData) {
+    //   return res.status(401).json({ error: "User Not found" });
+    // }
     // const businessdata = await Business.findOne({ bId: vehData.businessId });
 
     let trekRev = new TrekReservation({
       bookedBy,
-      passengerName,
-      tickets,
-      price,
+      bookingName,
+      numberOfPeople,
+      totalPrice,
       email,
       phone,
       date,
       businessId: trekData.businessId,
       bookingId,
       trekName: trekData.name,
+      businessName: businessdata?.businessName,
       trekId: id,
     });
     trekRev = await trekRev.save();
@@ -72,10 +85,10 @@ export const trekRev = async (req: Request, res: Response) => {
       </tr>
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Passenger Name:</strong> ${passengerName}
+          <strong>Passenger Name:</strong> ${bookingName}
         </td>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Number of Passengers:</strong> ${tickets}
+          <strong>Number of Passengers:</strong> ${numberOfPeople}
         </td>
       </tr>
       <tr>
@@ -85,7 +98,7 @@ export const trekRev = async (req: Request, res: Response) => {
       </tr>
         <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Price:</strong> ${price}
+          <strong>Price:</strong> ${totalPrice}
         </td>
       </tr>
     </table>
@@ -99,7 +112,7 @@ export const trekRev = async (req: Request, res: Response) => {
     //   subject: "New Booking",
     //   html: `<h2>A new booking with booking Id ${bookingId} of vehicle ${id}</h2>`,
     // });
-    return res.status(200).json({ message: "Successfully Send" });
+    return res.status(200).json({ message: "Successfully Booked" });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }
@@ -206,10 +219,10 @@ export const updateTrekRevStatusByClient = async (
       </tr>
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Passenger Name:</strong> ${data.passengerName}
+          <strong>Passenger Name:</strong> ${data.bookingName}
         </td>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Number of Passengers:</strong> ${data.tickets}
+          <strong>Number of Passengers:</strong> ${data.numberOfPeople}
         </td>
       </tr>
       <tr>
@@ -219,7 +232,7 @@ export const updateTrekRevStatusByClient = async (
       </tr>
         <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Date:</strong> ${data.price}
+          <strong>Date:</strong> ${data.totalPrice}
         </td>
       </tr>
     </table>
@@ -284,10 +297,10 @@ export const updateTrekRevStatusByBid = async (req: Request, res: Response) => {
       </tr>
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Passenger Name:</strong> ${data.passengerName}
+          <strong>Passenger Name:</strong> ${data.bookingName}
         </td>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Number of Passengers:</strong> ${data.tickets}
+          <strong>Number of Passengers:</strong> ${data.numberOfPeople}
         </td>
       </tr>
       <tr>

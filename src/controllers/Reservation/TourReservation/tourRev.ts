@@ -4,7 +4,8 @@ import { sendEmail } from "../../../utils/setEmail";
 import { customAlphabet } from "nanoid";
 import Tour from "../../../models/Product/tour";
 import TourRevLog from "../../../models/LogModel/TourRevLog";
-import User from "../../../models/User/userModel";
+// import User from "../../../models/User/userModel";
+import Business from "../../../models/Business/business";
 
 export const tourRev = async (req: Request, res: Response) => {
   const id = req.params.id;
@@ -12,33 +13,44 @@ export const tourRev = async (req: Request, res: Response) => {
   let bookingId = customId();
   bookingId = "TuR" + bookingId;
 
-  const { passengerName, tickets, email, phone, date, price, bookedBy } =
-    req.body;
+  const {
+    bookingName,
+    numberOfPeople,
+    email,
+    phone,
+    date,
+    totalPrice,
+    bookedBy,
+  } = req.body;
   try {
     const tourData = await Tour.findOne({ tourId: id });
     if (!tourData) {
       return res.status(401).json({ error: "Tour Unavailable" });
     }
 
-    const userData = await User.findOne({ userId: bookedBy });
-    if (!userData) {
-      return res.status(401).json({ error: "User Not found" });
-    }
+    const businessdata = await Business.findOne({
+      businessId: tourData.businessId,
+    });
+    // const userData = await User.findOne({ userId: bookedBy });
+    // if (!userData) {
+    //   return res.status(401).json({ error: "User Not found" });
+    // }
 
     // const businessdata = await Business.findOne({ bId: vehData.businessId });
 
     let tourRev = new TourReservation({
-      bookedBy: userData.userId,
-      passengerName,
-      tickets,
+      bookedBy,
+      bookingName,
+      numberOfPeople,
       email,
       phone,
-      price,
+      totalPrice,
       date,
       businessId: tourData.businessId,
       bookingId,
       tourId: id,
       tourName: tourData.name,
+      businessName: businessdata?.businessName,
     });
     tourRev = await tourRev.save();
     if (!tourRev) {
@@ -75,10 +87,10 @@ export const tourRev = async (req: Request, res: Response) => {
       </tr>
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Passenger Name:</strong> ${passengerName}
+          <strong>Passenger Name:</strong> ${bookingName}
         </td>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Number of Passengers:</strong> ${tickets}
+          <strong>Number of Passengers:</strong> ${numberOfPeople}
         </td>
       </tr>
       <tr>
@@ -88,7 +100,7 @@ export const tourRev = async (req: Request, res: Response) => {
       </tr>
        <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Price:</strong> ${price}
+          <strong>Price:</strong> ${totalPrice}
         </td>
       </tr>
     </table>
@@ -101,7 +113,7 @@ export const tourRev = async (req: Request, res: Response) => {
     //   subject: "New Booking",
     //   html: `<h2>A new booking with booking Id ${bookingId} of vehicle ${id}</h2>`,
     // });
-    return res.status(200).json({ message: "Successfully Send" });
+    return res.status(200).json({ message: "Successfully Booked" });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }
@@ -209,10 +221,10 @@ export const updateTourRevStatusByClient = async (
       </tr>
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Passenger Name:</strong> ${data.passengerName}
+          <strong>Passenger Name:</strong> ${data.bookingName}
         </td>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Number of Passengers:</strong> ${data.tickets}
+          <strong>Number of Passengers:</strong> ${data.numberOfPeople}
         </td>
       </tr>
       <tr>
@@ -282,10 +294,10 @@ export const updateTourRevStatusByBid = async (req: Request, res: Response) => {
       </tr>
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Passenger Name:</strong> ${data.passengerName}
+          <strong>Passenger Name:</strong> ${data.bookingName}
         </td>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Number of Passengers:</strong> ${data.tickets}
+          <strong>Number of Passengers:</strong> ${data.numberOfPeople}
         </td>
       </tr>
       <tr>

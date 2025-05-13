@@ -399,7 +399,7 @@ export const getDest = async (req: Request, res: Response) => {
       return res.send(data);
     }
   } catch (error: any) {
-    return res.status(500).json({ error: "internal error" });
+    return res.status(500).json({ error: "ror" });
   }
 };
 export const getDestById = async (req: Request, res: Response) => {

@@ -392,7 +392,7 @@ const getDest = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
     }
     catch (error) {
-        return res.status(500).json({ error: "internal error" });
+        return res.status(500).json({ error: "ror" });
     }
 });
 exports.getDest = getDest;

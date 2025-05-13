@@ -31,7 +31,7 @@ const addTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
     let tourId = customId();
     tourId = "TU" + tourId;
-    const { businessId, prodCategory, prodsubCategory, inclusion, dest, duration, price, itinerary, capacity, name, phone, operationDates, addedBy, } = req.body;
+    const { businessId, prodCategory, prodsubCategory, inclusion, dest, duration, price, itinerary, capacity, pickUpLocation, name, phone, operationDates, addedBy, } = req.body;
     try {
         const businessData = yield business_1.default.findOne({ businessId });
         if (!businessData) {
@@ -69,6 +69,7 @@ const addTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             price,
             addedBy,
             duration,
+            pickUpLocation,
             itinerary,
             capacity,
             name,
@@ -138,7 +139,7 @@ const tourDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.tourDetails = tourDetails;
 const updateTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { businessId, prodCategory, prodsubCategory, inclusion, dest, duration, itinerary, capacity, price, name, phone, updatedBy, operationDates, } = req.body;
+    const { businessId, prodCategory, prodsubCategory, inclusion, dest, duration, pickUpLocation, itinerary, capacity, price, name, phone, updatedBy, operationDates, } = req.body;
     try {
         let existingTourImages = req.body.existingTourImages || [];
         let tourImages = existingTourImages || [];
@@ -165,13 +166,13 @@ const updateTour = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             tourImages.push(...uploadedImages);
         }
         const data = yield tour_1.default.findOneAndUpdate({ tourId: id }, {
-            businessId,
             prodCategory,
             prodsubCategory,
             inclusion,
             dest,
             duration,
             itinerary,
+            pickUpLocation,
             capacity,
             price,
             name,
@@ -205,7 +206,7 @@ const addTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = customAlphabet("1234567890", 4);
     let trekId = customId();
     trekId = "TR" + trekId;
-    const { businessId, prodCategory, prodsubCategory, inclusion, days, dest, price, numbers, itinerary, capacity, addedBy, name, operationDates, } = req.body;
+    const { businessId, prodCategory, prodsubCategory, inclusion, days, dest, pickUpLocation, price, numbers, itinerary, capacity, addedBy, name, operationDates, } = req.body;
     try {
         const businessData = yield business_1.default.findOne({ businessId });
         if (!businessData) {
@@ -252,6 +253,7 @@ const addTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             inclusion,
             days,
             addedBy,
+            pickUpLocation,
             dest,
             price,
             trekId: trekId,
@@ -324,7 +326,7 @@ const trekDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.trekDetails = trekDetails;
 const updateTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { businessId, prodCategory, prodsubCategory, inclusion, days, dest, price, numbers, updatedBy, itinerary, capacity, name, operationDates, } = req.body;
+    const { businessId, prodCategory, prodsubCategory, inclusion, days, dest, price, pickUpLocation, numbers, updatedBy, itinerary, capacity, name, operationDates, } = req.body;
     try {
         // const trekImages: string[] = req.body.existingTrekImages || [];
         // if (req.files) {
@@ -359,6 +361,7 @@ const updateTrek = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             days,
             dest,
             numbers,
+            pickUpLocation,
             price,
             itinerary,
             capacity,

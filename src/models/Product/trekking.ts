@@ -4,6 +4,7 @@ export interface ITrekking extends Document {
   _id?: string;
   businessId: string;
   businessName: string;
+  pickUpLocation: string;
   prodCategory: string;
   prodsubCategory: string;
   inclusion: string[];
@@ -14,7 +15,7 @@ export interface ITrekking extends Document {
   isActive: boolean;
   capacity: string;
   name: string;
-  operationDates?: Date[];
+  operationDates?: string[];
   trekImages?: string[];
   trekId: string;
   isFeatured: boolean;
@@ -27,6 +28,9 @@ const trekSchema = new mongoose.Schema({
     type: String,
   },
   businessName: {
+    type: String,
+  },
+  pickUpLocation: {
     type: String,
   },
   addedBy: {
@@ -90,7 +94,7 @@ const trekSchema = new mongoose.Schema({
 
   operationDates: [
     {
-      type: Date,
+      type: String,
     },
   ],
 

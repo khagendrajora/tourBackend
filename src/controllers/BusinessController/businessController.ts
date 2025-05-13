@@ -260,8 +260,8 @@ export const updateBusinessProfile = async (req: Request, res: Response) => {
         // profileIcon = files["profileIcon"][0]?.path;
       }
     }
-    const data = await Business.findByIdAndUpdate(
-      id,
+    const data = await Business.findOneAndUpdate(
+      { businessId: id },
       {
         businessSubCategory: req.body.businessSubCategory,
         businessAddress: {

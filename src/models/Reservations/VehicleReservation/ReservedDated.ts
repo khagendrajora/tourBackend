@@ -3,11 +3,10 @@ import mongoose from "mongoose";
 export interface IRDates extends Document {
   _id?: string;
   vehicleId: string;
-  bookingDate: Date[];
+  bookingDate: string[];
   bookedBy: string;
   bookingId: string;
   time?: string;
-  startTime: string;
 }
 
 const revDates = new mongoose.Schema(
@@ -24,10 +23,6 @@ const revDates = new mongoose.Schema(
       type: String,
       required: true,
     },
-    startTime: {
-      type: String,
-      required: true,
-    },
     bookedBy: {
       type: String,
       required: true,
@@ -35,7 +30,7 @@ const revDates = new mongoose.Schema(
 
     bookingDate: [
       {
-        type: Date,
+        type: String,
       },
     ],
   },

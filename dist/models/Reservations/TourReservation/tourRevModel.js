@@ -17,11 +17,17 @@ const TourReservation = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    price: {
+    businessName: {
         type: String,
+        required: true,
+    },
+    totalPrice: {
+        type: String,
+        required: true,
     },
     bookedBy: {
         type: String,
+        required: true,
     },
     businessId: {
         type: String,
@@ -35,11 +41,11 @@ const TourReservation = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    passengerName: {
+    bookingName: {
         type: String,
         required: true,
     },
-    tickets: {
+    numberOfPeople: {
         type: Number,
         required: true,
     },
@@ -48,7 +54,7 @@ const TourReservation = new mongoose_1.default.Schema({
         type: String,
     },
     date: {
-        type: Date,
+        type: String,
         required: true,
     },
     status: {

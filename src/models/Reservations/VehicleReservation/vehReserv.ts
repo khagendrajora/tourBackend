@@ -13,27 +13,23 @@ export interface IVRev extends Document {
   vehicleId: string;
   vehicleType: string;
   vehicleNumber: string;
-  capacity: string;
   vehicleName: string;
   bookedBy: string;
-  bookedByName: string;
-  age: string;
   email?: string;
   phone: string;
-  sourceAddress: string;
-  destinationAddress: string;
-  startDate?: Date;
-  endDate?: Date;
+  pickUpLocation: string;
+  dropOffLocation: string;
+  pickUpDate: string;
+  dropOffDate: string;
   address: string;
   bookingName: string;
   status: IStatus;
   businessId: string;
-  vehicleImage?: string[];
   numberOfPassengers: number;
-  time: string;
-  startTime: string;
-  price?: string;
-  createdAt?: Date;
+  totalPrice: string;
+  businessName: string;
+  businessPhone: string;
+  createdAt?: string;
 }
 
 const VehicleReservation = new mongoose.Schema(
@@ -42,20 +38,24 @@ const VehicleReservation = new mongoose.Schema(
       type: String,
       required: true,
     },
-    price: {
+    businessPhone: {
+      type: String,
+    },
+    pickUpDate: {
+      type: String,
+      required: true,
+    },
+    dropOffDate: {
+      type: String,
+      required: true,
+    },
+    totalPrice: {
       type: String,
     },
     createdAt: {
-      type: Date,
-    },
-    time: {
       type: String,
-      required: true,
     },
-    startTime: {
-      type: String,
-      required: true,
-    },
+
     numberOfPassengers: {
       type: Number,
       required: true,
@@ -68,37 +68,19 @@ const VehicleReservation = new mongoose.Schema(
       type: String,
       required: true,
     },
-    bookedByName: {
-      required: true,
-      type: String,
-    },
     vehicleType: {
-      type: String,
-      required: true,
-    },
-    vehicleImage: [
-      {
-        type: String,
-      },
-    ],
-    capacity: {
-      type: String,
-      required: true,
-    },
-
-    age: {
       type: String,
       required: true,
     },
     email: {
       type: String,
     },
-    sourceAddress: {
+    pickUpLocation: {
       type: String,
       required: true,
     },
 
-    destinationAddress: {
+    dropOffLocation: {
       type: String,
       required: true,
     },
@@ -128,17 +110,16 @@ const VehicleReservation = new mongoose.Schema(
       type: String,
       rwquired: true,
     },
-    startDate: {
-      type: Date,
-    },
-    endDate: {
-      type: Date,
-    },
+
     status: {
       type: String,
       enum: Object.values(IStatus),
       required: true,
       default: IStatus.Pending,
+    },
+    businessName: {
+      type: String,
+      required: true,
     },
   },
 

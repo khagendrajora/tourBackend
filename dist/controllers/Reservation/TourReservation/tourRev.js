@@ -18,35 +18,40 @@ const setEmail_1 = require("../../../utils/setEmail");
 const nanoid_1 = require("nanoid");
 const tour_1 = __importDefault(require("../../../models/Product/tour"));
 const TourRevLog_1 = __importDefault(require("../../../models/LogModel/TourRevLog"));
-const userModel_1 = __importDefault(require("../../../models/User/userModel"));
+// import User from "../../../models/User/userModel";
+const business_1 = __importDefault(require("../../../models/Business/business"));
 const tourRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const customId = (0, nanoid_1.customAlphabet)("1234567890", 4);
     let bookingId = customId();
     bookingId = "TuR" + bookingId;
-    const { passengerName, tickets, email, phone, date, price, bookedBy } = req.body;
+    const { bookingName, numberOfPeople, email, phone, date, totalPrice, bookedBy, } = req.body;
     try {
         const tourData = yield tour_1.default.findOne({ tourId: id });
         if (!tourData) {
             return res.status(401).json({ error: "Tour Unavailable" });
         }
-        const userData = yield userModel_1.default.findOne({ userId: bookedBy });
-        if (!userData) {
-            return res.status(401).json({ error: "User Not found" });
-        }
+        const businessdata = yield business_1.default.findOne({
+            businessId: tourData.businessId,
+        });
+        // const userData = await User.findOne({ userId: bookedBy });
+        // if (!userData) {
+        //   return res.status(401).json({ error: "User Not found" });
+        // }
         // const businessdata = await Business.findOne({ bId: vehData.businessId });
         let tourRev = new tourRevModel_1.default({
-            bookedBy: userData.userId,
-            passengerName,
-            tickets,
+            bookedBy,
+            bookingName,
+            numberOfPeople,
             email,
             phone,
-            price,
+            totalPrice,
             date,
             businessId: tourData.businessId,
             bookingId,
             tourId: id,
             tourName: tourData.name,
+            businessName: businessdata === null || businessdata === void 0 ? void 0 : businessdata.businessName,
         });
         tourRev = yield tourRev.save();
         if (!tourRev) {
@@ -82,10 +87,10 @@ const tourRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
       </tr>
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Passenger Name:</strong> ${passengerName}
+          <strong>Passenger Name:</strong> ${bookingName}
         </td>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Number of Passengers:</strong> ${tickets}
+          <strong>Number of Passengers:</strong> ${numberOfPeople}
         </td>
       </tr>
       <tr>
@@ -95,7 +100,7 @@ const tourRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
       </tr>
        <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Price:</strong> ${price}
+          <strong>Price:</strong> ${totalPrice}
         </td>
       </tr>
     </table>
@@ -108,7 +113,7 @@ const tourRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         //   subject: "New Booking",
         //   html: `<h2>A new booking with booking Id ${bookingId} of vehicle ${id}</h2>`,
         // });
-        return res.status(200).json({ message: "Successfully Send" });
+        return res.status(200).json({ message: "Successfully Booked" });
     }
     catch (error) {
         return res.status(500).json({ error: error.message });
@@ -214,10 +219,10 @@ const updateTourRevStatusByClient = (req, res) => __awaiter(void 0, void 0, void
       </tr>
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Passenger Name:</strong> ${data.passengerName}
+          <strong>Passenger Name:</strong> ${data.bookingName}
         </td>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Number of Passengers:</strong> ${data.tickets}
+          <strong>Number of Passengers:</strong> ${data.numberOfPeople}
         </td>
       </tr>
       <tr>
@@ -282,10 +287,10 @@ const updateTourRevStatusByBid = (req, res) => __awaiter(void 0, void 0, void 0,
       </tr>
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Passenger Name:</strong> ${data.passengerName}
+          <strong>Passenger Name:</strong> ${data.bookingName}
         </td>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Number of Passengers:</strong> ${data.tickets}
+          <strong>Number of Passengers:</strong> ${data.numberOfPeople}
         </td>
       </tr>
       <tr>

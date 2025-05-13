@@ -29,19 +29,6 @@ exports.app.use(express_1.default.json());
 exports.app.use(express_1.default.urlencoded({ extended: true }));
 exports.app.use((0, cookie_parser_1.default)());
 exports.app.use((0, cors_1.default)());
-// app.use(
-//   fileUpload({
-//     useTempFiles: true,
-//     tempFileDir: "/tmp/",
-//   })
-// );
-// app.use(
-//   cors({
-//     origin: "http://localhost:5173",
-//     credentials: true,
-//   })
-// );
-// app.use(cors());
 exports.app.use("/public/uploads", express_1.default.static("public/uploads"));
 exports.app.use("/api", UserRoute_1.default);
 exports.app.use("/api", LandingPageRoute_1.default);
@@ -56,7 +43,7 @@ exports.app.use("/api", Login_1.default);
 exports.app.use("/api", LocationRoute_1.default);
 exports.app.use("/api", businessManagerRoute_1.default);
 exports.app.use("/api", businessSales_1.default);
-const port = 3000;
+const port = 3000 | 3001;
 exports.app.listen(port, () => {
-    console.log(`Server Started on ${port}`);
+    console.log(`Server Start on ${port}`);
 });

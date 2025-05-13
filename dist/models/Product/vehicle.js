@@ -86,7 +86,7 @@ const VehSchema = new mongoose_1.default.Schema({
     },
     operationDates: [
         {
-            type: Date,
+            type: String,
         },
     ],
     manufacturer: {

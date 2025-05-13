@@ -11,6 +11,9 @@ const trekSchema = new mongoose_1.default.Schema({
     businessName: {
         type: String,
     },
+    pickUpLocation: {
+        type: String,
+    },
     addedBy: {
         type: String,
     },
@@ -69,7 +72,7 @@ const trekSchema = new mongoose_1.default.Schema({
     },
     operationDates: [
         {
-            type: Date,
+            type: String,
         },
     ],
     trekImages: [

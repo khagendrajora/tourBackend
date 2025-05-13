@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 export interface IRDates extends Document {
   _id?: string;
   tourId: string;
-  bookingDate: Date[];
+  bookingDate: string[];
   bookedBy: string;
   bookingId: string;
 }
@@ -25,7 +25,7 @@ const revDates = new mongoose.Schema(
 
     bookingDate: [
       {
-        type: Date,
+        type: String,
       },
     ],
   },

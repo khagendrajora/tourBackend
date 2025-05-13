@@ -16,7 +16,8 @@ exports.updateTrekRevStatusByBid = exports.updateTrekRevStatusByClient = exports
 const TrekRevModel_1 = __importDefault(require("../../../models/Reservations/TrekReservation/TrekRevModel"));
 const setEmail_1 = require("../../../utils/setEmail");
 const nanoid_1 = require("nanoid");
-const userModel_1 = __importDefault(require("../../../models/User/userModel"));
+// import User from "../../../models/User/userModel";
+const business_1 = __importDefault(require("../../../models/Business/business"));
 const trekking_1 = __importDefault(require("../../../models/Product/trekking"));
 const TrekRevLog_1 = __importDefault(require("../../../models/LogModel/TrekRevLog"));
 const trekRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -24,28 +25,32 @@ const trekRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const customId = (0, nanoid_1.customAlphabet)("1234567890", 4);
     let bookingId = customId();
     bookingId = "TrR" + bookingId;
-    const { passengerName, tickets, email, phone, date, bookedBy, price } = req.body;
+    const { bookingName, numberOfPeople, email, phone, date, bookedBy, totalPrice, } = req.body;
     try {
         const trekData = yield trekking_1.default.findOne({ trekId: id });
         if (!trekData) {
             return res.status(401).json({ error: "Trek Unavailable" });
         }
-        const userData = yield userModel_1.default.findOne({ userId: bookedBy });
-        if (!userData) {
-            return res.status(401).json({ error: "User Not found" });
-        }
+        const businessdata = yield business_1.default.findOne({
+            businessId: trekData.businessId,
+        });
+        // const userData = await User.findOne({ userId: bookedBy });
+        // if (!userData) {
+        //   return res.status(401).json({ error: "User Not found" });
+        // }
         // const businessdata = await Business.findOne({ bId: vehData.businessId });
         let trekRev = new TrekRevModel_1.default({
             bookedBy,
-            passengerName,
-            tickets,
-            price,
+            bookingName,
+            numberOfPeople,
+            totalPrice,
             email,
             phone,
             date,
             businessId: trekData.businessId,
             bookingId,
             trekName: trekData.name,
+            businessName: businessdata === null || businessdata === void 0 ? void 0 : businessdata.businessName,
             trekId: id,
         });
         trekRev = yield trekRev.save();
@@ -81,10 +86,10 @@ const trekRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
       </tr>
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Passenger Name:</strong> ${passengerName}
+          <strong>Passenger Name:</strong> ${bookingName}
         </td>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Number of Passengers:</strong> ${tickets}
+          <strong>Number of Passengers:</strong> ${numberOfPeople}
         </td>
       </tr>
       <tr>
@@ -94,7 +99,7 @@ const trekRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
       </tr>
         <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Price:</strong> ${price}
+          <strong>Price:</strong> ${totalPrice}
         </td>
       </tr>
     </table>
@@ -108,7 +113,7 @@ const trekRev = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         //   subject: "New Booking",
         //   html: `<h2>A new booking with booking Id ${bookingId} of vehicle ${id}</h2>`,
         // });
-        return res.status(200).json({ message: "Successfully Send" });
+        return res.status(200).json({ message: "Successfully Booked" });
     }
     catch (error) {
         return res.status(500).json({ error: error.message });
@@ -214,10 +219,10 @@ const updateTrekRevStatusByClient = (req, res) => __awaiter(void 0, void 0, void
       </tr>
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Passenger Name:</strong> ${data.passengerName}
+          <strong>Passenger Name:</strong> ${data.bookingName}
         </td>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Number of Passengers:</strong> ${data.tickets}
+          <strong>Number of Passengers:</strong> ${data.numberOfPeople}
         </td>
       </tr>
       <tr>
@@ -227,7 +232,7 @@ const updateTrekRevStatusByClient = (req, res) => __awaiter(void 0, void 0, void
       </tr>
         <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Date:</strong> ${data.price}
+          <strong>Date:</strong> ${data.totalPrice}
         </td>
       </tr>
     </table>
@@ -287,10 +292,10 @@ const updateTrekRevStatusByBid = (req, res) => __awaiter(void 0, void 0, void 0,
       </tr>
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Passenger Name:</strong> ${data.passengerName}
+          <strong>Passenger Name:</strong> ${data.bookingName}
         </td>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Number of Passengers:</strong> ${data.tickets}
+          <strong>Number of Passengers:</strong> ${data.numberOfPeople}
         </td>
       </tr>
       <tr>

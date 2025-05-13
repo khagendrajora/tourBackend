@@ -17,19 +17,22 @@ const VehicleReservation = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    price: {
+    businessPhone: {
+        type: String,
+    },
+    pickUpDate: {
+        type: String,
+        required: true,
+    },
+    dropOffDate: {
+        type: String,
+        required: true,
+    },
+    totalPrice: {
         type: String,
     },
     createdAt: {
-        type: Date,
-    },
-    time: {
         type: String,
-        required: true,
-    },
-    startTime: {
-        type: String,
-        required: true,
     },
     numberOfPassengers: {
         type: Number,
@@ -43,35 +46,18 @@ const VehicleReservation = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    bookedByName: {
-        required: true,
-        type: String,
-    },
     vehicleType: {
-        type: String,
-        required: true,
-    },
-    vehicleImage: [
-        {
-            type: String,
-        },
-    ],
-    capacity: {
-        type: String,
-        required: true,
-    },
-    age: {
         type: String,
         required: true,
     },
     email: {
         type: String,
     },
-    sourceAddress: {
+    pickUpLocation: {
         type: String,
         required: true,
     },
-    destinationAddress: {
+    dropOffLocation: {
         type: String,
         required: true,
     },
@@ -99,17 +85,15 @@ const VehicleReservation = new mongoose_1.default.Schema({
         type: String,
         rwquired: true,
     },
-    startDate: {
-        type: Date,
-    },
-    endDate: {
-        type: Date,
-    },
     status: {
         type: String,
         enum: Object.values(IStatus),
         required: true,
         default: IStatus.Pending,
+    },
+    businessName: {
+        type: String,
+        required: true,
     },
 }, { timestamps: true });
 exports.default = mongoose_1.default.model("VehicleReservation", VehicleReservation);

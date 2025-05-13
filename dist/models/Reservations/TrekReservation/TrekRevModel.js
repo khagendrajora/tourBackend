@@ -17,8 +17,13 @@ const TrekReservation = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    price: {
+    businessName: {
         type: String,
+        required: true,
+    },
+    totalPrice: {
+        type: String,
+        required: true,
     },
     businessId: {
         type: String,
@@ -32,11 +37,11 @@ const TrekReservation = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    passengerName: {
+    bookingName: {
         type: String,
         required: true,
     },
-    tickets: {
+    numberOfPeople: {
         type: Number,
         required: true,
     },
@@ -48,10 +53,6 @@ const TrekReservation = new mongoose_1.default.Schema({
         type: Date,
         required: true,
     },
-    // end: {
-    //   type: String,
-    //   required: true,
-    // },
     phone: {
         type: String,
         required: true,
@@ -68,6 +69,7 @@ const TrekReservation = new mongoose_1.default.Schema({
     },
     bookedBy: {
         type: String,
+        required: true,
     },
 }, { timestamps: true });
 exports.default = mongoose_1.default.model("TrekReservation", TrekReservation);

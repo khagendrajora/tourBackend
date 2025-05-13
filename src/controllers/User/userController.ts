@@ -5,7 +5,7 @@ import Token from "../../models/token";
 import { uuid } from "uuidv4";
 import { sendEmail } from "../../utils/setEmail";
 import { customAlphabet } from "nanoid";
-import ReservationDate from "../../models/Reservations/ReservedDated";
+import ReservationDate from "../../models/Reservations/VehicleReservation/ReservedDated";
 import Driver from "../../models/Business/Driver";
 import Business from "../../models/Business/business";
 import AdminUser from "../../models/adminUser";

@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAllRevDates = exports.getReservedDates = exports.saveReservedDated = void 0;
-const ReservedDated_1 = __importDefault(require("../../../models/Reservations/ReservedDated"));
+const ReservedDated_1 = __importDefault(require("../../../models/Reservations/VehicleReservation/ReservedDated"));
 const saveReservedDated = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { vehicleId, bookedBy, bookingDate, time } = req.body;
     try {

@@ -20,7 +20,7 @@ export interface IVeh extends Document {
   baseLocation: string;
   capacity: string;
   name: string;
-  operationDates?: Date[];
+  operationDates?: string[];
   vehImages?: string[];
   manufacturer: string;
   model: string;
@@ -112,7 +112,7 @@ const VehSchema = new mongoose.Schema(
 
     operationDates: [
       {
-        type: Date,
+        type: String,
       },
     ],
     manufacturer: {

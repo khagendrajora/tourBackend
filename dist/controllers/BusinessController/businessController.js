@@ -253,7 +253,7 @@ const updateBusinessProfile = (req, res) => __awaiter(void 0, void 0, void 0, fu
                 // profileIcon = files["profileIcon"][0]?.path;
             }
         }
-        const data = yield business_1.default.findByIdAndUpdate(id, {
+        const data = yield business_1.default.findOneAndUpdate({ businessId: id }, {
             businessSubCategory: req.body.businessSubCategory,
             businessAddress: {
                 street: req.body.businessAddress.street,

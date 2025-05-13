@@ -13,9 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAllReservations = exports.updateReservationByBid = exports.getRevByVehicleId = exports.getRevByBusinessId = exports.updateReservationStatusByBid = exports.updateReservationStatusByClient = exports.getRevByClientId = exports.vehReservation = void 0;
-const vehReserv_1 = __importDefault(require("../../../models/Reservations/vehReserv"));
+const vehReserv_1 = __importDefault(require("../../../models/Reservations/VehicleReservation/vehReserv"));
 const vehicle_1 = __importDefault(require("../../../models/Product/vehicle"));
-const ReservedDated_1 = __importDefault(require("../../../models/Reservations/ReservedDated"));
+const ReservedDated_1 = __importDefault(require("../../../models/Reservations/VehicleReservation/ReservedDated"));
 const nanoid_1 = require("nanoid");
 const setEmail_1 = require("../../../utils/setEmail");
 const business_1 = __importDefault(require("../../../models/Business/business"));
@@ -26,13 +26,14 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const customId = (0, nanoid_1.customAlphabet)("1234567890", 4);
     let bookingId = customId();
     bookingId = "R" + bookingId;
-    const { bookingName, age, email, phone, price, sourceAddress, destinationAddress, startDate, endDate, address, bookedBy, bookedByName, numberOfPassengers, time, startTime, } = req.body;
+    const { bookingName, email, phone, totalPrice, pickUpLocation, dropOffLocation, pickUpDate, dropOffDate, address, bookedBy, numberOfPassengers, } = req.body;
     let bookingDate = [];
-    const newStartDate = new Date(startDate);
-    const newEndDate = new Date(endDate);
-    while (newStartDate <= newEndDate) {
-        bookingDate.push(newStartDate.toISOString().split("T")[0]);
-        newStartDate.setDate(newStartDate.getDate() + 1);
+    const newPickUpDate = pickUpDate;
+    const newDropOffDate = dropOffDate;
+    let current = new Date(newPickUpDate);
+    while (current <= new Date(newDropOffDate)) {
+        bookingDate.push(current.toDateString());
+        current.setDate(current.getDate() + 1);
     }
     try {
         const vehData = yield vehicle_1.default.findOne({ vehicleId: id });
@@ -46,26 +47,23 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
             vehicleId: id,
             vehicleType: vehData.vehCategory,
             vehicleNumber: vehData.vehNumber,
-            capacity: vehData.capacity,
             vehicleName: vehData.name,
             bookingId: bookingId,
             businessId: vehData.businessId,
+            businessName: vehData.businessName,
+            businessPhone: businessdata === null || businessdata === void 0 ? void 0 : businessdata.primaryPhone,
             vehicleImage: ((_a = vehData.vehImages) === null || _a === void 0 ? void 0 : _a.length) ? vehData.vehImages : [],
             bookedBy,
-            bookedByName,
-            price,
-            age,
-            sourceAddress,
-            destinationAddress,
+            totalPrice,
+            pickUpLocation,
+            dropOffLocation,
             email,
             phone,
-            startDate,
-            endDate,
+            pickUpDate,
+            dropOffDate,
             address,
             bookingName,
             numberOfPassengers,
-            time,
-            startTime,
         });
         vehRev = yield vehRev.save();
         if (!vehRev) {
@@ -76,24 +74,14 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 vehicleId: id,
                 bookingDate,
                 bookedBy,
-                time,
-                startTime,
                 bookingId: bookingId,
+                time: new Date(),
             });
             resrvDate = yield resrvDate.save();
             if (!resrvDate) {
                 return res.status(400).json({ error: "failed to save date" });
             }
             else {
-                // await Vehicle.findOneAndUpdate(
-                //   { vehicleId: id },
-                //   {
-                //     operationDates: bookingDate,
-                //   },
-                //   { new: true }
-                // );
-                const start = new Date(startDate);
-                const end = new Date(endDate);
                 (0, setEmail_1.sendEmail)({
                     from: "beta.toursewa@gmail.com",
                     to: email,
@@ -134,17 +122,22 @@ const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function*
       </tr>
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>From - To:</strong> ${sourceAddress} - ${destinationAddress}
+          <strong>From - To:</strong> ${pickUpLocation} - ${dropOffLocation}
         </td>
       </tr>
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Price:</strong> NRP.${price}
+          <strong>Price:</strong> NRP.${totalPrice}
         </td>
       </tr>
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Start Date - End Date:</strong> ${start.toISOString().split("T")[0]} - ${end.toISOString().split("T")[0]}
+          <strong>Start Date - End Date:</strong> ${pickUpDate} - ${dropOffDate}
+        </td>
+      </tr>
+      <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>For Enquiry:</strong> ${businessdata === null || businessdata === void 0 ? void 0 : businessdata.primaryPhone}
         </td>
       </tr>
     </table>
@@ -241,16 +234,16 @@ const updateReservationStatusByClient = (req, res) => __awaiter(void 0, void 0, 
         </tr>
         <tr>
           <td style="font-size: 14px; font-weight: bold;">From - To:</td>
-          <td style="font-size: 14px; color: #64748B;">${data.sourceAddress} - ${data.destinationAddress}</td>
+          <td style="font-size: 14px; color: #64748B;">${data.pickUpLocation} - ${data.dropOffLocation}</td>
         </tr>
           <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Price:</strong> NRP.${data.price}
+          <strong>Price:</strong> NRP.${data.totalPrice}
         </td>
       </tr>
         <tr>
           <td style="font-size: 14px; font-weight: bold;">Start Date - End Date:</td>
-          <td style="font-size: 14px; color: #64748B;">${data.startDate} - ${data.endDate}</td>
+          <td style="font-size: 14px; color: #64748B;">${data.pickUpDate} - ${data.dropOffDate}</td>
         </tr>
       </table>
     </div>`,
@@ -316,16 +309,16 @@ const updateReservationStatusByBid = (req, res) => __awaiter(void 0, void 0, voi
         </tr>
         <tr>
           <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">From - To:</td>
-          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${data.sourceAddress} - ${data.destinationAddress}</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${data.pickUpLocation} - ${data.dropOffLocation}</td>
         </tr>
           <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Price:</strong> NRP.${data.price}
+          <strong>Price:</strong> NRP.${data.totalPrice}
         </td>
       </tr>
         <tr>
           <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Start Date - End Date:</td>
-          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${data.startDate} - ${data.endDate}</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${data.pickUpDate} - ${data.dropOffDate}</td>
         </tr>
       </table>
     </div>`,
@@ -428,16 +421,16 @@ const updateReservationByBid = (req, res) => __awaiter(void 0, void 0, void 0, f
     </tr>
     <tr style="background-color: #F3F4F6;">
       <td style="font-size: 14px; font-weight: bold; padding: 12px 8px; text-align: left;">From - To:</td>
-      <td style="font-size: 14px; color: #64748B; padding: 12px 8px; text-align: left;">${data.sourceAddress} - ${data.destinationAddress}</td>
+      <td style="font-size: 14px; color: #64748B; padding: 12px 8px; text-align: left;">${data.pickUpLocation} - ${data.dropOffLocation}</td>
     </tr>
       <tr>
         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-          <strong>Price:</strong> NRP.${data.price}
+          <strong>Price:</strong> NRP.${data.totalPrice}
         </td>
       </tr>
     <tr>
       <td style="font-size: 14px; font-weight: bold; padding: 12px 8px; text-align: left;">Start Date - End Date:</td>
-      <td style="font-size: 14px; color: #64748B; padding: 12px 8px; text-align: left;">${data.startDate} - ${data.endDate}</td>
+      <td style="font-size: 14px; color: #64748B; padding: 12px 8px; text-align: left;">${data.pickUpDate} - ${data.dropOffDate}</td>
     </tr>
   </table>
 </div>

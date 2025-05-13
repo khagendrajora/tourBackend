@@ -12,17 +12,18 @@ export interface ITrRev extends Document {
   bookingId: string;
   trekId: string;
   trekName: string;
-  passengerName: string;
-  businessId: string;
-  tickets: number;
+  bookingName: string;
   bookedBy: string;
-  email?: string;
+  businessId: string;
+  numberOfPeople: number;
+  email: string;
   phone: string;
   date: Date;
   createdAt?: Date;
   isApproved: boolean;
   status: IStatus;
-  price?: string;
+  totalPrice: string;
+  businessName: string;
 }
 
 const TrekReservation = new mongoose.Schema(
@@ -31,8 +32,13 @@ const TrekReservation = new mongoose.Schema(
       type: String,
       required: true,
     },
-    price: {
+    businessName: {
       type: String,
+      required: true,
+    },
+    totalPrice: {
+      type: String,
+      required: true,
     },
     businessId: {
       type: String,
@@ -46,11 +52,11 @@ const TrekReservation = new mongoose.Schema(
       type: String,
       required: true,
     },
-    passengerName: {
+    bookingName: {
       type: String,
       required: true,
     },
-    tickets: {
+    numberOfPeople: {
       type: Number,
       required: true,
     },
@@ -63,10 +69,6 @@ const TrekReservation = new mongoose.Schema(
       required: true,
     },
 
-    // end: {
-    //   type: String,
-    //   required: true,
-    // },
     phone: {
       type: String,
       required: true,
@@ -83,6 +85,7 @@ const TrekReservation = new mongoose.Schema(
     },
     bookedBy: {
       type: String,
+      required: true,
     },
   },
 

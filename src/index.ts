@@ -27,21 +27,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors());
 
-// app.use(
-//   fileUpload({
-//     useTempFiles: true,
-//     tempFileDir: "/tmp/",
-//   })
-// );
-
-// app.use(
-//   cors({
-//     origin: "http://localhost:5173",
-//     credentials: true,
-//   })
-// );
-// app.use(cors());
-
 app.use("/public/uploads", express.static("public/uploads"));
 app.use("/api", UserRoute);
 app.use("/api", LandingPageRoute);
@@ -57,8 +42,8 @@ app.use("/api", LocationRoute);
 app.use("/api", businessManagerRoute);
 app.use("/api", businessSales);
 
-const port = 3000;
+const port = 3000 | 3001;
 
 app.listen(port, () => {
-  console.log(`Server Started on ${port}`);
+  console.log(`Server Start on ${port}`);
 });
