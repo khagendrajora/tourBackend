@@ -37,10 +37,11 @@ router.get("/gettourdetails/:id", tourDetails);
 router.get("/gettour/:businessid", getTourByBusinessId);
 router.put(
   "/updatetour/:id",
+  veriftyToken,
   upload.fields([{ name: "tourImages", maxCount: 1000 }]),
   updateTour
 );
-router.delete("/deletetour/:id", deleteTour);
+router.delete("/deletetour/:id", veriftyToken, deleteTour);
 
 // Trek Routes
 
@@ -55,10 +56,11 @@ router.get("/gettrek/:businessid", getTrekByBusinessId);
 router.get("/gettrekdetails/:id", trekDetails);
 router.put(
   "/updatetrek/:id",
+  veriftyToken,
   upload.fields([{ name: "trekImages", maxCount: 1000 }]),
   updateTrek
 );
-router.delete("/deletetrek/:id", deleteTrek);
+router.delete("/deletetrek/:id", veriftyToken, deleteTrek);
 
 // Venicle Routes
 
@@ -73,6 +75,7 @@ router.get("/getvehicle/:businessid", getVehicleByBusinessId);
 router.get("/getvehdetails/:id", vehDetails);
 router.put(
   "/updateveh/:id",
+  veriftyToken,
   upload.fields([{ name: "vehImages", maxCount: 1000 }]),
   updateVeh
 );
