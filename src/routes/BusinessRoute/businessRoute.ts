@@ -14,6 +14,7 @@ import {
 import upload from "../../middleware/fileUpload";
 import { addBusinessData, validation } from "../../validation/Validation";
 import { verifyAndResetPwd } from "../../controllers/adminController";
+import { veriftyToken } from "../../middleware/Auth";
 
 const router = express.Router();
 
@@ -30,10 +31,11 @@ router.put(
     { name: "profileIcon", maxCount: 1 },
     { name: "imageGallery", maxCount: 100 },
   ]),
+  veriftyToken,
   updateBusinessProfile
 );
 
-router.delete("/deletebusiness/:id", deleteBusiness);
+router.delete("/deletebusiness/:id", veriftyToken, deleteBusiness);
 router.post("/businesssignout", businessSignOut);
 
 router.post("/forgetpwd", forgetPwd);
@@ -41,6 +43,6 @@ router.put("/resetpassword/:token", resetPwd);
 
 router.put("/resetandverify/:token", verifyAndResetPwd);
 
-router.post("/requestfeature/:id", featureRequest);
+router.post("/requestfeature/:id", veriftyToken, featureRequest);
 
 export default router;

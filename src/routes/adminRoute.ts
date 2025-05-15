@@ -14,21 +14,22 @@ import {
   resetPass,
 } from "../controllers/adminController";
 import { adminSignup, validation } from "../validation/Validation";
+import { veriftyToken } from "../middleware/Auth";
 const router = express.Router();
 
 router.post("/addadmin", adminSignup, validation, addAdminUser);
 router.get("/getadmin", getAdmin);
-router.put("/businessapprove/:id", businessApprove);
+router.put("/businessapprove/:id", veriftyToken, businessApprove);
 
 router.post("/adminlogin", adminlogin);
 router.post("/forgetadminpwd", forgetPass);
 router.put("/resetpwd/:token", resetPass);
-router.post("/addbusinessbyadmin", addBusinessByAdmin);
-router.delete("/deleteadmin/:id", deleteAdmin);
+router.post("/addbusinessbyadmin", veriftyToken, addBusinessByAdmin);
+router.delete("/deleteadmin/:id", veriftyToken, deleteAdmin);
 
 router.get("/getfeature", getFeature);
-router.put("/addfeature/:id", addFeature);
-router.delete("/deletefeaturerequest/:id", deleteFeatureRequest);
-router.delete("/removefeature/:id", removeFeatureProduct);
+router.put("/addfeature/:id", veriftyToken, addFeature);
+router.delete("/deletefeaturerequest/:id", veriftyToken, deleteFeatureRequest);
+router.delete("/removefeature/:id", veriftyToken, removeFeatureProduct);
 
 export default router;

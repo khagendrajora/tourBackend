@@ -28,7 +28,7 @@ const Sales_1 = __importDefault(require("../models/Business/Sales"));
 //     httpOnly: true,
 //     sameSite: "strict",
 //     secure: process.env.NODE_ENV === "production",
-//     maxAge: 3600000, // 1 hour
+//     maxAge: 3600000,
 //   });
 // };
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

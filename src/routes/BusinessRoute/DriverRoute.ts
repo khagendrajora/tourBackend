@@ -20,6 +20,7 @@ import {
   getHotDealsByvehicleId,
   updateHotdeals,
 } from "../../controllers/HotDealsControllers/HotDealsCOntroller";
+import { veriftyToken } from "../../middleware/Auth";
 
 const router = express.Router();
 
@@ -35,11 +36,12 @@ router.get("/getdrivers/:id", getDriverById);
 router.get("/getdriverbybid/:id", getDriverByBId);
 router.get("/getdrivervehicle/:vehicleId", getDriverVehicles);
 
-router.put("/updatedriverstatus/:id", updateDriverStatus);
-router.delete("/deletedriver/:id", deleteDriver);
+router.put("/updatedriverstatus/:id", veriftyToken, updateDriverStatus);
+router.delete("/deletedriver/:id", veriftyToken, deleteDriver);
 router.put(
   "/updatedriver/:id",
   upload.fields([{ name: "image", maxCount: 1 }]),
+  veriftyToken,
   updateDriver
 );
 router.put("/resetdriverpwd/:token", resetPwd);

@@ -16,7 +16,7 @@ import Sales from "../models/Business/Sales";
 //     httpOnly: true,
 //     sameSite: "strict",
 //     secure: process.env.NODE_ENV === "production",
-//     maxAge: 3600000, // 1 hour
+//     maxAge: 3600000,
 //   });
 // };
 
@@ -54,6 +54,7 @@ export const login = async (req: Request, res: Response) => {
     const authToken = jwt.sign({ id: user._id }, process.env.JWTSECRET, {
       expiresIn: "1h",
     });
+
     if (!authToken) return res.status(401).json({ error: "Failed" });
     // const authToken = createAuthToken(user._id.toString());
     // setAuthCookie(res, authToken);

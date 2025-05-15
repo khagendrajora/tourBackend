@@ -21,7 +21,7 @@ const veriftyToken = (req, res, next) => {
         next();
     }
     catch (error) {
-        res
+        return res
             .status(400)
             .json({ error: "Invalid Token or Expired ", message: "Login Again" });
     }

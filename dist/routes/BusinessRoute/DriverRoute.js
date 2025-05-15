@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const driver_1 = require("../../controllers/BusinessController/driver");
 const fileUpload_1 = __importDefault(require("../../middleware/fileUpload"));
 const HotDealsCOntroller_1 = require("../../controllers/HotDealsControllers/HotDealsCOntroller");
+const Auth_1 = require("../../middleware/Auth");
 const router = express_1.default.Router();
 //Driver routes
 router.post("/adddriver", fileUpload_1.default.fields([{ name: "image", maxCount: 1 }]), driver_1.addDriver);
@@ -14,9 +15,9 @@ router.get("/getdrivers", driver_1.getDrivers);
 router.get("/getdrivers/:id", driver_1.getDriverById);
 router.get("/getdriverbybid/:id", driver_1.getDriverByBId);
 router.get("/getdrivervehicle/:vehicleId", driver_1.getDriverVehicles);
-router.put("/updatedriverstatus/:id", driver_1.updateDriverStatus);
-router.delete("/deletedriver/:id", driver_1.deleteDriver);
-router.put("/updatedriver/:id", fileUpload_1.default.fields([{ name: "image", maxCount: 1 }]), driver_1.updateDriver);
+router.put("/updatedriverstatus/:id", Auth_1.veriftyToken, driver_1.updateDriverStatus);
+router.delete("/deletedriver/:id", Auth_1.veriftyToken, driver_1.deleteDriver);
+router.put("/updatedriver/:id", fileUpload_1.default.fields([{ name: "image", maxCount: 1 }]), Auth_1.veriftyToken, driver_1.updateDriver);
 router.put("/resetdriverpwd/:token", driver_1.resetPwd);
 router.put("/resetandverifyemail/:token", driver_1.verifyDriverEmail);
 //Hot deals routes

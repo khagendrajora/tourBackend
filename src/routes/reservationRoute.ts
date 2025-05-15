@@ -29,11 +29,12 @@ import {
   updateTrekRevStatusByBid,
   updateTrekRevStatusByClient,
 } from "../controllers/Reservation/TrekReservation/trekRev";
+import { veriftyToken } from "../middleware/Auth";
 const router = express.Router();
 
 //Vehicle reservation routes
 
-router.post("/addRev/:id", vehReservation);
+router.post("/addRev/:id", veriftyToken, vehReservation);
 router.get("/reservdates/:id", getReservedDates);
 router.get("/getclientrev/:id", getRevByClientId);
 router.put("/updateRevStatusbyclient/:id", updateReservationStatusByClient);
@@ -46,7 +47,7 @@ router.get("/getrevbyvehicleId/:id", getRevByVehicleId);
 
 //Tour reservation routes
 
-router.post("/addtourrev/:id", tourRev);
+router.post("/addtourrev/:id", veriftyToken, tourRev);
 router.get("/gettourrev", getTourRev);
 router.get("/gettourrevbyuserid/:id", getTourRevByUser);
 router.get("/gettourrevbybid/:id", getTourRevByBid);
@@ -54,7 +55,7 @@ router.put("/updatetourRevStatusbyclient/:id", updateTourRevStatusByClient);
 router.put("/updatetourRevStatusbybid/:id", updateTourRevStatusByBid);
 
 //Trek reservation routes
-router.post("/addtrekrev/:id", trekRev);
+router.post("/addtrekrev/:id", veriftyToken, trekRev);
 router.get("/gettrekrev", getTrekRev);
 router.get("/gettrekrevbyuserid/:id", getTrekRevByUser);
 router.get("/gettrekrevbybid/:id", getTrekRevByBid);

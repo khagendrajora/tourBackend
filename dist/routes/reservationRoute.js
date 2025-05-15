@@ -8,9 +8,10 @@ const vehRevController_1 = require("../controllers/Reservation/VehicleReservatio
 const resrvedDated_1 = require("../controllers/Reservation/VehicleReservation/resrvedDated");
 const tourRev_1 = require("../controllers/Reservation/TourReservation/tourRev");
 const trekRev_1 = require("../controllers/Reservation/TrekReservation/trekRev");
+const Auth_1 = require("../middleware/Auth");
 const router = express_1.default.Router();
 //Vehicle reservation routes
-router.post("/addRev/:id", vehRevController_1.vehReservation);
+router.post("/addRev/:id", Auth_1.veriftyToken, vehRevController_1.vehReservation);
 router.get("/reservdates/:id", resrvedDated_1.getReservedDates);
 router.get("/getclientrev/:id", vehRevController_1.getRevByClientId);
 router.put("/updateRevStatusbyclient/:id", vehRevController_1.updateReservationStatusByClient);
@@ -21,14 +22,14 @@ router.get("/getalldates", resrvedDated_1.getAllRevDates);
 router.get("/getallreservations", vehRevController_1.getAllReservations);
 router.get("/getrevbyvehicleId/:id", vehRevController_1.getRevByVehicleId);
 //Tour reservation routes
-router.post("/addtourrev/:id", tourRev_1.tourRev);
+router.post("/addtourrev/:id", Auth_1.veriftyToken, tourRev_1.tourRev);
 router.get("/gettourrev", tourRev_1.getTourRev);
 router.get("/gettourrevbyuserid/:id", tourRev_1.getTourRevByUser);
 router.get("/gettourrevbybid/:id", tourRev_1.getTourRevByBid);
 router.put("/updatetourRevStatusbyclient/:id", tourRev_1.updateTourRevStatusByClient);
 router.put("/updatetourRevStatusbybid/:id", tourRev_1.updateTourRevStatusByBid);
 //Trek reservation routes
-router.post("/addtrekrev/:id", trekRev_1.trekRev);
+router.post("/addtrekrev/:id", Auth_1.veriftyToken, trekRev_1.trekRev);
 router.get("/gettrekrev", trekRev_1.getTrekRev);
 router.get("/gettrekrevbyuserid/:id", trekRev_1.getTrekRevByUser);
 router.get("/gettrekrevbybid/:id", trekRev_1.getTrekRevByBid);

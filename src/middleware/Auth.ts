@@ -15,7 +15,7 @@ export const veriftyToken = (req: any, res: any, next: any) => {
     req.user = decoded;
     next();
   } catch (error) {
-    res
+    return res
       .status(400)
       .json({ error: "Invalid Token or Expired ", message: "Login Again" });
   }

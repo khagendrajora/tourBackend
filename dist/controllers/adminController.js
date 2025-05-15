@@ -82,22 +82,31 @@ const adminlogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (!adminEmail || !adminPwd) {
             return res.status(400).json({ error: "fill all Fields" });
         }
-        const data = yield adminUser_1.default.findOne({ adminEmail: adminEmail });
-        if (!data) {
+        const user = yield adminUser_1.default.findOne({ adminEmail: adminEmail });
+        if (!user) {
             return res.status(404).json({ error: "Email not found" });
         }
-        const isPassword = yield bcryptjs_1.default.compare(adminPwd, data.adminPwd);
+        const isPassword = yield bcryptjs_1.default.compare(adminPwd, user.adminPwd);
         if (!isPassword) {
-            return res.status(400).json({ error: "password  not matched" });
+            return res.status(400).json({ error: "Credentials not matched" });
         }
-        const userID = data.id;
-        const authToken = jsonwebtoken_1.default.sign(userID, process.env.JWTSECRET);
-        res.cookie("authToken", authToken, {
-            expires: new Date(Date.now() + 99999),
+        if (!process.env.JWTSECRET) {
+            return res.status(500).json({ error: "JWT_SECRET is not defined" });
+        }
+        const authToken = jsonwebtoken_1.default.sign({ id: user._id }, process.env.JWTSECRET, {
+            expiresIn: "1h",
         });
+        if (!authToken)
+            return res.status(401).json({ error: "Failed" });
+        // const userID = data.id;
+        // const authToken = jwt.sign(userID, process.env.JWTSECRET as string);
+        // res.cookie("authToken", authToken, {
+        //   expires: new Date(Date.now() + 99999),
+        // });
         userData = {
             adminEmail: adminEmail,
-            role: data.adminRole,
+            role: user.adminRole,
+            loginedId: user.adminEmail,
         };
         return res.status(200).json({
             message: "Login succssfully",
