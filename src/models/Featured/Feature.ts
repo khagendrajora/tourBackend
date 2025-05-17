@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
 export enum FeatureStatus {
-  Accepted = "Accepted",
-  Reject = "Rejected",
+  Yes = "Yes",
+  No = "No",
   Pending = "Pending",
 }
 export interface IFeature extends Document {

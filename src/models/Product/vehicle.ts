@@ -1,15 +1,16 @@
 import mongoose from "mongoose";
+import { FeatureStatus } from "../Featured/Feature";
 
 enum ICondition {
   Good = "Good",
-  Bad = "Bad",
 }
+
 export interface IVeh extends Document {
   _id?: string;
   businessId: string;
   businessName: string;
   vehCategory: string;
-  isFeatured: boolean;
+  isFeatured: FeatureStatus;
   vehSubCategory: string;
   services: string[];
   amenities: string[];
@@ -51,8 +52,10 @@ const VehSchema = new mongoose.Schema(
       required: true,
     },
     isFeatured: {
-      type: Boolean,
-      default: false,
+      type: String,
+      enum: Object.values(FeatureStatus),
+      required: true,
+      default: FeatureStatus.No,
     },
     vehicleId: {
       type: String,
@@ -87,10 +90,6 @@ const VehSchema = new mongoose.Schema(
         required: true,
       },
     ],
-    // quantity: {
-    //   type: Number,
-    //   required: true,
-    // },
 
     capacity: {
       type: String,

@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
+import { FeatureStatus } from "../Featured/Feature";
 
 export interface ITour extends Document {
   _id?: string;
   tourId: string;
   businessId: string;
   businessName: string;
-
   pickUpLocation: string;
   prodCategory: string;
   prodsubCategory: string;
@@ -19,7 +19,7 @@ export interface ITour extends Document {
   phone: number;
   operationDates: string[];
   tourImages?: string[];
-  isFeatured: boolean;
+  isFeatured: FeatureStatus;
   price?: string;
   addedBy?: string;
 }
@@ -50,11 +50,9 @@ const tourSchema = new mongoose.Schema({
   },
   prodCategory: {
     type: String,
-    // required: true,
   },
   prodsubCategory: {
     type: String,
-    // required: true,
   },
   inclusion: [
     {
@@ -64,7 +62,6 @@ const tourSchema = new mongoose.Schema({
   ],
   dest: {
     type: String,
-    // required: true,
   },
 
   duration: {
@@ -90,8 +87,10 @@ const tourSchema = new mongoose.Schema({
     },
   ],
   isFeatured: {
-    type: Boolean,
-    default: false,
+    type: String,
+    enum: Object.values(FeatureStatus),
+    required: true,
+    default: FeatureStatus.No,
   },
   tourImages: [
     {

@@ -522,76 +522,31 @@ const addFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const id = req.params.id;
     const { updatedBy } = req.body;
     try {
-        const tour = yield tour_1.default.findOne({ _id: id });
-        if (tour) {
-            tour.isFeatured = !tour.isFeatured;
-            const updated = yield tour.save();
-            if (!updated) {
-                return res.status(404).json({ error: "Failed" });
-            }
-            const feature = yield Feature_1.default.findOneAndUpdate({ Id: id }, {
-                status: "Accepted",
-            }, { new: true });
-            if (!feature) {
-                return res.status(404).json({ error: "Failed" });
-            }
-            let featureLog = new FeaturedLogs_1.default({
-                updatedBy: updatedBy,
-                productId: tour.tourId,
-                action: "Added To Feature",
-                time: new Date(),
-            });
-            featureLog = yield featureLog.save();
-            return res.status(200).json({ message: "Added to Features" });
+        const data = (yield tour_1.default.findOne({ _id: id })) ||
+            (yield trekking_1.default.findOne({ _id: id })) ||
+            (yield vehicle_1.default.findOne({ _id: id }));
+        if (!data) {
+            return res.status(400).json({ error: "Failed" });
         }
-        else {
-            const trek = yield trekking_1.default.findOne({ _id: id });
-            if (trek) {
-                trek.isFeatured = !trek.isFeatured;
-                const updated = yield trek.save();
-                if (!updated) {
-                    return res.status(404).json({ error: "Failed" });
-                }
-                const feature = yield Feature_1.default.findOneAndUpdate({ Id: id }, {
-                    status: "Accepted",
-                }, { new: true });
-                if (!feature) {
-                    return res.status(404).json({ error: "Failed" });
-                }
-                let featureLog = new FeaturedLogs_1.default({
-                    updatedBy: updatedBy,
-                    productId: trek.trekId,
-                    action: "Added To Feature",
-                    time: new Date(),
-                });
-                featureLog = yield featureLog.save();
-                return res.status(200).json({ message: "Added to Features" });
-            }
-            else {
-                const veh = yield vehicle_1.default.findOne({ _id: id });
-                if (veh) {
-                    veh.isFeatured = !veh.isFeatured;
-                    const updated = yield veh.save();
-                    if (!updated) {
-                        return res.status(404).json({ error: "Failed" });
-                    }
-                    const feature = yield Feature_1.default.findOneAndUpdate({ Id: id }, {
-                        status: "Accepted",
-                    }, { new: true });
-                    if (!feature) {
-                        return res.status(404).json({ error: "Failed" });
-                    }
-                    let featureLog = new FeaturedLogs_1.default({
-                        updatedBy: updatedBy,
-                        productId: veh.vehicleId,
-                        action: "Added To Feature",
-                        time: new Date(),
-                    });
-                    featureLog = yield featureLog.save();
-                    return res.status(200).json({ message: "Added to Features" });
-                }
-            }
+        data.isFeatured = "Yes";
+        const updated = yield data.save();
+        if (!updated) {
+            return res.status(404).json({ error: "Failed" });
         }
+        const feature = yield Feature_1.default.findOneAndUpdate({ Id: id }, {
+            status: "Yes",
+        }, { new: true });
+        if (!feature) {
+            return res.status(404).json({ error: "Failed" });
+        }
+        let featureLog = new FeaturedLogs_1.default({
+            updatedBy: updatedBy,
+            productId: data.name,
+            action: "Added To Feature",
+            time: new Date(),
+        });
+        featureLog = yield featureLog.save();
+        return res.status(200).json({ message: "Added to Features" });
     }
     catch (error) {
         return res.status(500).json({ error: error.message });
@@ -602,9 +557,20 @@ const deleteFeatureRequest = (req, res) => __awaiter(void 0, void 0, void 0, fun
     const id = req.params.id;
     const { updatedBy } = req.body;
     try {
+        const product = (yield tour_1.default.findOne({ _id: id })) ||
+            (yield trekking_1.default.findOne({ _id: id })) ||
+            (yield vehicle_1.default.findOne({ _id: id }));
+        if (!product) {
+            return res.status(400).json({ error: "Product Not Found" });
+        }
         const deleteFeature = yield Feature_1.default.findOneAndDelete({ Id: id });
         if (!deleteFeature) {
             return res.status(404).json({ error: "Failed to delete" });
+        }
+        product.isFeatured = "No";
+        const updated = yield product.save();
+        if (!updated) {
+            return res.status(404).json({ error: "Failed" });
         }
         let featureLog = new FeaturedLogs_1.default({
             updatedBy: updatedBy,
@@ -631,55 +597,24 @@ const removeFeatureProduct = (req, res) => __awaiter(void 0, void 0, void 0, fun
         if (!deleteFeature) {
             return res.status(404).json({ error: "Failed to delete" });
         }
-        const tour = yield tour_1.default.findOne({ _id: id });
-        if (tour) {
-            tour.isFeatured = !tour.isFeatured;
-            const updated = yield tour.save();
-            if (!updated) {
-                return res.status(404).json({ error: "Failed" });
-            }
-            let featureLog = new FeaturedLogs_1.default({
-                updatedBy: updatedBy,
-                productId: tour.tourId,
-                action: "Removed from Feature",
-                time: new Date(),
-            });
-            featureLog = yield featureLog.save();
+        const data = (yield tour_1.default.findOne({ _id: id })) ||
+            (yield trekking_1.default.findOne({ _id: id })) ||
+            (yield vehicle_1.default.findOne({ _id: id }));
+        if (!data) {
+            return res.status(400).json({ error: "Failed" });
         }
-        else {
-            const trek = yield trekking_1.default.findOne({ _id: id });
-            if (trek) {
-                trek.isFeatured = !trek.isFeatured;
-                const updated = yield trek.save();
-                if (!updated) {
-                    return res.status(404).json({ error: "Failed" });
-                }
-                let featureLog = new FeaturedLogs_1.default({
-                    updatedBy: updatedBy,
-                    productId: trek.trekId,
-                    action: "Removed from Feature",
-                    time: new Date(),
-                });
-                featureLog = yield featureLog.save();
-            }
-            else {
-                const veh = yield vehicle_1.default.findOne({ _id: id });
-                if (veh) {
-                    veh.isFeatured = !veh.isFeatured;
-                    const updated = yield veh.save();
-                    if (!updated) {
-                        return res.status(404).json({ error: "Failed" });
-                    }
-                    let featureLog = new FeaturedLogs_1.default({
-                        updatedBy: updatedBy,
-                        productId: veh.vehicleId,
-                        action: "Removed from Feature",
-                        time: new Date(),
-                    });
-                    featureLog = yield featureLog.save();
-                }
-            }
+        data.isFeatured = "No";
+        const updated = yield data.save();
+        if (!updated) {
+            return res.status(404).json({ error: "Failed" });
         }
+        let featureLog = new FeaturedLogs_1.default({
+            updatedBy: updatedBy,
+            productId: data.name,
+            action: "Removed from Feature",
+            time: new Date(),
+        });
+        featureLog = yield featureLog.save();
         return res.status(200).json({ message: "Removed from Featured Products" });
     }
     catch (error) {

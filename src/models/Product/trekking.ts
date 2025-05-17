@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { FeatureStatus } from "../Featured/Feature";
 
 export interface ITrekking extends Document {
   _id?: string;
@@ -18,7 +19,7 @@ export interface ITrekking extends Document {
   operationDates?: string[];
   trekImages?: string[];
   trekId: string;
-  isFeatured: boolean;
+  isFeatured: FeatureStatus;
   price?: string;
   addedBy?: string;
 }
@@ -44,8 +45,10 @@ const trekSchema = new mongoose.Schema({
     type: String,
   },
   isFeatured: {
-    type: Boolean,
-    default: false,
+    type: String,
+    enum: Object.values(FeatureStatus),
+    required: true,
+    default: FeatureStatus.No,
   },
   trekId: {
     type: String,

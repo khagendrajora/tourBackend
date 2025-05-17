@@ -4,10 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
+const Feature_1 = require("../Featured/Feature");
 var ICondition;
 (function (ICondition) {
     ICondition["Good"] = "Good";
-    ICondition["Bad"] = "Bad";
 })(ICondition || (ICondition = {}));
 const VehSchema = new mongoose_1.default.Schema({
     businessId: {
@@ -28,8 +28,10 @@ const VehSchema = new mongoose_1.default.Schema({
         required: true,
     },
     isFeatured: {
-        type: Boolean,
-        default: false,
+        type: String,
+        enum: Object.values(Feature_1.FeatureStatus),
+        required: true,
+        default: Feature_1.FeatureStatus.No,
     },
     vehicleId: {
         type: String,
@@ -63,10 +65,6 @@ const VehSchema = new mongoose_1.default.Schema({
             required: true,
         },
     ],
-    // quantity: {
-    //   type: Number,
-    //   required: true,
-    // },
     capacity: {
         type: String,
         required: true,

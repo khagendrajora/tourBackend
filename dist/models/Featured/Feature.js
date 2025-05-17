@@ -7,8 +7,8 @@ exports.FeatureStatus = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 var FeatureStatus;
 (function (FeatureStatus) {
-    FeatureStatus["Accepted"] = "Accepted";
-    FeatureStatus["Reject"] = "Rejected";
+    FeatureStatus["Yes"] = "Yes";
+    FeatureStatus["No"] = "No";
     FeatureStatus["Pending"] = "Pending";
 })(FeatureStatus || (exports.FeatureStatus = FeatureStatus = {}));
 const featureSchema = new mongoose_1.default.Schema({

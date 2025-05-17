@@ -24,6 +24,9 @@ const userModel_1 = __importDefault(require("../../models/User/userModel"));
 const { customAlphabet } = require("nanoid");
 const Feature_1 = __importDefault(require("../../models/Featured/Feature"));
 const cloudinary_1 = require("cloudinary");
+const tour_1 = __importDefault(require("../../models/Product/tour"));
+const trekking_1 = __importDefault(require("../../models/Product/trekking"));
+const vehicle_1 = __importDefault(require("../../models/Product/vehicle"));
 cloudinary_1.v2.config({
     cloud_name: "dwepmpy6w",
     api_key: "934775798563485",
@@ -494,6 +497,17 @@ const featureRequest = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const id = req.params.id;
     const { businessName, name, productId, price } = req.body;
     try {
+        const product = (yield tour_1.default.findOne({ _id: id })) ||
+            (yield trekking_1.default.findOne({ _id: id })) ||
+            (yield vehicle_1.default.findOne({ _id: id }));
+        if (!product) {
+            return res.status(400).json({ error: "Product Not Found" });
+        }
+        product.isFeatured = "Pending";
+        const updated = yield product.save();
+        if (!updated) {
+            return res.status(404).json({ error: "Failed" });
+        }
         let data = new Feature_1.default({
             Id: id,
             businessName,

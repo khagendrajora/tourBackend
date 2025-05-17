@@ -12,7 +12,7 @@ import User from "../models/User/userModel";
 import Tour from "../models/Product/tour";
 import Trekking from "../models/Product/trekking";
 import Vehicle from "../models/Product/vehicle";
-import Feature from "../models/Featured/Feature";
+import Feature, { FeatureStatus } from "../models/Featured/Feature";
 import AdminLogs from "../models/LogModel/AdminLogs";
 import FeaturedLogs from "../models/LogModel/FeaturedLogs";
 
@@ -560,86 +560,39 @@ export const addFeature = async (req: Request, res: Response) => {
   const id = req.params.id;
   const { updatedBy } = req.body;
   try {
-    const tour = await Tour.findOne({ _id: id });
-    if (tour) {
-      tour.isFeatured = !tour.isFeatured;
-      const updated = await tour.save();
-      if (!updated) {
-        return res.status(404).json({ error: "Failed" });
-      }
-      const feature = await Feature.findOneAndUpdate(
-        { Id: id },
-        {
-          status: "Accepted",
-        },
-        { new: true }
-      );
-      if (!feature) {
-        return res.status(404).json({ error: "Failed" });
-      }
-      let featureLog = new FeaturedLogs({
-        updatedBy: updatedBy,
-        productId: tour.tourId,
-        action: "Added To Feature",
-        time: new Date(),
-      });
-      featureLog = await featureLog.save();
-      return res.status(200).json({ message: "Added to Features" });
-    } else {
-      const trek = await Trekking.findOne({ _id: id });
-      if (trek) {
-        trek.isFeatured = !trek.isFeatured;
-        const updated = await trek.save();
-        if (!updated) {
-          return res.status(404).json({ error: "Failed" });
-        }
-        const feature = await Feature.findOneAndUpdate(
-          { Id: id },
-          {
-            status: "Accepted",
-          },
-          { new: true }
-        );
-        if (!feature) {
-          return res.status(404).json({ error: "Failed" });
-        }
-        let featureLog = new FeaturedLogs({
-          updatedBy: updatedBy,
-          productId: trek.trekId,
-          action: "Added To Feature",
-          time: new Date(),
-        });
-        featureLog = await featureLog.save();
-        return res.status(200).json({ message: "Added to Features" });
-      } else {
-        const veh = await Vehicle.findOne({ _id: id });
-        if (veh) {
-          veh.isFeatured = !veh.isFeatured;
-          const updated = await veh.save();
-          if (!updated) {
-            return res.status(404).json({ error: "Failed" });
-          }
-          const feature = await Feature.findOneAndUpdate(
-            { Id: id },
-            {
-              status: "Accepted",
-            },
-            { new: true }
-          );
-          if (!feature) {
-            return res.status(404).json({ error: "Failed" });
-          }
-          let featureLog = new FeaturedLogs({
-            updatedBy: updatedBy,
-            productId: veh.vehicleId,
-            action: "Added To Feature",
-            time: new Date(),
-          });
-          featureLog = await featureLog.save();
-          return res.status(200).json({ message: "Added to Features" });
-        }
-      }
+    const data =
+      (await Tour.findOne({ _id: id })) ||
+      (await Trekking.findOne({ _id: id })) ||
+      (await Vehicle.findOne({ _id: id }));
+
+    if (!data) {
+      return res.status(400).json({ error: "Failed" });
     }
+
+    data.isFeatured = "Yes" as FeatureStatus;
+
+    const updated = await data.save();
+    if (!updated) {
+      return res.status(404).json({ error: "Failed" });
+    }
+    const feature = await Feature.findOneAndUpdate(
+      { Id: id },
+      {
+        status: "Yes",
+      },
+      { new: true }
+    );
+    if (!feature) {
+      return res.status(404).json({ error: "Failed" });
+    }
+    let featureLog = new FeaturedLogs({
+      updatedBy: updatedBy,
+      productId: data.name,
+      action: "Added To Feature",
+      time: new Date(),
+    });
+    featureLog = await featureLog.save();
+    return res.status(200).json({ message: "Added to Features" });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }
@@ -649,10 +602,27 @@ export const deleteFeatureRequest = async (req: Request, res: Response) => {
   const id = req.params.id;
   const { updatedBy } = req.body;
   try {
+    const product =
+      (await Tour.findOne({ _id: id })) ||
+      (await Trekking.findOne({ _id: id })) ||
+      (await Vehicle.findOne({ _id: id }));
+
+    if (!product) {
+      return res.status(400).json({ error: "Product Not Found" });
+    }
+
     const deleteFeature = await Feature.findOneAndDelete({ Id: id });
     if (!deleteFeature) {
       return res.status(404).json({ error: "Failed to delete" });
     }
+
+    product.isFeatured = "No" as FeatureStatus;
+
+    const updated = await product.save();
+    if (!updated) {
+      return res.status(404).json({ error: "Failed" });
+    }
+
     let featureLog = new FeaturedLogs({
       updatedBy: updatedBy,
       productId: id,
@@ -664,7 +634,6 @@ export const deleteFeatureRequest = async (req: Request, res: Response) => {
     if (!featureLog) {
       return res.status(404).json({ error: "Rejected - Log files not saved" });
     }
-
     return res.status(200).json({ message: "Rejected" });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
@@ -679,54 +648,28 @@ export const removeFeatureProduct = async (req: Request, res: Response) => {
     if (!deleteFeature) {
       return res.status(404).json({ error: "Failed to delete" });
     }
+    const data =
+      (await Tour.findOne({ _id: id })) ||
+      (await Trekking.findOne({ _id: id })) ||
+      (await Vehicle.findOne({ _id: id }));
 
-    const tour = await Tour.findOne({ _id: id });
-    if (tour) {
-      tour.isFeatured = !tour.isFeatured;
-      const updated = await tour.save();
-      if (!updated) {
-        return res.status(404).json({ error: "Failed" });
-      }
-      let featureLog = new FeaturedLogs({
-        updatedBy: updatedBy,
-        productId: tour.tourId,
-        action: "Removed from Feature",
-        time: new Date(),
-      });
-      featureLog = await featureLog.save();
-    } else {
-      const trek = await Trekking.findOne({ _id: id });
-      if (trek) {
-        trek.isFeatured = !trek.isFeatured;
-        const updated = await trek.save();
-        if (!updated) {
-          return res.status(404).json({ error: "Failed" });
-        }
-        let featureLog = new FeaturedLogs({
-          updatedBy: updatedBy,
-          productId: trek.trekId,
-          action: "Removed from Feature",
-          time: new Date(),
-        });
-        featureLog = await featureLog.save();
-      } else {
-        const veh = await Vehicle.findOne({ _id: id });
-        if (veh) {
-          veh.isFeatured = !veh.isFeatured;
-          const updated = await veh.save();
-          if (!updated) {
-            return res.status(404).json({ error: "Failed" });
-          }
-          let featureLog = new FeaturedLogs({
-            updatedBy: updatedBy,
-            productId: veh.vehicleId,
-            action: "Removed from Feature",
-            time: new Date(),
-          });
-          featureLog = await featureLog.save();
-        }
-      }
+    if (!data) {
+      return res.status(400).json({ error: "Failed" });
     }
+    data.isFeatured = "No" as FeatureStatus;
+    const updated = await data.save();
+
+    if (!updated) {
+      return res.status(404).json({ error: "Failed" });
+    }
+
+    let featureLog = new FeaturedLogs({
+      updatedBy: updatedBy,
+      productId: data.name,
+      action: "Removed from Feature",
+      time: new Date(),
+    });
+    featureLog = await featureLog.save();
 
     return res.status(200).json({ message: "Removed from Featured Products" });
   } catch (error: any) {

@@ -8,8 +8,11 @@ import { v4 as uuid } from "uuid";
 import { sendEmail } from "../../utils/setEmail";
 import User from "../../models/User/userModel";
 const { customAlphabet } = require("nanoid");
-import Feature from "../../models/Featured/Feature";
+import Feature, { FeatureStatus } from "../../models/Featured/Feature";
 import { v2 as cloudinary } from "cloudinary";
+import Tour from "../../models/Product/tour";
+import Trekking from "../../models/Product/trekking";
+import Vehicle from "../../models/Product/vehicle";
 
 cloudinary.config({
   cloud_name: "dwepmpy6w",
@@ -501,6 +504,22 @@ export const featureRequest = async (req: Request, res: Response) => {
   const id = req.params.id;
   const { businessName, name, productId, price } = req.body;
   try {
+    const product =
+      (await Tour.findOne({ _id: id })) ||
+      (await Trekking.findOne({ _id: id })) ||
+      (await Vehicle.findOne({ _id: id }));
+
+    if (!product) {
+      return res.status(400).json({ error: "Product Not Found" });
+    }
+
+    product.isFeatured = "Pending" as FeatureStatus;
+
+    const updated = await product.save();
+    if (!updated) {
+      return res.status(404).json({ error: "Failed" });
+    }
+
     let data = new Feature({
       Id: id,
       businessName,

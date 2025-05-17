@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
+const Feature_1 = require("../Featured/Feature");
 const tourSchema = new mongoose_1.default.Schema({
     businessId: {
         type: String,
@@ -30,11 +31,9 @@ const tourSchema = new mongoose_1.default.Schema({
     },
     prodCategory: {
         type: String,
-        // required: true,
     },
     prodsubCategory: {
         type: String,
-        // required: true,
     },
     inclusion: [
         {
@@ -44,7 +43,6 @@ const tourSchema = new mongoose_1.default.Schema({
     ],
     dest: {
         type: String,
-        // required: true,
     },
     duration: {
         type: String,
@@ -69,8 +67,10 @@ const tourSchema = new mongoose_1.default.Schema({
         },
     ],
     isFeatured: {
-        type: Boolean,
-        default: false,
+        type: String,
+        enum: Object.values(Feature_1.FeatureStatus),
+        required: true,
+        default: Feature_1.FeatureStatus.No,
     },
     tourImages: [
         {
