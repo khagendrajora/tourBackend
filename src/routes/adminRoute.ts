@@ -10,6 +10,7 @@ import {
   forgetPass,
   getAdmin,
   getFeature,
+  makePending,
   removeFeatureProduct,
   resetPass,
 } from "../controllers/adminController";
@@ -31,5 +32,6 @@ router.get("/getfeature", getFeature);
 router.put("/addfeature/:id", veriftyToken, addFeature);
 router.delete("/deletefeaturerequest/:id", veriftyToken, deleteFeatureRequest);
 router.delete("/removefeature/:id", veriftyToken, removeFeatureProduct);
+router.put("/makepending/:id", veriftyToken, makePending);
 
 export default router;

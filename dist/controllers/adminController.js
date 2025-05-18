@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeFeatureProduct = exports.deleteFeatureRequest = exports.addFeature = exports.getFeature = exports.deleteAdmin = exports.verifyAndResetPwd = exports.addBusinessByAdmin = exports.resetPass = exports.forgetPass = exports.businessApprove = exports.getAdmin = exports.adminlogin = exports.addAdminUser = void 0;
+exports.makePending = exports.removeFeatureProduct = exports.deleteFeatureRequest = exports.addFeature = exports.getFeature = exports.deleteAdmin = exports.verifyAndResetPwd = exports.addBusinessByAdmin = exports.resetPass = exports.forgetPass = exports.businessApprove = exports.getAdmin = exports.adminlogin = exports.addAdminUser = void 0;
 const adminUser_1 = __importDefault(require("../models/adminUser"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const business_1 = __importDefault(require("../models/Business/business"));
@@ -526,7 +526,7 @@ const addFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             (yield trekking_1.default.findOne({ _id: id })) ||
             (yield vehicle_1.default.findOne({ _id: id }));
         if (!data) {
-            return res.status(400).json({ error: "Failed" });
+            return res.status(400).json({ error: "Not Found" });
         }
         data.isFeatured = "Yes";
         const updated = yield data.save();
@@ -537,7 +537,7 @@ const addFeature = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             status: "Yes",
         }, { new: true });
         if (!feature) {
-            return res.status(404).json({ error: "Failed" });
+            return res.status(404).json({ error: "Not Found" });
         }
         let featureLog = new FeaturedLogs_1.default({
             updatedBy: updatedBy,
@@ -622,3 +622,40 @@ const removeFeatureProduct = (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.removeFeatureProduct = removeFeatureProduct;
+const makePending = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const { updatedBy } = req.body;
+    try {
+        const pending = yield Feature_1.default.findOne({ Id: id });
+        if (!pending) {
+            return res.status(401).json({ error: "Not Found" });
+        }
+        const data = (yield tour_1.default.findOne({ _id: id })) ||
+            (yield trekking_1.default.findOne({ _id: id })) ||
+            (yield vehicle_1.default.findOne({ _id: id }));
+        if (!data) {
+            return res.status(401).json({ error: "Failed" });
+        }
+        data.isFeatured = "Pending";
+        const updated = yield data.save();
+        if (!updated) {
+            return res.status(404).json({ error: "Failed" });
+        }
+        const feature = yield Feature_1.default.findOneAndUpdate({ Id: id }, { status: "Pending" }, { new: true });
+        if (!feature) {
+            return res.status(404).json({ error: "Failed" });
+        }
+        let featureLog = new FeaturedLogs_1.default({
+            updatedBy: updatedBy,
+            productId: data.name,
+            action: "Made Pending from Feature",
+            time: new Date(),
+        });
+        featureLog = yield featureLog.save();
+        return res.status(200).json({ message: "Removed from Featured Products" });
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.makePending = makePending;

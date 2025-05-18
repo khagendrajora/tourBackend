@@ -503,6 +503,10 @@ const featureRequest = (req, res) => __awaiter(void 0, void 0, void 0, function*
         if (!product) {
             return res.status(400).json({ error: "Product Not Found" });
         }
+        const feature = yield Feature_1.default.findOne({ Id: id });
+        if (feature) {
+            return res.status(400).json({ error: "Already in Feature" });
+        }
         product.isFeatured = "Pending";
         const updated = yield product.save();
         if (!updated) {

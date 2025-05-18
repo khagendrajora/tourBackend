@@ -3,15 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.IStatus = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
-var IStatus;
-(function (IStatus) {
-    IStatus["Approved"] = "Approved";
-    IStatus["Canceled"] = "Canceled";
-    IStatus["completed"] = "Completed";
-    IStatus["Pending"] = "Pending";
-})(IStatus || (exports.IStatus = IStatus = {}));
+const vehReserv_1 = require("../VehicleReservation/vehReserv");
 const TourReservation = new mongoose_1.default.Schema({
     bookingId: {
         type: String,
@@ -59,9 +52,9 @@ const TourReservation = new mongoose_1.default.Schema({
     },
     status: {
         type: String,
-        enum: Object.values(IStatus),
+        enum: Object.values(vehReserv_1.IStatus),
         required: true,
-        default: IStatus.Pending,
+        default: vehReserv_1.IStatus.Pending,
     },
     phone: {
         type: String,

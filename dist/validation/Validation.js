@@ -28,8 +28,8 @@ exports.addBusinessData = [
     (0, express_validator_1.check)("password", "password is required")
         .trim()
         .notEmpty()
-        .isLength({ min: 8 })
-        .withMessage("password length must be 8"),
+        .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/, "g")
+        .withMessage("Password length must be 8,atleast One uppercase ,One Lowercase letter,One number, a Special character"),
 ];
 exports.addCategoryData = [
     (0, express_validator_1.check)("categoryName", "Category is required").trim().notEmpty(),

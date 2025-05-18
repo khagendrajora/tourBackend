@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 export const veriftyToken = (req: any, res: any, next: any) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer "))
-    // if (!token) return res.status(401).json({ error: "Access Denied" });
     return res.status(401).json({ error: "Access denied. No token provided." });
   const token = authHeader.split(" ")[1];
   try {

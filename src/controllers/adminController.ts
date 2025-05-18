@@ -566,7 +566,7 @@ export const addFeature = async (req: Request, res: Response) => {
       (await Vehicle.findOne({ _id: id }));
 
     if (!data) {
-      return res.status(400).json({ error: "Failed" });
+      return res.status(400).json({ error: "Not Found" });
     }
 
     data.isFeatured = "Yes" as FeatureStatus;
@@ -583,7 +583,7 @@ export const addFeature = async (req: Request, res: Response) => {
       { new: true }
     );
     if (!feature) {
-      return res.status(404).json({ error: "Failed" });
+      return res.status(404).json({ error: "Not Found" });
     }
     let featureLog = new FeaturedLogs({
       updatedBy: updatedBy,
@@ -667,6 +667,53 @@ export const removeFeatureProduct = async (req: Request, res: Response) => {
       updatedBy: updatedBy,
       productId: data.name,
       action: "Removed from Feature",
+      time: new Date(),
+    });
+    featureLog = await featureLog.save();
+
+    return res.status(200).json({ message: "Removed from Featured Products" });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const makePending = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const { updatedBy } = req.body;
+  try {
+    const pending = await Feature.findOne({ Id: id });
+    if (!pending) {
+      return res.status(401).json({ error: "Not Found" });
+    }
+    const data =
+      (await Tour.findOne({ _id: id })) ||
+      (await Trekking.findOne({ _id: id })) ||
+      (await Vehicle.findOne({ _id: id }));
+
+    if (!data) {
+      return res.status(401).json({ error: "Failed" });
+    }
+    data.isFeatured = "Pending" as FeatureStatus;
+    const updated = await data.save();
+
+    if (!updated) {
+      return res.status(404).json({ error: "Failed" });
+    }
+
+    const feature = await Feature.findOneAndUpdate(
+      { Id: id },
+      { status: "Pending" },
+      { new: true }
+    );
+
+    if (!feature) {
+      return res.status(404).json({ error: "Failed" });
+    }
+
+    let featureLog = new FeaturedLogs({
+      updatedBy: updatedBy,
+      productId: data.name,
+      action: "Made Pending from Feature",
       time: new Date(),
     });
     featureLog = await featureLog.save();

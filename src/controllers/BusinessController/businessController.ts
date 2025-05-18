@@ -513,6 +513,11 @@ export const featureRequest = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Product Not Found" });
     }
 
+    const feature = await Feature.findOne({ Id: id });
+    if (feature) {
+      return res.status(400).json({ error: "Already in Feature" });
+    }
+
     product.isFeatured = "Pending" as FeatureStatus;
 
     const updated = await product.save();

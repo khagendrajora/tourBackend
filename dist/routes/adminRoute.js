@@ -20,4 +20,5 @@ router.get("/getfeature", adminController_1.getFeature);
 router.put("/addfeature/:id", Auth_1.veriftyToken, adminController_1.addFeature);
 router.delete("/deletefeaturerequest/:id", Auth_1.veriftyToken, adminController_1.deleteFeatureRequest);
 router.delete("/removefeature/:id", Auth_1.veriftyToken, adminController_1.removeFeatureProduct);
+router.put("/makepending/:id", Auth_1.veriftyToken, adminController_1.makePending);
 exports.default = router;

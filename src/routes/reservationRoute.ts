@@ -4,7 +4,7 @@ import {
   getRevByBusinessId,
   getRevByClientId,
   getRevByVehicleId,
-  updateReservationByBid,
+  // updateReservationByBid,
   updateReservationStatusByBid,
   updateReservationStatusByClient,
   vehReservation,
@@ -35,12 +35,17 @@ const router = express.Router();
 //Vehicle reservation routes
 
 router.post("/addRev/:id", veriftyToken, vehReservation);
+router.put("/updateRevStatusbyclient/:id", updateReservationStatusByClient);
+router.put(
+  "/updateRevStatusbybusinessId/:id",
+  veriftyToken,
+  updateReservationStatusByBid
+);
+// router.put("/updateRevbybusinessId/:id", updateReservationByBid);
+
+router.get("/getbusinessrev/:id", getRevByBusinessId);
 router.get("/reservdates/:id", getReservedDates);
 router.get("/getclientrev/:id", getRevByClientId);
-router.put("/updateRevStatusbyclient/:id", updateReservationStatusByClient);
-router.put("/updateRevStatusbybid/:id", updateReservationStatusByBid);
-router.get("/getbusinessrev/:id", getRevByBusinessId);
-router.put("/updateRevbybid/:id", updateReservationByBid);
 router.get("/getalldates", getAllRevDates);
 router.get("/getallreservations", getAllReservations);
 router.get("/getrevbyvehicleId/:id", getRevByVehicleId);
@@ -60,6 +65,10 @@ router.get("/gettrekrev", getTrekRev);
 router.get("/gettrekrevbyuserid/:id", getTrekRevByUser);
 router.get("/gettrekrevbybid/:id", getTrekRevByBid);
 router.put("/updatetrekRevStatusbyclient/:id", updateTrekRevStatusByClient);
-router.put("/updatetrekRevStatusbybid/:id", updateTrekRevStatusByBid);
+router.put(
+  "/updatetrekRevStatusbybusinessId/:id",
+  veriftyToken,
+  updateTrekRevStatusByBid
+);
 
 export default router;

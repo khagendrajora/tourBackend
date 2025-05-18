@@ -1,11 +1,5 @@
 import mongoose from "mongoose";
-
-export enum IStatus {
-  Approved = "Approved",
-  Canceled = "Canceled",
-  completed = "Completed",
-  Pending = "Pending",
-}
+import { IStatus } from "../VehicleReservation/vehReserv";
 
 export interface ITuRev extends Document {
   _id?: string;

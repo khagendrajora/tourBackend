@@ -27,8 +27,10 @@ export const addBusinessData = [
   check("password", "password is required")
     .trim()
     .notEmpty()
-    .isLength({ min: 8 })
-    .withMessage("password length must be 8"),
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/, "g")
+    .withMessage(
+      "Password length must be 8,atleast One uppercase ,One Lowercase letter,One number, a Special character"
+    ),
 ];
 
 export const addCategoryData = [
