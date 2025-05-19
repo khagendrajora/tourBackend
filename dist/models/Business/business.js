@@ -94,14 +94,16 @@ const businessSchema = new mongoose_1.default.Schema({
     contactName: {
         type: String,
     },
-    socialMedia: {
-        platform: {
-            type: String,
+    socialMedia: [
+        {
+            platform: {
+                type: String,
+            },
+            url: {
+                type: String,
+            },
         },
-        url: {
-            type: String,
-        },
-    },
+    ],
     imageGallery: [
         {
             type: String,

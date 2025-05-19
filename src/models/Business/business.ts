@@ -7,11 +7,6 @@ export enum BRole {
   Sales = "Sales",
 }
 
-interface ISocialMedia {
-  platform: string;
-  url: string;
-}
-
 interface IBusinessRegistration {
   authority?: string;
   registrationNumber: string;
@@ -41,7 +36,12 @@ export interface IBusiness extends Document {
   website?: string;
   contactName?: string;
   businessRegistration?: IBusinessRegistration;
-  socialMedia?: ISocialMedia;
+  socialMedia?: [
+    {
+      platform: string;
+      url: string;
+    }
+  ];
   imageGallery?: string[];
   profileIcon?: string;
   addedBy: string;
@@ -131,14 +131,16 @@ const businessSchema = new mongoose.Schema(
       type: String,
     },
 
-    socialMedia: {
-      platform: {
-        type: String,
+    socialMedia: [
+      {
+        platform: {
+          type: String,
+        },
+        url: {
+          type: String,
+        },
       },
-      url: {
-        type: String,
-      },
-    },
+    ],
     imageGallery: [
       {
         type: String,

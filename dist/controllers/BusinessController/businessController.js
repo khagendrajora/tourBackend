@@ -228,11 +228,13 @@ const getBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.getBusiness = getBusiness;
 const updateBusinessProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.businessid;
+    let { socialMedia } = req.body;
+    // Remove direct destructuring; handle profileIcon below after type check
     try {
+        let profileIcon;
         let imageGallery = req.body.existingImageGallery
             ? [...req.body.existingImageGallery]
             : [];
-        let profileIcon = undefined;
         if (req.files) {
             const files = req.files;
             if (files["imageGallery"]) {
@@ -256,6 +258,8 @@ const updateBusinessProfile = (req, res) => __awaiter(void 0, void 0, void 0, fu
                 // profileIcon = files["profileIcon"][0]?.path;
             }
         }
+        socialMedia = [];
+        socialMedia = JSON.parse(req.body.socialMedia || []);
         const data = yield business_1.default.findOneAndUpdate({ businessId: id }, {
             businessSubCategory: req.body.businessSubCategory,
             businessAddress: {
@@ -270,10 +274,7 @@ const updateBusinessProfile = (req, res) => __awaiter(void 0, void 0, void 0, fu
                 registrationOn: req.body.businessRegistration.registrationOn,
                 expiresOn: req.body.businessRegistration.expiresOn,
             },
-            socialMedia: {
-                platform: req.body.socialMedia.platform,
-                url: req.body.socialMedia.url,
-            },
+            socialMedia,
             imageGallery,
             profileIcon,
         }, { new: true });

@@ -226,11 +226,13 @@ export const getBusiness = async (req: Request, res: Response) => {
 
 export const updateBusinessProfile = async (req: Request, res: Response) => {
   const id = req.params.businessid;
+  let { socialMedia } = req.body;
+  // Remove direct destructuring; handle profileIcon below after type check
   try {
+    let profileIcon: string | undefined;
     let imageGallery: string[] = req.body.existingImageGallery
       ? [...req.body.existingImageGallery]
       : [];
-    let profileIcon: string | undefined = undefined;
 
     if (req.files) {
       const files = req.files as { [fieldname: string]: Express.Multer.File[] };
@@ -263,6 +265,11 @@ export const updateBusinessProfile = async (req: Request, res: Response) => {
         // profileIcon = files["profileIcon"][0]?.path;
       }
     }
+
+    socialMedia = [];
+
+    socialMedia = JSON.parse(req.body.socialMedia || []);
+
     const data = await Business.findOneAndUpdate(
       { businessId: id },
       {
@@ -280,10 +287,7 @@ export const updateBusinessProfile = async (req: Request, res: Response) => {
           registrationOn: req.body.businessRegistration.registrationOn,
           expiresOn: req.body.businessRegistration.expiresOn,
         },
-        socialMedia: {
-          platform: req.body.socialMedia.platform,
-          url: req.body.socialMedia.url,
-        },
+        socialMedia,
         imageGallery,
         profileIcon,
       },
