@@ -33,20 +33,11 @@ const addNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (password == "") {
             return res.status(400).json({ error: "Password is reqired" });
         }
-        const userEmail = yield userModel_1.default.findOne({ email });
+        const userEmail = (yield Driver_1.default.findOne({ email })) ||
+            (yield userModel_1.default.findOne({ email })) ||
+            (yield business_1.default.findOne({ primaryEmail: email })) ||
+            (yield adminUser_1.default.findOne({ adminEmail: email }));
         if (userEmail) {
-            return res.status(400).json({ error: "Email already registered" });
-        }
-        const driverEmail = yield Driver_1.default.findOne({ email });
-        if (driverEmail) {
-            return res.status(400).json({ error: "Email already registered" });
-        }
-        const businessEmail = yield business_1.default.findOne({ primaryEmail: email });
-        if (businessEmail) {
-            return res.status(400).json({ error: "Email already registered" });
-        }
-        const adminEmail = yield adminUser_1.default.findOne({ adminEmail: email });
-        if (adminEmail) {
             return res.status(400).json({ error: "Email already registered" });
         }
         const salt = yield bcryptjs_1.default.genSalt(5);
@@ -74,7 +65,7 @@ const addNewUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const api = `${process.env.Backend_URL}`;
         (0, setEmail_1.sendEmail)({
             from: "beta.toursewa@gmail.com",
-            to: user.email,
+            to: email,
             subject: "Account Verification Link",
             text: `Verify your Business Email to Login\n\n
     ${api}/verifyuseremail/${token.token}`,
@@ -155,7 +146,7 @@ exports.getUsers = getUsers;
 const getUserstById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        const client = yield userModel_1.default.findById(id);
+        const client = yield userModel_1.default.findOne({ userId: id });
         if (!client) {
             return res.status(200).json({ error: "Failed to get the Profile" });
         }

@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  activateDriver,
   addBusiness,
   businessProfile,
   businessSignOut,
@@ -20,11 +21,8 @@ const router = express.Router();
 
 router.post("/addbusiness", addBusinessData, validation, addBusiness);
 router.put("/verifybusinessemail/:token", verifyEmail);
-
 router.get("/getbusiness", getBusiness);
-
 router.get("/businessprofile/:businessId", businessProfile);
-
 router.put(
   "/updatebusinessprofile/:businessid",
   upload.fields([
@@ -44,5 +42,7 @@ router.put("/resetpassword/:token", resetPwd);
 router.put("/resetandverify/:token", verifyAndResetPwd);
 
 router.post("/requestfeature/:id", veriftyToken, featureRequest);
+
+router.put("/activatedriver/:id", veriftyToken, activateDriver);
 
 export default router;

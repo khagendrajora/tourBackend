@@ -13,11 +13,20 @@ var IStatus;
     IStatus["Pending"] = "Pending";
 })(IStatus || (exports.IStatus = IStatus = {}));
 const VehicleReservation = new mongoose_1.default.Schema({
+    driverPhone: {
+        type: String,
+    },
+    driverId: {
+        type: String,
+    },
     vehicleId: {
         type: String,
         required: true,
     },
     businessPhone: {
+        type: String,
+    },
+    driver: {
         type: String,
     },
     pickUpDate: {

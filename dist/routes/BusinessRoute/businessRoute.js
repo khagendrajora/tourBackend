@@ -24,4 +24,5 @@ router.post("/forgetpwd", businessController_1.forgetPwd);
 router.put("/resetpassword/:token", businessController_1.resetPwd);
 router.put("/resetandverify/:token", adminController_1.verifyAndResetPwd);
 router.post("/requestfeature/:id", Auth_1.veriftyToken, businessController_1.featureRequest);
+router.put("/activatedriver/:id", Auth_1.veriftyToken, businessController_1.activateDriver);
 exports.default = router;

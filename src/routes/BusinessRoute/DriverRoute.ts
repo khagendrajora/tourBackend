@@ -5,9 +5,10 @@ import {
   getDriverByBId,
   getDriverById,
   getDrivers,
-  getDriverVehicles,
+  getReservations,
   resetPwd,
   updateDriver,
+  updateDriverDates,
   updateDriverStatus,
   verifyDriverEmail,
 } from "../../controllers/BusinessController/driver";
@@ -32,9 +33,8 @@ router.post(
 );
 
 router.get("/getdrivers", getDrivers);
-router.get("/getdrivers/:id", getDriverById);
+router.get("/getdriver/:id", getDriverById);
 router.get("/getdriverbybid/:id", getDriverByBId);
-router.get("/getdrivervehicle/:vehicleId", getDriverVehicles);
 
 router.put("/updatedriverstatus/:id", veriftyToken, updateDriverStatus);
 router.delete("/deletedriver/:id", veriftyToken, deleteDriver);
@@ -44,8 +44,10 @@ router.put(
   veriftyToken,
   updateDriver
 );
+router.put("/updatedates/:id", veriftyToken, updateDriverDates);
 router.put("/resetdriverpwd/:token", resetPwd);
-router.put("/resetandverifyemail/:token", verifyDriverEmail);
+router.put("/verifydriveremail/:token", verifyDriverEmail);
+router.post("/getreservations", getReservations);
 
 //Hot deals routes
 

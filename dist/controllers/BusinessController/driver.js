@@ -12,28 +12,33 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getDriverVehicles = exports.resetPwd = exports.updateDriver = exports.deleteDriver = exports.getDriverById = exports.getDriverByvehicleId = exports.getDriverByBId = exports.getDrivers = exports.updateDriverStatus = exports.verifyDriverEmail = exports.addDriver = void 0;
+exports.getReservations = exports.resetPwd = exports.updateDriverDates = exports.updateDriver = exports.deleteDriver = exports.getDriverById = exports.getDriverByBId = exports.getDrivers = exports.updateDriverStatus = exports.verifyDriverEmail = exports.addDriver = void 0;
 const Driver_1 = __importDefault(require("../../models/Business/Driver"));
 const token_1 = __importDefault(require("../../models/token"));
 const uuid_1 = require("uuid");
 const setEmail_1 = require("../../utils/setEmail");
 const nanoid_1 = require("nanoid");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
-// import jwt from "jsonwebtoken";
 const business_1 = __importDefault(require("../../models/Business/business"));
 const adminUser_1 = __importDefault(require("../../models/adminUser"));
 const userModel_1 = __importDefault(require("../../models/User/userModel"));
-const vehicle_1 = __importDefault(require("../../models/Product/vehicle"));
 const DriverLogs_1 = __importDefault(require("../../models/LogModel/DriverLogs"));
 const cloudinary_1 = require("cloudinary");
+const vehReserv_1 = __importDefault(require("../../models/Reservations/VehicleReservation/vehReserv"));
 const addDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const customId = (0, nanoid_1.customAlphabet)("1234567890", 4);
     let driverId = customId();
     driverId = "D" + driverId;
-    const { name, phone, email, vehicleId, age, businessId, addedBy, password } = req.body;
+    const { name, phone, email, age, businessId, addedBy, password, DOB } = req.body;
     try {
         let image = undefined;
+        const driverEmail = (yield Driver_1.default.findOne({ email })) ||
+            (yield userModel_1.default.findOne({ email })) ||
+            (yield adminUser_1.default.findOne({ adminEmail: email }));
+        if (driverEmail) {
+            return res.status(400).json({ error: "Email already registered" });
+        }
         if (req.files) {
             const files = req.files;
             if (files["image"]) {
@@ -47,50 +52,32 @@ const addDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         const driverNumber = yield Driver_1.default.findOne({ phone });
         if (driverNumber) {
-            return res.status(400).json({ error: "Phone Number is already used " });
+            return res
+                .status(400)
+                .json({ error: "Phone Number already Registered " });
         }
-        const driverEmail = yield Driver_1.default.findOne({ email });
-        if (driverEmail) {
-            return res.status(400).json({ error: "Email already registered" });
-        }
-        const userEmail = yield userModel_1.default.findOne({ email: email });
-        if (userEmail) {
-            return res.status(400).json({ error: "Email already registered" });
-        }
-        // const businessEmail = await Business.findOne({ primaryEmail: driverEmail });
-        // if (!businessEmail) {
-        //   return res.status(400).json({ error: "Business Not Found" });
-        // }
         const businessData = yield business_1.default.findOne({ businessId });
         if (!businessData) {
             return res.status(400).json({ error: "Business Not Found" });
         }
         const emailCheck = yield business_1.default.findOne({
-            primaryEmail: { $ne: businessData.primaryEmail },
-            $or: [{ primaryEmail: driverEmail }],
+            primaryEmail: email,
+            _id: { $ne: businessData._id },
         });
         if (emailCheck) {
-            return res.status(400).json({ error: "Email already in use" });
+            return res.status(400).json({ error: "Email already Registered" });
         }
-        const adminEmail = yield adminUser_1.default.findOne({ adminEmail: email });
-        if (adminEmail) {
-            return res.status(400).json({ error: "Email already registered" });
-        }
-        const vehicleName = yield vehicle_1.default.findOne({ vehicleId: vehicleId });
-        // if (driverNumber) {
-        //   return res.status(400).json({ error: "Phone Number is already used " });
-        // }
         const salt = yield bcryptjs_1.default.genSalt(5);
         let hashedPassword = yield bcryptjs_1.default.hash(password, salt);
         let newDriver = new Driver_1.default({
             driverId: driverId,
-            vehicleId: vehicleId,
-            vehicleName: vehicleName === null || vehicleName === void 0 ? void 0 : vehicleName.name,
-            businessId: businessId,
-            email: email,
-            name: name,
-            age: age,
-            phone: phone,
+            businessId,
+            businessName: businessData.businessName,
+            email,
+            name,
+            age,
+            DOB,
+            phone,
             password: hashedPassword,
             image,
             addedBy,
@@ -107,14 +94,14 @@ const addDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!token) {
             return res.status(400).json({ error: "Token not generated" });
         }
-        const url = `${process.env.FRONTEND_URL}/resetandverifyemail/${token.token}`;
+        const url = `${process.env.FRONTEND_URL}/verifydriveremail/${token.token}`;
         const api = `${process.env.Backend_URL}`;
         (0, setEmail_1.sendEmail)({
             from: "beta.toursewa@gmail.com",
-            to: driverEmail,
+            to: email,
             subject: "Account Verification Link",
             text: `Verify your Driver Email to Login\n\n
-${api}/resetandverifyemail/${token.token}`,
+${api}/verifydriveremail/${token.token}`,
             html: `<div style="font-family: Arial, sans-serif; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
         <div style="width: 75%; max-width: 600px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
           <div style="text-align: left; margin-bottom: 20px;">
@@ -145,7 +132,7 @@ ${api}/resetandverifyemail/${token.token}`,
 exports.addDriver = addDriver;
 const verifyDriverEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.params.token;
-    const newPwd = req.body.password;
+    // const newPwd = req.body.password;
     try {
         const data = yield token_1.default.findOne({ token });
         if (!data) {
@@ -158,42 +145,38 @@ const verifyDriverEmail = (req, res) => __awaiter(void 0, void 0, void 0, functi
         if (driverId.isVerified) {
             return res.status(400).json({ error: "Email Already verified" });
         }
-        const isOldPwd = yield bcryptjs_1.default.compare(newPwd, driverId.password);
-        if (isOldPwd) {
-            return res.status(400).json({ error: "Password Previously Used" });
-        }
-        else {
-            const salt = yield bcryptjs_1.default.genSalt(5);
-            let hashedPwd = yield bcryptjs_1.default.hash(newPwd, salt);
-            driverId.password = hashedPwd;
-            driverId.isVerified = true;
-            const businessEmail = yield business_1.default.findOne({
-                businessId: driverId.businessId,
-            });
-            yield token_1.default.deleteOne({ _id: data._id });
-            driverId.save().then((driver) => {
-                if (!driver) {
-                    return res.status(400).json({ error: "Failed to Verify" });
-                }
-                else {
-                    (0, setEmail_1.sendEmail)({
-                        from: "beta.toursewa@gmail.com",
-                        to: driverId.email,
-                        subject: "Email Verified",
-                        html: `<h2>Your Email with business ID ${driverId.businessId} for vehicle ${driverId.vehicleId} has been verified</h2>`,
-                    });
-                    (0, setEmail_1.sendEmail)({
-                        from: "beta.toursewa@gmail.com",
-                        to: businessEmail === null || businessEmail === void 0 ? void 0 : businessEmail.primaryEmail,
-                        subject: "New Driver Registered",
-                        html: `<h2>New Driver with driver ID ${driverId.driverId} for vehicle ${driverId.vehicleName} is Registered</h2>`,
-                    });
-                }
-            });
-            return res
-                .status(200)
-                .json({ message: "Email Verified and New Password is set" });
-        }
+        // const isOldPwd = await bcryptjs.compare(newPwd, driverId.password);
+        // if (isOldPwd) {
+        //   return res.status(400).json({ error: "Password Previously Used" });
+        // } else {
+        // const salt = await bcryptjs.genSalt(5);
+        // let hashedPwd = await bcryptjs.hash(newPwd, salt);
+        // driverId.password = hashedPwd;
+        driverId.isVerified = true;
+        const businessEmail = yield business_1.default.findOne({
+            businessId: driverId.businessId,
+        });
+        yield token_1.default.deleteOne({ _id: data._id });
+        driverId.save().then((driver) => {
+            if (!driver) {
+                return res.status(400).json({ error: "Failed to Verify" });
+            }
+            else {
+                (0, setEmail_1.sendEmail)({
+                    from: "beta.toursewa@gmail.com",
+                    to: driverId.email,
+                    subject: "Email Verified",
+                    html: `<h2>Your Email with business ${driverId.businessName}  has been verified</h2>`,
+                });
+                (0, setEmail_1.sendEmail)({
+                    from: "beta.toursewa@gmail.com",
+                    to: businessEmail === null || businessEmail === void 0 ? void 0 : businessEmail.primaryEmail,
+                    subject: "New Driver Registered",
+                    html: `<h2>New Driver with driver ID ${driverId.driverId} for vehicle} is Registered</h2>`,
+                });
+            }
+        });
+        return res.status(200).json({ message: "Email Verified" });
     }
     catch (error) {
         return res.status(500).json({ error: error.message });
@@ -202,18 +185,32 @@ const verifyDriverEmail = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.verifyDriverEmail = verifyDriverEmail;
 const updateDriverStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const { status, email } = req.body;
+    const { status, updatedBy } = req.body;
     try {
-        const data = yield Driver_1.default.findByIdAndUpdate(id, {
+        const driverData = yield Driver_1.default.findOne({ driverId: id });
+        if (!driverData) {
+            return res.status(400).json({ errror: "Not Found" });
+        }
+        const data = yield Driver_1.default.findOneAndUpdate({ driverId: id }, {
             status: status,
         }, { new: true });
         if (!data) {
             return res.status(400).json({ error: "Update Failed" });
         }
+        let driverLog = new DriverLogs_1.default({
+            updatedBy: updatedBy,
+            productId: id,
+            action: `Status change to ${status}`,
+            time: new Date(),
+        });
+        driverLog = yield driverLog.save();
+        if (!driverLog) {
+            return res.status(400).json({ error: "Failed to update" });
+        }
         (0, setEmail_1.sendEmail)({
             from: "beta.toursewa@gmail.com",
-            to: email,
-            subject: "Status Changedd",
+            to: driverData.email,
+            subject: "Status Changed",
             html: `<h2>Your Status has been changed to ${status}</h2>`,
         });
         return res.status(200).json({ message: status });
@@ -255,26 +252,10 @@ const getDriverByBId = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.getDriverByBId = getDriverByBId;
-const getDriverByvehicleId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = req.params.id;
-    try {
-        const data = yield Driver_1.default.find({ vehicleId: id });
-        if (data.length === 0) {
-            return res.status(400).json({ error: "No  Data" });
-        }
-        else {
-            return res.send(data);
-        }
-    }
-    catch (error) {
-        return res.status(500).json({ error: error.message });
-    }
-});
-exports.getDriverByvehicleId = getDriverByvehicleId;
 const getDriverById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     try {
-        const data = yield Driver_1.default.findById(id);
+        const data = yield Driver_1.default.findOne({ driverId: id });
         if (!data) {
             return res.status(400).json({ error: "Failed to Get" });
         }
@@ -312,7 +293,7 @@ exports.deleteDriver = deleteDriver;
 const updateDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const id = req.params.id;
-    const { name, age, phone, email, vehicleId, updatedBy } = req.body;
+    const { name, age, phone, email, updatedBy } = req.body;
     try {
         let image = undefined;
         if (req.files) {
@@ -326,14 +307,11 @@ const updateDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 image = result.secure_url;
             }
         }
-        const vehicleName = yield vehicle_1.default.findOne({ vehicleId: vehicleId });
         const data = yield Driver_1.default.findByIdAndUpdate(id, {
             name,
             age,
             phone,
             email,
-            vehicleId,
-            vehicleName: vehicleName === null || vehicleName === void 0 ? void 0 : vehicleName.name,
             image,
         }, { new: true });
         if (!data) {
@@ -363,6 +341,38 @@ const updateDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.updateDriver = updateDriver;
+const updateDriverDates = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const { operationDates, updatedBy, vehicleId } = req.body;
+    try {
+        const driverData = yield Driver_1.default.findByIdAndUpdate({ driverId: id }, {
+            operationDates,
+            vehicleId,
+        }, { new: true });
+        if (!driverData) {
+            return res.status(400).json({ error: "Failed to Update" });
+        }
+        else {
+            let driverLog = new DriverLogs_1.default({
+                updatedBy: updatedBy,
+                productId: id,
+                action: "updated",
+                time: new Date(),
+            });
+            driverLog = yield driverLog.save();
+            if (!driverLog) {
+                return res.status(400).json({ error: "Failed to update" });
+            }
+            return res.send({
+                message: "Dates Updated",
+            });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.updateDriverDates = updateDriverDates;
 const resetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.params.token;
     const newPwd = req.body.password;
@@ -393,17 +403,22 @@ const resetPwd = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.resetPwd = resetPwd;
-const getDriverVehicles = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = req.params.vehicleId;
+const getReservations = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.body;
+    if (!Array.isArray(id)) {
+        return res.status(400).json({ error: "Booking Not Found" });
+    }
     try {
-        const data = yield vehicle_1.default.find({ vehicleId: id });
-        if (!data) {
-            return res.status(400).json({ error: "No vehicle found" });
+        const bookings = yield vehReserv_1.default.find({
+            _id: { $in: id },
+        });
+        if (!bookings) {
+            return res.status(400).json({ error: "Not Found" });
         }
-        return res.send(data);
+        return res.send(bookings);
     }
     catch (error) {
-        return res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error });
     }
 });
-exports.getDriverVehicles = getDriverVehicles;
+exports.getReservations = getReservations;

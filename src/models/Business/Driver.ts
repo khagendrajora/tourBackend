@@ -4,47 +4,60 @@ import { BRole } from "./business";
 export enum IStatus {
   Available = "Available",
   Unavailable = "Unavailable",
-  Leave = "Leave",
-  Occupied = "Occupied",
+  Inactive = "Inactive",
 }
 
 export interface IDriver extends Document {
   _id?: string;
   driverId: string;
-  vehicleId: string;
-  vehicleName: string;
+  bookingId?: mongoose.Types.ObjectId[];
   businessId: string;
+  businessName: string;
   role: BRole;
   name: string;
   age: number;
   phone: string;
-  email?: string;
+  email: string;
   status: IStatus;
   isActive: boolean;
   isVerified: boolean;
   password: string;
   image: string;
   addedBy: string;
+  operationalDate?: string[];
+  DOB: string;
 }
 
 const driverSchema = new mongoose.Schema(
   {
-    vehicleId: {
+    DOB: {
       type: String,
       required: true,
     },
+    bookingId: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "VehicleReservation",
+      },
+    ],
+    operationalDate: [
+      {
+        type: String,
+      },
+    ],
     addedBy: {
+      type: String,
+      required: true,
+    },
+    businessName: {
       type: String,
       required: true,
     },
     isActive: {
       type: Boolean,
-      default: true,
+      default: false,
     },
-    vehicleName: {
-      type: String,
-      required: true,
-    },
+
     password: {
       type: String,
       required: true,
@@ -76,7 +89,7 @@ const driverSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: Object.values(IStatus),
-      default: IStatus.Available,
+      default: IStatus.Inactive,
       required: true,
     },
     image: {
@@ -85,7 +98,7 @@ const driverSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: ["Admin", "Manager", "Driver", "Sales"],
-      default: "Sales",
+      default: "Driver",
     },
     isVerified: {
       type: Boolean,

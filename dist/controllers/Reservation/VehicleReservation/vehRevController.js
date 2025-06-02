@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getRevByVehicleId = exports.getRevByBusinessId = exports.getAllReservations = exports.updateReservationStatusByBid = exports.updateReservationStatusByClient = exports.getRevByClientId = exports.vehReservation = void 0;
+exports.removeDriver = exports.assignDriver = exports.getRevByVehicleId = exports.getRevByBusinessId = exports.getAllReservations = exports.updateReservationStatusByBid = exports.updateReservationStatusByClient = exports.getRevByClientId = exports.vehReservation = void 0;
 const vehReserv_1 = __importDefault(require("../../../models/Reservations/VehicleReservation/vehReserv"));
 const vehicle_1 = __importDefault(require("../../../models/Product/vehicle"));
 const ReservedDated_1 = __importDefault(require("../../../models/Reservations/VehicleReservation/ReservedDated"));
@@ -20,6 +20,7 @@ const nanoid_1 = require("nanoid");
 const setEmail_1 = require("../../../utils/setEmail");
 const business_1 = __importDefault(require("../../../models/Business/business"));
 const VehRevLogs_1 = __importDefault(require("../../../models/LogModel/VehRevLogs"));
+const Driver_1 = __importDefault(require("../../../models/Business/Driver"));
 const vehReservation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const id = req.params.id;
@@ -330,89 +331,6 @@ const updateReservationStatusByBid = (req, res) => __awaiter(void 0, void 0, voi
     }
 });
 exports.updateReservationStatusByBid = updateReservationStatusByBid;
-// export const updateReservationByBid = async (req: Request, res: Response) => {
-//   const id = req.params.id;
-//   const { status, email, updatedBy } = req.body;
-//   try {
-//     const data = await VehicleReservation.findOneAndUpdate(
-//       { bookingId: id },
-//       { status: status },
-//       { new: true }
-//     );
-//     if (!data) {
-//       return res.status(400).json({ error: "Failed to update" });
-//     } else {
-//       const revDate = await ReservedDate.findOneAndDelete({
-//         bookingId: id,
-//       });
-//       if (!revDate) {
-//         return res.status(400).json({ error: "Failed" });
-//       }
-//       let vehLogs = new VehRevLogs({
-//         updatedBy: updatedBy,
-//         status: status,
-//         bookingId: id,
-//         time: new Date(),
-//       });
-//       vehLogs = await vehLogs.save();
-//       sendEmail({
-//         from: "beta.toursewa@gmail.com",
-//         to: email,
-//         subject: "Booking Status",
-//         html: `<div style="max-width: 600px; margin: auto; font-family: Arial, sans-serif; color: #333;">
-//   <div style="text-align: center; margin-bottom: 20px;">
-//     <img src="https://tourbackend-rdtk.onrender.com/public/uploads/logo.png" alt="Logo" style="max-width: 200px;" />
-//   </div>
-//   <h1 style="font-size: 20px; font-weight: bold; text-align: center;">Booking Status</h1>
-//   <p style="font-size: 14px; text-align: center; margin-bottom: 20px;">Your booking status on toursewa is given below.</p>
-//   <table style="width: 100%; border-collapse: collapse; border: 1px solid #D1D5DB; border-radius: 8px; background-color: #F9FAFB; padding: 20px;">
-//     <tr style="background-color: #F3F4F6;">
-//       <td style="font-size: 14px; font-weight: bold; padding: 12px 8px; text-align: left; width: 40%;">Status:</td>
-//       <td style="font-size: 14px; color: #DC2626; padding: 12px 8px; text-align: left; width: 60%;">${status}</td>
-//     </tr>
-//     <tr>
-//       <td style="font-size: 14px; font-weight: bold; padding: 12px 8px; text-align: left;">BookingID:</td>
-//       <td style="font-size: 14px; padding: 12px 8px; text-align: left;">${id}</td>
-//     </tr>
-//     <tr style="background-color: #F3F4F6;">
-//       <td style="font-size: 14px; font-weight: bold; padding: 12px 8px; text-align: left;">Vehicle:</td>
-//       <td style="font-size: 14px; color: #64748B; padding: 12px 8px; text-align: left;">${data.vehicleName}</td>
-//     </tr>
-//     <tr>
-//       <td style="font-size: 14px; font-weight: bold; padding: 12px 8px; text-align: left;">Vehicle Number:</td>
-//       <td style="font-size: 14px; color: #64748B; padding: 12px 8px; text-align: left;">${data.vehicleNumber}</td>
-//     </tr>
-//     <tr style="background-color: #F3F4F6;">
-//       <td style="font-size: 14px; font-weight: bold; padding: 12px 8px; text-align: left;">Passenger Name:</td>
-//       <td style="font-size: 14px; color: #64748B; padding: 12px 8px; text-align: left;">${data.bookingName}</td>
-//     </tr>
-//     <tr>
-//       <td style="font-size: 14px; font-weight: bold; padding: 12px 8px; text-align: left;">Number of Passengers:</td>
-//       <td style="font-size: 14px; color: #64748B; padding: 12px 8px; text-align: left;">${data.numberOfPassengers}</td>
-//     </tr>
-//     <tr style="background-color: #F3F4F6;">
-//       <td style="font-size: 14px; font-weight: bold; padding: 12px 8px; text-align: left;">From - To:</td>
-//       <td style="font-size: 14px; color: #64748B; padding: 12px 8px; text-align: left;">${data.pickUpLocation} - ${data.dropOffLocation}</td>
-//     </tr>
-//       <tr>
-//         <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
-//           <strong>Price:</strong> NRP.${data.totalPrice}
-//         </td>
-//       </tr>
-//     <tr>
-//       <td style="font-size: 14px; font-weight: bold; padding: 12px 8px; text-align: left;">Start Date - End Date:</td>
-//       <td style="font-size: 14px; color: #64748B; padding: 12px 8px; text-align: left;">${data.pickUpDate} - ${data.dropOffDate}</td>
-//     </tr>
-//   </table>
-// </div>
-// `,
-//       });
-//       return res.status(200).json({ message: status });
-//     }
-//   } catch (error: any) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
 const getAllReservations = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const data = yield vehReserv_1.default.find();
@@ -460,3 +378,341 @@ const getRevByVehicleId = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.getRevByVehicleId = getRevByVehicleId;
+const assignDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const { bookingId, updatedBy } = req.body;
+    try {
+        const driver = yield Driver_1.default.findOne({ driverId: id });
+        if (!driver) {
+            return res.status(401).json({ error: "Driver Not Found" });
+        }
+        const booking = yield vehReserv_1.default.findOne({ bookingId });
+        if (!booking) {
+            return res.status(401).json({ error: "Reservation Not Found" });
+        }
+        const revDates = yield ReservedDated_1.default.findOne({ bookingId });
+        if (!revDates) {
+            return res.status(401).json({ error: "Reservation Dates Not Found" });
+        }
+        const updateBooking = yield vehReserv_1.default.findOneAndUpdate({ bookingId: bookingId }, {
+            driver: driver.name,
+            driverPhone: driver.phone,
+            driverId: driver.driverId,
+        }, { new: true });
+        if (!updateBooking) {
+            return res.status(401).json({ error: "Failed To Assign" });
+        }
+        const updateDriver = yield Driver_1.default.findOneAndUpdate({ driverId: id }, {
+            $addToSet: {
+                operationalDate: { $each: revDates.bookingDate },
+                bookingId: { $each: [booking._id] },
+            },
+        }, { new: true });
+        if (!updateDriver) {
+            return res.status(401).json({ error: "Failed To update Driver" });
+        }
+        let vehLogs = new VehRevLogs_1.default({
+            updatedBy: updatedBy,
+            status: `Assigned to the reservation ${bookingId}`,
+            bookingId: bookingId,
+            time: new Date(),
+        });
+        vehLogs = yield vehLogs.save();
+        if (!vehLogs) {
+            return res.status(400).json({ error: "Failed to save the logs" });
+        }
+        (0, setEmail_1.sendEmail)({
+            from: "beta.toursewa@gmail.com",
+            to: booking.email,
+            subject: "Assigned Driver For Your Booking",
+            html: ` <div style="max-width: 600px; margin: auto; font-family: Arial, sans-serif; color: #333;">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <img src="https://tourbackend-rdtk.onrender.com/public/uploads/logo.png" alt="Logo" style="max-width: 200px;" />
+      </div>
+      <h1 style="font-size: 20px; font-weight: bold; text-align: center;">Booking Status</h1>
+      <p style="font-size: 14px; text-align: center; margin-bottom: 20px;">Your booking status on toursewa is given below.</p>
+      <table style="width: 100%; border: 1px solid #D1D5DB; border-radius: 8px; background-color: #F9FAFB; padding: 20px;">
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Status:</td>
+          <td style="font-size: 14px; color: #DC2626; padding: 8px 0;">${booking.status}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">BookingID:</td>
+          <td style="font-size: 14px; padding: 8px 0;">${bookingId}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Vehicle:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${booking.vehicleName}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Vehicle Number:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${booking.vehicleNumber}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Passenger Name:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${booking.bookingName}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Number of Passengers:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${booking.numberOfPassengers}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">From - To:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${booking.pickUpLocation} - ${booking.dropOffLocation}</td>
+        </tr>
+          <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Price:</strong> NRP.${booking.totalPrice}
+        </td>
+      </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Start Date - End Date:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${booking.pickUpDate} - ${booking.dropOffDate}</td>
+        </tr>
+         <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Driver name:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${driver.name}</td>
+        </tr>
+           <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Driver Phone:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${driver.phone}</td>
+        </tr>
+         <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Driver Phone:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${driver.driverId}</td>
+        </tr>
+      </table>
+    </div>`,
+        });
+        (0, setEmail_1.sendEmail)({
+            from: "beta.toursewa@gmail.com",
+            to: driver.email,
+            subject: "New Booking Alert",
+            html: ` <div style="max-width: 600px; margin: auto; font-family: Arial, sans-serif; color: #333;">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <img src="https://tourbackend-rdtk.onrender.com/public/uploads/logo.png" alt="Logo" style="max-width: 200px;" />
+      </div>
+      <h1 style="font-size: 20px; font-weight: bold; text-align: center;">Booking Status</h1>
+      <p style="font-size: 14px; text-align: center; margin-bottom: 20px;">Your booking status on toursewa is given below.</p>
+      <table style="width: 100%; border: 1px solid #D1D5DB; border-radius: 8px; background-color: #F9FAFB; padding: 20px;">
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Status:</td>
+          <td style="font-size: 14px; color: #DC2626; padding: 8px 0;">${booking.status}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">BookingID:</td>
+          <td style="font-size: 14px; padding: 8px 0;">${bookingId}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Vehicle:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${booking.vehicleName}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Vehicle Number:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${booking.vehicleNumber}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Passenger Name:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${booking.bookingName}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Number of Passengers:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${booking.numberOfPassengers}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">From - To:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${booking.pickUpLocation} - ${booking.dropOffLocation}</td>
+        </tr>
+          <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Price:</strong> NRP.${booking.totalPrice}
+        </td>
+      </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Start Date - End Date:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${booking.pickUpDate} - ${booking.dropOffDate}</td>
+        </tr>
+         <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Driver name:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${driver.name}</td>
+        </tr>
+           <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Driver Phone:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${driver.phone}</td>
+        </tr>
+         <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Driver Phone:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${driver.driverId}</td>
+        </tr>
+      </table>
+    </div>`,
+        });
+        return res.status(200).json({ message: "Driver Assigned" });
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.assignDriver = assignDriver;
+const removeDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const { updatedBy } = req.body;
+    try {
+        const revData = yield vehReserv_1.default.findOne({ bookingId: id });
+        if (!revData) {
+            return res.status(404).json({ error: "Not Found1" });
+        }
+        const revDates = yield ReservedDated_1.default.findOne({ bookingId: id });
+        if (!revDates) {
+            return res.status(404).json({ error: "Not Found2" });
+        }
+        const driver = yield Driver_1.default.findOne({ driverId: revData.driverId });
+        if (!driver) {
+            return res.status(404).json({ error: "Not Found3" });
+        }
+        const updateDriver = yield Driver_1.default.findOneAndUpdate({ driverId: driver.driverId }, {
+            $pull: {
+                bookingId: revData._id,
+                operationalDate: { $in: revDates.bookingDate },
+            },
+        }, { new: true });
+        if (!updateDriver) {
+            return res.status(404).json({ error: "Failed" });
+        }
+        const updateReservation = yield vehReserv_1.default.updateOne({ bookingId: id }, {
+            $unset: {
+                driver: "",
+                driverPhone: "",
+            },
+        });
+        if (!updateReservation) {
+            return res.status(404).json({ error: "Failed" });
+        }
+        let vehLogs = new VehRevLogs_1.default({
+            updatedBy: updatedBy,
+            status: `Removed Driver`,
+            bookingId: id,
+            time: new Date(),
+        });
+        vehLogs = yield vehLogs.save();
+        if (!vehLogs) {
+            return res.status(400).json({ error: "Failed to save the logs" });
+        }
+        (0, setEmail_1.sendEmail)({
+            from: "beta.toursewa@gmail.com",
+            to: revData.email,
+            subject: "Driver Remove alert",
+            html: ` <div style="max-width: 600px; margin: auto; font-family: Arial, sans-serif; color: #333;">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <img src="https://tourbackend-rdtk.onrender.com/public/uploads/logo.png" alt="Logo" style="max-width: 200px;" />
+      </div>
+      <h1 style="font-size: 20px; font-weight: bold; text-align: center;">Booking Status</h1>
+      <p style="font-size: 14px; text-align: center; margin-bottom: 20px;">Your booking status on toursewa is given below.</p>
+      <table style="width: 100%; border: 1px solid #D1D5DB; border-radius: 8px; background-color: #F9FAFB; padding: 20px;">
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Status:</td>
+          <td style="font-size: 14px; color: #DC2626; padding: 8px 0;">${revData.status}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">BookingID:</td>
+          <td style="font-size: 14px; padding: 8px 0;">${revData.bookingId}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Vehicle:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${revData.vehicleName}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Vehicle Number:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${revData.vehicleNumber}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Passenger Name:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${revData.bookingName}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Number of Passengers:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${revData.numberOfPassengers}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">From - To:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${revData.pickUpLocation} - ${revData.dropOffLocation}</td>
+        </tr>
+          <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Price:</strong> NRP.${revData.totalPrice}
+        </td>
+      </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Start Date - End Date:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${revData.pickUpDate} - ${revData.dropOffDate}</td>
+        </tr>
+         <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Driver Removed</td>
+        </tr>
+      </table>
+    </div>`,
+        });
+        (0, setEmail_1.sendEmail)({
+            from: "beta.toursewa@gmail.com",
+            to: driver.email,
+            subject: "Alert Removed From the booking",
+            html: ` <div style="max-width: 600px; margin: auto; font-family: Arial, sans-serif; color: #333;">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <img src="https://tourbackend-rdtk.onrender.com/public/uploads/logo.png" alt="Logo" style="max-width: 200px;" />
+      </div>
+      <h1 style="font-size: 20px; font-weight: bold; text-align: center;">Booking Status</h1>
+      <p style="font-size: 14px; text-align: center; margin-bottom: 20px;">Your booking status on toursewa is given below.</p>
+      <table style="width: 100%; border: 1px solid #D1D5DB; border-radius: 8px; background-color: #F9FAFB; padding: 20px;">
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Status:</td>
+          <td style="font-size: 14px; color: #DC2626; padding: 8px 0;">${revData.status}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">BookingID:</td>
+          <td style="font-size: 14px; padding: 8px 0;">${revData.bookingId}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Vehicle:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${revData.vehicleName}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Vehicle Number:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${revData.vehicleNumber}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Passenger Name:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${revData.bookingName}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Number of Passengers:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${revData.numberOfPassengers}</td>
+        </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">From - To:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${revData.pickUpLocation} - ${revData.dropOffLocation}</td>
+        </tr>
+          <tr>
+        <td style="font-size: 14px; padding: 10px; border: 1px solid #ddd;">
+          <strong>Price:</strong> NRP.${revData.totalPrice}
+        </td>
+      </tr>
+        <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">Start Date - End Date:</td>
+          <td style="font-size: 14px; color: #64748B; padding: 8px 0;">${revData.pickUpDate} - ${revData.dropOffDate}</td>
+        </tr>
+         <tr>
+          <td style="font-size: 14px; font-weight: bold; padding: 8px 0;">${driver.name} has been removed from the booking ${revData.bookingId}</td>
+        
+      
+      </table>
+    </div>`,
+        });
+        return res.status(200).json({
+            message: "Driver removed from reservation",
+        });
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.removeDriver = removeDriver;

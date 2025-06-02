@@ -1,9 +1,11 @@
 import express from "express";
 import {
+  assignDriver,
   getAllReservations,
   getRevByBusinessId,
   getRevByClientId,
   getRevByVehicleId,
+  removeDriver,
   // updateReservationByBid,
   updateReservationStatusByBid,
   updateReservationStatusByClient,
@@ -12,6 +14,7 @@ import {
 import {
   getAllRevDates,
   getReservedDates,
+  getReservedDatesByBookingId,
 } from "../controllers/Reservation/VehicleReservation/resrvedDated";
 import {
   getTourRev,
@@ -41,11 +44,14 @@ router.put(
   veriftyToken,
   updateReservationStatusByBid
 );
+router.put("/assigndriver/:id", veriftyToken, assignDriver);
+router.put("/removedriver/:id", veriftyToken, removeDriver);
 // router.put("/updateRevbybusinessId/:id", updateReservationByBid);
 
 router.get("/getbusinessrev/:id", getRevByBusinessId);
 router.get("/reservdates/:id", getReservedDates);
-router.get("/getclientrev/:id", getRevByClientId);
+router.get("/reservdatesbybookingId/:id", getReservedDatesByBookingId);
+router.get("/getuserrev/:id", getRevByClientId);
 router.get("/getalldates", getAllRevDates);
 router.get("/getallreservations", getAllReservations);
 router.get("/getrevbyvehicleId/:id", getRevByVehicleId);

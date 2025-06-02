@@ -34,6 +34,22 @@ export const getReservedDates = async (req: Request, res: Response) => {
   }
 };
 
+export const getReservedDatesByBookingId = async (
+  req: Request,
+  res: Response
+) => {
+  const id = req.params.id;
+  try {
+    const data = await ReservedDate.findOne({ bookingId: id });
+    if (!data) {
+      return res.status(400).json({ error: "Dates Not Found" });
+    }
+    return res.send(data);
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 export const getAllRevDates = async (req: Request, res: Response) => {
   try {
     const data = await ReservedDate.find();

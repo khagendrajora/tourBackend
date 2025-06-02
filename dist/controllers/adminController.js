@@ -211,12 +211,8 @@ const businessApprove = (req, res) => __awaiter(void 0, void 0, void 0, function
       </div>`,
         });
         return res.status(200).json({
-            data: updatedBusiness,
             message: `Business is ${status}`,
         });
-        // } else {
-        //   return res.status(401).json({ error: "Unauthorized" });
-        // }
     }
     catch (error) {
         return res.status(500).json({ error: error.message });

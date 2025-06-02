@@ -30,11 +30,15 @@ export interface IVeh extends Document {
   price?: string;
   description: string;
   addedBy?: string;
+  driver?: string;
 }
 
 const VehSchema = new mongoose.Schema(
   {
     businessId: {
+      type: String,
+    },
+    driver: {
       type: String,
     },
     price: {

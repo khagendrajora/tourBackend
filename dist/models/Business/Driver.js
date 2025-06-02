@@ -9,25 +9,35 @@ var IStatus;
 (function (IStatus) {
     IStatus["Available"] = "Available";
     IStatus["Unavailable"] = "Unavailable";
-    IStatus["Leave"] = "Leave";
-    IStatus["Occupied"] = "Occupied";
+    IStatus["Inactive"] = "Inactive";
 })(IStatus || (exports.IStatus = IStatus = {}));
 const driverSchema = new mongoose_1.default.Schema({
-    vehicleId: {
+    DOB: {
         type: String,
         required: true,
     },
+    bookingId: [
+        {
+            type: mongoose_1.default.Schema.Types.ObjectId,
+            ref: "VehicleReservation",
+        },
+    ],
+    operationalDate: [
+        {
+            type: String,
+        },
+    ],
     addedBy: {
+        type: String,
+        required: true,
+    },
+    businessName: {
         type: String,
         required: true,
     },
     isActive: {
         type: Boolean,
-        default: true,
-    },
-    vehicleName: {
-        type: String,
-        required: true,
+        default: false,
     },
     password: {
         type: String,
@@ -60,7 +70,7 @@ const driverSchema = new mongoose_1.default.Schema({
     status: {
         type: String,
         enum: Object.values(IStatus),
-        default: IStatus.Available,
+        default: IStatus.Inactive,
         required: true,
     },
     image: {
@@ -69,7 +79,7 @@ const driverSchema = new mongoose_1.default.Schema({
     role: {
         type: String,
         enum: ["Admin", "Manager", "Driver", "Sales"],
-        default: "Sales",
+        default: "Driver",
     },
     isVerified: {
         type: Boolean,

@@ -74,7 +74,6 @@ const businessSchema = new mongoose.Schema(
       },
       registrationNumber: {
         type: String,
-        required: true,
       },
       registrationOn: {
         type: Date,

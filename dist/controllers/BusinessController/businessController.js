@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.featureRequest = exports.resetPwd = exports.forgetPwd = exports.businessSignOut = exports.deleteBusiness = exports.updateBusinessProfile = exports.getBusiness = exports.businessProfile = exports.verifyEmail = exports.addBusiness = void 0;
+exports.activateDriver = exports.featureRequest = exports.resetPwd = exports.forgetPwd = exports.businessSignOut = exports.deleteBusiness = exports.updateBusinessProfile = exports.getBusiness = exports.businessProfile = exports.verifyEmail = exports.addBusiness = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const business_1 = __importDefault(require("../../models/Business/business"));
 const Driver_1 = __importDefault(require("../../models/Business/Driver"));
@@ -27,6 +27,7 @@ const cloudinary_1 = require("cloudinary");
 const tour_1 = __importDefault(require("../../models/Product/tour"));
 const trekking_1 = __importDefault(require("../../models/Product/trekking"));
 const vehicle_1 = __importDefault(require("../../models/Product/vehicle"));
+const DriverLogs_1 = __importDefault(require("../../models/LogModel/DriverLogs"));
 cloudinary_1.v2.config({
     cloud_name: "dwepmpy6w",
     api_key: "934775798563485",
@@ -51,20 +52,11 @@ const addBusiness = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 .status(400)
                 .json({ error: "Registration Number is already Used" });
         }
-        const email = yield business_1.default.findOne({ primaryEmail });
+        const email = (yield business_1.default.findOne({ primaryEmail })) ||
+            (yield userModel_1.default.findOne({ email: primaryEmail })) ||
+            (yield Driver_1.default.findOne({ email: primaryEmail })) ||
+            (yield adminUser_1.default.findOne({ adminEmail: primaryEmail }));
         if (email) {
-            return res.status(400).json({ error: "Email already registered" });
-        }
-        const userEmail = yield userModel_1.default.findOne({ email: primaryEmail });
-        if (userEmail) {
-            return res.status(400).json({ error: "Email already registered" });
-        }
-        const driverEmail = yield Driver_1.default.findOne({ email: primaryEmail });
-        if (driverEmail) {
-            return res.status(400).json({ error: "Email already registered" });
-        }
-        const adminEmail = yield adminUser_1.default.findOne({ adminEmail: primaryEmail });
-        if (adminEmail) {
             return res.status(400).json({ error: "Email already registered" });
         }
         const phone = yield business_1.default.findOne({ primaryPhone });
@@ -531,3 +523,70 @@ const featureRequest = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.featureRequest = featureRequest;
+const activateDriver = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    const { updatedBy } = req.body;
+    let status = "";
+    try {
+        const driverData = yield Driver_1.default.findOne({ driverId: id });
+        if (!driverData) {
+            return res.status(400).json({ error: "Driver Info Not Found" });
+        }
+        driverData.isActive = !driverData.isActive;
+        const updatedDriver = yield driverData.save();
+        if (!updatedDriver) {
+            return res.status(400).json({ error: "Failed to Update" });
+        }
+        if (driverData.isActive) {
+            status = "Activated";
+            let driverLog = new DriverLogs_1.default({
+                updatedBy: updatedBy,
+                productId: id,
+                action: `Driver atatus activated`,
+                time: new Date(),
+            });
+            driverLog = yield driverLog.save();
+            if (!driverLog) {
+                return res.status(400).json({ error: "Updated but Failed to Log" });
+            }
+        }
+        else {
+            status = "Deactivated";
+            let driverLog = new DriverLogs_1.default({
+                updatedBy: updatedBy,
+                productId: id,
+                action: `Driver atatus Deactivated`,
+                time: new Date(),
+            });
+            driverLog = yield driverLog.save();
+            if (!driverLog) {
+                return res.status(400).json({ error: "Updated but Failed to Log" });
+            }
+        }
+        (0, setEmail_1.sendEmail)({
+            from: "beta.toursewa@gmail.com",
+            to: driverData.email,
+            subject: "Account Activation Status",
+            html: `<div style="font-family: Arial, sans-serif; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div style="width: 75%; max-width: 600px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+          <div style="text-align: left; margin-bottom: 20px;">
+            <img src='https://tourbackend-rdtk.onrender.com/public/uploads/logo.png' className="" />
+          </div>
+          <div style="text-align: left;">
+            <h1 style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">Your Business Account Status</h1>
+            <p style="font-size: 14px; margin-bottom: 20px;">
+              The status  of your Driver account on toursewa is given below.
+            </p>
+            <p style="display: inline-block;   text-decoration: none;   font-size: 14px;">Your Driver account with Driver Id ${id} has been made ${status}.</p>
+          
+          </div>
+        </div>
+      </div>`,
+        });
+        return res.status(200).json({ message: "Updated" });
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.activateDriver = activateDriver;

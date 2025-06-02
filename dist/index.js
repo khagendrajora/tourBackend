@@ -43,7 +43,10 @@ exports.app.use("/api", Login_1.default);
 exports.app.use("/api", LocationRoute_1.default);
 exports.app.use("/api", businessManagerRoute_1.default);
 exports.app.use("/api", businessSales_1.default);
-const port = 3000 | 3001;
+const port = 4000;
+exports.app.get("/", (req, res) => {
+    res.send("HEllo Worlds");
+});
 exports.app.listen(port, () => {
     console.log(`Server Start on ${port}`);
 });

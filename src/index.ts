@@ -42,7 +42,11 @@ app.use("/api", LocationRoute);
 app.use("/api", businessManagerRoute);
 app.use("/api", businessSales);
 
-const port = 3000 | 3001;
+const port = 4000;
+
+app.get("/", (req, res) => {
+  res.send("HEllo Worlds");
+});
 
 app.listen(port, () => {
   console.log(`Server Start on ${port}`);

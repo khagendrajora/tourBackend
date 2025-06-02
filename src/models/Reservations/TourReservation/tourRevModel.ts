@@ -7,6 +7,7 @@ export interface ITuRev extends Document {
   tourId: string;
   tourName: string;
   bookingName: string;
+
   bookedBy: string;
   numberOfPeople: number;
   email: string;

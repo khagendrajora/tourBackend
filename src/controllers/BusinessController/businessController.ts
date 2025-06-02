@@ -13,6 +13,7 @@ import { v2 as cloudinary } from "cloudinary";
 import Tour from "../../models/Product/tour";
 import Trekking from "../../models/Product/trekking";
 import Vehicle from "../../models/Product/vehicle";
+import DriverLogs from "../../models/LogModel/DriverLogs";
 
 cloudinary.config({
   cloud_name: "dwepmpy6w",
@@ -47,22 +48,13 @@ export const addBusiness = async (req: Request, res: Response) => {
         .json({ error: "Registration Number is already Used" });
     }
 
-    const email = await Business.findOne({ primaryEmail });
+    const email =
+      (await Business.findOne({ primaryEmail })) ||
+      (await User.findOne({ email: primaryEmail })) ||
+      (await Driver.findOne({ email: primaryEmail })) ||
+      (await AdminUser.findOne({ adminEmail: primaryEmail }));
+
     if (email) {
-      return res.status(400).json({ error: "Email already registered" });
-    }
-
-    const userEmail = await User.findOne({ email: primaryEmail });
-    if (userEmail) {
-      return res.status(400).json({ error: "Email already registered" });
-    }
-    const driverEmail = await Driver.findOne({ email: primaryEmail });
-    if (driverEmail) {
-      return res.status(400).json({ error: "Email already registered" });
-    }
-
-    const adminEmail = await AdminUser.findOne({ adminEmail: primaryEmail });
-    if (adminEmail) {
       return res.status(400).json({ error: "Email already registered" });
     }
 
@@ -542,6 +534,74 @@ export const featureRequest = async (req: Request, res: Response) => {
     }
 
     return res.status(200).json({ message: "Request Send" });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export const activateDriver = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const { updatedBy } = req.body;
+  let status = "";
+  try {
+    const driverData = await Driver.findOne({ driverId: id });
+    if (!driverData) {
+      return res.status(400).json({ error: "Driver Info Not Found" });
+    }
+
+    driverData.isActive = !driverData.isActive;
+    const updatedDriver = await driverData.save();
+    if (!updatedDriver) {
+      return res.status(400).json({ error: "Failed to Update" });
+    }
+
+    if (driverData.isActive) {
+      status = "Activated";
+      let driverLog = new DriverLogs({
+        updatedBy: updatedBy,
+        productId: id,
+        action: `Driver atatus activated`,
+        time: new Date(),
+      });
+      driverLog = await driverLog.save();
+      if (!driverLog) {
+        return res.status(400).json({ error: "Updated but Failed to Log" });
+      }
+    } else {
+      status = "Deactivated";
+      let driverLog = new DriverLogs({
+        updatedBy: updatedBy,
+        productId: id,
+        action: `Driver atatus Deactivated`,
+        time: new Date(),
+      });
+      driverLog = await driverLog.save();
+      if (!driverLog) {
+        return res.status(400).json({ error: "Updated but Failed to Log" });
+      }
+    }
+
+    sendEmail({
+      from: "beta.toursewa@gmail.com",
+      to: driverData.email,
+      subject: "Account Activation Status",
+      html: `<div style="font-family: Arial, sans-serif; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div style="width: 75%; max-width: 600px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+          <div style="text-align: left; margin-bottom: 20px;">
+            <img src='https://tourbackend-rdtk.onrender.com/public/uploads/logo.png' className="" />
+          </div>
+          <div style="text-align: left;">
+            <h1 style="font-size: 20px; font-weight: bold; margin-bottom: 16px;">Your Business Account Status</h1>
+            <p style="font-size: 14px; margin-bottom: 20px;">
+              The status  of your Driver account on toursewa is given below.
+            </p>
+            <p style="display: inline-block;   text-decoration: none;   font-size: 14px;">Your Driver account with Driver Id ${id} has been made ${status}.</p>
+          
+          </div>
+        </div>
+      </div>`,
+    });
+    return res.status(200).json({ message: "Updated" });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }

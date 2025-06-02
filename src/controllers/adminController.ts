@@ -234,12 +234,8 @@ export const businessApprove = async (req: Request, res: Response) => {
     });
 
     return res.status(200).json({
-      data: updatedBusiness,
       message: `Business is ${status}`,
     });
-    // } else {
-    //   return res.status(401).json({ error: "Unauthorized" });
-    // }
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }

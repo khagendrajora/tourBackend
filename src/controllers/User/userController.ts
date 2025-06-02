@@ -21,25 +21,14 @@ export const addNewUser = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Password is reqired" });
     }
 
-    const userEmail = await User.findOne({ email });
+    const userEmail =
+      (await Driver.findOne({ email })) ||
+      (await User.findOne({ email })) ||
+      (await Business.findOne({ primaryEmail: email })) ||
+      (await AdminUser.findOne({ adminEmail: email }));
     if (userEmail) {
       return res.status(400).json({ error: "Email already registered" });
     }
-    const driverEmail = await Driver.findOne({ email });
-    if (driverEmail) {
-      return res.status(400).json({ error: "Email already registered" });
-    }
-
-    const businessEmail = await Business.findOne({ primaryEmail: email });
-    if (businessEmail) {
-      return res.status(400).json({ error: "Email already registered" });
-    }
-
-    const adminEmail = await AdminUser.findOne({ adminEmail: email });
-    if (adminEmail) {
-      return res.status(400).json({ error: "Email already registered" });
-    }
-
     const salt = await bcryptjs.genSalt(5);
     let hashedPassword = await bcryptjs.hash(password, salt);
     let user = new User({
@@ -67,7 +56,7 @@ export const addNewUser = async (req: Request, res: Response) => {
 
     sendEmail({
       from: "beta.toursewa@gmail.com",
-      to: user.email,
+      to: email,
       subject: "Account Verification Link",
       text: `Verify your Business Email to Login\n\n
     ${api}/verifyuseremail/${token.token}`,
@@ -144,7 +133,7 @@ export const getUsers = async (req: Request, res: Response) => {
 export const getUserstById = async (req: Request, res: Response) => {
   const id = req.params.id;
   try {
-    const client = await User.findById(id);
+    const client = await User.findOne({ userId: id });
     if (!client) {
       return res.status(200).json({ error: "Failed to get the Profile" });
     } else {

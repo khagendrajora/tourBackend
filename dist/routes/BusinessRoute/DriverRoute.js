@@ -12,14 +12,15 @@ const router = express_1.default.Router();
 //Driver routes
 router.post("/adddriver", fileUpload_1.default.fields([{ name: "image", maxCount: 1 }]), driver_1.addDriver);
 router.get("/getdrivers", driver_1.getDrivers);
-router.get("/getdrivers/:id", driver_1.getDriverById);
+router.get("/getdriver/:id", driver_1.getDriverById);
 router.get("/getdriverbybid/:id", driver_1.getDriverByBId);
-router.get("/getdrivervehicle/:vehicleId", driver_1.getDriverVehicles);
 router.put("/updatedriverstatus/:id", Auth_1.veriftyToken, driver_1.updateDriverStatus);
 router.delete("/deletedriver/:id", Auth_1.veriftyToken, driver_1.deleteDriver);
 router.put("/updatedriver/:id", fileUpload_1.default.fields([{ name: "image", maxCount: 1 }]), Auth_1.veriftyToken, driver_1.updateDriver);
+router.put("/updatedates/:id", Auth_1.veriftyToken, driver_1.updateDriverDates);
 router.put("/resetdriverpwd/:token", driver_1.resetPwd);
-router.put("/resetandverifyemail/:token", driver_1.verifyDriverEmail);
+router.put("/verifydriveremail/:token", driver_1.verifyDriverEmail);
+router.post("/getreservations", driver_1.getReservations);
 //Hot deals routes
 router.post("/addhotdeals/:id", HotDealsCOntroller_1.addHotDeals);
 router.get("/gethotdeals", HotDealsCOntroller_1.getHotDeals);

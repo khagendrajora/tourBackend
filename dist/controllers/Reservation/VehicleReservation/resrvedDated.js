@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllRevDates = exports.getReservedDates = exports.saveReservedDated = void 0;
+exports.getAllRevDates = exports.getReservedDatesByBookingId = exports.getReservedDates = exports.saveReservedDated = void 0;
 const ReservedDated_1 = __importDefault(require("../../../models/Reservations/VehicleReservation/ReservedDated"));
 const saveReservedDated = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { vehicleId, bookedBy, bookingDate, time } = req.body;
@@ -49,6 +49,20 @@ const getReservedDates = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.getReservedDates = getReservedDates;
+const getReservedDatesByBookingId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
+    try {
+        const data = yield ReservedDated_1.default.findOne({ bookingId: id });
+        if (!data) {
+            return res.status(400).json({ error: "Dates Not Found" });
+        }
+        return res.send(data);
+    }
+    catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+});
+exports.getReservedDatesByBookingId = getReservedDatesByBookingId;
 const getAllRevDates = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const data = yield ReservedDated_1.default.find();

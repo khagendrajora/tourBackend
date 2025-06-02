@@ -38,7 +38,6 @@ const businessSchema = new mongoose_1.default.Schema({
         },
         registrationNumber: {
             type: String,
-            required: true,
         },
         registrationOn: {
             type: Date,

@@ -30,15 +30,27 @@ export interface IVRev extends Document {
   businessName: string;
   businessPhone: string;
   createdAt?: string;
+  driver?: string;
+  driverPhone?: string;
+  driverId?: string;
 }
 
 const VehicleReservation = new mongoose.Schema(
   {
+    driverPhone: {
+      type: String,
+    },
+    driverId: {
+      type: String,
+    },
     vehicleId: {
       type: String,
       required: true,
     },
     businessPhone: {
+      type: String,
+    },
+    driver: {
       type: String,
     },
     pickUpDate: {
